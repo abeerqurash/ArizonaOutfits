@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -28,44 +30,100 @@ class Product extends Model
         'meta_keywords',
     ];
 
-    public function categories()
+    protected $casts = [
+        'regular_price' => 'decimal:2',
+        'sale_price' => 'decimal:2',
+        'stock' => 'integer',
+        'views_count' => 'integer',
+        'favorites_count' => 'integer',
+        'cart_count' => 'integer',
+        'purchase_count' => 'integer',
+        'average_rating' => 'decimal:2',
+    ];
+
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(
             ProductCategory::class,
             'product_category_product',
             'product_id',
             'product_category_id'
+        )->withTimestamps();
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            ProductTag::class,
+            'product_product_tag',
+            'product_id',
+            'product_tag_id'
+        )->withTimestamps();
+    }
+
+    public function options(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            ProductOption::class,
+            'product_option_product',
+            'product_id',
+            'product_option_id'
+        )->withTimestamps();
+    }
+
+    public function optionValues(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            ProductOptionValue::class,
+            'product_option_value_product',
+            'product_id',
+            'product_option_value_id'
+        )->withTimestamps();
+    }
+
+    public function variants(): HasMany
+    {
+        return $this->hasMany(
+            ProductVariant::class,
+            'product_id'
         );
     }
-    public function images()
+
+    public function images(): HasMany
     {
-        return $this->hasMany(ProductImage::class)->orderBy('sort_order');
+        return $this->hasMany(
+            ProductImage::class,
+            'product_id'
+        );
     }
 
-    public function tags()
+    public function reviews(): HasMany
     {
-        return $this->belongsToMany(ProductTag::class, 'product_product_tag');
-    }
-
-    public function variants()
-    {
-        return $this->hasMany(ProductVariant::class);
-    }
-
-    public function reviews()
-    {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(
+            Review::class,
+            'product_id'
+        );
     }
 
     public function getFinalPriceAttribute()
     {
-        return $this->sale_price ?: $this->regular_price;
+        return $this->sale_price
+            ?: $this->regular_price;
     }
 
     public function getDiscountPercentAttribute()
     {
-        if ($this->sale_price && $this->regular_price > $this->sale_price) {
-            return round((($this->regular_price - $this->sale_price) / $this->regular_price) * 100);
+        if (
+            $this->sale_price !== null
+            && $this->regular_price > 0
+            && $this->regular_price > $this->sale_price
+        ) {
+            return round(
+                (
+                    ($this->regular_price - $this->sale_price)
+                    / $this->regular_price
+                ) * 100
+            );
         }
 
         return null;
