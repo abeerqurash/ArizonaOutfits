@@ -8,7 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class PostController extends Controller
+class PostController extends AdminController
 {
     public function index()
     {

@@ -4,51 +4,71 @@ namespace App\Http\Controllers;
 
 use App\Models\Favorite;
 use App\Models\Product;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class FavoriteController extends Controller
 {
-    public function index()
+    public function toggle(Request $request): RedirectResponse
     {
-        $query = Favorite::with('product.images', 'product.categories');
+        $validated = $request->validate([
+            'product_id' => [
+                'required',
+                'integer',
+                'exists:products,id',
+            ],
+        ]);
 
-        if (auth()->check()) {
-            $query->where('user_id', auth()->id());
-        } else {
-            $query->where('session_id', session()->getId());
-        }
+        $product = Product::query()
+            ->where('status', 'active')
+            ->findOrFail($validated['product_id']);
 
-        $favorites = $query->get();
-
-        return view('favorites.index', compact('favorites'));
-    }
-
-    public function toggle(Request $request)
-    {
-        $product = Product::findOrFail($request->product_id);
-
-        $query = Favorite::where('product_id', $product->id);
-
-        if (auth()->check()) {
-            $query->where('user_id', auth()->id());
-        } else {
-            $query->where('session_id', session()->getId());
-        }
-
-        $favorite = $query->first();
+        $favorite = Favorite::query()
+            ->where('user_id', auth()->id())
+            ->where('product_id', $product->id)
+            ->first();
 
         if ($favorite) {
             $favorite->delete();
-        } else {
-            Favorite::create([
-                'product_id' => $product->id,
-                'user_id' => auth()->id(),
-                'session_id' => auth()->check() ? null : session()->getId(),
-            ]);
 
-            $product->increment('favorites_count');
+            return back()->with(
+                'success',
+                'Product removed from your favourites.'
+            );
         }
 
-        return back();
+        Favorite::create([
+            'user_id' => auth()->id(),
+            'product_id' => $product->id,
+        ]);
+
+        return back()->with(
+            'success',
+            'Product added to your favourites.'
+        );
+    }
+
+    public function index(): View
+    {
+        $favorites = Favorite::query()
+            ->with([
+                'product.categories',
+                'product.images',
+                'product.variants',
+                'product.options',
+                'product.optionValues',
+            ])
+            ->where('user_id', auth()->id())
+            ->whereHas('product', function ($query) {
+                $query->where('status', 'active');
+            })
+            ->latest()
+            ->paginate(12);
+
+        return view(
+            'favorites.index',
+            compact('favorites')
+        );
     }
 }

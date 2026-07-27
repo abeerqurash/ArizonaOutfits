@@ -7,8 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
     initSingleProductGallery();
     initProductOptions();
     initProductQuantity();
+    initVariantCartProtection();
     initCartQuantity();
     initCartRemove();
+    initProductTabs();
+    reviewRatingField();
+    shopFilter();
 });
 
 /*
@@ -625,93 +629,218 @@ function clearOptionError(form, optionId) {
     }
 }
 
-function updateSelectedVariant(form) {
-    const variantsElement =
-        form.querySelector("[data-product-variants]") ||
-        document.querySelector("[data-product-variants]");
+function getVariantsElement(form) {
+    const localElement = form.querySelector(
+        "[data-product-variants]"
+    );
+
+    if (localElement) {
+        return localElement;
+    }
+
+    const productContainer = form.closest(
+        ".quick-view-product, " +
+        "#product-quick-view-content, " +
+        ".single-product-page, " +
+        ".single-product, " +
+        "[data-product-container]"
+    );
+
+    return productContainer
+        ? productContainer.querySelector("[data-product-variants]")
+        : null;
+}
+
+function getProductVariants(form) {
+    const variantsElement = getVariantsElement(form);
 
     if (!variantsElement) {
-        return;
+        return [];
     }
 
-    let variants = [];
+    const variantsJson =
+        variantsElement.dataset.productVariants ||
+        variantsElement.textContent ||
+        "[]";
 
     try {
-        variants = JSON.parse(
-            variantsElement.dataset.productVariants ||
-            variantsElement.textContent ||
-            "[]"
-        );
+        const variants = JSON.parse(variantsJson);
+
+        return Array.isArray(variants) ? variants : [];
     } catch (error) {
         console.error("Invalid product variant data.", error);
+
+        return [];
+    }
+}
+
+function normalizeVariantOptions(variant) {
+    const rawOptions =
+        variant.options ||
+        variant.option_values ||
+        variant.values ||
+        {};
+
+    const normalizedOptions = {};
+
+    if (Array.isArray(rawOptions)) {
+        rawOptions.forEach(function (option) {
+            const optionId =
+                option.option_id ||
+                option.product_option_id ||
+                option.option?.id ||
+                "";
+
+            const valueId =
+                option.value_id ||
+                option.option_value_id ||
+                option.product_option_value_id ||
+                option.value?.id ||
+                option.value ||
+                "";
+
+            if (optionId && valueId) {
+                normalizedOptions[String(optionId)] =
+                    String(valueId);
+            }
+        });
+
+        return normalizedOptions;
+    }
+
+    if (
+        rawOptions &&
+        typeof rawOptions === "object"
+    ) {
+        Object.entries(rawOptions).forEach(function (
+            [optionId, value]
+        ) {
+            if (
+                value &&
+                typeof value === "object"
+            ) {
+                normalizedOptions[String(optionId)] = String(
+                    value.value_id ||
+                    value.option_value_id ||
+                    value.id ||
+                    value.value ||
+                    ""
+                );
+            } else {
+                normalizedOptions[String(optionId)] =
+                    String(value);
+            }
+        });
+    }
+
+    return normalizedOptions;
+}
+
+function updateSelectedVariant(form) {
+    const variants = getProductVariants(form);
+
+    if (!variants.length) {
         return;
     }
 
-    if (!Array.isArray(variants) || !variants.length) {
-        return;
+    const optionSelects = Array.from(
+        form.querySelectorAll(".product-option-select")
+    );
+
+    const variantInput = form.querySelector(
+        'input[name="variant_id"], [data-selected-variant]'
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | Always clear the previous variant before checking
+    |--------------------------------------------------------------------------
+    */
+
+    if (variantInput) {
+        variantInput.value = "";
     }
 
     const selectedOptions = {};
+    let allOptionsSelected = true;
 
-    form.querySelectorAll(".product-option-select").forEach(
-        function (select) {
-            const optionId =
-                select.dataset.optionId ||
-                select.name.match(/\[(.*?)\]/)?.[1];
+    optionSelects.forEach(function (select) {
+        const optionId =
+            select.dataset.optionId ||
+            select.name.match(/\[(.*?)\]/)?.[1];
 
-            if (optionId && select.value) {
-                selectedOptions[String(optionId)] = String(
-                    select.value
-                );
-            }
+        const valueId = String(select.value || "").trim();
+
+        if (!optionId || !valueId) {
+            allOptionsSelected = false;
+            return;
         }
-    );
 
-    const selectedOptionCount = Object.keys(selectedOptions).length;
+        selectedOptions[String(optionId)] = valueId;
+    });
 
-    if (!selectedOptionCount) {
+    /*
+    |--------------------------------------------------------------------------
+    | Every option group must have a selected value
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        !optionSelects.length ||
+        !allOptionsSelected ||
+        Object.keys(selectedOptions).length !== optionSelects.length
+    ) {
+        const message = form.querySelector(
+            ".variant-message, [data-variant-message]"
+        );
+
+        if (message) {
+            message.textContent =
+                "Please select one value from every option.";
+
+            message.classList.remove("success");
+            message.classList.add("error");
+
+            showElement(message);
+        }
+
+        updateAddToCartButton(form, false);
+
         return;
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Find an exact variant match
+    |--------------------------------------------------------------------------
+    |
+    | The selected option count and every option/value pair must match.
+    |
+    */
+
     const matchedVariant = variants.find(function (variant) {
         const variantOptions =
-            variant.options ||
-            variant.option_values ||
-            variant.values ||
-            {};
+            normalizeVariantOptions(variant);
 
-        if (Array.isArray(variantOptions)) {
-            return Object.entries(selectedOptions).every(
-                function ([optionId, valueId]) {
-                    return variantOptions.some(function (option) {
-                        const currentOptionId = String(
-                            option.option_id ||
-                            option.product_option_id ||
-                            option.id ||
-                            ""
-                        );
+        const selectedEntries =
+            Object.entries(selectedOptions);
 
-                        const currentValueId = String(
-                            option.value_id ||
-                            option.option_value_id ||
-                            option.product_option_value_id ||
-                            option.value ||
-                            ""
-                        );
+        const variantEntries =
+            Object.entries(variantOptions);
 
-                        return (
-                            currentOptionId === String(optionId) &&
-                            currentValueId === String(valueId)
-                        );
-                    });
-                }
-            );
+        if (
+            variantEntries.length !== selectedEntries.length
+        ) {
+            return false;
         }
 
-        return Object.entries(selectedOptions).every(function (
+        return selectedEntries.every(function (
             [optionId, valueId]
         ) {
-            return String(variantOptions[optionId]) === String(valueId);
+            return (
+                String(variantOptions[optionId] || "") ===
+                String(valueId)
+            );
         });
     });
 
@@ -725,7 +854,7 @@ function updateSelectedVariant(form) {
 
 function updateVariantDisplay(form, variant) {
     const variantInput = form.querySelector(
-        'input[name="variant_id"]'
+        'input[name="variant_id"], [data-selected-variant]'
     );
 
     if (variantInput) {
@@ -824,18 +953,23 @@ function updateVariantDisplay(form, variant) {
 }
 
 function updateVariantUnavailable(form) {
-    const stockElement =
-        form.querySelector(
-            "#product-stock, " +
-            "#live-stock-count, " +
-            "[data-product-stock]"
-        ) ||
-        document.querySelector("[data-product-stock]");
+    const variantInput = form.querySelector(
+        'input[name="variant_id"], [data-selected-variant]'
+    );
 
-    if (stockElement) {
-        stockElement.textContent = "Unavailable";
-        stockElement.classList.remove("in-stock");
-        stockElement.classList.add("out-of-stock");
+    if (variantInput) {
+        variantInput.value = "";
+    }
+
+    const message = form.querySelector(
+        ".variant-message, [data-variant-message]"
+    );
+
+    if (message) {
+        message.textContent = "Please select all options.";
+
+        message.classList.remove("success");
+        message.classList.add("error");
     }
 
     updateAddToCartButton(form, false);
@@ -875,22 +1009,71 @@ function updateStockDisplay(form, stock) {
 
 function updateAddToCartButton(form, isAvailable) {
     const buttons = form.querySelectorAll(
-        '[type="submit"].add-to-cart-button, ' +
-        ".quick-view-cart-button, " +
-        '[data-add-to-cart]'
+        "[data-add-to-cart], " +
+        "[data-buy-now], " +
+        ".add-to-cart-button, " +
+        ".buy-now-button"
+    );
+
+    if (!buttons.length) {
+        return;
+    }
+
+    const variants = getProductVariants(form);
+    const hasVariants = variants.length > 0;
+
+    const optionSelects = Array.from(
+        form.querySelectorAll(".product-option-select")
+    );
+
+    const allOptionsSelected =
+        optionSelects.length > 0 &&
+        optionSelects.every(function (select) {
+            return String(
+                select.value || ""
+            ).trim() !== "";
+        });
+
+    const variantInput = form.querySelector(
+        'input[name="variant_id"], ' +
+        "[data-selected-variant]"
+    );
+
+    const hasSelectedVariant = Boolean(
+        String(
+            variantInput?.value || ""
+        ).trim()
     );
 
     buttons.forEach(function (button) {
-        button.disabled = !isAvailable;
+        const readyText =
+            button.dataset.readyText ||
+            (
+                button.hasAttribute("data-buy-now")
+                    ? "Buy Now"
+                    : "Add To Cart"
+            );
 
-        if (button.dataset.originalText === undefined) {
-            button.dataset.originalText =
-                button.textContent.trim() || "Add To Cart";
+        if (
+            hasVariants &&
+            (
+                !allOptionsSelected ||
+                !hasSelectedVariant
+            )
+        ) {
+            button.disabled = true;
+            button.textContent = "Select Options";
+            return;
         }
 
-        button.textContent = isAvailable
-            ? button.dataset.originalText
-            : "Out of Stock";
+        if (!isAvailable) {
+            button.disabled = true;
+            button.textContent = "Out of Stock";
+            return;
+        }
+
+        button.disabled = false;
+        button.textContent = readyText;
     });
 }
 
@@ -1403,26 +1586,26 @@ button.forEach(button => {
 
 });
 const buttons = document.querySelectorAll(
-  '.btn-style-1, .btn-style-2, .btn-style-3'
+    '.btn-style-1, .btn-style-2, .btn-style-3, .product-popup-close, .quick-view-cart-button'
 );
 
 buttons.forEach(button => {
-  const text = button.querySelector('.button-text');
-  if (!text) return;
+    const text = button.querySelector('.button-text');
+    if (!text) return;
 
-  button.addEventListener('mousemove', (e) => {
-    const rect = button.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
+    button.addEventListener('mousemove', (e) => {
+        const rect = button.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
 
-    text.style.transform =
-      `translate3d(${x / 6}px, ${y / 6}px, 0) scale(1.12)`;
-  });
+        text.style.transform =
+            `translate3d(${x / 6}px, ${y / 6}px, 0) scale(1.12)`;
+    });
 
-  button.addEventListener('mouseleave', () => {
-    text.style.transform =
-      'translate3d(0, 0, 0) scale(1)';
-  });
+    button.addEventListener('mouseleave', () => {
+        text.style.transform =
+            'translate3d(0, 0, 0) scale(1)';
+    });
 });
 
 const menuBtn = document.querySelector('.menu-button');
@@ -1469,4 +1652,908 @@ document.addEventListener("DOMContentLoaded", function () {
 
     elements.forEach(el => observer.observe(el));
 
+});
+
+/*
+|--------------------------------------------------------------------------
+| Product tabs
+|--------------------------------------------------------------------------
+*/
+
+function initProductTabs() {
+    const productTabsContainers = document.querySelectorAll(".product-tabs");
+
+    if (!productTabsContainers.length) {
+        return;
+    }
+
+    productTabsContainers.forEach(function (tabsContainer) {
+        if (tabsContainer.dataset.tabsInitialized === "true") {
+            return;
+        }
+
+        tabsContainer.dataset.tabsInitialized = "true";
+
+        const tabButtons = tabsContainer.querySelectorAll(".tab-btn");
+        const tabContents = tabsContainer.querySelectorAll(".tab-content");
+
+        if (!tabButtons.length || !tabContents.length) {
+            return;
+        }
+
+        tabButtons.forEach(function (button) {
+            button.setAttribute("role", "tab");
+
+            const tabId = button.dataset.tab;
+            const matchingContent = tabId
+                ? tabsContainer.querySelector("#" + CSS.escape(tabId))
+                : null;
+
+            button.setAttribute(
+                "aria-selected",
+                button.classList.contains("active") ? "true" : "false"
+            );
+
+            if (tabId) {
+                button.setAttribute("aria-controls", tabId);
+            }
+
+            if (matchingContent) {
+                matchingContent.setAttribute("role", "tabpanel");
+            }
+
+            button.addEventListener("click", function () {
+                const selectedTabId = button.dataset.tab;
+
+                if (!selectedTabId) {
+                    return;
+                }
+
+                const selectedContent = tabsContainer.querySelector(
+                    "#" + CSS.escape(selectedTabId)
+                );
+
+                if (!selectedContent) {
+                    return;
+                }
+
+                tabButtons.forEach(function (tabButton) {
+                    tabButton.classList.remove("active");
+                    tabButton.setAttribute("aria-selected", "false");
+                });
+
+                tabContents.forEach(function (tabContent) {
+                    tabContent.classList.remove("active");
+                    tabContent.setAttribute("aria-hidden", "true");
+                });
+
+                button.classList.add("active");
+                button.setAttribute("aria-selected", "true");
+
+                selectedContent.classList.add("active");
+                selectedContent.setAttribute("aria-hidden", "false");
+            });
+        });
+
+        tabContents.forEach(function (tabContent) {
+            tabContent.setAttribute(
+                "aria-hidden",
+                tabContent.classList.contains("active")
+                    ? "false"
+                    : "true"
+            );
+        });
+    });
+}
+
+function initVariantCartProtection() {
+    document.addEventListener("submit", function (event) {
+        const form = event.target.closest(
+            ".product-form, " +
+            ".single-product-form, " +
+            ".quick-view-cart-form, " +
+            "[data-product-form]"
+        );
+
+        if (!form) {
+            return;
+        }
+
+        const variants = getProductVariants(form);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Simple products can submit normally
+        |--------------------------------------------------------------------------
+        */
+
+        if (!variants.length) {
+            return;
+        }
+
+        const optionSelects = Array.from(
+            form.querySelectorAll(".product-option-select")
+        );
+
+        const missingOption = optionSelects.find(
+            function (select) {
+                return !String(select.value || "").trim();
+            }
+        );
+
+        const variantInput = form.querySelector(
+            'input[name="variant_id"], [data-selected-variant]'
+        );
+
+        const selectedVariantId = String(
+            variantInput?.value || ""
+        ).trim();
+
+        const message = form.querySelector(
+            ".variant-message, [data-variant-message]"
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Every option must be selected
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            !optionSelects.length ||
+            missingOption ||
+            !selectedVariantId
+        ) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            if (variantInput) {
+                variantInput.value = "";
+            }
+
+            if (message) {
+                message.textContent =
+                    "Please select one value from every option.";
+
+                message.classList.remove("success");
+                message.classList.add("error");
+
+                showElement(message);
+            }
+
+            const optionGroup =
+                missingOption?.closest(
+                    ".product-option-group"
+                ) ||
+                form.querySelector(".product-option-group");
+
+            optionGroup?.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+            });
+
+            missingOption?.focus();
+
+            return;
+        }
+
+        const selectedVariant = variants.find(
+            function (variant) {
+                return (
+                    String(variant.id) ===
+                    selectedVariantId
+                );
+            }
+        );
+
+        if (!selectedVariant) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            variantInput.value = "";
+
+            if (message) {
+                message.textContent =
+                    "The selected option combination is unavailable.";
+
+                message.classList.remove("success");
+                message.classList.add("error");
+
+                showElement(message);
+            }
+
+            return;
+        }
+
+        const selectedOptions = {};
+
+        optionSelects.forEach(function (select) {
+            const optionId =
+                select.dataset.optionId ||
+                select.name.match(/\[(.*?)\]/)?.[1];
+
+            if (optionId) {
+                selectedOptions[String(optionId)] =
+                    String(select.value);
+            }
+        });
+
+        const variantOptions =
+            normalizeVariantOptions(selectedVariant);
+
+        const exactMatch =
+            Object.keys(selectedOptions).length ===
+            Object.keys(variantOptions).length &&
+            Object.entries(selectedOptions).every(
+                function ([optionId, valueId]) {
+                    return (
+                        String(
+                            variantOptions[optionId] || ""
+                        ) === String(valueId)
+                    );
+                }
+            );
+
+        if (!exactMatch) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            variantInput.value = "";
+
+            if (message) {
+                message.textContent =
+                    "Please select a valid value from every option.";
+
+                message.classList.remove("success");
+                message.classList.add("error");
+
+                showElement(message);
+            }
+
+            return;
+        }
+
+        const stock = Number(
+            selectedVariant.stock ||
+            selectedVariant.quantity ||
+            selectedVariant.stock_quantity ||
+            0
+        );
+
+        if (stock < 1) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            if (message) {
+                message.textContent =
+                    "The selected variant is out of stock.";
+
+                message.classList.remove("success");
+                message.classList.add("error");
+
+                showElement(message);
+            }
+        }
+    }, true);
+
+
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const ratingField = document.querySelector(
+        ".review-rating-field"
+    );
+
+    if (!ratingField) {
+        return;
+    }
+
+    const ratingInput = ratingField.querySelector(
+        'input[name="rating"]'
+    );
+
+    const ratingOptions = ratingField.querySelectorAll(
+        ".review-rating-option"
+    );
+
+    ratingOptions.forEach(function (option) {
+        option.addEventListener("click", function () {
+            const ratingValue =
+                option.dataset.ratingValue || "";
+
+            ratingInput.value = ratingValue;
+
+            ratingOptions.forEach(function (item) {
+                item.classList.remove("active");
+                item.setAttribute(
+                    "aria-pressed",
+                    "false"
+                );
+            });
+
+            option.classList.add("active");
+            option.setAttribute(
+                "aria-pressed",
+                "true"
+            );
+        });
+    });
+
+    const reviewForm = ratingField.closest("form");
+
+    if (reviewForm) {
+        reviewForm.addEventListener("submit", function (event) {
+            if (!ratingInput.value) {
+                event.preventDefault();
+
+                ratingField.classList.add("has-error");
+
+                ratingOptions[0]?.focus();
+            } else {
+                ratingField.classList.remove("has-error");
+            }
+        });
+    }
+});
+
+
+function reviewRatingField() {
+    const reviewSelect = document.querySelector(".review-select");
+
+    if (reviewSelect) {
+
+        const trigger = reviewSelect.querySelector(".review-select-trigger");
+        const options = reviewSelect.querySelectorAll(".review-option");
+        const hiddenInput = document.getElementById("review-rating");
+        const selectedText = document.getElementById("selected-rating-text");
+
+        trigger.addEventListener("click", () => {
+            reviewSelect.classList.toggle("active");
+        });
+
+        options.forEach(option => {
+
+            option.addEventListener("click", () => {
+
+                options.forEach(o => o.classList.remove("active"));
+
+                option.classList.add("active");
+
+                hiddenInput.value = option.dataset.value;
+
+                selectedText.textContent = option.textContent;
+
+                reviewSelect.classList.remove("active");
+
+            });
+
+        });
+
+        document.addEventListener("click", e => {
+
+            if (!reviewSelect.contains(e.target)) {
+                reviewSelect.classList.remove("active");
+            }
+
+        });
+
+    }
+}
+
+function shopFilter() {
+    document.addEventListener("DOMContentLoaded", function () {
+        const filterForm = document.getElementById("shop-filter-form");
+
+        if (filterForm) {
+            const autoSubmitFields = filterForm.querySelectorAll(
+                ".auto-submit-filter"
+            );
+
+            let filterSubmitting = false;
+
+            autoSubmitFields.forEach(function (field) {
+                field.addEventListener("change", function () {
+                    if (filterSubmitting) {
+                        return;
+                    }
+
+                    filterSubmitting = true;
+                    filterForm.submit();
+                });
+            });
+        }
+
+        const sortForm = document.getElementById("sort-form");
+        const sortTrigger = document.getElementById("sort-trigger");
+        const sortOptionsContainer =
+            document.getElementById("sort-options");
+        const sortValueInput = document.getElementById("sort-value");
+        const sortLabel = document.getElementById("sort-label");
+
+        if (
+            !sortForm ||
+            !sortTrigger ||
+            !sortOptionsContainer ||
+            !sortValueInput ||
+            !sortLabel
+        ) {
+            return;
+        }
+
+        const sortOptions =
+            sortOptionsContainer.querySelectorAll(".sort-option");
+
+        function openSortDropdown() {
+            sortOptionsContainer.classList.add("active");
+            sortTrigger.classList.add("active");
+            sortTrigger.setAttribute("aria-expanded", "true");
+        }
+
+        function closeSortDropdown() {
+            sortOptionsContainer.classList.remove("active");
+            sortTrigger.classList.remove("active");
+            sortTrigger.setAttribute("aria-expanded", "false");
+        }
+
+        function toggleSortDropdown() {
+            if (sortOptionsContainer.classList.contains("active")) {
+                closeSortDropdown();
+            } else {
+                openSortDropdown();
+            }
+        }
+
+        function selectSortOption(option) {
+            const value = option.dataset.value || "";
+            const label = option.textContent.trim();
+
+            sortValueInput.value = value;
+            sortLabel.textContent = label;
+
+            sortOptions.forEach(function (item) {
+                const isSelected = item === option;
+
+                item.classList.toggle("active", isSelected);
+                item.setAttribute(
+                    "aria-selected",
+                    isSelected ? "true" : "false"
+                );
+            });
+
+            closeSortDropdown();
+            sortForm.submit();
+        }
+
+        sortTrigger.addEventListener("click", function () {
+            toggleSortDropdown();
+        });
+
+        sortOptions.forEach(function (option) {
+            option.addEventListener("click", function () {
+                selectSortOption(option);
+            });
+
+            option.addEventListener("keydown", function (event) {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    selectSortOption(option);
+                }
+            });
+        });
+
+        document.addEventListener("click", function (event) {
+            if (!sortForm.contains(event.target)) {
+                closeSortDropdown();
+            }
+        });
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                closeSortDropdown();
+            }
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const dropdowns = document.querySelectorAll(
+        "[data-filter-dropdown]"
+    );
+
+    dropdowns.forEach((dropdown) => {
+        const trigger = dropdown.querySelector(
+            "[data-filter-trigger]"
+        );
+
+        const optionsWrapper = dropdown.querySelector(
+            "[data-filter-options]"
+        );
+
+        const options = dropdown.querySelectorAll(
+            "[data-value]"
+        );
+
+        const input = dropdown.querySelector(
+            "[data-filter-input]"
+        );
+
+        const label = dropdown.querySelector(
+            "[data-filter-label]"
+        );
+
+        if (
+            !trigger ||
+            !optionsWrapper ||
+            !input ||
+            !label
+        ) {
+            return;
+        }
+
+        function openDropdown() {
+            dropdown.classList.add("active");
+            trigger.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+        }
+
+        function closeDropdown() {
+            dropdown.classList.remove("active");
+            trigger.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+
+        function toggleDropdown() {
+            if (dropdown.classList.contains("active")) {
+                closeDropdown();
+            } else {
+                closeDropdowns(dropdown);
+                openDropdown();
+            }
+        }
+
+        function selectOption(option) {
+            const value = option.dataset.value;
+            const optionLabel =
+                option.dataset.label
+                || option.textContent.trim();
+
+            input.value = value;
+            label.textContent = optionLabel;
+
+            options.forEach((item) => {
+                const isSelected = item === option;
+
+                item.classList.toggle(
+                    "active",
+                    isSelected
+                );
+
+                item.setAttribute(
+                    "aria-selected",
+                    isSelected
+                        ? "true"
+                        : "false"
+                );
+            });
+
+            closeDropdown();
+
+            input.dispatchEvent(
+                new Event("change", {
+                    bubbles: true
+                })
+            );
+
+            const form = dropdown.closest("form");
+
+            if (form) {
+                form.requestSubmit();
+            }
+        }
+
+        trigger.addEventListener(
+            "click",
+            toggleDropdown
+        );
+
+        options.forEach((option) => {
+            option.addEventListener("click", () => {
+                selectOption(option);
+            });
+
+            option.addEventListener(
+                "keydown",
+                (event) => {
+                    if (
+                        event.key === "Enter"
+                        || event.key === " "
+                    ) {
+                        event.preventDefault();
+                        selectOption(option);
+                    }
+                }
+            );
+        });
+    });
+
+    function closeDropdowns(exception = null) {
+        document
+            .querySelectorAll(
+                "[data-filter-dropdown].active"
+            )
+            .forEach((dropdown) => {
+                if (dropdown === exception) {
+                    return;
+                }
+
+                dropdown.classList.remove("active");
+
+                const trigger = dropdown.querySelector(
+                    "[data-filter-trigger]"
+                );
+
+                trigger?.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+            });
+    }
+
+    document.addEventListener("click", (event) => {
+        if (
+            !event.target.closest(
+                "[data-filter-dropdown]"
+            )
+        ) {
+            closeDropdowns();
+        }
+    });
+
+    document.addEventListener(
+        "keydown",
+        (event) => {
+            if (event.key === "Escape") {
+                closeDropdowns();
+            }
+        }
+    );
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const multiSelects = document.querySelectorAll(
+        "[data-multi-select]"
+    );
+
+    function closeAllMultiSelects(exception = null) {
+        multiSelects.forEach((multiSelect) => {
+            if (multiSelect === exception) {
+                return;
+            }
+
+            multiSelect.classList.remove("active");
+
+            const trigger = multiSelect.querySelector(
+                "[data-multi-select-trigger]"
+            );
+
+            trigger?.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        });
+    }
+
+    multiSelects.forEach((multiSelect) => {
+        const trigger = multiSelect.querySelector(
+            "[data-multi-select-trigger]"
+        );
+
+        const label = multiSelect.querySelector(
+            "[data-multi-select-label]"
+        );
+
+        const searchInput = multiSelect.querySelector(
+            "[data-multi-select-search]"
+        );
+
+        const optionElements = Array.from(
+            multiSelect.querySelectorAll(
+                ".filter-select-option"
+            )
+        );
+
+        const checkboxes = Array.from(
+            multiSelect.querySelectorAll(
+                "[data-multi-select-checkbox]"
+            )
+        );
+
+        const selectAllButton = multiSelect.querySelector(
+            "[data-select-all]"
+        );
+
+        const clearAllButton = multiSelect.querySelector(
+            "[data-clear-all]"
+        );
+
+        const emptyMessage = multiSelect.querySelector(
+            "[data-multi-select-empty]"
+        );
+
+        if (!trigger || !label) {
+            return;
+        }
+
+        const defaultLabel =
+            label.textContent.trim().includes("selected")
+                ? null
+                : label.textContent.trim();
+
+        function updateLabel() {
+            const checkedItems = checkboxes.filter(
+                (checkbox) => checkbox.checked
+            );
+
+            if (!checkedItems.length) {
+                label.textContent =
+                    defaultLabel || "Select options";
+
+                return;
+            }
+
+            if (checkedItems.length === 1) {
+                const selectedOption =
+                    checkedItems[0].closest(
+                        ".filter-select-option"
+                    );
+
+                const selectedLabel =
+                    selectedOption?.querySelector(
+                        ".filter-option-label"
+                    );
+
+                label.textContent =
+                    selectedLabel?.textContent.trim()
+                    || "1 selected";
+
+                return;
+            }
+
+            label.textContent =
+                `${checkedItems.length} selected`;
+        }
+
+        function filterOptions() {
+            if (!searchInput) {
+                return;
+            }
+
+            const searchValue =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+            let visibleCount = 0;
+
+            optionElements.forEach((option) => {
+                const optionText =
+                    option.dataset.searchText
+                    || option.textContent
+                        .trim()
+                        .toLowerCase();
+
+                const matches =
+                    optionText.includes(searchValue);
+
+                option.hidden = !matches;
+
+                if (matches) {
+                    visibleCount++;
+                }
+            });
+
+            if (emptyMessage) {
+                emptyMessage.hidden =
+                    visibleCount !== 0;
+            }
+        }
+
+        function openDropdown() {
+            closeAllMultiSelects(multiSelect);
+
+            multiSelect.classList.add("active");
+
+            trigger.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+            window.setTimeout(() => {
+                searchInput?.focus();
+            }, 50);
+        }
+
+        function closeDropdown() {
+            multiSelect.classList.remove("active");
+
+            trigger.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+
+        trigger.addEventListener("click", () => {
+            if (
+                multiSelect.classList.contains("active")
+            ) {
+                closeDropdown();
+            } else {
+                openDropdown();
+            }
+        });
+
+        checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener(
+                "change",
+                updateLabel
+            );
+        });
+
+        searchInput?.addEventListener(
+            "input",
+            filterOptions
+        );
+
+        selectAllButton?.addEventListener(
+            "click",
+            () => {
+                optionElements.forEach((option) => {
+                    if (option.hidden) {
+                        return;
+                    }
+
+                    const checkbox = option.querySelector(
+                        "[data-multi-select-checkbox]"
+                    );
+
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+
+                updateLabel();
+            }
+        );
+
+        clearAllButton?.addEventListener(
+            "click",
+            () => {
+                checkboxes.forEach((checkbox) => {
+                    checkbox.checked = false;
+                });
+
+                updateLabel();
+            }
+        );
+    });
+
+    document.addEventListener("click", (event) => {
+        if (
+            !event.target.closest(
+                "[data-multi-select]"
+            )
+        ) {
+            closeAllMultiSelects();
+        }
+    });
+
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            closeAllMultiSelects();
+        }
+    });
 });

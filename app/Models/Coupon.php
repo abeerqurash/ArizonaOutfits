@@ -12,9 +12,17 @@ class Coupon extends Model
         'value',
         'minimum_order_amount',
         'usage_limit',
-        'used_count',
         'start_date',
         'end_date',
         'status',
+    ];
+
+    protected $casts = [
+        'value' => 'decimal:2',
+        'minimum_order_amount' => 'decimal:2',
+        'usage_limit' => 'integer',
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'status' => 'boolean',
     ];
 }

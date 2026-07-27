@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class ProductOptionController extends Controller
+class ProductOptionController extends AdminController
 {
     public function store(Request $request): JsonResponse
     {
@@ -39,7 +39,8 @@ class ProductOptionController extends Controller
         return response()->json([
             'success' => true,
 
-            'message' => 'Attribute created successfully.',
+            'message' =>
+                'Attribute created successfully.',
 
             'option' => [
                 'id' => $option->id,
@@ -73,17 +74,13 @@ class ProductOptionController extends Controller
             ],
         ]);
 
-        $valueText = !empty($validated['value'])
-            ? $validated['value']
-            : strtolower(
-                preg_replace(
-                    '/[^a-zA-Z0-9]+/',
-                    '-',
-                    trim($validated['label'])
-                )
-            );
-
-        $valueText = trim($valueText, '-');
+        $valueText = filled(
+            $validated['value'] ?? null
+        )
+            ? trim((string) $validated['value'])
+            : str((string) $validated['label'])
+                ->slug()
+                ->toString();
 
         $duplicateExists = $productOption
             ->values()

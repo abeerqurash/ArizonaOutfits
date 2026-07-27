@@ -11,12 +11,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Throwable;
 
-class ProductController extends Controller
+class ProductController extends AdminController
 {
     /**
      * Display all products.
@@ -66,64 +65,6 @@ class ProductController extends Controller
         );
     }
 
-    /**
-     * Show the create product form.
-     */
-
-    public function show(string $slug)
-    {
-        $product = Product::with([
-            'categories',
-            'tags',
-            'options.values',
-            'optionValues.option',
-            'variants',
-            'images',
-            'reviews',
-        ])
-            ->where('slug', $slug)
-            ->where('status', 'active')
-            ->firstOrFail();
-
-        $product->increment('views_count');
-
-        $categoryIds = $product->categories
-            ->pluck('id');
-
-        $relatedProducts = Product::with([
-            'categories',
-            'images',
-        ])
-            ->where('status', 'active')
-            ->where('id', '!=', $product->id)
-            ->when(
-                $categoryIds->isNotEmpty(),
-                function ($query) use ($categoryIds) {
-                    $query->whereHas(
-                        'categories',
-                        function ($categoryQuery) use (
-                            $categoryIds
-                        ) {
-                            $categoryQuery->whereIn(
-                                'product_categories.id',
-                                $categoryIds
-                            );
-                        }
-                    );
-                }
-            )
-            ->latest()
-            ->limit(4)
-            ->get();
-
-        return view(
-            'products.show',
-            compact(
-                'product',
-                'relatedProducts'
-            )
-        );
-    }
     public function create(): View
     {
         $categories = ProductCategory::query()

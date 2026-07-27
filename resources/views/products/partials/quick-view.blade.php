@@ -1,121 +1,318 @@
 @php
-    $getPopupImageUrl = function ($path) {
-        if (empty($path)) {
-            return asset(
-                'asset/images/no-image.jpg'
-            );
-        }
+/*
+|--------------------------------------------------------------------------
+| Image URL helper
+|--------------------------------------------------------------------------
+*/
 
-        $path = str_replace('\\', '/', $path);
-        $path = ltrim($path, '/');
+$getPopupImageUrl = function ($path) {
+if (empty($path)) {
+return asset('asset/images/no-image.jpg');
+}
 
-        if (
-            str_starts_with($path, 'http://')
-            || str_starts_with($path, 'https://')
-        ) {
-            return $path;
-        }
+$path = str_replace('\\', '/', $path);
+$path = ltrim($path, '/');
 
-        if (
-            str_starts_with($path, 'storage/')
-            || str_starts_with($path, 'asset/')
-            || str_starts_with($path, 'assets/')
-            || str_starts_with($path, 'images/')
-            || str_starts_with($path, 'uploads/')
-        ) {
-            return asset($path);
-        }
+if (
+str_starts_with($path, 'http://')
+|| str_starts_with($path, 'https://')
+) {
+return $path;
+}
 
-        if (file_exists(public_path($path))) {
-            return asset($path);
-        }
+if (
+str_starts_with($path, 'storage/')
+|| str_starts_with($path, 'asset/')
+|| str_starts_with($path, 'assets/')
+|| str_starts_with($path, 'images/')
+|| str_starts_with($path, 'uploads/')
+) {
+return asset($path);
+}
 
-        return asset('storage/' . $path);
-    };
+if (file_exists(public_path($path))) {
+return asset($path);
+}
 
-    $mainPopupImage =
-        $getPopupImageUrl(
-            $product->featured_image
-        );
+return asset('storage/' . $path);
+};
 
-    $popupImages = collect();
+/*
+|--------------------------------------------------------------------------
+| Product images
+|--------------------------------------------------------------------------
+*/
 
-    $popupImages->push($mainPopupImage);
+$mainPopupImage = $getPopupImageUrl(
+$product->featured_image
+);
 
-    foreach ($product->images as $image) {
-        if (!empty($image->image)) {
-            $imageUrl = $getPopupImageUrl(
-                $image->image
-            );
+$popupImages = collect([$mainPopupImage]);
 
-            if (!$popupImages->contains($imageUrl)) {
-                $popupImages->push($imageUrl);
-            }
-        }
+foreach ($product->images as $image) {
+if (empty($image->image)) {
+continue;
+}
+
+$imageUrl = $getPopupImageUrl(
+$image->image
+);
+
+if (!$popupImages->contains($imageUrl)) {
+$popupImages->push($imageUrl);
+}
+}
+
+foreach ($product->variants as $variant) {
+if (empty($variant->image)) {
+continue;
+}
+
+$variantImageUrl = $getPopupImageUrl(
+$variant->image
+);
+
+if (!$popupImages->contains($variantImageUrl)) {
+$popupImages->push($variantImageUrl);
+}
+}
+
+/*
+|--------------------------------------------------------------------------
+| Product pricing and stock
+|--------------------------------------------------------------------------
+*/
+
+$regularPrice = (float) (
+$product->regular_price ?: 0
+);
+
+$salePrice = $product->sale_price !== null
+? (float) $product->sale_price
+: null;
+
+$hasSale =
+$salePrice !== null
+&& $salePrice < $regularPrice;
+
+    $stock=(int) (
+    $product->stock ?: 0
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | Product options
+    |--------------------------------------------------------------------------
+    */
+
+    $productOptions = $product->options ?: collect();
+    $productOptionValues = $product->optionValues ?: collect();
+    $productVariants = $product->variants ?: collect();
+
+    $groupedOptionValues = $productOptionValues->groupBy(
+    'product_option_id'
+    );
+
+    /*
+    |--------------------------------------------------------------------------
+    | Prepare variants for JavaScript
+    |--------------------------------------------------------------------------
+    */
+
+    $variantsData = [];
+
+    foreach ($productVariants as $variant) {
+    $variantOptions = $variant->options;
+
+    /*
+    * ProductVariant already casts options as an array, but this
+    * protects older records containing JSON strings.
+    */
+    if (is_string($variantOptions)) {
+    $decodedOptions = json_decode(
+    $variantOptions,
+    true
+    );
+
+    if (
+    json_last_error() === JSON_ERROR_NONE
+    && is_array($decodedOptions)
+    ) {
+    $variantOptions = $decodedOptions;
+    } else {
+    $variantOptions = [];
+    }
     }
 
-    foreach ($product->variants as $variant) {
-        if (!empty($variant->image)) {
-            $variantImageUrl =
-                $getPopupImageUrl(
-                    $variant->image
-                );
+    if (!is_array($variantOptions)) {
+    $variantOptions = [];
+    }
+
+    $cleanVariantOptions = [];
+
+    /*
+    * Supported structure:
+    *
+    * [
+    * [
+    * "option_id" => 1,
+    * "option_name" => "Color",
+    * "value_id" => 5,
+    * "value_label" => "Black"
+    * ]
+    * ]
+    */
+    foreach ($variantOptions as $key => $variantOption) {
+    if (is_array($variantOption)) {
+    $optionId =
+    $variantOption['option_id']
+    ?? $variantOption['product_option_id']
+    ?? null;
+
+    $valueId =
+    $variantOption['value_id']
+    ?? $variantOption['option_value_id']
+    ?? $variantOption['product_option_value_id']
+    ?? null;
+
+    if (
+    $optionId !== null
+    && $valueId !== null
+    ) {
+    $cleanVariantOptions[] = [
+    'option_id' => (string) $optionId,
+
+    'option_name' => (string) (
+    $variantOption['option_name']
+    ?? ''
+    ),
+
+    'value_id' => (string) $valueId,
+
+    'value_label' => (string) (
+    $variantOption['value_label']
+    ?? $variantOption['label']
+    ?? ''
+    ),
+    ];
+    }
+
+    continue;
+    }
+
+    /*
+    * Supported associative structure:
+    *
+    * {
+    * "1": "5",
+    * "2": "9"
+    * }
+    */
+    if (
+    $key !== ''
+    && $variantOption !== ''
+    && $variantOption !== null
+    ) {
+    $cleanVariantOptions[] = [
+    'option_id' => (string) $key,
+    'option_name' => '',
+    'value_id' => (string) $variantOption,
+    'value_label' => '',
+    ];
+    }
+    }
+
+    $variantRegularPrice =
+    $variant->regular_price !== null
+    ? (float) $variant->regular_price
+    : $regularPrice;
+
+    $variantSalePrice =
+    $variant->sale_price !== null
+    ? (float) $variant->sale_price
+    : null;
+
+    $variantImageUrl = null;
+
+    if (!empty($variant->image)) {
+    $variantImageUrl = $getPopupImageUrl(
+    $variant->image
+    );
+    }
+
+    $variantsData[] = [
+    'id' => (string) $variant->id,
+
+    'sku' => $variant->sku
+    ?: $product->sku
+    ?: 'N/A',
+
+    'regular_price' => $variantRegularPrice,
+
+    'sale_price' => $variantSalePrice,
+
+    'stock' => (int) (
+    $variant->stock ?: 0
+    ),
+
+    'image' => $variantImageUrl,
+
+    'options' => $cleanVariantOptions,
+    ];
+    }
+
+    $hasVariants = count($variantsData) > 0;
+    @endphp
+
+    <div
+        class="quick-view-product"
+        data-product-container>
+        <div class="quick-view-images">
+            @php
+            $regularPrice = $product->regular_price;
+            $salePrice = $product->sale_price;
 
             if (
-                !$popupImages->contains(
-                    $variantImageUrl
-                )
+            $product->variants->isNotEmpty()
+            && $product->variants->first()->regular_price
             ) {
-                $popupImages->push(
-                    $variantImageUrl
-                );
+            $regularPrice = $product->variants->min('regular_price');
+            $salePrice = $product->variants->min('sale_price');
             }
-        }
-    }
 
-    $regularPrice = (float) (
-        $product->regular_price ?: 0
-    );
+            $hasDiscount = $salePrice
+            && $regularPrice
+            && $salePrice < $regularPrice;
 
-    $salePrice =
-        $product->sale_price !== null
-            ? (float) $product->sale_price
-            : null;
+                $discountPercentage=$hasDiscount
+                ? round((($regularPrice - $salePrice) / $regularPrice) * 100)
+                : 0;
 
-    $hasSale =
-        $salePrice !== null
-        && $salePrice < $regularPrice;
+                $inStock=($product->stock ?? 0) > 0 ||
+                $product->variants->contains(function ($variant) {
+                return $variant->stock > 0;
+                });
+                @endphp
+                <div class="quick-view-main-image-wrapper">
+                    @if($hasDiscount)
+                    <div class="card-discount-badge-quick-view fs-12 text-uppercase letter-space-4px">
+                        -{{ $discountPercentage }}%
+                    </div>
+                    @endif
 
-    $stock = (int) (
-        $product->stock ?: 0
-    );
+                    <img
+                        id="quick-view-main-image"
+                        src="{{ $mainPopupImage }}"
+                        alt="{{ $product->title }}"
+                        class="quick-view-main-image">
 
-    $groupedOptionValues =
-        $product->optionValues->groupBy(
-            'product_option_id'
-        );
-@endphp
+                </div>
 
-<div class="quick-view-product">
+                @if ($popupImages->count() > 1)
 
-    <div class="quick-view-images">
+                <div class="quick-view-gallery">
 
-        <div class="quick-view-main-image-wrapper">
-
-            <img
-                id="quick-view-main-image"
-                src="{{ $mainPopupImage }}"
-                alt="{{ $product->title }}"
-                class="quick-view-main-image"
-            >
-
-        </div>
-
-        @if ($popupImages->count() > 1)
-
-            <div class="quick-view-gallery">
-
-                @foreach ($popupImages as $popupImage)
+                    @foreach ($popupImages as $popupImage)
 
                     <button
                         type="button"
@@ -125,242 +322,358 @@
                                 : ''
                         }}"
                         data-popup-image="{{ $popupImage }}"
-                    >
+                        aria-label="View product image">
                         <img
                             src="{{ $popupImage }}"
                             loading="lazy"
                             decoding="async"
-                            alt="{{ $product->title }}"
-                        >
+                            alt="{{ $product->title }}">
                     </button>
 
-                @endforeach
+                    @endforeach
 
-            </div>
+                </div>
 
-        @endif
-
-    </div>
-
-    <div class="quick-view-information">
-
-        <h2
-            id="quick-view-product-title"
-            class="quick-view-title"
-        >
-            {{ $product->title }}
-        </h2>
-
-        <div class="quick-view-price">
-
-            @if ($hasSale)
-
-                <del>
-                    ${{ number_format(
-                        $regularPrice,
-                        2
-                    ) }}
-                </del>
-
-                <strong>
-                    ${{ number_format(
-                        $salePrice,
-                        2
-                    ) }}
-                </strong>
-
-            @else
-
-                <strong>
-                    ${{ number_format(
-                        $regularPrice,
-                        2
-                    ) }}
-                </strong>
-
-            @endif
+                @endif
 
         </div>
 
-        <div
-            class="quick-view-stock {{
+        <div class="quick-view-information">
+
+
+            <div class="product-status-row">
+
+                <span
+                    id="product-stock-badge"
+                    class="fs-12 text-uppercase letter-space-4px product-stock-badge {{ $inStock ? 'in-stock-quick-view' : 'out-of-stock-quick-view' }}">
+                    {{ $inStock ? 'In Stock' : 'Out of Stock' }}
+                </span>
+
+                @if($hasDiscount)
+                <span class="product-save-badge-quick-view fs-12 text-uppercase letter-space-4px">
+                    Save {{ $discountPercentage }}%
+                </span>
+                @endif
+
+            </div>
+
+
+            <h2
+                id="quick-view-product-title"
+                class="quick-view-title fs-24 text-color-dark text-capitalize">
+                {{ $product->title }}
+            </h2>
+
+            <div
+                class="quick-view-price fs-16 text-uppercase letter-space-4px">
+                @if ($hasSale)
+
+                <del
+                    class="product-regular-price"
+                    data-regular-price>
+                    ${{ number_format($regularPrice, 2) }}
+                </del>
+
+                <strong
+                    class="current-product-price product-sale-price"
+                    data-product-price>
+                    ${{ number_format($salePrice, 2) }}
+                </strong>
+
+                @else
+
+                <del
+                    class="product-regular-price d-none"
+                    data-regular-price
+                    hidden>
+                    ${{ number_format($regularPrice, 2) }}
+                </del>
+
+                <strong
+                    class="current-product-price product-sale-price"
+                    data-product-price>
+                    ${{ number_format($regularPrice, 2) }}
+                </strong>
+
+                @endif
+            </div>
+
+            <div
+                class="quick-view-stock fs-12 text-uppercase letter-space-4px {{
                 $stock > 0
                     ? 'in-stock'
                     : 'out-of-stock'
-            }}"
-        >
-            @if ($stock > 0)
+            }}">
+                @if ($hasVariants)
+
+                Select product options
+
+                @elseif ($stock > 0)
 
                 {{ $stock }} available in stock
 
-            @else
+                @else
 
                 Out of stock
 
-            @endif
-        </div>
+                @endif
+            </div>
 
-        @if (!empty($product->short_description))
+            @if (!empty($product->short_description))
 
-            <div class="quick-view-short-description">
+            <div
+                class="quick-view-short-description text-color-body fs-16">
                 {!! nl2br(
-                    e($product->short_description)
+                e($product->short_description)
                 ) !!}
             </div>
 
-        @endif
+            @endif
 
-        @if (
-            $product->options->isNotEmpty()
-            && $product->optionValues->isNotEmpty()
-        )
+            {{--
+        |--------------------------------------------------------------------------
+        | Everything submitted to cart must remain inside this form
+        |--------------------------------------------------------------------------
+        --}}
 
-            <div class="quick-view-options">
+            <form
+                action="{{ route('cart.add') }}"
+                method="POST"
+                class="quick-view-cart-form product-form"
+                data-product-form
+                data-currency-symbol="$">
+                @csrf
 
-                @foreach ($product->options as $option)
+                <input
+                    type="hidden"
+                    name="product_id"
+                    value="{{ $product->id }}">
+
+                <input
+                    type="hidden"
+                    name="variant_id"
+                    value=""
+                    data-selected-variant>
+
+                @if (
+                $productOptions->isNotEmpty()
+                && $productOptionValues->isNotEmpty()
+                )
+
+                <div class="quick-view-options mb-20px">
+
+                    @foreach ($productOptions as $option)
 
                     @php
-                        $optionValues =
-                            $groupedOptionValues->get(
-                                $option->id,
-                                collect()
-                            );
+                    $optionValues =
+                    $groupedOptionValues->get(
+                    $option->id,
+                    collect()
+                    );
                     @endphp
 
                     @if ($optionValues->isNotEmpty())
 
-                        <div class="quick-view-option-group">
+                    <div
+                        class="quick-view-option-group product-option-group mb-20px"
+                        data-option-id="{{ $option->id }}">
+                        <div class="quick-view-option-heading justify-content-between d-flex mb-10px">
 
-                            <strong>
+                            <strong
+                                class="fs-16 text-uppercase letter-space-4px">
                                 {{ $option->name }}
                             </strong>
 
-                            <div class="quick-view-option-values">
-
-                                @foreach (
-                                    $optionValues
-                                    as $optionValue
-                                )
-
-                                    @php
-                                        $valueLabel =
-                                            $optionValue->label
-                                            ?: $optionValue->value;
-                                    @endphp
-
-                                    <button
-                                        type="button"
-                                        class="quick-view-option-value"
-                                        data-option-id="{{ $option->id }}"
-                                        data-value-id="{{ $optionValue->id }}"
-                                    >
-
-                                        @if (
-                                            !empty(
-                                                $optionValue->color_code
-                                            )
-                                        )
-
-                                            <span
-                                                class="quick-view-option-color"
-                                                style="background-color: {{ $optionValue->color_code }};"
-                                            ></span>
-
-                                        @endif
-
-                                        {{ $valueLabel }}
-
-                                    </button>
-
-                                @endforeach
-
-                            </div>
+                            <span
+                                class="selected-option-value fs-16 text-uppercase letter-space-4px"
+                                data-option-id="{{ $option->id }}"
+                                data-selected-option="{{ $option->id }}">
+                                Choose {{ $option->name }}
+                            </span>
 
                         </div>
 
+                        {{--
+                                    This select is essential because it sends
+                                    product_options to Laravel.
+                                --}}
+                        <select
+                            id="product-option-{{ $option->id }}"
+                            name="product_options[{{ $option->id }}]"
+                            class="product-option-select hidden-product-option-select"
+                            data-option-id="{{ $option->id }}"
+                            aria-label="Choose {{ $option->name }}"
+                            required>
+                            <option value="">
+                                Choose {{ $option->name }}
+                            </option>
+
+                            @foreach ($optionValues as $optionValue)
+
+                            @php
+                            $valueLabel =
+                            $optionValue->label
+                            ?: $optionValue->value;
+                            @endphp
+
+                            <option
+                                value="{{ $optionValue->id }}"
+                                data-label="{{ $valueLabel }}">
+                                {{ $valueLabel }}
+                            </option>
+
+                            @endforeach
+
+                        </select>
+
+                        <div
+                            class="quick-view-option-values product-option-values "
+                            role="group"
+                            aria-label="{{ $option->name }}">
+                            @foreach ($optionValues as $optionValue)
+
+                            @php
+                            $valueLabel =
+                            $optionValue->label
+                            ?: $optionValue->value;
+                            @endphp
+
+                            <button
+                                type="button"
+                                class="quick-view-option-value option-value-button btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                                data-option-id="{{ $option->id }}"
+                                data-value-id="{{ $optionValue->id }}"
+                                data-label="{{ $valueLabel }}"
+                                aria-pressed="false">
+                                @if (
+                                !empty(
+                                $optionValue->color_code
+                                )
+                                )
+
+                                <span
+                                    class="quick-view-option-color"
+                                    style="background-color: {{ $optionValue->color_code }};"
+                                    aria-hidden="true"></span>
+
+                                @endif
+
+                                <span>
+                                    <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">{{ $valueLabel }}</div>
+
+                                </span>
+
+                            </button>
+
+                            @endforeach
+                        </div>
+
+                        <div
+                            class="product-option-error"
+                            data-option-error="{{ $option->id }}"
+                            aria-live="polite"
+                            hidden></div>
+
+                    </div>
+
                     @endif
 
-                @endforeach
+                    @endforeach
 
-            </div>
+                </div>
 
-        @endif
+                @endif
 
-        <form
-            action="{{ route('cart.add') }}"
-            method="POST"
-            class="quick-view-cart-form"
-        >
-            @csrf
+                @if ($hasVariants)
 
-            <input
-                type="hidden"
-                name="product_id"
-                value="{{ $product->id }}"
-            >
+                <div
+                    class="variant-message"
+                    data-variant-message
+                    aria-live="polite">
+                    Please select one value from every option.
+                </div>
 
-            <input
-                type="hidden"
-                name="quantity"
-                value="1"
-            >
+                @endif
 
-            <button
-                type="submit"
-                class="quick-view-cart-button"
-                {{ $stock < 1
-                    ? 'disabled'
-                    : '' }}
-            >
-                {{ $stock > 0
-                    ? 'Add To Cart'
-                    : 'Out of Stock' }}
-            </button>
+                <input
+                    type="hidden"
+                    name="quantity"
+                    value="1">
 
-        </form>
+                <button
+                    type="submit"
+                    class="quick-view-cart-button add-to-cart-button btn-style-2 fs-12 text-color-white justify-self-start"
+                    data-add-to-cart
+                    @disabled(
+                    $hasVariants
+                    || (!$hasVariants && $stock < 1)
+                    )>
+                    <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">@if ($hasVariants)
 
-        <a
-            href="{{ route(
+                        Select Options
+
+                        @elseif ($stock < 1)
+
+                            Out of Stock
+
+                            @else
+
+                            Add To Cart
+
+                            @endif</div>
+
+                </button>
+
+                <script
+                    type="application/json"
+                    data-product-variants>
+                    @json($variantsData)
+                </script>
+
+            </form>
+
+            <a
+                href="{{ route(
                 'products.show',
                 $product->slug
             ) }}"
-            class="quick-view-details-link"
-        >
-            View Complete Product Details
-        </a>
+                class="quick-view-details-link fs-12 text-uppercase letter-space-4px">
+                View Complete Product Details
+            </a>
 
-        @if (!empty($product->long_description))
+            @if (!empty($product->long_description))
 
             <div class="quick-view-description">
 
-                <h3>
+                <h3 class="fs-24 text-capitalize">
                     Product Details
                 </h3>
 
-                <div>
+                <div class="text-color-body fs-16">
                     {!! $product->long_description !!}
                 </div>
 
             </div>
 
-        @endif
+            @endif
 
-        @if (!empty($product->additional_info))
+            @if (!empty($product->additional_info))
 
             <div class="quick-view-description">
 
-                <h3>
+                <h3 class="fs-24 text-capitalize">
                     Additional Information
                 </h3>
 
-                <div>
+                <div class="text-color-body fs-16">
                     {!! $product->additional_info !!}
                 </div>
 
             </div>
 
-        @endif
+            @endif
 
+        </div>
     </div>
 
-</div>
+   
