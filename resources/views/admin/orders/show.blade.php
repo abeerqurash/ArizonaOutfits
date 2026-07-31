@@ -4,346 +4,346 @@
 
 @section('content')
 @php
-    /*
-    |--------------------------------------------------------------------------
-    | Order values
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| Order values
+|--------------------------------------------------------------------------
+*/
 
-    $orderNumber =
-        $order->order_number
-        ?? $order->invoice_number
-        ?? ('ORD-' . str_pad((string) $order->id, 6, '0', STR_PAD_LEFT));
+$orderNumber =
+$order->order_number
+?? $order->invoice_number
+?? ('ORD-' . str_pad((string) $order->id, 6, '0', STR_PAD_LEFT));
 
-    $orderStatus = strtolower(
-        $order->status
-        ?? $order->order_status
-        ?? 'pending'
-    );
+$orderStatus = strtolower(
+$order->status
+?? $order->order_status
+?? 'pending'
+);
 
-    $paymentStatus = strtolower(
-        $order->payment_status
-        ?? 'pending'
-    );
+$paymentStatus = strtolower(
+$order->payment_status
+?? 'pending'
+);
 
-    $customerName =
-        $order->customer_name
-        ?? trim(
-            ($order->billing_first_name ?? '')
-            . ' '
-            . ($order->billing_last_name ?? '')
-        )
-        ?: $order->user?->name
-        ?: 'Guest customer';
+$customerName =
+$order->customer_name
+?? trim(
+($order->billing_first_name ?? '')
+. ' '
+. ($order->billing_last_name ?? '')
+)
+?: $order->user?->name
+?: 'Guest customer';
 
-    $customerEmail =
-        $order->customer_email
-        ?? $order->billing_email
-        ?? $order->email
-        ?? $order->user?->email;
+$customerEmail =
+$order->customer_email
+?? $order->billing_email
+?? $order->email
+?? $order->user?->email;
 
-    $customerPhone =
-        $order->customer_phone
-        ?? $order->billing_phone
-        ?? $order->phone;
+$customerPhone =
+$order->customer_phone
+?? $order->billing_phone
+?? $order->phone;
 
-    $currencyCode = strtoupper(
-        $order->currency
-        ?? $order->currency_code
-        ?? 'PKR'
-    );
+$currencyCode = strtoupper(
+$order->currency
+?? $order->currency_code
+?? 'PKR'
+);
 
-    $currencySymbols = [
-        'PKR' => 'Rs ',
-        'USD' => '$',
-        'GBP' => '£',
-        'EUR' => '€',
-        'AED' => 'AED ',
-        'SAR' => 'SAR ',
-        'CAD' => 'CA$',
-        'AUD' => 'A$',
-    ];
+$currencySymbols = [
+'PKR' => 'Rs ',
+'USD' => '$',
+'GBP' => '£',
+'EUR' => '€',
+'AED' => 'AED ',
+'SAR' => 'SAR ',
+'CAD' => 'CA$',
+'AUD' => 'A$',
+];
 
-    $currencySymbol =
-        $currencySymbols[$currencyCode]
-        ?? ($currencyCode . ' ');
+$currencySymbol =
+$currencySymbols[$currencyCode]
+?? ($currencyCode . ' ');
 
-    $money = function ($amount) use ($currencySymbol) {
-        return $currencySymbol . number_format((float) $amount, 2);
-    };
+$money = function ($amount) use ($currencySymbol) {
+return $currencySymbol . number_format((float) $amount, 2);
+};
 
-    $subtotal = (float) (
-        $order->subtotal
-        ?? $order->sub_total
-        ?? $order->items->sum(
-            fn ($item) => (float) $item->subtotal
-        )
-    );
+$subtotal = (float) (
+$order->subtotal
+?? $order->sub_total
+?? $order->items->sum(
+fn ($item) => (float) $item->subtotal
+)
+);
 
-    $discount = (float) (
-        $order->discount
-        ?? $order->discount_amount
-        ?? 0
-    );
+$discount = (float) (
+$order->discount
+?? $order->discount_amount
+?? 0
+);
 
-    $shipping = (float) (
-        $order->shipping
-        ?? $order->shipping_amount
-        ?? $order->shipping_cost
-        ?? 0
-    );
+$shipping = (float) (
+$order->shipping
+?? $order->shipping_amount
+?? $order->shipping_cost
+?? 0
+);
 
-    $tax = (float) (
-        $order->tax
-        ?? $order->tax_amount
-        ?? 0
-    );
+$tax = (float) (
+$order->tax
+?? $order->tax_amount
+?? 0
+);
 
-    $grandTotal = (float) (
-        $order->total
-        ?? $order->grand_total
-        ?? ($subtotal - $discount + $shipping + $tax)
-    );
+$grandTotal = (float) (
+$order->total
+?? $order->grand_total
+?? ($subtotal - $discount + $shipping + $tax)
+);
 
-    $paidAmount = (float) (
-        $order->paid_amount
-        ?? (
-            $paymentStatus === 'paid'
-                ? $grandTotal
-                : 0
-        )
-    );
+$paidAmount = (float) (
+$order->paid_amount
+?? (
+$paymentStatus === 'paid'
+? $grandTotal
+: 0
+)
+);
 
-    $balance = max(
-        0,
-        $grandTotal - $paidAmount
-    );
+$balance = max(
+0,
+$grandTotal - $paidAmount
+);
 
-    /*
-    |--------------------------------------------------------------------------
-    | Addresses
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| Addresses
+|--------------------------------------------------------------------------
+*/
 
-    $shippingName = trim(
-        ($order->shipping_first_name ?? '')
-        . ' '
-        . ($order->shipping_last_name ?? '')
-    );
+$shippingName = trim(
+($order->shipping_first_name ?? '')
+. ' '
+. ($order->shipping_last_name ?? '')
+);
 
-    $shippingName =
-        $shippingName
-        ?: $customerName;
+$shippingName =
+$shippingName
+?: $customerName;
 
-    $shippingAddressLines = array_filter([
-        $order->shipping_address
-            ?? $order->shipping_address_line_1
-            ?? $order->shipping_address1
-            ?? null,
+$shippingAddressLines = array_filter([
+$order->shipping_address
+?? $order->shipping_address_line_1
+?? $order->shipping_address1
+?? null,
 
-        $order->shipping_address_line_2
-            ?? $order->shipping_address2
-            ?? null,
+$order->shipping_address_line_2
+?? $order->shipping_address2
+?? null,
 
-        trim(
-            ($order->shipping_city ?? '')
-            . (
-                !empty($order->shipping_state)
-                    ? ', ' . $order->shipping_state
-                    : ''
-            )
-        ),
+trim(
+($order->shipping_city ?? '')
+. (
+!empty($order->shipping_state)
+? ', ' . $order->shipping_state
+: ''
+)
+),
 
-        trim(
-            ($order->shipping_postcode
-                ?? $order->shipping_zip
-                ?? '')
-            . (
-                !empty($order->shipping_country)
-                    ? ', ' . $order->shipping_country
-                    : ''
-            )
-        ),
-    ]);
+trim(
+($order->shipping_postcode
+?? $order->shipping_zip
+?? '')
+. (
+!empty($order->shipping_country)
+? ', ' . $order->shipping_country
+: ''
+)
+),
+]);
 
-    $billingName = trim(
-        ($order->billing_first_name ?? '')
-        . ' '
-        . ($order->billing_last_name ?? '')
-    );
+$billingName = trim(
+($order->billing_first_name ?? '')
+. ' '
+. ($order->billing_last_name ?? '')
+);
 
-    $billingName =
-        $billingName
-        ?: $customerName;
+$billingName =
+$billingName
+?: $customerName;
 
-    $billingAddressLines = array_filter([
-        $order->billing_address
-            ?? $order->billing_address_line_1
-            ?? $order->billing_address1
-            ?? null,
+$billingAddressLines = array_filter([
+$order->billing_address
+?? $order->billing_address_line_1
+?? $order->billing_address1
+?? null,
 
-        $order->billing_address_line_2
-            ?? $order->billing_address2
-            ?? null,
+$order->billing_address_line_2
+?? $order->billing_address2
+?? null,
 
-        trim(
-            ($order->billing_city ?? '')
-            . (
-                !empty($order->billing_state)
-                    ? ', ' . $order->billing_state
-                    : ''
-            )
-        ),
+trim(
+($order->billing_city ?? '')
+. (
+!empty($order->billing_state)
+? ', ' . $order->billing_state
+: ''
+)
+),
 
-        trim(
-            ($order->billing_postcode
-                ?? $order->billing_zip
-                ?? '')
-            . (
-                !empty($order->billing_country)
-                    ? ', ' . $order->billing_country
-                    : ''
-            )
-        ),
-    ]);
+trim(
+($order->billing_postcode
+?? $order->billing_zip
+?? '')
+. (
+!empty($order->billing_country)
+? ', ' . $order->billing_country
+: ''
+)
+),
+]);
 
-    /*
-    |--------------------------------------------------------------------------
-    | Fulfilment progress
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| Fulfilment progress
+|--------------------------------------------------------------------------
+*/
 
-    $fulfilmentSteps = [
-        'pending' => 1,
-        'confirmed' => 2,
-        'processing' => 2,
-        'preparing' => 2,
-        'packed' => 3,
-        'shipped' => 4,
-        'out_for_delivery' => 5,
-        'out for delivery' => 5,
-        'delivered' => 6,
-        'completed' => 6,
-    ];
+$fulfilmentSteps = [
+'pending' => 1,
+'confirmed' => 2,
+'processing' => 2,
+'preparing' => 2,
+'packed' => 3,
+'shipped' => 4,
+'out_for_delivery' => 5,
+'out for delivery' => 5,
+'delivered' => 6,
+'completed' => 6,
+];
 
-    $currentStep =
-        $fulfilmentSteps[$orderStatus]
-        ?? 1;
+$currentStep =
+$fulfilmentSteps[$orderStatus]
+?? 1;
 
-    $isCancelled = in_array(
-        $orderStatus,
-        [
-            'cancelled',
-            'canceled',
-            'refunded',
-            'failed',
-        ],
-        true
-    );
+$isCancelled = in_array(
+$orderStatus,
+[
+'cancelled',
+'canceled',
+'refunded',
+'failed',
+],
+true
+);
 
-    /*
-    |--------------------------------------------------------------------------
-    | Status classes
-    |--------------------------------------------------------------------------
-    */
+/*
+|--------------------------------------------------------------------------
+| Status classes
+|--------------------------------------------------------------------------
+*/
 
-    $statusClass = match ($orderStatus) {
-        'delivered',
-        'completed' => 'badge-success',
+$statusClass = match ($orderStatus) {
+'delivered',
+'completed' => 'badge-success',
 
-        'shipped',
-        'out_for_delivery',
-        'out for delivery' => 'badge-info',
+'shipped',
+'out_for_delivery',
+'out for delivery' => 'badge-info',
 
-        'processing',
-        'preparing',
-        'packed',
-        'confirmed' => 'badge-warning',
+'processing',
+'preparing',
+'packed',
+'confirmed' => 'badge-warning',
 
-        'cancelled',
-        'canceled',
-        'failed',
-        'refunded' => 'badge-danger',
+'cancelled',
+'canceled',
+'failed',
+'refunded' => 'badge-danger',
 
-        default => 'badge-neutral',
-    };
+default => 'badge-neutral',
+};
 
-    $paymentClass = match ($paymentStatus) {
-        'paid',
-        'completed' => 'badge-success',
+$paymentClass = match ($paymentStatus) {
+'paid',
+'completed' => 'badge-success',
 
-        'partially_paid',
-        'partially paid' => 'badge-warning',
+'partially_paid',
+'partially paid' => 'badge-warning',
 
-        'failed',
-        'cancelled',
-        'canceled',
-        'refunded' => 'badge-danger',
+'failed',
+'cancelled',
+'canceled',
+'refunded' => 'badge-danger',
 
-        default => 'badge-neutral',
-    };
+default => 'badge-neutral',
+};
 
-    $trackingNumber =
-        $order->tracking_number
-        ?? $order->tracking_code
-        ?? null;
+$trackingNumber =
+$order->tracking_number
+?? $order->tracking_code
+?? null;
 
-    $courier =
-        $order->courier
-        ?? $order->courier_name
-        ?? $order->shipping_provider
-        ?? null;
+$courier =
+$order->courier
+?? $order->courier_name
+?? $order->shipping_provider
+?? null;
 
-    $paymentMethod =
-        $order->payment_method
-        ?? $order->payment_gateway
-        ?? 'Not specified';
+$paymentMethod =
+$order->payment_method
+?? $order->payment_gateway
+?? 'Not specified';
 
-    $transactionId =
-        $order->transaction_id
-        ?? $order->payment_reference
-        ?? null;
+$transactionId =
+$order->transaction_id
+?? $order->payment_reference
+?? null;
 @endphp
 
 <div class="premium-order-page">
 
     {{-- Flash messages --}}
     @if (session('success'))
-        <div class="order-alert order-alert-success">
-            <span class="order-alert-icon">✓</span>
+    <div class="order-alert order-alert-success">
+        <span class="order-alert-icon">✓</span>
 
-            <div>
-                <strong>Success</strong>
-                <p>{{ session('success') }}</p>
-            </div>
+        <div>
+            <strong>Success</strong>
+            <p>{{ session('success') }}</p>
         </div>
+    </div>
     @endif
 
     @if (session('error'))
-        <div class="order-alert order-alert-danger">
-            <span class="order-alert-icon">!</span>
+    <div class="order-alert order-alert-danger">
+        <span class="order-alert-icon">!</span>
 
-            <div>
-                <strong>Error</strong>
-                <p>{{ session('error') }}</p>
-            </div>
+        <div>
+            <strong>Error</strong>
+            <p>{{ session('error') }}</p>
         </div>
+    </div>
     @endif
 
     @if ($errors->any())
-        <div class="order-alert order-alert-danger">
-            <span class="order-alert-icon">!</span>
+    <div class="order-alert order-alert-danger">
+        <span class="order-alert-icon">!</span>
 
-            <div>
-                <strong>Please correct the following:</strong>
+        <div>
+            <strong>Please correct the following:</strong>
 
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
+    </div>
     @endif
 
     {{-- Header --}}
@@ -352,8 +352,7 @@
             <div class="order-heading-area">
                 <a
                     href="{{ route('admin.orders.index') }}"
-                    class="order-back-link"
-                >
+                    class="order-back-link">
                     <span>←</span>
                     Back to orders
                 </a>
@@ -378,9 +377,9 @@
                     {{ optional($order->created_at)->format('d M Y \a\t h:i A') }}
 
                     @if ($order->created_at)
-                        <span>
-                            · {{ $order->created_at->diffForHumans() }}
-                        </span>
+                    <span>
+                        · {{ $order->created_at->diffForHumans() }}
+                    </span>
                     @endif
                 </p>
             </div>
@@ -389,53 +388,66 @@
                 <button
                     type="button"
                     class="premium-button premium-button-light"
-                    onclick="window.print()"
-                >
+                    onclick="window.print()">
                     <span>🖨</span>
                     Print
                 </button>
 
-                @if (Route::has('admin.orders.invoice'))
-                    <a
-                        href="{{ route('admin.orders.invoice', $order) }}"
-                        class="premium-button premium-button-light"
-                    >
-                        <span>↓</span>
-                        Invoice
-                    </a>
+                @if (Route::has('admin.orders.shipping-label'))
+                <a
+                    href="{{ route('admin.orders.shipping-label', $order) }}"
+                    class="premium-button premium-button-light">
+                    <i class="fas fa-shipping-fast"></i>
+                    <span>Shipping Label</span>
+                </a>
                 @endif
+                <form
+                    action="{{ route('admin.orders.email-invoice', $order) }}"
+                    method="POST"
+                    style="display:inline-block;">
+                    @csrf
 
+                    <button
+                        type="submit"
+                        class="btn premium-button premium-button-light">
+                        Email Invoice
+                    </button>
+                </form>
+                @if (Route::has('admin.orders.invoice'))
+                <a
+                    href="{{ route('admin.orders.invoice', $order) }}"
+                    class="premium-button premium-button-light">
+                    <span>↓</span>
+                    Invoice
+                </a>
+                @endif
                 <button
                     type="button"
                     class="premium-button premium-button-menu"
-                    id="orderMoreButton"
-                >
+                    id="orderMoreButton">
                     More actions
                     <span>⌄</span>
                 </button>
 
                 <div
                     class="order-actions-menu"
-                    id="orderActionsMenu"
-                >
+                    id="orderActionsMenu">
                     <button
                         type="button"
-                        onclick="window.print()"
-                    >
+                        onclick="window.print()">
                         Print order
                     </button>
 
                     @if ($customerEmail)
-                        <a href="mailto:{{ $customerEmail }}">
-                            Email customer
-                        </a>
+                    <a href="mailto:{{ $customerEmail }}">
+                        Email customer
+                    </a>
                     @endif
 
                     <button
                         type="button"
                         class="danger-menu-action"
-                        data-open-delete-modal
-                    >
+                        data-open-delete-modal>
                         Delete order
                     </button>
                 </div>
@@ -508,575 +520,570 @@
             </div>
 
             @if ($isCancelled)
-                <span class="premium-badge badge-danger">
-                    Order closed
-                </span>
+            <span class="premium-badge badge-danger">
+                Order closed
+            </span>
             @else
-                <span class="premium-badge {{ $statusClass }}">
-                    Current:
-                    {{ ucwords(str_replace('_', ' ', $orderStatus)) }}
-                </span>
+            <span class="premium-badge {{ $statusClass }}">
+                Current:
+                {{ ucwords(str_replace('_', ' ', $orderStatus)) }}
+            </span>
             @endif
         </div>
 
         @if ($isCancelled)
-            <div class="cancelled-order-state">
-                <span class="cancelled-state-icon">!</span>
+        <div class="cancelled-order-state">
+            <span class="cancelled-state-icon">!</span>
 
-                <div>
-                    <strong>
-                        This order is
-                        {{ str_replace('_', ' ', $orderStatus) }}.
-                    </strong>
+            <div>
+                <strong>
+                    This order is
+                    {{ str_replace('_', ' ', $orderStatus) }}.
+                </strong>
 
-                    <p>
-                        The normal fulfilment process has been stopped.
-                    </p>
-                </div>
+                <p>
+                    The normal fulfilment process has been stopped.
+                </p>
             </div>
+        </div>
         @else
-            <div class="fulfilment-progress">
-                @php
-                    $steps = [
-                        [
-                            'number' => 1,
-                            'label' => 'Order placed',
-                            'icon' => '✓',
-                        ],
-                        [
-                            'number' => 2,
-                            'label' => 'Processing',
-                            'icon' => '⚙',
-                        ],
-                        [
-                            'number' => 3,
-                            'label' => 'Packed',
-                            'icon' => '□',
-                        ],
-                        [
-                            'number' => 4,
-                            'label' => 'Shipped',
-                            'icon' => '→',
-                        ],
-                        [
-                            'number' => 5,
-                            'label' => 'Out for delivery',
-                            'icon' => '⌖',
-                        ],
-                        [
-                            'number' => 6,
-                            'label' => 'Delivered',
-                            'icon' => '✓',
-                        ],
-                    ];
+        <div class="fulfilment-progress">
+            @php
+            $steps = [
+            [
+            'number' => 1,
+            'label' => 'Order placed',
+            'icon' => '✓',
+            ],
+            [
+            'number' => 2,
+            'label' => 'Processing',
+            'icon' => '⚙',
+            ],
+            [
+            'number' => 3,
+            'label' => 'Packed',
+            'icon' => '□',
+            ],
+            [
+            'number' => 4,
+            'label' => 'Shipped',
+            'icon' => '→',
+            ],
+            [
+            'number' => 5,
+            'label' => 'Out for delivery',
+            'icon' => '⌖',
+            ],
+            [
+            'number' => 6,
+            'label' => 'Delivered',
+            'icon' => '✓',
+            ],
+            ];
+            @endphp
+
+            @foreach ($steps as $step)
+            @php
+            $stepClass =
+            $step['number'] < $currentStep
+                ? 'step-complete'
+                : (
+                $step['number']===$currentStep
+                ? 'step-current'
+                : 'step-pending'
+                );
                 @endphp
 
-                @foreach ($steps as $step)
-                    @php
-                        $stepClass =
-                            $step['number'] < $currentStep
-                                ? 'step-complete'
-                                : (
-                                    $step['number'] === $currentStep
-                                        ? 'step-current'
-                                        : 'step-pending'
-                                );
-                    @endphp
-
-                    <div class="fulfilment-step {{ $stepClass }}">
-                        <div class="step-marker">
-                            {{ $step['number'] < $currentStep
+                <div class="fulfilment-step {{ $stepClass }}">
+                <div class="step-marker">
+                    {{ $step['number'] < $currentStep
                                 ? '✓'
                                 : $step['icon'] }}
-                        </div>
-
-                        <span>{{ $step['label'] }}</span>
-                    </div>
-
-                    @if (!$loop->last)
-                        <div
-                            class="step-line {{ $step['number'] < $currentStep ? 'line-complete' : '' }}"
-                        ></div>
-                    @endif
-                @endforeach
-            </div>
-        @endif
-    </section>
-
-    <div class="order-layout">
-
-        {{-- Main column --}}
-        <main class="order-main-column">
-
-            {{-- Products --}}
-            <section class="premium-panel">
-                <div class="panel-heading">
-                    <div>
-                        <span class="panel-eyebrow">
-                            Order contents
-                        </span>
-
-                        <h2>
-                            Products
-                            <span class="heading-count">
-                                {{ $order->items->count() }}
-                            </span>
-                        </h2>
-                    </div>
-
-                    <span class="panel-heading-meta">
-                        {{ $order->items->sum('quantity') }}
-                        unit(s)
-                    </span>
                 </div>
 
-                <div class="premium-product-list">
-                    @forelse ($order->items as $item)
-                        @php
-                            $options = $item->display_options ?? [];
+                <span>{{ $step['label'] }}</span>
+        </div>
 
-                            $itemSubtotal =
-                                $item->subtotal !== null
-                                    ? (float) $item->subtotal
-                                    : (
-                                        (float) $item->price
-                                        * (int) $item->quantity
-                                    );
+        @if (!$loop->last)
+        <div
+            class="step-line {{ $step['number'] < $currentStep ? 'line-complete' : '' }}"></div>
+        @endif
+        @endforeach
+</div>
+@endif
+</section>
 
-                            $productName =
-                                $item->product_name
-                                ?: $item->product?->title
-                                ?: $item->product_title
-                                ?: 'Deleted product';
+<div class="order-layout">
 
-                            $productImage =
-                                $item->product?->featured_image_url;
+    {{-- Main column --}}
+    <main class="order-main-column">
 
-                            $productUrl =
-                                $item->product
-                                && Route::has('admin.products.edit')
-                                    ? route(
-                                        'admin.products.edit',
-                                        $item->product
-                                    )
-                                    : null;
-                        @endphp
+        {{-- Products --}}
+        <section class="premium-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="panel-eyebrow">
+                        Order contents
+                    </span>
 
-                        <article class="premium-product-card">
-                            <div class="premium-product-image">
-                                @if ($productImage)
-                                    <img
-                                        src="{{ $productImage }}"
-                                        alt="{{ $productName }}"
-                                        loading="lazy"
-                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                    >
+                    <h2>
+                        Products
+                        <span class="heading-count">
+                            {{ $order->items->count() }}
+                        </span>
+                    </h2>
+                </div>
 
-                                    <div
-                                        class="product-image-placeholder"
-                                        style="display:none;"
-                                    >
-                                        <span>▧</span>
-                                    </div>
-                                @else
-                                    <div class="product-image-placeholder">
-                                        <span>▧</span>
-                                    </div>
+                <span class="panel-heading-meta">
+                    {{ $order->items->sum('quantity') }}
+                    unit(s)
+                </span>
+            </div>
+
+            <div class="premium-product-list">
+                @forelse ($order->items as $item)
+                @php
+                $options = $item->display_options ?? [];
+
+                $itemSubtotal =
+                $item->subtotal !== null
+                ? (float) $item->subtotal
+                : (
+                (float) $item->price
+                * (int) $item->quantity
+                );
+
+                $productName =
+                $item->product_name
+                ?: $item->product?->title
+                ?: $item->product_title
+                ?: 'Deleted product';
+
+                $productImage =
+                $item->product?->featured_image_url;
+
+                $productUrl =
+                $item->product
+                && Route::has('admin.products.edit')
+                ? route(
+                'admin.products.edit',
+                $item->product
+                )
+                : null;
+                @endphp
+
+                <article class="premium-product-card">
+                    <div class="premium-product-image">
+                        @if ($productImage)
+                        <img
+                            src="{{ $productImage }}"
+                            alt="{{ $productName }}"
+                            loading="lazy"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+
+                        <div
+                            class="product-image-placeholder"
+                            style="display:none;">
+                            <span>▧</span>
+                        </div>
+                        @else
+                        <div class="product-image-placeholder">
+                            <span>▧</span>
+                        </div>
+                        @endif
+
+                        <span class="product-quantity-badge">
+                            {{ $item->quantity }}
+                        </span>
+                    </div>
+
+                    <div class="premium-product-content">
+                        <div class="product-primary-info">
+                            @if ($productUrl)
+                            <a
+                                href="{{ $productUrl }}"
+                                class="product-name-link">
+                                {{ $productName }}
+                            </a>
+                            @else
+                            <h3>{{ $productName }}</h3>
+                            @endif
+
+                            <div class="product-meta-row">
+                                <span>
+                                    SKU:
+                                    <strong>
+                                        {{ $item->sku
+                                                    ?: $item->product?->sku
+                                                    ?: 'N/A' }}
+                                    </strong>
+                                </span>
+
+                                @if ($item->variant_id)
+                                <span>
+                                    Variant:
+                                    <strong>
+                                        #{{ $item->variant_id }}
+                                    </strong>
+                                </span>
                                 @endif
+                            </div>
 
-                                <span class="product-quantity-badge">
-                                    {{ $item->quantity }}
+                            @if (!empty($options))
+                            <div class="premium-product-options">
+                                @foreach ($options as $option)
+                                <span class="product-option-chip">
+                                    <small>
+                                        {{ $option['name'] }}
+                                    </small>
+
+                                    <strong>
+                                        {{ $option['value'] }}
+                                    </strong>
+                                </span>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
+
+                        <div class="product-price-information">
+                            <div>
+                                <small>Unit price</small>
+                                <span>
+                                    {{ $money($item->price) }}
                                 </span>
                             </div>
 
-                            <div class="premium-product-content">
-                                <div class="product-primary-info">
-                                    @if ($productUrl)
-                                        <a
-                                            href="{{ $productUrl }}"
-                                            class="product-name-link"
-                                        >
-                                            {{ $productName }}
-                                        </a>
-                                    @else
-                                        <h3>{{ $productName }}</h3>
-                                    @endif
-
-                                    <div class="product-meta-row">
-                                        <span>
-                                            SKU:
-                                            <strong>
-                                                {{ $item->sku
-                                                    ?: $item->product?->sku
-                                                    ?: 'N/A' }}
-                                            </strong>
-                                        </span>
-
-                                        @if ($item->variant_id)
-                                            <span>
-                                                Variant:
-                                                <strong>
-                                                    #{{ $item->variant_id }}
-                                                </strong>
-                                            </span>
-                                        @endif
-                                    </div>
-
-                                    @if (!empty($options))
-                                        <div class="premium-product-options">
-                                            @foreach ($options as $option)
-                                                <span class="product-option-chip">
-                                                    <small>
-                                                        {{ $option['name'] }}
-                                                    </small>
-
-                                                    <strong>
-                                                        {{ $option['value'] }}
-                                                    </strong>
-                                                </span>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </div>
-
-                                <div class="product-price-information">
-                                    <div>
-                                        <small>Unit price</small>
-                                        <span>
-                                            {{ $money($item->price) }}
-                                        </span>
-                                    </div>
-
-                                    <span class="multiplication-symbol">
-                                        ×
-                                    </span>
-
-                                    <div>
-                                        <small>Quantity</small>
-                                        <span>{{ $item->quantity }}</span>
-                                    </div>
-
-                                    <div class="product-line-total">
-                                        <small>Total</small>
-                                        <strong>
-                                            {{ $money($itemSubtotal) }}
-                                        </strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    @empty
-                        <div class="premium-empty-state">
-                            <span class="empty-state-icon">▧</span>
-                            <h3>No products found</h3>
-                            <p>
-                                This order does not contain any product items.
-                            </p>
-                        </div>
-                    @endforelse
-                </div>
-
-                {{-- Totals --}}
-                <div class="order-totals-area">
-                    <div class="totals-spacer"></div>
-
-                    <div class="totals-card">
-                        <div class="total-row">
-                            <span>Subtotal</span>
-                            <strong>{{ $money($subtotal) }}</strong>
-                        </div>
-
-                        <div class="total-row">
-                            <span>
-                                Discount
-
-                                @if (!empty($order->coupon_code))
-                                    <small class="coupon-code">
-                                        {{ $order->coupon_code }}
-                                    </small>
-                                @endif
+                            <span class="multiplication-symbol">
+                                ×
                             </span>
-
-                            <strong class="{{ $discount > 0 ? 'discount-value' : '' }}">
-                                {{ $discount > 0 ? '-' : '' }}
-                                {{ $money($discount) }}
-                            </strong>
-                        </div>
-
-                        <div class="total-row">
-                            <span>Shipping</span>
-                            <strong>{{ $money($shipping) }}</strong>
-                        </div>
-
-                        <div class="total-row">
-                            <span>Tax</span>
-                            <strong>{{ $money($tax) }}</strong>
-                        </div>
-
-                        <div class="total-divider"></div>
-
-                        <div class="total-row grand-total-row">
-                            <span>Total</span>
 
                             <div>
-                                <small>{{ $currencyCode }}</small>
-                                <strong>{{ $money($grandTotal) }}</strong>
+                                <small>Quantity</small>
+                                <span>{{ $item->quantity }}</span>
+                            </div>
+
+                            <div class="product-line-total">
+                                <small>Total</small>
+                                <strong>
+                                    {{ $money($itemSubtotal) }}
+                                </strong>
                             </div>
                         </div>
-
-                        @if ($paidAmount > 0)
-                            <div class="total-row payment-total-row">
-                                <span>Paid</span>
-                                <strong>
-                                    {{ $money($paidAmount) }}
-                                </strong>
-                            </div>
-                        @endif
-
-                        @if ($balance > 0)
-                            <div class="total-row balance-total-row">
-                                <span>Balance due</span>
-                                <strong>
-                                    {{ $money($balance) }}
-                                </strong>
-                            </div>
-                        @endif
                     </div>
+                </article>
+                @empty
+                <div class="premium-empty-state">
+                    <span class="empty-state-icon">▧</span>
+                    <h3>No products found</h3>
+                    <p>
+                        This order does not contain any product items.
+                    </p>
                 </div>
-            </section>
+                @endforelse
+            </div>
 
-            {{-- Customer and addresses --}}
-            <div class="order-info-grid">
-                <section class="premium-panel info-card">
-                    <div class="panel-heading compact-heading">
-                        <div>
-                            <span class="panel-eyebrow">
-                                Customer
-                            </span>
+            {{-- Totals --}}
+            <div class="order-totals-area">
+                <div class="totals-spacer"></div>
 
-                            <h2>Customer details</h2>
-                        </div>
-
-                        <span class="panel-icon">♙</span>
+                <div class="totals-card">
+                    <div class="total-row">
+                        <span>Subtotal</span>
+                        <strong>{{ $money($subtotal) }}</strong>
                     </div>
 
-                    <div class="customer-profile">
-                        <div class="customer-avatar">
-                            {{ strtoupper(
+                    <div class="total-row">
+                        <span>
+                            Discount
+
+                            @if (!empty($order->coupon_code))
+                            <small class="coupon-code">
+                                {{ $order->coupon_code }}
+                            </small>
+                            @endif
+                        </span>
+
+                        <strong class="{{ $discount > 0 ? 'discount-value' : '' }}">
+                            {{ $discount > 0 ? '-' : '' }}
+                            {{ $money($discount) }}
+                        </strong>
+                    </div>
+
+                    <div class="total-row">
+                        <span>Shipping</span>
+                        <strong>{{ $money($shipping) }}</strong>
+                    </div>
+
+                    <div class="total-row">
+                        <span>Tax</span>
+                        <strong>{{ $money($tax) }}</strong>
+                    </div>
+
+                    <div class="total-divider"></div>
+
+                    <div class="total-row grand-total-row">
+                        <span>Total</span>
+
+                        <div>
+                            <small>{{ $currencyCode }}</small>
+                            <strong>{{ $money($grandTotal) }}</strong>
+                        </div>
+                    </div>
+
+                    @if ($paidAmount > 0)
+                    <div class="total-row payment-total-row">
+                        <span>Paid</span>
+                        <strong>
+                            {{ $money($paidAmount) }}
+                        </strong>
+                    </div>
+                    @endif
+
+                    @if ($balance > 0)
+                    <div class="total-row balance-total-row">
+                        <span>Balance due</span>
+                        <strong>
+                            {{ $money($balance) }}
+                        </strong>
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </section>
+
+        {{-- Customer and addresses --}}
+        <div class="order-info-grid">
+            <section class="premium-panel info-card">
+                <div class="panel-heading compact-heading">
+                    <div>
+                        <span class="panel-eyebrow">
+                            Customer
+                        </span>
+
+                        <h2>Customer details</h2>
+                    </div>
+
+                    <span class="panel-icon">♙</span>
+                </div>
+
+                <div class="customer-profile">
+                    <div class="customer-avatar">
+                        {{ strtoupper(
                                 mb_substr(
                                     $customerName,
                                     0,
                                     1
                                 )
                             ) }}
-                        </div>
+                    </div>
 
-                        <div>
-                            <strong>{{ $customerName }}</strong>
+                    <div>
+                        <strong>{{ $customerName }}</strong>
 
-                            <span>
-                                {{ $order->user
+                        <span>
+                            {{ $order->user
                                     ? 'Registered customer'
                                     : 'Guest checkout' }}
-                            </span>
-                        </div>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="information-list">
+                    <div class="information-row">
+                        <span>Email</span>
+
+                        @if ($customerEmail)
+                        <a href="mailto:{{ $customerEmail }}">
+                            {{ $customerEmail }}
+                        </a>
+                        @else
+                        <strong>Not provided</strong>
+                        @endif
                     </div>
 
-                    <div class="information-list">
-                        <div class="information-row">
-                            <span>Email</span>
+                    <div class="information-row">
+                        <span>Phone</span>
 
-                            @if ($customerEmail)
-                                <a href="mailto:{{ $customerEmail }}">
-                                    {{ $customerEmail }}
-                                </a>
-                            @else
-                                <strong>Not provided</strong>
-                            @endif
-                        </div>
+                        @if ($customerPhone)
+                        <a href="tel:{{ $customerPhone }}">
+                            {{ $customerPhone }}
+                        </a>
+                        @else
+                        <strong>Not provided</strong>
+                        @endif
+                    </div>
 
-                        <div class="information-row">
-                            <span>Phone</span>
+                    <div class="information-row">
+                        <span>Customer ID</span>
 
-                            @if ($customerPhone)
-                                <a href="tel:{{ $customerPhone }}">
-                                    {{ $customerPhone }}
-                                </a>
-                            @else
-                                <strong>Not provided</strong>
-                            @endif
-                        </div>
-
-                        <div class="information-row">
-                            <span>Customer ID</span>
-
-                            <strong>
-                                {{ $order->user_id
+                        <strong>
+                            {{ $order->user_id
                                     ? '#' . $order->user_id
                                     : 'Guest' }}
-                            </strong>
-                        </div>
+                        </strong>
                     </div>
-                </section>
+                </div>
+            </section>
 
-                <section class="premium-panel info-card">
-                    <div class="panel-heading compact-heading">
-                        <div>
-                            <span class="panel-eyebrow">
-                                Delivery
-                            </span>
+            <section class="premium-panel info-card">
+                <div class="panel-heading compact-heading">
+                    <div>
+                        <span class="panel-eyebrow">
+                            Delivery
+                        </span>
 
-                            <h2>Shipping address</h2>
-                        </div>
-
-                        <span class="panel-icon">⌖</span>
+                        <h2>Shipping address</h2>
                     </div>
 
-                    <address class="premium-address">
-                        <strong>{{ $shippingName }}</strong>
+                    <span class="panel-icon">⌖</span>
+                </div>
 
-                        @forelse ($shippingAddressLines as $line)
-                            <span>{{ $line }}</span>
-                        @empty
-                            <span>No shipping address provided.</span>
-                        @endforelse
+                <address class="premium-address">
+                    <strong>{{ $shippingName }}</strong>
 
-                        @if (
-                            $order->shipping_phone
-                            && $order->shipping_phone !== $customerPhone
-                        )
-                            <a href="tel:{{ $order->shipping_phone }}">
-                                {{ $order->shipping_phone }}
-                            </a>
-                        @endif
-                    </address>
-                </section>
+                    @forelse ($shippingAddressLines as $line)
+                    <span>{{ $line }}</span>
+                    @empty
+                    <span>No shipping address provided.</span>
+                    @endforelse
 
-                <section class="premium-panel info-card">
-                    <div class="panel-heading compact-heading">
-                        <div>
-                            <span class="panel-eyebrow">
-                                Billing
-                            </span>
+                    @if (
+                    $order->shipping_phone
+                    && $order->shipping_phone !== $customerPhone
+                    )
+                    <a href="tel:{{ $order->shipping_phone }}">
+                        {{ $order->shipping_phone }}
+                    </a>
+                    @endif
+                </address>
+            </section>
 
-                            <h2>Billing address</h2>
-                        </div>
+            <section class="premium-panel info-card">
+                <div class="panel-heading compact-heading">
+                    <div>
+                        <span class="panel-eyebrow">
+                            Billing
+                        </span>
 
-                        <span class="panel-icon">▤</span>
+                        <h2>Billing address</h2>
                     </div>
 
-                    <address class="premium-address">
-                        <strong>{{ $billingName }}</strong>
+                    <span class="panel-icon">▤</span>
+                </div>
 
-                        @forelse ($billingAddressLines as $line)
-                            <span>{{ $line }}</span>
-                        @empty
-                            <span>No billing address provided.</span>
-                        @endforelse
-                    </address>
-                </section>
+                <address class="premium-address">
+                    <strong>{{ $billingName }}</strong>
 
-                <section class="premium-panel info-card">
-                    <div class="panel-heading compact-heading">
-                        <div>
-                            <span class="panel-eyebrow">
-                                Payment
-                            </span>
+                    @forelse ($billingAddressLines as $line)
+                    <span>{{ $line }}</span>
+                    @empty
+                    <span>No billing address provided.</span>
+                    @endforelse
+                </address>
+            </section>
 
-                            <h2>Payment details</h2>
-                        </div>
+            <section class="premium-panel info-card">
+                <div class="panel-heading compact-heading">
+                    <div>
+                        <span class="panel-eyebrow">
+                            Payment
+                        </span>
 
-                        <span class="premium-badge {{ $paymentClass }}">
-                            {{ ucwords(
+                        <h2>Payment details</h2>
+                    </div>
+
+                    <span class="premium-badge {{ $paymentClass }}">
+                        {{ ucwords(
                                 str_replace(
                                     '_',
                                     ' ',
                                     $paymentStatus
                                 )
                             ) }}
-                        </span>
-                    </div>
+                    </span>
+                </div>
 
-                    <div class="payment-method-card">
-                        <span class="payment-method-icon">
-                            ▣
-                        </span>
+                <div class="payment-method-card">
+                    <span class="payment-method-icon">
+                        ▣
+                    </span>
 
-                        <div>
-                            <strong>
-                                {{ ucwords(
+                    <div>
+                        <strong>
+                            {{ ucwords(
                                     str_replace(
                                         ['_', '-'],
                                         ' ',
                                         $paymentMethod
                                     )
                                 ) }}
-                            </strong>
+                        </strong>
 
-                            <span>
-                                {{ $transactionId
+                        <span>
+                            {{ $transactionId
                                     ? 'Transaction recorded'
                                     : 'No transaction ID' }}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="information-list">
-                        <div class="information-row">
-                            <span>Transaction ID</span>
-
-                            <strong class="breakable-value">
-                                {{ $transactionId ?: 'N/A' }}
-                            </strong>
-                        </div>
-
-                        <div class="information-row">
-                            <span>Paid amount</span>
-
-                            <strong>
-                                {{ $money($paidAmount) }}
-                            </strong>
-                        </div>
-
-                        <div class="information-row">
-                            <span>Balance</span>
-
-                            <strong>
-                                {{ $money($balance) }}
-                            </strong>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            {{-- Notes --}}
-            <section class="premium-panel">
-                <div class="panel-heading">
-                    <div>
-                        <span class="panel-eyebrow">
-                            Internal communication
                         </span>
-
-                        <h2>
-                            Order notes
-                            <span class="heading-count">
-                                {{ $order->notes?->count() ?? 0 }}
-                            </span>
-                        </h2>
                     </div>
                 </div>
 
-                <form
-                    action="{{ route('admin.orders.notes.store', $order) }}"
-                    method="POST"
-                    class="note-form"
-                    id="orderNoteForm"
-                >
-                    @csrf
+                <div class="information-list">
+                    <div class="information-row">
+                        <span>Transaction ID</span>
 
-                    <div class="note-compose">
-                        <div class="note-avatar">
-                            {{ strtoupper(
+                        <strong class="breakable-value">
+                            {{ $transactionId ?: 'N/A' }}
+                        </strong>
+                    </div>
+
+                    <div class="information-row">
+                        <span>Paid amount</span>
+
+                        <strong>
+                            {{ $money($paidAmount) }}
+                        </strong>
+                    </div>
+
+                    <div class="information-row">
+                        <span>Balance</span>
+
+                        <strong>
+                            {{ $money($balance) }}
+                        </strong>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        {{-- Notes --}}
+        <section class="premium-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="panel-eyebrow">
+                        Internal communication
+                    </span>
+
+                    <h2>
+                        Order notes
+                        <span class="heading-count">
+                            {{ $order->notes?->count() ?? 0 }}
+                        </span>
+                    </h2>
+                </div>
+            </div>
+
+            <form
+                action="{{ route('admin.orders.notes.store', $order) }}"
+                method="POST"
+                class="note-form"
+                id="orderNoteForm">
+                @csrf
+
+                <div class="note-compose">
+                    <div class="note-avatar">
+                        {{ strtoupper(
                                 mb_substr(
                                     auth()->user()?->name
                                     ?? 'A',
@@ -1084,45 +1091,41 @@
                                     1
                                 )
                             ) }}
-                        </div>
+                    </div>
 
-                        <div class="note-input-wrapper">
-                            <textarea
-                                name="note"
-                                id="orderNoteInput"
-                                rows="3"
-                                placeholder="Add a private note about this order..."
-                                required
-                            >{{ old('note') }}</textarea>
+                    <div class="note-input-wrapper">
+                        <textarea
+                            name="note"
+                            id="orderNoteInput"
+                            rows="3"
+                            placeholder="Add a private note about this order..."
+                            required>{{ old('note') }}</textarea>
 
-                            <div class="note-form-footer">
-                                <small>
-                                    Only administrators can see this note.
-                                </small>
+                        <div class="note-form-footer">
+                            <small>
+                                Only administrators can see this note.
+                            </small>
 
-                                <button
-                                    type="submit"
-                                    class="premium-button premium-button-primary"
-                                    id="addNoteButton"
-                                >
-                                    Add note
-                                </button>
-                            </div>
+                            <button
+                                type="submit"
+                                class="premium-button premium-button-primary"
+                                id="addNoteButton">
+                                Add note
+                            </button>
                         </div>
                     </div>
-                </form>
+                </div>
+            </form>
 
-                <div
-                    class="notes-container"
-                    id="orderNotesContainer"
-                >
-                    @forelse ($order->notes ?? [] as $note)
-                        <article
-                            class="note-message"
-                            data-note-id="{{ $note->id }}"
-                        >
-                            <div class="note-avatar">
-                                {{ strtoupper(
+            <div
+                class="notes-container"
+                id="orderNotesContainer">
+                @forelse ($order->notes ?? [] as $note)
+                <article
+                    class="note-message"
+                    data-note-id="{{ $note->id }}">
+                    <div class="note-avatar">
+                        {{ strtoupper(
                                     mb_substr(
                                         $note->user?->name
                                         ?? 'A',
@@ -1130,108 +1133,105 @@
                                         1
                                     )
                                 ) }}
+                    </div>
+
+                    <div class="note-message-content">
+                        <div class="note-message-header">
+                            <div>
+                                <strong>
+                                    {{ $note->user?->name
+                                                ?? 'Administrator' }}
+                                </strong>
+
+                                <span>
+                                    {{ optional($note->created_at)
+                                                ->format('d M Y, h:i A') }}
+                                </span>
                             </div>
 
-                            <div class="note-message-content">
-                                <div class="note-message-header">
-                                    <div>
-                                        <strong>
-                                            {{ $note->user?->name
-                                                ?? 'Administrator' }}
-                                        </strong>
-
-                                        <span>
-                                            {{ optional($note->created_at)
-                                                ->format('d M Y, h:i A') }}
-                                        </span>
-                                    </div>
-
-                                    <form
-                                        action="{{ route(
+                            <form
+                                action="{{ route(
                                             'admin.orders.notes.destroy',
                                             [$order, $note]
                                         ) }}"
-                                        method="POST"
-                                        class="delete-note-form"
-                                    >
-                                        @csrf
-                                        @method('DELETE')
+                                method="POST"
+                                class="delete-note-form">
+                                @csrf
+                                @method('DELETE')
 
-                                        <button
-                                            type="submit"
-                                            class="delete-note-button"
-                                            title="Delete note"
-                                        >
-                                            ×
-                                        </button>
-                                    </form>
-                                </div>
-
-                                <p>{{ $note->note }}</p>
-                            </div>
-                        </article>
-                    @empty
-                        <div
-                            class="premium-empty-state small-empty-state"
-                            id="notesEmptyState"
-                        >
-                            <span class="empty-state-icon">✎</span>
-
-                            <h3>No notes yet</h3>
-
-                            <p>
-                                Add an internal note to keep your team informed.
-                            </p>
+                                <button
+                                    type="submit"
+                                    class="delete-note-button"
+                                    title="Delete note">
+                                    ×
+                                </button>
+                            </form>
                         </div>
-                    @endforelse
+
+                        <p>{{ $note->note }}</p>
+                    </div>
+                </article>
+                @empty
+                <div
+                    class="premium-empty-state small-empty-state"
+                    id="notesEmptyState">
+                    <span class="empty-state-icon">✎</span>
+
+                    <h3>No notes yet</h3>
+
+                    <p>
+                        Add an internal note to keep your team informed.
+                    </p>
                 </div>
-            </section>
+                @endforelse
+            </div>
+        </section>
 
-            {{-- Activity timeline --}}
-            <section class="premium-panel">
-                <div class="panel-heading">
-                    <div>
-                        <span class="panel-eyebrow">
-                            Order history
-                        </span>
+        {{-- Activity timeline --}}
+        <section class="premium-panel">
+            <div class="panel-heading">
+                <div>
+                    <span class="panel-eyebrow">
+                        Order history
+                    </span>
 
-                        <h2>Activity timeline</h2>
+                    <h2>Activity timeline</h2>
+                </div>
+
+                <span class="panel-heading-meta">
+                    Latest first
+                </span>
+            </div>
+
+            <div class="activity-timeline">
+                @forelse ($order->activities ?? [] as $activity)
+                @php
+                $activityType = strtolower(
+                $activity->type
+                ?? $activity->event
+                ?? 'update'
+                );
+
+                $activityIcon = match (true) {
+                str_contains($activityType, 'payment') => '₨',
+                str_contains($activityType, 'status') => '↻',
+                str_contains($activityType, 'tracking') => '→',
+                str_contains($activityType, 'note') => '✎',
+                str_contains($activityType, 'create') => '+',
+                str_contains($activityType, 'delete') => '×',
+                default => '•',
+                };
+                @endphp
+
+                <article class="activity-item">
+                    <div class="activity-marker">
+                        {{ $activityIcon }}
                     </div>
 
-                    <span class="panel-heading-meta">
-                        Latest first
-                    </span>
-                </div>
-
-                <div class="activity-timeline">
-                    @forelse ($order->activities ?? [] as $activity)
-                        @php
-                            $activityType = strtolower(
-                                $activity->type
-                                ?? $activity->event
-                                ?? 'update'
-                            );
-
-                            $activityIcon = match (true) {
-                                str_contains($activityType, 'payment') => '₨',
-                                str_contains($activityType, 'status') => '↻',
-                                str_contains($activityType, 'tracking') => '→',
-                                str_contains($activityType, 'note') => '✎',
-                                str_contains($activityType, 'create') => '+',
-                                str_contains($activityType, 'delete') => '×',
-                                default => '•',
-                            };
-                        @endphp
-
-                        <article class="activity-item">
-                            <div class="activity-marker">
-                                {{ $activityIcon }}
-                            </div>
-
-                            <div class="activity-content">
-                                <div class="activity-title-row">
-                                    <strong>
-                                        {{ $activity->description
+                    <div class="activity-content">
+                        <div class="activity-title-row">
+                            <strong>
+                                {{ $activity->description
                                             ?? $activity->message
                                             ?? ucwords(
                                                 str_replace(
@@ -1240,415 +1240,396 @@
                                                     $activityType
                                                 )
                                             ) }}
-                                    </strong>
+                            </strong>
 
-                                    <span>
-                                        {{ optional($activity->created_at)
+                            <span>
+                                {{ optional($activity->created_at)
                                             ->diffForHumans() }}
-                                    </span>
-                                </div>
+                            </span>
+                        </div>
 
-                                @if (
-                                    !empty($activity->old_value)
-                                    || !empty($activity->new_value)
-                                )
-                                    <div class="activity-change">
-                                        @if (!empty($activity->old_value))
-                                            <span>
-                                                {{ $activity->old_value }}
-                                            </span>
-                                        @endif
+                        @if (
+                        !empty($activity->old_value)
+                        || !empty($activity->new_value)
+                        )
+                        <div class="activity-change">
+                            @if (!empty($activity->old_value))
+                            <span>
+                                {{ $activity->old_value }}
+                            </span>
+                            @endif
 
-                                        @if (
-                                            !empty($activity->old_value)
-                                            && !empty($activity->new_value)
-                                        )
-                                            <b>→</b>
-                                        @endif
+                            @if (
+                            !empty($activity->old_value)
+                            && !empty($activity->new_value)
+                            )
+                            <b>→</b>
+                            @endif
 
-                                        @if (!empty($activity->new_value))
-                                            <span class="new-activity-value">
-                                                {{ $activity->new_value }}
-                                            </span>
-                                        @endif
-                                    </div>
-                                @endif
+                            @if (!empty($activity->new_value))
+                            <span class="new-activity-value">
+                                {{ $activity->new_value }}
+                            </span>
+                            @endif
+                        </div>
+                        @endif
 
-                                <small>
-                                    By
-                                    {{ $activity->user?->name
+                        <small>
+                            By
+                            {{ $activity->user?->name
                                         ?? 'System' }}
 
-                                    ·
+                            ·
 
-                                    {{ optional($activity->created_at)
+                            {{ optional($activity->created_at)
                                         ->format('d M Y, h:i A') }}
-                                </small>
-                            </div>
-                        </article>
-                    @empty
-                        <div class="premium-empty-state">
-                            <span class="empty-state-icon">↻</span>
+                        </small>
+                    </div>
+                </article>
+                @empty
+                <div class="premium-empty-state">
+                    <span class="empty-state-icon">↻</span>
 
-                            <h3>No activity recorded</h3>
+                    <h3>No activity recorded</h3>
 
-                            <p>
-                                Order changes will appear here.
-                            </p>
-                        </div>
-                    @endforelse
-
-                    <article class="activity-item activity-order-created">
-                        <div class="activity-marker">
-                            ✓
-                        </div>
-
-                        <div class="activity-content">
-                            <div class="activity-title-row">
-                                <strong>Order created</strong>
-
-                                <span>
-                                    {{ optional($order->created_at)
-                                        ->diffForHumans() }}
-                                </span>
-                            </div>
-
-                            <small>
-                                {{ optional($order->created_at)
-                                    ->format('d M Y, h:i A') }}
-                            </small>
-                        </div>
-                    </article>
+                    <p>
+                        Order changes will appear here.
+                    </p>
                 </div>
-            </section>
-        </main>
+                @endforelse
 
-        {{-- Sticky sidebar --}}
-        <aside class="order-sidebar">
-            <form
-                action="{{ route('admin.orders.update', $order) }}"
-                method="POST"
-                class="premium-panel order-management-panel"
-                id="orderManagementForm"
-            >
-                @csrf
-                @method('PUT')
-
-                <div class="panel-heading">
-                    <div>
-                        <span class="panel-eyebrow">
-                            Management
-                        </span>
-
-                        <h2>Update order</h2>
+                <article class="activity-item activity-order-created">
+                    <div class="activity-marker">
+                        ✓
                     </div>
 
-                    <span class="panel-icon">⚙</span>
+                    <div class="activity-content">
+                        <div class="activity-title-row">
+                            <strong>Order created</strong>
+
+                            <span>
+                                {{ optional($order->created_at)
+                                        ->diffForHumans() }}
+                            </span>
+                        </div>
+
+                        <small>
+                            {{ optional($order->created_at)
+                                    ->format('d M Y, h:i A') }}
+                        </small>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    {{-- Sticky sidebar --}}
+    <aside class="order-sidebar">
+        <form
+            action="{{ route('admin.orders.update', $order) }}"
+            method="POST"
+            class="premium-panel order-management-panel"
+            id="orderManagementForm">
+            @csrf
+            @method('PUT')
+
+            <div class="panel-heading">
+                <div>
+                    <span class="panel-eyebrow">
+                        Management
+                    </span>
+
+                    <h2>Update order</h2>
                 </div>
 
-                <div class="premium-form-group">
-                    <label for="status">
-                        Order status
-                    </label>
+                <span class="panel-icon">⚙</span>
+            </div>
 
-                    <select
-                        name="status"
-                        id="status"
-                        class="premium-select"
-                    >
-                        @foreach ([
-                            'pending' => 'Pending',
-                            'confirmed' => 'Confirmed',
-                            'processing' => 'Processing',
-                            'packed' => 'Packed',
-                            'shipped' => 'Shipped',
-                            'out_for_delivery' => 'Out for delivery',
-                            'delivered' => 'Delivered',
-                            'completed' => 'Completed',
-                            'cancelled' => 'Cancelled',
-                            'refunded' => 'Refunded',
-                        ] as $value => $label)
-                            <option
-                                value="{{ $value }}"
-                                @selected(
-                                    old(
-                                        'status',
-                                        $orderStatus
-                                    ) === $value
-                                )
-                            >
-                                {{ $label }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+            <div class="premium-form-group">
+                <label for="status">
+                    Order status
+                </label>
 
-                <div class="premium-form-group">
-                    <label for="payment_status">
-                        Payment status
-                    </label>
+                <select
+                    name="status"
+                    id="status"
+                    class="premium-select">
+                    @foreach ([
+                    'pending' => 'Pending',
+                    'confirmed' => 'Confirmed',
+                    'processing' => 'Processing',
+                    'packed' => 'Packed',
+                    'shipped' => 'Shipped',
+                    'out_for_delivery' => 'Out for delivery',
+                    'delivered' => 'Delivered',
+                    'completed' => 'Completed',
+                    'cancelled' => 'Cancelled',
+                    'refunded' => 'Refunded',
+                    ] as $value => $label)
+                    <option
+                        value="{{ $value }}"
+                        @selected(
+                        old( 'status' ,
+                        $orderStatus
+                        )===$value
+                        )>
+                        {{ $label }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
 
-                    <select
-                        name="payment_status"
-                        id="payment_status"
-                        class="premium-select"
-                    >
-                        @foreach ([
-                            'pending' => 'Pending',
-                            'paid' => 'Paid',
-                            'partially_paid' => 'Partially paid',
-                            'failed' => 'Failed',
-                            'refunded' => 'Refunded',
-                            'cancelled' => 'Cancelled',
-                        ] as $value => $label)
-                            <option
-                                value="{{ $value }}"
-                                @selected(
-                                    old(
-                                        'payment_status',
-                                        $paymentStatus
-                                    ) === $value
-                                )
-                            >
-                                {{ $label }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+            <div class="premium-form-group">
+                <label for="payment_status">
+                    Payment status
+                </label>
 
-                <div class="form-divider"></div>
+                <select
+                    name="payment_status"
+                    id="payment_status"
+                    class="premium-select">
+                    @foreach ([
+                    'pending' => 'Pending',
+                    'paid' => 'Paid',
+                    'partially_paid' => 'Partially paid',
+                    'failed' => 'Failed',
+                    'refunded' => 'Refunded',
+                    'cancelled' => 'Cancelled',
+                    ] as $value => $label)
+                    <option
+                        value="{{ $value }}"
+                        @selected(
+                        old( 'payment_status' ,
+                        $paymentStatus
+                        )===$value
+                        )>
+                        {{ $label }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
 
-                <div class="premium-form-group">
-                    <label for="courier">
-                        Courier
-                    </label>
+            <div class="form-divider"></div>
 
+            <div class="premium-form-group">
+                <label for="courier">
+                    Courier
+                </label>
+
+                <input
+                    type="text"
+                    name="courier"
+                    id="courier"
+                    class="premium-input"
+                    value="{{ old('courier', $courier) }}"
+                    placeholder="For example, DHL">
+            </div>
+
+            <div class="premium-form-group">
+                <label for="tracking_number">
+                    Tracking number
+                </label>
+
+                <div class="input-with-action">
                     <input
                         type="text"
-                        name="courier"
-                        id="courier"
+                        name="tracking_number"
+                        id="tracking_number"
                         class="premium-input"
-                        value="{{ old('courier', $courier) }}"
-                        placeholder="For example, DHL"
-                    >
-                </div>
-
-                <div class="premium-form-group">
-                    <label for="tracking_number">
-                        Tracking number
-                    </label>
-
-                    <div class="input-with-action">
-                        <input
-                            type="text"
-                            name="tracking_number"
-                            id="tracking_number"
-                            class="premium-input"
-                            value="{{ old(
+                        value="{{ old(
                                 'tracking_number',
                                 $trackingNumber
                             ) }}"
-                            placeholder="Enter tracking number"
-                        >
+                        placeholder="Enter tracking number">
 
-                        <button
-                            type="button"
-                            id="copyTrackingButton"
-                            title="Copy tracking number"
-                        >
-                            Copy
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        id="copyTrackingButton"
+                        title="Copy tracking number">
+                        Copy
+                    </button>
                 </div>
+            </div>
 
-                @if (
-                    property_exists($order, 'admin_note')
-                    || array_key_exists(
-                        'admin_note',
-                        $order->getAttributes()
-                    )
-                )
-                    <div class="premium-form-group">
-                        <label for="admin_note">
-                            Admin message
-                        </label>
+            @if (
+            property_exists($order, 'admin_note')
+            || array_key_exists(
+            'admin_note',
+            $order->getAttributes()
+            )
+            )
+            <div class="premium-form-group">
+                <label for="admin_note">
+                    Admin message
+                </label>
 
-                        <textarea
-                            name="admin_note"
-                            id="admin_note"
-                            class="premium-textarea"
-                            rows="4"
-                            placeholder="Optional internal message"
-                        >{{ old(
+                <textarea
+                    name="admin_note"
+                    id="admin_note"
+                    class="premium-textarea"
+                    rows="4"
+                    placeholder="Optional internal message">{{ old(
                             'admin_note',
                             $order->admin_note
                         ) }}</textarea>
-                    </div>
-                @endif
+            </div>
+            @endif
 
-                <label class="premium-checkbox">
-                    <input
-                        type="checkbox"
-                        name="notify_customer"
-                        value="1"
-                        @checked(old('notify_customer'))
-                    >
+            <label class="premium-checkbox">
+                <input
+                    type="checkbox"
+                    name="notify_customer"
+                    value="1"
+                    @checked(old('notify_customer'))>
 
-                    <span class="custom-checkbox"></span>
+                <span class="custom-checkbox"></span>
 
-                    <span>
-                        Notify customer about this update
+                <span>
+                    Notify customer about this update
+                </span>
+            </label>
+
+            <button
+                type="submit"
+                class="premium-button premium-button-primary full-width-button"
+                id="saveOrderButton">
+                Save changes
+            </button>
+
+            <small class="management-help-text">
+                Changes are recorded in the activity timeline.
+            </small>
+        </form>
+
+        {{-- Shipment --}}
+        <section class="premium-panel sidebar-summary-panel">
+            <div class="panel-heading compact-heading">
+                <div>
+                    <span class="panel-eyebrow">
+                        Shipment
                     </span>
-                </label>
 
-                <button
-                    type="submit"
-                    class="premium-button premium-button-primary full-width-button"
-                    id="saveOrderButton"
-                >
-                    Save changes
-                </button>
-
-                <small class="management-help-text">
-                    Changes are recorded in the activity timeline.
-                </small>
-            </form>
-
-            {{-- Shipment --}}
-            <section class="premium-panel sidebar-summary-panel">
-                <div class="panel-heading compact-heading">
-                    <div>
-                        <span class="panel-eyebrow">
-                            Shipment
-                        </span>
-
-                        <h2>Tracking</h2>
-                    </div>
-
-                    <span class="panel-icon">→</span>
+                    <h2>Tracking</h2>
                 </div>
 
-                @if ($trackingNumber)
-                    <div class="tracking-card">
-                        <span>Tracking number</span>
+                <span class="panel-icon">→</span>
+            </div>
 
-                        <strong id="trackingDisplay">
-                            {{ $trackingNumber }}
-                        </strong>
+            @if ($trackingNumber)
+            <div class="tracking-card">
+                <span>Tracking number</span>
 
-                        <div class="tracking-card-footer">
-                            <span>
-                                {{ $courier ?: 'Courier not specified' }}
-                            </span>
+                <strong id="trackingDisplay">
+                    {{ $trackingNumber }}
+                </strong>
 
-                            <button
-                                type="button"
-                                id="copyTrackingCardButton"
-                            >
-                                Copy
-                            </button>
-                        </div>
-                    </div>
-                @else
-                    <div class="sidebar-empty-message">
-                        <span>→</span>
+                <div class="tracking-card-footer">
+                    <span>
+                        {{ $courier ?: 'Courier not specified' }}
+                    </span>
 
-                        <p>
-                            Add a tracking number when the order ships.
-                        </p>
-                    </div>
-                @endif
-            </section>
+                    <button
+                        type="button"
+                        id="copyTrackingCardButton">
+                        Copy
+                    </button>
+                </div>
+            </div>
+            @else
+            <div class="sidebar-empty-message">
+                <span>→</span>
 
-            {{-- Payment summary --}}
-            <section class="premium-panel sidebar-summary-panel">
-                <div class="panel-heading compact-heading">
-                    <div>
-                        <span class="panel-eyebrow">
-                            Financial
-                        </span>
+                <p>
+                    Add a tracking number when the order ships.
+                </p>
+            </div>
+            @endif
+        </section>
 
-                        <h2>Payment summary</h2>
-                    </div>
+        {{-- Payment summary --}}
+        <section class="premium-panel sidebar-summary-panel">
+            <div class="panel-heading compact-heading">
+                <div>
+                    <span class="panel-eyebrow">
+                        Financial
+                    </span>
 
-                    <span class="premium-badge {{ $paymentClass }}">
-                        {{ ucwords(
+                    <h2>Payment summary</h2>
+                </div>
+
+                <span class="premium-badge {{ $paymentClass }}">
+                    {{ ucwords(
                             str_replace(
                                 '_',
                                 ' ',
                                 $paymentStatus
                             )
                         ) }}
-                    </span>
-                </div>
+                </span>
+            </div>
 
-                <div class="sidebar-payment-summary">
-                    <div>
-                        <span>Order total</span>
-                        <strong>{{ $money($grandTotal) }}</strong>
-                    </div>
-
-                    <div>
-                        <span>Paid</span>
-                        <strong>{{ $money($paidAmount) }}</strong>
-                    </div>
-
-                    <div class="sidebar-balance-row">
-                        <span>Balance</span>
-                        <strong>{{ $money($balance) }}</strong>
-                    </div>
-                </div>
-            </section>
-
-            {{-- Danger zone --}}
-            <section class="premium-panel danger-zone-panel">
+            <div class="sidebar-payment-summary">
                 <div>
-                    <span class="panel-eyebrow danger-eyebrow">
-                        Danger zone
-                    </span>
-
-                    <h2>Delete order</h2>
-
-                    <p>
-                        This permanently removes the order and its associated
-                        records.
-                    </p>
+                    <span>Order total</span>
+                    <strong>{{ $money($grandTotal) }}</strong>
                 </div>
 
-                <button
-                    type="button"
-                    class="premium-button premium-button-danger full-width-button"
-                    data-open-delete-modal
-                >
-                    Delete this order
-                </button>
-            </section>
-        </aside>
-    </div>
+                <div>
+                    <span>Paid</span>
+                    <strong>{{ $money($paidAmount) }}</strong>
+                </div>
+
+                <div class="sidebar-balance-row">
+                    <span>Balance</span>
+                    <strong>{{ $money($balance) }}</strong>
+                </div>
+            </div>
+        </section>
+
+        {{-- Danger zone --}}
+        <section class="premium-panel danger-zone-panel">
+            <div>
+                <span class="panel-eyebrow danger-eyebrow">
+                    Danger zone
+                </span>
+
+                <h2>Delete order</h2>
+
+                <p>
+                    This permanently removes the order and its associated
+                    records.
+                </p>
+            </div>
+
+            <button
+                type="button"
+                class="premium-button premium-button-danger full-width-button"
+                data-open-delete-modal>
+                Delete this order
+            </button>
+        </section>
+    </aside>
+</div>
 </div>
 
 {{-- Delete confirmation modal --}}
 <div
     class="premium-modal"
     id="deleteOrderModal"
-    aria-hidden="true"
->
+    aria-hidden="true">
     <div
         class="premium-modal-backdrop"
-        data-close-delete-modal
-    ></div>
+        data-close-delete-modal></div>
 
     <div
         class="premium-modal-dialog"
         role="dialog"
         aria-modal="true"
-        aria-labelledby="deleteOrderTitle"
-    >
+        aria-labelledby="deleteOrderTitle">
         <button
             type="button"
             class="modal-close-button"
-            data-close-delete-modal
-        >
+            data-close-delete-modal>
             ×
         </button>
 
@@ -1667,8 +1648,7 @@
 
         <form
             action="{{ route('admin.orders.destroy', $order) }}"
-            method="POST"
-        >
+            method="POST">
             @csrf
             @method('DELETE')
 
@@ -1676,15 +1656,13 @@
                 <button
                     type="button"
                     class="premium-button premium-button-light"
-                    data-close-delete-modal
-                >
+                    data-close-delete-modal>
                     Cancel
                 </button>
 
                 <button
                     type="submit"
-                    class="premium-button premium-button-danger"
-                >
+                    class="premium-button premium-button-danger">
                     Delete order
                 </button>
             </div>
@@ -1778,11 +1756,9 @@
         padding: 26px;
         margin-bottom: 20px;
         background:
-            radial-gradient(
-                circle at top right,
+            radial-gradient(circle at top right,
                 rgba(99, 102, 241, 0.15),
-                transparent 31%
-            ),
+                transparent 31%),
             linear-gradient(145deg, #ffffff 0%, #f8f9ff 100%);
         border: 1px solid var(--order-border);
         border-radius: 22px;
@@ -1932,22 +1908,18 @@
     .premium-button-primary {
         color: #fff;
         background:
-            linear-gradient(
-                135deg,
+            linear-gradient(135deg,
                 var(--order-primary),
-                #6366f1
-            );
+                #6366f1);
         box-shadow:
             0 9px 20px rgba(79, 70, 229, 0.2);
     }
 
     .premium-button-primary:hover {
         background:
-            linear-gradient(
-                135deg,
+            linear-gradient(135deg,
                 var(--order-primary-dark),
-                var(--order-primary)
-            );
+                var(--order-primary));
     }
 
     .premium-button-danger {
@@ -2363,7 +2335,7 @@
         white-space: nowrap;
     }
 
-    .product-price-information > div {
+    .product-price-information>div {
         display: grid;
         gap: 4px;
     }
@@ -2451,7 +2423,7 @@
         font-weight: 850;
     }
 
-    .grand-total-row > div {
+    .grand-total-row>div {
         text-align: right;
     }
 
@@ -2507,11 +2479,9 @@
         height: 42px;
         color: #fff;
         background:
-            linear-gradient(
-                135deg,
+            linear-gradient(135deg,
                 var(--order-primary),
-                #818cf8
-            );
+                #818cf8);
         border-radius: 12px;
         font-size: 15px;
         font-weight: 900;
@@ -2546,7 +2516,7 @@
         border-bottom: 0;
     }
 
-    .information-row > span {
+    .information-row>span {
         color: var(--order-muted);
     }
 
@@ -2616,7 +2586,7 @@
         display: block;
     }
 
-    .payment-method-card > div > span {
+    .payment-method-card>div>span {
         margin-top: 3px;
         color: var(--order-muted);
         font-size: 10px;
@@ -2812,13 +2782,13 @@
         font-size: 13px;
     }
 
-    .activity-title-row > span {
+    .activity-title-row>span {
         flex: 0 0 auto;
         color: var(--order-muted);
         font-size: 10px;
     }
 
-    .activity-content > small {
+    .activity-content>small {
         display: block;
         margin-top: 5px;
         color: var(--order-muted);
@@ -2988,12 +2958,12 @@
         border-radius: 5px;
     }
 
-    .premium-checkbox input:checked + .custom-checkbox {
+    .premium-checkbox input:checked+.custom-checkbox {
         background: var(--order-primary);
         border-color: var(--order-primary);
     }
 
-    .premium-checkbox input:checked + .custom-checkbox::after {
+    .premium-checkbox input:checked+.custom-checkbox::after {
         position: absolute;
         top: 2px;
         left: 5px;
@@ -3028,13 +2998,13 @@
         border-radius: 11px;
     }
 
-    .tracking-card > span {
+    .tracking-card>span {
         display: block;
         color: var(--order-muted);
         font-size: 10px;
     }
 
-    .tracking-card > strong {
+    .tracking-card>strong {
         display: block;
         margin: 6px 0 12px;
         overflow-wrap: anywhere;
@@ -3093,7 +3063,7 @@
         gap: 10px;
     }
 
-    .sidebar-payment-summary > div {
+    .sidebar-payment-summary>div {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -3426,7 +3396,7 @@
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const moreButton =
             document.getElementById('orderMoreButton');
 
@@ -3434,17 +3404,17 @@
             document.getElementById('orderActionsMenu');
 
         if (moreButton && actionsMenu) {
-            moreButton.addEventListener('click', function (event) {
+            moreButton.addEventListener('click', function(event) {
                 event.stopPropagation();
 
                 actionsMenu.classList.toggle('is-open');
             });
 
-            document.addEventListener('click', function () {
+            document.addEventListener('click', function() {
                 actionsMenu.classList.remove('is-open');
             });
 
-            actionsMenu.addEventListener('click', function (event) {
+            actionsMenu.addEventListener('click', function(event) {
                 event.stopPropagation();
             });
         }
@@ -3479,7 +3449,7 @@
 
                 button.textContent = 'Copied';
 
-                setTimeout(function () {
+                setTimeout(function() {
                     button.textContent = originalText;
                 }, 1400);
             } catch (error) {
@@ -3498,7 +3468,7 @@
 
                 button.textContent = 'Copied';
 
-                setTimeout(function () {
+                setTimeout(function() {
                     button.textContent = originalText;
                 }, 1400);
             }
@@ -3507,7 +3477,7 @@
         if (copyTrackingButton && trackingInput) {
             copyTrackingButton.addEventListener(
                 'click',
-                function () {
+                function() {
                     copyTrackingNumber(
                         copyTrackingButton,
                         trackingInput.value.trim()
@@ -3517,12 +3487,12 @@
         }
 
         if (
-            copyTrackingCardButton
-            && trackingDisplay
+            copyTrackingCardButton &&
+            trackingDisplay
         ) {
             copyTrackingCardButton.addEventListener(
                 'click',
-                function () {
+                function() {
                     copyTrackingNumber(
                         copyTrackingCardButton,
                         trackingDisplay.textContent.trim()
@@ -3570,14 +3540,14 @@
             document.body.style.overflow = '';
         }
 
-        openDeleteButtons.forEach(function (button) {
+        openDeleteButtons.forEach(function(button) {
             button.addEventListener(
                 'click',
                 openDeleteModal
             );
         });
 
-        closeDeleteButtons.forEach(function (button) {
+        closeDeleteButtons.forEach(function(button) {
             button.addEventListener(
                 'click',
                 closeDeleteModal
@@ -3586,7 +3556,7 @@
 
         document.addEventListener(
             'keydown',
-            function (event) {
+            function(event) {
                 if (event.key === 'Escape') {
                     closeDeleteModal();
                 }
@@ -3608,7 +3578,7 @@
         if (managementForm && saveOrderButton) {
             managementForm.addEventListener(
                 'submit',
-                function () {
+                function() {
                     saveOrderButton.disabled = true;
                     saveOrderButton.textContent =
                         'Saving changes...';
@@ -3625,7 +3595,7 @@
         if (noteForm && addNoteButton) {
             noteForm.addEventListener(
                 'submit',
-                function () {
+                function() {
                     addNoteButton.disabled = true;
                     addNoteButton.textContent =
                         'Adding note...';
@@ -3641,10 +3611,10 @@
 
         document
             .querySelectorAll('.delete-note-form')
-            .forEach(function (form) {
+            .forEach(function(form) {
                 form.addEventListener(
                     'submit',
-                    function (event) {
+                    function(event) {
                         const confirmed = window.confirm(
                             'Are you sure you want to delete this note?'
                         );

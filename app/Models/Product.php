@@ -20,6 +20,7 @@ class Product extends Model
         'additional_info',
         'regular_price',
         'sale_price',
+        'cost_price',
         'stock',
         'status',
         'featured_image',
@@ -36,6 +37,7 @@ class Product extends Model
     protected $casts = [
         'regular_price' => 'decimal:2',
         'sale_price' => 'decimal:2',
+        'cost_price' => 'decimal:2',
         'stock' => 'integer',
         'views_count' => 'integer',
         'favorites_count' => 'integer',
@@ -204,7 +206,7 @@ class Product extends Model
         if (
             $this->sale_price !== null
             && (float) $this->sale_price
-                < (float) $this->regular_price
+            < (float) $this->regular_price
         ) {
             return (float) $this->sale_price;
         }
@@ -345,5 +347,9 @@ class Product extends Model
         return Storage::disk('public')->url(
             ltrim($normalizedPath, '/')
         );
+    }
+    public function inventoryHistories(): HasMany
+    {
+        return $this->hasMany(InventoryHistory::class);
     }
 }

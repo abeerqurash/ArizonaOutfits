@@ -1,18 +1,22 @@
 <?php
 
 return [
-    'currency' => env(
-        'PAYMENT_CURRENCY',
-        'USD'
+    'currency' => strtoupper(
+        env(
+            'PAYMENT_CURRENCY',
+            'USD'
+        )
     ),
 
     'stripe' => [
         'enabled' => env(
             'STRIPE_ENABLED',
-            true
+            false
         ),
 
-        'key' => env('STRIPE_KEY'),
+        'key' => env(
+            'STRIPE_KEY'
+        ),
 
         'secret' => env(
             'STRIPE_SECRET'
@@ -23,41 +27,10 @@ return [
         ),
     ],
 
-    // 'paypal' => [
-    //     'enabled' => env(
-    //         'PAYPAL_ENABLED',
-    //         true
-    //     ),
-
-    //     'mode' => env(
-    //         'PAYPAL_MODE',
-    //         'sandbox'
-    //     ),
-
-    //     'client_id' => env(
-    //         'PAYPAL_CLIENT_ID'
-    //     ),
-
-    //     'client_secret' => env(
-    //         'PAYPAL_CLIENT_SECRET'
-    //     ),
-
-    //     'webhook_id' => env(
-    //         'PAYPAL_WEBHOOK_ID'
-    //     ),
-    // ],
-
-    // 'cod' => [
-    //     'enabled' => env(
-    //         'COD_ENABLED',
-    //         true
-    //     ),
-    // ],
-
     'bank_transfer' => [
         'enabled' => env(
             'BANK_TRANSFER_ENABLED',
-            true
+            false
         ),
 
         'bank_name' => env(

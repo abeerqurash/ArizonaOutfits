@@ -21,8 +21,13 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\Admin\StockValuationController;
+use App\Http\Controllers\Admin\InventoryReportController;
+use App\Http\Controllers\Admin\InventoryAdjustmentController;
+use App\Http\Controllers\Admin\InventoryAlertController;
 use App\Http\Controllers\Payment\StripePaymentController;
 use App\Http\Controllers\Webhooks\StripeWebhookController;
+use App\Http\Controllers\Admin\InventoryHistoryController;
 
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
@@ -36,7 +41,6 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EcommerceSettingController as AdminEcommerceSettingController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
-
 
 
 /*
@@ -480,7 +484,15 @@ Route::middleware([
 | Individual order
 |--------------------------------------------------------------------------
 */
+        Route::get(
+            '/orders/{order}/shipping-label',
+            [AdminOrderController::class, 'shippingLabel']
+        )->name('orders.shipping-label');
 
+        Route::get(
+            '/orders/{order}/shipping-label/download',
+            [AdminOrderController::class, 'downloadShippingLabel']
+        )->name('orders.shipping-label.download');
         Route::get(
             '/orders/{order}',
             [AdminOrderController::class, 'show']
@@ -490,7 +502,10 @@ Route::middleware([
             '/orders/{order}/invoice',
             [AdminOrderController::class, 'invoice']
         )->name('orders.invoice');
-
+        Route::post(
+            '/orders/{order}/email-invoice',
+            [AdminOrderController::class, 'emailInvoice']
+        )->name('orders.email-invoice');
         Route::get(
             '/orders/{order}/invoice/download',
             [AdminOrderController::class, 'downloadInvoice']
@@ -596,7 +611,10 @@ Route::middleware([
                 'storeValue',
             ]
         )->name('product-options.values.store');
-
+        Route::get(
+            '/stock-valuation',
+            [StockValuationController::class, 'index']
+        )->name('stock-valuation.index');
         /*
 |--------------------------------------------------------------------------
 | Admin resources
@@ -634,6 +652,39 @@ Route::middleware([
             'coupons',
             AdminCouponController::class
         );
+
+        Route::get(
+            '/inventory-alerts',
+            [InventoryAlertController::class, 'index']
+        )->name('inventory-alerts.index');
+
+        Route::patch(
+            '/inventory-alerts/{inventoryAlert}/resolve',
+            [InventoryAlertController::class, 'resolve']
+        )->name('inventory-alerts.resolve');
+
+
+        Route::get(
+            '/inventory-history',
+            [InventoryHistoryController::class, 'index']
+        )->name('inventory-history.index');
+        Route::get(
+            '/products/{product}/inventory',
+            [InventoryAdjustmentController::class, 'edit']
+        )->name('products.inventory.edit');
+
+        Route::post(
+            '/products/{product}/inventory',
+            [InventoryAdjustmentController::class, 'update']
+        )->name('products.inventory.update');
+        Route::get(
+            '/inventory-reports',
+            [InventoryReportController::class, 'index']
+        )->name('inventory-reports.index');
+        Route::get(
+            '/inventory-reports/export',
+            [InventoryReportController::class, 'export']
+        )->name('inventory-reports.export');
     });
 
 /*

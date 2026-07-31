@@ -779,7 +779,7 @@ class ShopController extends Controller
             $valueIds = collect($valueIds)
                 ->filter()
                 ->map(
-                    fn ($valueId) => (int) $valueId
+                    fn($valueId) => (int) $valueId
                 )
                 ->unique()
                 ->values();
@@ -818,13 +818,36 @@ class ShopController extends Controller
                                  * ]
                                  */
 
-                                $valueQuery->orWhereJsonContains(
-                                    'options',
-                                    [
-                                        'option_id' => $optionId,
-                                        'value_id' => $valueId,
-                                    ]
-                                );
+                                $valueQuery->orWhere(function (
+                                    Builder $jsonQuery
+                                ) use (
+                                    $optionId,
+                                    $valueId
+                                ) {
+                                    /*
+     * Correct format:
+     * option_id and value_id stored as JSON numbers.
+     */
+                                    $jsonQuery->whereJsonContains(
+                                        'options',
+                                        [
+                                            'option_id' => $optionId,
+                                            'value_id' => $valueId,
+                                        ]
+                                    );
+
+                                    /*
+     * Backward compatibility:
+     * older variants may contain IDs as JSON strings.
+     */
+                                    $jsonQuery->orWhereJsonContains(
+                                        'options',
+                                        [
+                                            'option_id' => (string) $optionId,
+                                            'value_id' => (string) $valueId,
+                                        ]
+                                    );
+                                });
                             }
                         }
                     );
@@ -852,13 +875,13 @@ class ShopController extends Controller
                 (array) $valueIds
             )
                 ->filter(
-                    fn ($valueId) => is_numeric($valueId)
+                    fn($valueId) => is_numeric($valueId)
                 )
                 ->map(
-                    fn ($valueId) => (int) $valueId
+                    fn($valueId) => (int) $valueId
                 )
                 ->filter(
-                    fn ($valueId) => $valueId > 0
+                    fn($valueId) => $valueId > 0
                 )
                 ->unique()
                 ->values()
@@ -1019,13 +1042,13 @@ class ShopController extends Controller
             )
             ->selectRaw(
                 'MIN('
-                . $this->productEffectivePriceSql()
-                . ') as minimum'
+                    . $this->productEffectivePriceSql()
+                    . ') as minimum'
             )
             ->selectRaw(
                 'MAX('
-                . $this->productEffectivePriceSql()
-                . ') as maximum'
+                    . $this->productEffectivePriceSql()
+                    . ') as maximum'
             )
             ->first();
 
@@ -1043,13 +1066,13 @@ class ShopController extends Controller
             )
             ->selectRaw(
                 'MIN('
-                . $this->variantEffectivePriceSql()
-                . ') as minimum'
+                    . $this->variantEffectivePriceSql()
+                    . ') as minimum'
             )
             ->selectRaw(
                 'MAX('
-                . $this->variantEffectivePriceSql()
-                . ') as maximum'
+                    . $this->variantEffectivePriceSql()
+                    . ') as maximum'
             )
             ->first();
 
@@ -1057,14 +1080,14 @@ class ShopController extends Controller
             $productPrices?->minimum,
             $variantPrices?->minimum,
         ])->filter(
-            fn ($value) => $value !== null
+            fn($value) => $value !== null
         );
 
         $maximumValues = collect([
             $productPrices?->maximum,
             $variantPrices?->maximum,
         ])->filter(
-            fn ($value) => $value !== null
+            fn($value) => $value !== null
         );
 
         return [

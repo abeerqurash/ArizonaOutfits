@@ -4,8 +4,7 @@
 
         <a
             href="{{ route('admin.dashboard') }}"
-            class="admin-brand"
-        >
+            class="admin-brand">
             <span class="admin-brand-icon">
                 <i class="fa-solid fa-shirt"></i>
             </span>
@@ -20,8 +19,7 @@
             type="button"
             class="admin-sidebar-close"
             id="adminSidebarClose"
-            aria-label="Close admin sidebar"
-        >
+            aria-label="Close admin sidebar">
             <i class="fa-solid fa-xmark"></i>
         </button>
 
@@ -43,8 +41,7 @@
                         request()->routeIs('admin.dashboard')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-chart-pie"></i>
                     </span>
@@ -72,8 +69,7 @@
                         request()->routeIs('admin.orders.*')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-bag-shopping"></i>
                     </span>
@@ -89,8 +85,7 @@
                         request()->routeIs('admin.products.*')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-box-open"></i>
                     </span>
@@ -106,8 +101,7 @@
                         request()->routeIs('admin.product-categories.*')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-layer-group"></i>
                     </span>
@@ -123,8 +117,7 @@
                         request()->routeIs('admin.product-tags.*')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-tags"></i>
                     </span>
@@ -140,8 +133,7 @@
                         request()->routeIs('admin.coupons.*')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-ticket"></i>
                     </span>
@@ -149,6 +141,41 @@
                     <span class="admin-menu-text">
                         Coupons
                     </span>
+                </a>
+
+                <a
+                    href="{{ route('admin.inventory-alerts.index') }}"
+                    class="admin-menu-link {{ request()->routeIs('admin.inventory-alerts.*') ? 'active' : '' }}">
+                    <span class="admin-menu-icon">
+                        <i class="fa-regular fa-bell"></i>
+                    </span>
+                    <span class="admin-menu-text">Inventory Alerts</span>
+
+                    @if(($activeInventoryAlertCount ?? 0) > 0)
+                    <span class="inventory-alert-count">
+                        {{ $activeInventoryAlertCount > 99 ? '99+' : $activeInventoryAlertCount }}
+                    </span>
+                    @endif
+                </a>
+
+                <a
+                    href="{{ route('admin.inventory-history.index') }}"
+                    class="admin-menu-link {{ request()->routeIs('admin.inventory-history.*') ? 'active' : '' }}">
+
+                    <i class="fas fa-history"></i>
+
+                    <span>
+
+                        Inventory History
+
+                    </span>
+
+                </a>
+                <a
+                    href="{{ route('admin.inventory-reports.index') }}"
+                    class="admin-menu-link {{ request()->routeIs('admin.inventory-reports.*') ? 'active' : '' }}">
+                    <i class="fas fa-file"></i>
+                    <span>Inventory Reports</span>
                 </a>
 
             </nav>
@@ -169,8 +196,7 @@
                         request()->routeIs('admin.customers.*')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-users"></i>
                     </span>
@@ -186,8 +212,7 @@
                         request()->routeIs('admin.reviews.*')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-star"></i>
                     </span>
@@ -215,8 +240,7 @@
                         request()->routeIs('admin.posts.*')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-newspaper"></i>
                     </span>
@@ -232,8 +256,7 @@
                         request()->routeIs('admin.categories.*')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-folder-tree"></i>
                     </span>
@@ -261,8 +284,7 @@
                         request()->routeIs('admin.settings.*')
                             ? 'active'
                             : ''
-                    }}"
-                >
+                    }}">
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-gear"></i>
                     </span>
@@ -284,8 +306,7 @@
             href="{{ route('home-page') }}"
             class="admin-menu-link"
             target="_blank"
-            rel="noopener"
-        >
+            rel="noopener">
             <span class="admin-menu-icon">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </span>
@@ -297,14 +318,12 @@
 
         <form
             action="{{ route('admin.logout') }}"
-            method="POST"
-        >
+            method="POST">
             @csrf
 
             <button
                 type="submit"
-                class="admin-menu-link admin-logout-button"
-            >
+                class="admin-menu-link admin-logout-button">
                 <span class="admin-menu-icon">
                     <i class="fa-solid fa-right-from-bracket"></i>
                 </span>

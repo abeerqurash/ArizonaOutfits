@@ -136,6 +136,9 @@ class ProductController extends AdminController
                 'sale_price' =>
                 $validated['sale_price'] ?? null,
 
+                'cost_price' =>
+                $validated['cost_price'],
+
                 'stock' =>
                 $validated['stock'] ?? 0,
 
@@ -305,6 +308,9 @@ class ProductController extends AdminController
 
                 'sale_price' =>
                 $validated['sale_price'] ?? null,
+
+                'cost_price' =>
+                $validated['cost_price'],
 
                 'stock' =>
                 $validated['stock'] ?? 0,
@@ -509,6 +515,12 @@ class ProductController extends AdminController
                 'numeric',
                 'min:0',
                 'lte:regular_price',
+            ],
+
+            'cost_price' => [
+                'required',
+                'numeric',
+                'min:0',
             ],
 
             'stock' => [
@@ -752,8 +764,16 @@ class ProductController extends AdminController
                 'image' =>
                 $variantImagePath,
 
-                'options' =>
-                $variantData['options'] ?? [],
+                'options' => collect(
+                    $variantData['options'] ?? []
+                )->map(function (array $option): array {
+                    return [
+                        'option_id' => (int) $option['option_id'],
+                        'option_name' => (string) $option['option_name'],
+                        'value_id' => (int) $option['value_id'],
+                        'value_label' => (string) $option['value_label'],
+                    ];
+                })->values()->all(),
             ]);
         }
     }

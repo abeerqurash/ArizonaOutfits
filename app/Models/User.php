@@ -43,4 +43,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Review::class);
     }
+
+    public function inventoryHistories(): HasMany
+    {
+        return $this->hasMany(InventoryHistory::class);
+    }
 }

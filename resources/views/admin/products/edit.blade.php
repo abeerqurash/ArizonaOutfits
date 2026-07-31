@@ -5,59 +5,59 @@
 @section('content')
 
 @php
-    $selectedCategoryIds = array_map(
-        'strval',
-        old(
-            'categories',
-            $product->categories->pluck('id')->toArray()
-        )
-    );
+$selectedCategoryIds = array_map(
+'strval',
+old(
+'categories',
+$product->categories->pluck('id')->toArray()
+)
+);
 
-    $selectedTagIds = array_map(
-        'strval',
-        old(
-            'tags',
-            $product->tags->pluck('id')->toArray()
-        )
-    );
+$selectedTagIds = array_map(
+'strval',
+old(
+'tags',
+$product->tags->pluck('id')->toArray()
+)
+);
 
-    $selectedOptionIds = array_map(
-        'strval',
-        old(
-            'product_options',
-            $product->options->pluck('id')->toArray()
-        )
-    );
+$selectedOptionIds = array_map(
+'strval',
+old(
+'product_options',
+$product->options->pluck('id')->toArray()
+)
+);
 
-    $selectedOptionValueIds = array_map(
-        'strval',
-        old(
-            'product_option_values',
-            $product->optionValues->pluck('id')->toArray()
-        )
-    );
+$selectedOptionValueIds = array_map(
+'strval',
+old(
+'product_option_values',
+$product->optionValues->pluck('id')->toArray()
+)
+);
 
-    $databaseVariants = $product->variants
-        ->map(function ($variant) {
-            return [
-                'id' => $variant->id,
-                'sku' => $variant->sku,
-                'regular_price' => $variant->regular_price,
-                'sale_price' => $variant->sale_price,
-                'stock' => $variant->stock,
-                'image' => $variant->image,
-                'old_image' => $variant->image,
-                'options' => is_array($variant->options)
-                    ? $variant->options
-                    : [],
-            ];
-        })
-        ->toArray();
+$databaseVariants = $product->variants
+->map(function ($variant) {
+return [
+'id' => $variant->id,
+'sku' => $variant->sku,
+'regular_price' => $variant->regular_price,
+'sale_price' => $variant->sale_price,
+'stock' => $variant->stock,
+'image' => $variant->image,
+'old_image' => $variant->image,
+'options' => is_array($variant->options)
+? $variant->options
+: [],
+];
+})
+->toArray();
 
-    $formVariants = old(
-        'variants',
-        $databaseVariants
-    );
+$formVariants = old(
+'variants',
+$databaseVariants
+);
 @endphp
 
 <div class="page-wrapper">
@@ -75,8 +75,7 @@
                         gap:20px;
                         flex-wrap:wrap;
                         margin-bottom:25px;
-                    "
-                >
+                    ">
                     <div>
                         <h1 style="margin:0 0 5px;">
                             Edit Product
@@ -95,52 +94,49 @@
                             color:#222;
                             text-decoration:none;
                             border-radius:5px;
-                        "
-                    >
+                        ">
                         Back to Products
                     </a>
                 </div>
 
                 @if ($errors->any())
 
-                    <div
-                        style="
+                <div
+                    style="
                             padding:15px;
                             background:#f8d7da;
                             color:#721c24;
                             border:1px solid #f5c6cb;
                             border-radius:5px;
                             margin-bottom:20px;
-                        "
-                    >
-                        <strong>
-                            Please fix the following errors:
-                        </strong>
+                        ">
+                    <strong>
+                        Please fix the following errors:
+                    </strong>
 
-                        <ul style="margin:10px 0 0;padding-left:20px;">
-                            @foreach ($errors->all() as $error)
-                                <li>
-                                    {{ $error }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                    <ul style="margin:10px 0 0;padding-left:20px;">
+                        @foreach ($errors->all() as $error)
+                        <li>
+                            {{ $error }}
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
 
                 @endif
 
                 @if (session('error'))
 
-                    <div
-                        style="
+                <div
+                    style="
                             padding:15px;
                             background:#f8d7da;
                             color:#721c24;
                             border-radius:5px;
                             margin-bottom:20px;
-                        "
-                    >
-                        {{ session('error') }}
-                    </div>
+                        ">
+                    {{ session('error') }}
+                </div>
 
                 @endif
 
@@ -148,8 +144,7 @@
                     action="{{ route('admin.products.update', $product->id) }}"
                     method="POST"
                     enctype="multipart/form-data"
-                    id="product-form"
-                >
+                    id="product-form">
                     @csrf
                     @method('PUT')
 
@@ -159,8 +154,7 @@
                             grid-template-columns:minmax(0, 2fr) minmax(280px, 1fr);
                             gap:25px;
                             align-items:start;
-                        "
-                    >
+                        ">
 
                         <div>
 
@@ -173,8 +167,7 @@
                                 <div style="margin-bottom:15px;">
                                     <label
                                         for="title"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Product Title *
                                     </label>
 
@@ -184,15 +177,13 @@
                                         name="title"
                                         value="{{ old('title', $product->title) }}"
                                         required
-                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                    >
+                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
                                 </div>
 
                                 <div style="margin-bottom:15px;">
                                     <label
                                         for="slug"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Slug *
                                     </label>
 
@@ -202,15 +193,13 @@
                                         name="slug"
                                         value="{{ old('slug', $product->slug) }}"
                                         required
-                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                    >
+                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
                                 </div>
 
                                 <div style="margin-bottom:15px;">
                                     <label
                                         for="sku"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Product SKU
                                     </label>
 
@@ -219,15 +208,13 @@
                                         id="sku"
                                         name="sku"
                                         value="{{ old('sku', $product->sku) }}"
-                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                    >
+                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
                                 </div>
 
                                 <div style="margin-bottom:15px;">
                                     <label
                                         for="short_description"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Short Description
                                     </label>
 
@@ -235,15 +222,13 @@
                                         id="short_description"
                                         name="short_description"
                                         rows="4"
-                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                    >{{ old('short_description', $product->short_description) }}</textarea>
+                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">{{ old('short_description', $product->short_description) }}</textarea>
                                 </div>
 
                                 <div style="margin-bottom:15px;">
                                     <label
                                         for="long_description"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Long Description
                                     </label>
 
@@ -251,15 +236,13 @@
                                         id="long_description"
                                         name="long_description"
                                         rows="8"
-                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                    >{{ old('long_description', $product->long_description) }}</textarea>
+                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">{{ old('long_description', $product->long_description) }}</textarea>
                                 </div>
 
                                 <div>
                                     <label
                                         for="additional_info"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Additional Information
                                     </label>
 
@@ -267,8 +250,7 @@
                                         id="additional_info"
                                         name="additional_info"
                                         rows="5"
-                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                    >{{ old('additional_info', $product->additional_info) }}</textarea>
+                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">{{ old('additional_info', $product->additional_info) }}</textarea>
                                 </div>
 
                             </div>
@@ -278,19 +260,39 @@
                                 <h2 style="margin-top:0;">
                                     Pricing and Stock
                                 </h2>
+                                <div>
+                                    <label
+                                        for="cost_price"
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
+                                        Cost Price *
+                                    </label>
 
+                                    <input
+                                        type="number"
+                                        id="cost_price"
+                                        name="cost_price"
+                                        value="{{ old('cost_price', $product->cost_price) }}"
+                                        min="0"
+                                        step="0.01"
+                                        required
+                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
+
+                                    @error('cost_price')
+                                    <small style="color:red;">
+                                        {{ $message }}
+                                    </small>
+                                    @enderror
+                                </div>
                                 <div
                                     style="
                                         display:grid;
                                         grid-template-columns:repeat(2, minmax(0, 1fr));
                                         gap:15px;
-                                    "
-                                >
+                                    ">
                                     <div>
                                         <label
                                             for="regular_price"
-                                            style="display:block;font-weight:bold;margin-bottom:6px;"
-                                        >
+                                            style="display:block;font-weight:bold;margin-bottom:6px;">
                                             Regular Price *
                                         </label>
 
@@ -302,15 +304,13 @@
                                             min="0"
                                             step="0.01"
                                             required
-                                            style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                        >
+                                            style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
                                     </div>
 
                                     <div>
                                         <label
                                             for="sale_price"
-                                            style="display:block;font-weight:bold;margin-bottom:6px;"
-                                        >
+                                            style="display:block;font-weight:bold;margin-bottom:6px;">
                                             Sale Price
                                         </label>
 
@@ -321,15 +321,13 @@
                                             value="{{ old('sale_price', $product->sale_price) }}"
                                             min="0"
                                             step="0.01"
-                                            style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                        >
+                                            style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
                                     </div>
 
                                     <div>
                                         <label
                                             for="stock"
-                                            style="display:block;font-weight:bold;margin-bottom:6px;"
-                                        >
+                                            style="display:block;font-weight:bold;margin-bottom:6px;">
                                             Main Product Stock
                                         </label>
 
@@ -340,15 +338,13 @@
                                             value="{{ old('stock', $product->stock) }}"
                                             min="0"
                                             step="1"
-                                            style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                        >
+                                            style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
                                     </div>
 
                                     <div>
                                         <label
                                             for="status"
-                                            style="display:block;font-weight:bold;margin-bottom:6px;"
-                                        >
+                                            style="display:block;font-weight:bold;margin-bottom:6px;">
                                             Status *
                                         </label>
 
@@ -356,26 +352,22 @@
                                             id="status"
                                             name="status"
                                             required
-                                            style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                        >
+                                            style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
                                             <option
                                                 value="active"
-                                                {{ old('status', $product->status) === 'active' ? 'selected' : '' }}
-                                            >
+                                                {{ old('status', $product->status) === 'active' ? 'selected' : '' }}>
                                                 Active
                                             </option>
 
                                             <option
                                                 value="draft"
-                                                {{ old('status', $product->status) === 'draft' ? 'selected' : '' }}
-                                            >
+                                                {{ old('status', $product->status) === 'draft' ? 'selected' : '' }}>
                                                 Draft
                                             </option>
 
                                             <option
                                                 value="inactive"
-                                                {{ old('status', $product->status) === 'inactive' ? 'selected' : '' }}
-                                            >
+                                                {{ old('status', $product->status) === 'inactive' ? 'selected' : '' }}>
                                                 Inactive
                                             </option>
                                         </select>
@@ -395,8 +387,7 @@
                                         gap:15px;
                                         flex-wrap:wrap;
                                         margin-bottom:15px;
-                                    "
-                                >
+                                    ">
                                     <div>
                                         <h2 style="margin:0 0 5px;">
                                             Product Attributes
@@ -417,8 +408,7 @@
                                             border:0;
                                             border-radius:5px;
                                             cursor:pointer;
-                                        "
-                                    >
+                                        ">
                                         Add New Attribute
                                     </button>
                                 </div>
@@ -432,41 +422,35 @@
                                         border:1px solid #ddd;
                                         border-radius:6px;
                                         margin-bottom:20px;
-                                    "
-                                >
+                                    ">
                                     <div
                                         style="
                                             display:grid;
                                             grid-template-columns:2fr 1fr auto;
                                             gap:10px;
                                             align-items:end;
-                                        "
-                                    >
+                                        ">
                                         <div>
                                             <label
-                                                style="display:block;font-weight:bold;margin-bottom:5px;"
-                                            >
+                                                style="display:block;font-weight:bold;margin-bottom:5px;">
                                                 Attribute Name
                                             </label>
 
                                             <input
                                                 type="text"
                                                 id="new-attribute-name"
-                                                style="width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;"
-                                            >
+                                                style="width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;">
                                         </div>
 
                                         <div>
                                             <label
-                                                style="display:block;font-weight:bold;margin-bottom:5px;"
-                                            >
+                                                style="display:block;font-weight:bold;margin-bottom:5px;">
                                                 Type
                                             </label>
 
                                             <select
                                                 id="new-attribute-type"
-                                                style="width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;"
-                                            >
+                                                style="width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;">
                                                 <option value="text">Text</option>
                                                 <option value="select">Select</option>
                                                 <option value="color">Color</option>
@@ -483,127 +467,118 @@
                                                 border:0;
                                                 border-radius:5px;
                                                 cursor:pointer;
-                                            "
-                                        >
+                                            ">
                                             Save
                                         </button>
                                     </div>
 
                                     <div
                                         id="attribute-message"
-                                        style="margin-top:10px;"
-                                    ></div>
+                                        style="margin-top:10px;"></div>
                                 </div>
 
                                 <div id="product-options-container">
 
                                     @foreach ($productOptions as $option)
 
-                                        @php
-                                            $optionChecked = in_array(
-                                                (string) $option->id,
-                                                $selectedOptionIds,
-                                                true
-                                            );
+                                    @php
+                                    $optionChecked = in_array(
+                                    (string) $option->id,
+                                    $selectedOptionIds,
+                                    true
+                                    );
 
-                                            $hasSelectedValues = $option->values
-                                                ->pluck('id')
-                                                ->map(fn ($id) => (string) $id)
-                                                ->intersect($selectedOptionValueIds)
-                                                ->isNotEmpty();
+                                    $hasSelectedValues = $option->values
+                                    ->pluck('id')
+                                    ->map(fn ($id) => (string) $id)
+                                    ->intersect($selectedOptionValueIds)
+                                    ->isNotEmpty();
 
-                                            $showValues = $optionChecked || $hasSelectedValues;
-                                        @endphp
+                                    $showValues = $optionChecked || $hasSelectedValues;
+                                    @endphp
 
-                                        <div
-                                            class="product-option-box"
-                                            data-option-id="{{ $option->id }}"
-                                            data-option-name="{{ $option->name }}"
-                                            style="
+                                    <div
+                                        class="product-option-box"
+                                        data-option-id="{{ $option->id }}"
+                                        data-option-name="{{ $option->name }}"
+                                        style="
                                                 border:1px solid #ddd;
                                                 border-radius:7px;
                                                 margin-bottom:15px;
                                                 overflow:hidden;
-                                            "
-                                        >
-                                            <div
-                                                style="
+                                            ">
+                                        <div
+                                            style="
                                                     display:flex;
                                                     justify-content:space-between;
                                                     align-items:center;
                                                     gap:15px;
                                                     padding:13px 15px;
                                                     background:#f7f7f7;
-                                                "
-                                            >
-                                                <label
-                                                    style="
+                                                ">
+                                            <label
+                                                style="
                                                         display:flex;
                                                         align-items:center;
                                                         gap:8px;
                                                         cursor:pointer;
                                                         font-weight:bold;
-                                                    "
-                                                >
-                                                    <input
-                                                        type="checkbox"
-                                                        class="enable-option-checkbox"
-                                                        name="product_options[]"
-                                                        value="{{ $option->id }}"
-                                                        {{ $showValues ? 'checked' : '' }}
-                                                    >
+                                                    ">
+                                                <input
+                                                    type="checkbox"
+                                                    class="enable-option-checkbox"
+                                                    name="product_options[]"
+                                                    value="{{ $option->id }}"
+                                                    {{ $showValues ? 'checked' : '' }}>
 
-                                                    <span>
-                                                        {{ $option->name }}
-                                                    </span>
-                                                </label>
+                                                <span>
+                                                    {{ $option->name }}
+                                                </span>
+                                            </label>
 
-                                                <button
-                                                    type="button"
-                                                    class="show-add-value-button"
-                                                    style="
+                                            <button
+                                                type="button"
+                                                class="show-add-value-button"
+                                                style="
                                                         padding:7px 10px;
                                                         border:1px solid #bbb;
                                                         background:#fff;
                                                         border-radius:4px;
                                                         cursor:pointer;
-                                                    "
-                                                >
-                                                    Add Value
-                                                </button>
-                                            </div>
+                                                    ">
+                                                Add Value
+                                            </button>
+                                        </div>
 
-                                            <div
-                                                class="option-values-container"
-                                                style="
+                                        <div
+                                            class="option-values-container"
+                                            style="
                                                     display:{{ $showValues ? 'block' : 'none' }};
                                                     padding:15px;
-                                                "
-                                            >
-                                                <div
-                                                    class="option-values-list"
-                                                    style="
+                                                ">
+                                            <div
+                                                class="option-values-list"
+                                                style="
                                                         display:flex;
                                                         flex-wrap:wrap;
                                                         gap:10px;
-                                                    "
-                                                >
-                                                    @forelse ($option->values as $value)
+                                                    ">
+                                                @forelse ($option->values as $value)
 
-                                                        @php
-                                                            $valueLabel =
-                                                                $value->label
-                                                                ?: $value->value;
+                                                @php
+                                                $valueLabel =
+                                                $value->label
+                                                ?: $value->value;
 
-                                                            $valueChecked = in_array(
-                                                                (string) $value->id,
-                                                                $selectedOptionValueIds,
-                                                                true
-                                                            );
-                                                        @endphp
+                                                $valueChecked = in_array(
+                                                (string) $value->id,
+                                                $selectedOptionValueIds,
+                                                true
+                                                );
+                                                @endphp
 
-                                                        <label
-                                                            style="
+                                                <label
+                                                    style="
                                                                 display:flex;
                                                                 align-items:center;
                                                                 gap:7px;
@@ -611,125 +586,114 @@
                                                                 border:1px solid #ddd;
                                                                 border-radius:5px;
                                                                 cursor:pointer;
-                                                            "
-                                                        >
-                                                            <input
-                                                                type="checkbox"
-                                                                class="option-value-checkbox"
-                                                                name="product_option_values[]"
-                                                                value="{{ $value->id }}"
-                                                                data-value-id="{{ $value->id }}"
-                                                                data-value-label="{{ $valueLabel }}"
-                                                                {{ $valueChecked ? 'checked' : '' }}
-                                                            >
+                                                            ">
+                                                    <input
+                                                        type="checkbox"
+                                                        class="option-value-checkbox"
+                                                        name="product_option_values[]"
+                                                        value="{{ $value->id }}"
+                                                        data-value-id="{{ $value->id }}"
+                                                        data-value-label="{{ $valueLabel }}"
+                                                        {{ $valueChecked ? 'checked' : '' }}>
 
-                                                            @if ($value->color_code)
+                                                    @if ($value->color_code)
 
-                                                                <span
-                                                                    style="
+                                                    <span
+                                                        style="
                                                                         width:18px;
                                                                         height:18px;
                                                                         display:inline-block;
                                                                         border-radius:50%;
                                                                         border:1px solid #999;
                                                                         background:{{ $value->color_code }};
-                                                                    "
-                                                                ></span>
+                                                                    "></span>
 
-                                                            @endif
+                                                    @endif
 
-                                                            {{ $valueLabel }}
-                                                        </label>
+                                                    {{ $valueLabel }}
+                                                </label>
 
-                                                    @empty
+                                                @empty
 
-                                                        <p
-                                                            class="no-values-message"
-                                                            style="margin:0;color:#777;"
-                                                        >
-                                                            No values added yet.
-                                                        </p>
+                                                <p
+                                                    class="no-values-message"
+                                                    style="margin:0;color:#777;">
+                                                    No values added yet.
+                                                </p>
 
-                                                    @endforelse
-                                                </div>
+                                                @endforelse
+                                            </div>
 
-                                                <div
-                                                    class="new-value-form"
-                                                    style="
+                                            <div
+                                                class="new-value-form"
+                                                style="
                                                         display:none;
                                                         margin-top:15px;
                                                         padding-top:15px;
                                                         border-top:1px solid #ddd;
-                                                    "
-                                                >
-                                                    <div
-                                                        style="
+                                                    ">
+                                                <div
+                                                    style="
                                                             display:grid;
                                                             grid-template-columns:1fr 1fr 130px auto;
                                                             gap:10px;
                                                             align-items:end;
-                                                        "
-                                                    >
-                                                        <div>
-                                                            <label style="display:block;font-weight:bold;margin-bottom:5px;">
-                                                                Label
-                                                            </label>
+                                                        ">
+                                                    <div>
+                                                        <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                            Label
+                                                        </label>
 
-                                                            <input
-                                                                type="text"
-                                                                class="new-value-label"
-                                                                style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;"
-                                                            >
-                                                        </div>
+                                                        <input
+                                                            type="text"
+                                                            class="new-value-label"
+                                                            style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
+                                                    </div>
 
-                                                        <div>
-                                                            <label style="display:block;font-weight:bold;margin-bottom:5px;">
-                                                                Value
-                                                            </label>
+                                                    <div>
+                                                        <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                            Value
+                                                        </label>
 
-                                                            <input
-                                                                type="text"
-                                                                class="new-value-text"
-                                                                style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;"
-                                                            >
-                                                        </div>
+                                                        <input
+                                                            type="text"
+                                                            class="new-value-text"
+                                                            style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
+                                                    </div>
 
-                                                        <div>
-                                                            <label style="display:block;font-weight:bold;margin-bottom:5px;">
-                                                                Colour
-                                                            </label>
+                                                    <div>
+                                                        <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                            Colour
+                                                        </label>
 
-                                                            <input
-                                                                type="color"
-                                                                class="new-value-color"
-                                                                value="#000000"
-                                                                style="width:100%;height:40px;border:1px solid #ccc;border-radius:5px;"
-                                                            >
-                                                        </div>
+                                                        <input
+                                                            type="color"
+                                                            class="new-value-color"
+                                                            value="#000000"
+                                                            style="width:100%;height:40px;border:1px solid #ccc;border-radius:5px;">
+                                                    </div>
 
-                                                        <button
-                                                            type="button"
-                                                            class="save-new-value"
-                                                            style="
+                                                    <button
+                                                        type="button"
+                                                        class="save-new-value"
+                                                        style="
                                                                 padding:10px 13px;
                                                                 background:#198754;
                                                                 color:#fff;
                                                                 border:0;
                                                                 border-radius:5px;
                                                                 cursor:pointer;
-                                                            "
-                                                        >
-                                                            Save
-                                                        </button>
-                                                    </div>
-
-                                                    <div
-                                                        class="value-message"
-                                                        style="margin-top:8px;"
-                                                    ></div>
+                                                            ">
+                                                        Save
+                                                    </button>
                                                 </div>
+
+                                                <div
+                                                    class="value-message"
+                                                    style="margin-top:8px;"></div>
                                             </div>
                                         </div>
+                                    </div>
 
                                     @endforeach
 
@@ -748,8 +712,7 @@
                                         gap:15px;
                                         flex-wrap:wrap;
                                         margin-bottom:15px;
-                                    "
-                                >
+                                    ">
                                     <div>
                                         <h2 style="margin:0 0 5px;">
                                             Product Variants
@@ -770,8 +733,7 @@
                                             border:0;
                                             border-radius:5px;
                                             cursor:pointer;
-                                        "
-                                    >
+                                        ">
                                         Generate Variants
                                     </button>
                                 </div>
@@ -780,193 +742,178 @@
 
                                     @forelse ($formVariants as $variantIndex => $variant)
 
-                                        @php
-                                            $variantOptions =
-                                                $variant['options'] ?? [];
+                                    @php
+                                    $variantOptions =
+                                    $variant['options'] ?? [];
 
-                                            $variantTitle = collect(
-                                                $variantOptions
-                                            )
-                                                ->map(function ($item) {
-                                                    return (
-                                                        ($item['option_name'] ?? 'Option')
-                                                        . ': '
-                                                        . ($item['value_label'] ?? 'Value')
-                                                    );
-                                                })
-                                                ->join(' / ');
-                                        @endphp
+                                    $variantTitle = collect(
+                                    $variantOptions
+                                    )
+                                    ->map(function ($item) {
+                                    return (
+                                    ($item['option_name'] ?? 'Option')
+                                    . ': '
+                                    . ($item['value_label'] ?? 'Value')
+                                    );
+                                    })
+                                    ->join(' / ');
+                                    @endphp
 
-                                        <div
-                                            class="variant-row"
-                                            style="
+                                    <div
+                                        class="variant-row"
+                                        style="
                                                 border:1px solid #ddd;
                                                 border-radius:7px;
                                                 padding:15px;
                                                 margin-bottom:15px;
-                                            "
-                                        >
-                                            <div
-                                                style="
+                                            ">
+                                        <div
+                                            style="
                                                     display:flex;
                                                     justify-content:space-between;
                                                     align-items:center;
                                                     gap:15px;
                                                     margin-bottom:12px;
-                                                "
-                                            >
-                                                <strong class="variant-title">
-                                                    {{ $variantTitle ?: 'Variant ' . ($variantIndex + 1) }}
-                                                </strong>
+                                                ">
+                                            <strong class="variant-title">
+                                                {{ $variantTitle ?: 'Variant ' . ($variantIndex + 1) }}
+                                            </strong>
 
-                                                <button
-                                                    type="button"
-                                                    class="remove-variant"
-                                                    style="
+                                            <button
+                                                type="button"
+                                                class="remove-variant"
+                                                style="
                                                         padding:6px 10px;
                                                         border:0;
                                                         border-radius:4px;
                                                         background:#dc3545;
                                                         color:#fff;
                                                         cursor:pointer;
-                                                    "
-                                                >
-                                                    Remove
-                                                </button>
-                                            </div>
+                                                    ">
+                                                Remove
+                                            </button>
+                                        </div>
 
-                                            @foreach ($variantOptions as $optionIndex => $variantOption)
+                                        @foreach ($variantOptions as $optionIndex => $variantOption)
 
-                                                <input
-                                                    type="hidden"
-                                                    name="variants[{{ $variantIndex }}][options][{{ $optionIndex }}][option_id]"
-                                                    value="{{ $variantOption['option_id'] ?? '' }}"
-                                                >
+                                        <input
+                                            type="hidden"
+                                            name="variants[{{ $variantIndex }}][options][{{ $optionIndex }}][option_id]"
+                                            value="{{ $variantOption['option_id'] ?? '' }}">
 
-                                                <input
-                                                    type="hidden"
-                                                    name="variants[{{ $variantIndex }}][options][{{ $optionIndex }}][option_name]"
-                                                    value="{{ $variantOption['option_name'] ?? '' }}"
-                                                >
+                                        <input
+                                            type="hidden"
+                                            name="variants[{{ $variantIndex }}][options][{{ $optionIndex }}][option_name]"
+                                            value="{{ $variantOption['option_name'] ?? '' }}">
 
-                                                <input
-                                                    type="hidden"
-                                                    name="variants[{{ $variantIndex }}][options][{{ $optionIndex }}][value_id]"
-                                                    value="{{ $variantOption['value_id'] ?? '' }}"
-                                                >
+                                        <input
+                                            type="hidden"
+                                            name="variants[{{ $variantIndex }}][options][{{ $optionIndex }}][value_id]"
+                                            value="{{ $variantOption['value_id'] ?? '' }}">
 
-                                                <input
-                                                    type="hidden"
-                                                    name="variants[{{ $variantIndex }}][options][{{ $optionIndex }}][value_label]"
-                                                    value="{{ $variantOption['value_label'] ?? '' }}"
-                                                >
+                                        <input
+                                            type="hidden"
+                                            name="variants[{{ $variantIndex }}][options][{{ $optionIndex }}][value_label]"
+                                            value="{{ $variantOption['value_label'] ?? '' }}">
 
-                                            @endforeach
+                                        @endforeach
 
-                                            <input
-                                                type="hidden"
-                                                name="variants[{{ $variantIndex }}][old_image]"
-                                                value="{{ $variant['old_image'] ?? $variant['image'] ?? '' }}"
-                                            >
+                                        <input
+                                            type="hidden"
+                                            name="variants[{{ $variantIndex }}][old_image]"
+                                            value="{{ $variant['old_image'] ?? $variant['image'] ?? '' }}">
 
-                                            <div
-                                                style="
+                                        <div
+                                            style="
                                                     display:grid;
                                                     grid-template-columns:repeat(4, minmax(140px, 1fr));
                                                     gap:12px;
-                                                "
-                                            >
-                                                <div>
-                                                    <label style="display:block;font-weight:bold;margin-bottom:5px;">
-                                                        SKU
-                                                    </label>
+                                                ">
+                                            <div>
+                                                <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                    SKU
+                                                </label>
 
-                                                    <input
-                                                        type="text"
-                                                        name="variants[{{ $variantIndex }}][sku]"
-                                                        value="{{ $variant['sku'] ?? '' }}"
-                                                        style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;"
-                                                    >
+                                                <input
+                                                    type="text"
+                                                    name="variants[{{ $variantIndex }}][sku]"
+                                                    value="{{ $variant['sku'] ?? '' }}"
+                                                    style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
+                                            </div>
+
+                                            <div>
+                                                <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                    Regular Price
+                                                </label>
+
+                                                <input
+                                                    type="number"
+                                                    name="variants[{{ $variantIndex }}][regular_price]"
+                                                    value="{{ $variant['regular_price'] ?? '' }}"
+                                                    min="0"
+                                                    step="0.01"
+                                                    style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
+                                            </div>
+
+                                            <div>
+                                                <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                    Sale Price
+                                                </label>
+
+                                                <input
+                                                    type="number"
+                                                    name="variants[{{ $variantIndex }}][sale_price]"
+                                                    value="{{ $variant['sale_price'] ?? '' }}"
+                                                    min="0"
+                                                    step="0.01"
+                                                    style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
+                                            </div>
+
+                                            <div>
+                                                <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                    Stock
+                                                </label>
+
+                                                <input
+                                                    type="number"
+                                                    name="variants[{{ $variantIndex }}][stock]"
+                                                    value="{{ $variant['stock'] ?? 0 }}"
+                                                    min="0"
+                                                    step="1"
+                                                    style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
+                                            </div>
+
+                                            <div>
+                                                <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                    Replace Image
+                                                </label>
+
+                                                <input
+                                                    type="file"
+                                                    name="variants[{{ $variantIndex }}][image]"
+                                                    accept="image/*">
+
+                                                @if (!empty($variant['image']))
+
+                                                <div style="margin-top:8px;">
+                                                    <img
+                                                        src="{{ asset('storage/' . $variant['image']) }}"
+                                                        alt="Variant"
+                                                        width="70"
+                                                        height="70"
+                                                        style="object-fit:cover;border-radius:5px;">
                                                 </div>
 
-                                                <div>
-                                                    <label style="display:block;font-weight:bold;margin-bottom:5px;">
-                                                        Regular Price
-                                                    </label>
-
-                                                    <input
-                                                        type="number"
-                                                        name="variants[{{ $variantIndex }}][regular_price]"
-                                                        value="{{ $variant['regular_price'] ?? '' }}"
-                                                        min="0"
-                                                        step="0.01"
-                                                        style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;"
-                                                    >
-                                                </div>
-
-                                                <div>
-                                                    <label style="display:block;font-weight:bold;margin-bottom:5px;">
-                                                        Sale Price
-                                                    </label>
-
-                                                    <input
-                                                        type="number"
-                                                        name="variants[{{ $variantIndex }}][sale_price]"
-                                                        value="{{ $variant['sale_price'] ?? '' }}"
-                                                        min="0"
-                                                        step="0.01"
-                                                        style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;"
-                                                    >
-                                                </div>
-
-                                                <div>
-                                                    <label style="display:block;font-weight:bold;margin-bottom:5px;">
-                                                        Stock
-                                                    </label>
-
-                                                    <input
-                                                        type="number"
-                                                        name="variants[{{ $variantIndex }}][stock]"
-                                                        value="{{ $variant['stock'] ?? 0 }}"
-                                                        min="0"
-                                                        step="1"
-                                                        style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;"
-                                                    >
-                                                </div>
-
-                                                <div>
-                                                    <label style="display:block;font-weight:bold;margin-bottom:5px;">
-                                                        Replace Image
-                                                    </label>
-
-                                                    <input
-                                                        type="file"
-                                                        name="variants[{{ $variantIndex }}][image]"
-                                                        accept="image/*"
-                                                    >
-
-                                                    @if (!empty($variant['image']))
-
-                                                        <div style="margin-top:8px;">
-                                                            <img
-                                                                src="{{ asset('storage/' . $variant['image']) }}"
-                                                                alt="Variant"
-                                                                width="70"
-                                                                height="70"
-                                                                style="object-fit:cover;border-radius:5px;"
-                                                            >
-                                                        </div>
-
-                                                    @endif
-                                                </div>
+                                                @endif
                                             </div>
                                         </div>
+                                    </div>
 
                                     @empty
 
-                                        <p style="color:#777;">
-                                            No variants created.
-                                        </p>
+                                    <p style="color:#777;">
+                                        No variants created.
+                                    </p>
 
                                     @endforelse
 
@@ -984,8 +931,7 @@
                                 <div style="margin-bottom:15px;">
                                     <label
                                         for="meta_title"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Meta Title
                                     </label>
 
@@ -994,15 +940,13 @@
                                         id="meta_title"
                                         name="meta_title"
                                         value="{{ old('meta_title', $product->meta_title) }}"
-                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                    >
+                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
                                 </div>
 
                                 <div style="margin-bottom:15px;">
                                     <label
                                         for="meta_description"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Meta Description
                                     </label>
 
@@ -1010,15 +954,13 @@
                                         id="meta_description"
                                         name="meta_description"
                                         rows="4"
-                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                    >{{ old('meta_description', $product->meta_description) }}</textarea>
+                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">{{ old('meta_description', $product->meta_description) }}</textarea>
                                 </div>
 
                                 <div>
                                     <label
                                         for="meta_keywords"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Meta Keywords
                                     </label>
 
@@ -1026,8 +968,7 @@
                                         id="meta_keywords"
                                         name="meta_keywords"
                                         rows="3"
-                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;"
-                                    >{{ old('meta_keywords', $product->meta_keywords) }}</textarea>
+                                        style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">{{ old('meta_keywords', $product->meta_keywords) }}</textarea>
                                 </div>
 
                             </div>
@@ -1045,23 +986,21 @@
 
                                 @if ($product->featured_image)
 
-                                    <div style="margin-bottom:15px;">
-                                        <img
-                                            src="{{ asset('storage/' . $product->featured_image) }}"
-                                            alt="{{ $product->title }}"
-                                            width="150"
-                                            height="150"
-                                            style="object-fit:cover;border-radius:7px;"
-                                        >
-                                    </div>
+                                <div style="margin-bottom:15px;">
+                                    <img
+                                        src="{{ asset('storage/' . $product->featured_image) }}"
+                                        alt="{{ $product->title }}"
+                                        width="150"
+                                        height="150"
+                                        style="object-fit:cover;border-radius:7px;">
+                                </div>
 
                                 @endif
 
                                 <div style="margin-bottom:18px;">
                                     <label
                                         for="featured_image"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Replace Featured Image
                                     </label>
 
@@ -1069,15 +1008,13 @@
                                         type="file"
                                         id="featured_image"
                                         name="featured_image"
-                                        accept="image/jpeg,image/png,image/webp"
-                                    >
+                                        accept="image/jpeg,image/png,image/webp">
                                 </div>
 
                                 <div>
                                     <label
                                         for="gallery_images"
-                                        style="display:block;font-weight:bold;margin-bottom:6px;"
-                                    >
+                                        style="display:block;font-weight:bold;margin-bottom:6px;">
                                         Add Gallery Images
                                     </label>
 
@@ -1086,32 +1023,29 @@
                                         id="gallery_images"
                                         name="gallery_images[]"
                                         accept="image/jpeg,image/png,image/webp"
-                                        multiple
-                                    >
+                                        multiple>
                                 </div>
 
                                 @if ($product->images->isNotEmpty())
 
-                                    <div
-                                        style="
+                                <div
+                                    style="
                                             display:flex;
                                             flex-wrap:wrap;
                                             gap:8px;
                                             margin-top:15px;
-                                        "
-                                    >
-                                        @foreach ($product->images as $image)
+                                        ">
+                                    @foreach ($product->images as $image)
 
-                                            <img
-                                                src="{{ asset('storage/' . $image->image) }}"
-                                                alt="Gallery image"
-                                                width="65"
-                                                height="65"
-                                                style="object-fit:cover;border-radius:5px;"
-                                            >
+                                    <img
+                                        src="{{ asset('storage/' . $image->image) }}"
+                                        alt="Gallery image"
+                                        width="65"
+                                        height="65"
+                                        style="object-fit:cover;border-radius:5px;">
 
-                                        @endforeach
-                                    </div>
+                                    @endforeach
+                                </div>
 
                                 @endif
 
@@ -1126,27 +1060,25 @@
 
                                 @foreach ($categories as $category)
 
-                                    <label
-                                        style="
+                                <label
+                                    style="
                                             display:flex;
                                             align-items:center;
                                             gap:8px;
                                             margin-bottom:9px;
-                                        "
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            name="categories[]"
-                                            value="{{ $category->id }}"
-                                            {{ in_array(
+                                        ">
+                                    <input
+                                        type="checkbox"
+                                        name="categories[]"
+                                        value="{{ $category->id }}"
+                                        {{ in_array(
                                                 (string) $category->id,
                                                 $selectedCategoryIds,
                                                 true
-                                            ) ? 'checked' : '' }}
-                                        >
+                                            ) ? 'checked' : '' }}>
 
-                                        {{ $category->title }}
-                                    </label>
+                                    {{ $category->title }}
+                                </label>
 
                                 @endforeach
 
@@ -1161,27 +1093,25 @@
 
                                 @foreach ($tags as $tag)
 
-                                    <label
-                                        style="
+                                <label
+                                    style="
                                             display:flex;
                                             align-items:center;
                                             gap:8px;
                                             margin-bottom:9px;
-                                        "
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            name="tags[]"
-                                            value="{{ $tag->id }}"
-                                            {{ in_array(
+                                        ">
+                                    <input
+                                        type="checkbox"
+                                        name="tags[]"
+                                        value="{{ $tag->id }}"
+                                        {{ in_array(
                                                 (string) $tag->id,
                                                 $selectedTagIds,
                                                 true
-                                            ) ? 'checked' : '' }}
-                                        >
+                                            ) ? 'checked' : '' }}>
 
-                                        {{ $tag->title }}
-                                    </label>
+                                    {{ $tag->title }}
+                                </label>
 
                                 @endforeach
 
@@ -1195,8 +1125,7 @@
                                     border:1px solid #ddd;
                                     border-radius:8px;
                                     padding:20px;
-                                "
-                            >
+                                ">
                                 <button
                                     type="submit"
                                     style="
@@ -1208,8 +1137,7 @@
                                         border-radius:5px;
                                         font-size:16px;
                                         cursor:pointer;
-                                    "
-                                >
+                                    ">
                                     Update Product
                                 </button>
                             </div>
@@ -1229,198 +1157,321 @@
 
 {{-- Use the same JavaScript as create page --}}
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    'use strict';
+    document.addEventListener('DOMContentLoaded', function() {
+        'use strict';
 
-    const csrfToken = document.querySelector(
-        'meta[name="csrf-token"]'
-    )?.getAttribute('content') || '{{ csrf_token() }}';
+        const csrfToken = document.querySelector(
+            'meta[name="csrf-token"]'
+        )?.getAttribute('content') || '{{ csrf_token() }}';
 
-    const productOptionsContainer = document.getElementById(
-        'product-options-container'
-    );
+        const productOptionsContainer = document.getElementById(
+            'product-options-container'
+        );
 
-    const variantsContainer = document.getElementById(
-        'variants-container'
-    );
+        const variantsContainer = document.getElementById(
+            'variants-container'
+        );
 
-    const showAddAttributeButton = document.getElementById(
-        'show-add-attribute'
-    );
+        const showAddAttributeButton = document.getElementById(
+            'show-add-attribute'
+        );
 
-    const newAttributeForm = document.getElementById(
-        'new-attribute-form'
-    );
+        const newAttributeForm = document.getElementById(
+            'new-attribute-form'
+        );
 
-    const saveNewAttributeButton = document.getElementById(
-        'save-new-attribute'
-    );
+        const saveNewAttributeButton = document.getElementById(
+            'save-new-attribute'
+        );
 
-    const generateVariantsButton = document.getElementById(
-        'generate-variants'
-    );
+        const generateVariantsButton = document.getElementById(
+            'generate-variants'
+        );
 
-    function escapeHtml(value) {
-        const div = document.createElement('div');
-        div.textContent = value === null || value === undefined
-            ? ''
-            : String(value);
+        function escapeHtml(value) {
+            const div = document.createElement('div');
+            div.textContent = value === null || value === undefined ?
+                '' :
+                String(value);
 
-        return div.innerHTML;
-    }
+            return div.innerHTML;
+        }
 
-    if (showAddAttributeButton && newAttributeForm) {
-        showAddAttributeButton.addEventListener(
-            'click',
-            function () {
-                newAttributeForm.style.display =
-                    newAttributeForm.style.display === 'none'
-                        ? 'block'
-                        : 'none';
+        if (showAddAttributeButton && newAttributeForm) {
+            showAddAttributeButton.addEventListener(
+                'click',
+                function() {
+                    newAttributeForm.style.display =
+                        newAttributeForm.style.display === 'none' ?
+                        'block' :
+                        'none';
+                }
+            );
+        }
+
+        function bindOptionBox(optionBox) {
+            if (
+                !optionBox ||
+                optionBox.dataset.bound === 'true'
+            ) {
+                return;
             }
-        );
-    }
 
-    function bindOptionBox(optionBox) {
-        if (
-            !optionBox
-            || optionBox.dataset.bound === 'true'
-        ) {
-            return;
-        }
+            optionBox.dataset.bound = 'true';
 
-        optionBox.dataset.bound = 'true';
+            const enableCheckbox = optionBox.querySelector(
+                '.enable-option-checkbox'
+            );
 
-        const enableCheckbox = optionBox.querySelector(
-            '.enable-option-checkbox'
-        );
+            const valuesContainer = optionBox.querySelector(
+                '.option-values-container'
+            );
 
-        const valuesContainer = optionBox.querySelector(
-            '.option-values-container'
-        );
+            const showAddValueButton = optionBox.querySelector(
+                '.show-add-value-button'
+            );
 
-        const showAddValueButton = optionBox.querySelector(
-            '.show-add-value-button'
-        );
+            const newValueForm = optionBox.querySelector(
+                '.new-value-form'
+            );
 
-        const newValueForm = optionBox.querySelector(
-            '.new-value-form'
-        );
+            const saveNewValueButton = optionBox.querySelector(
+                '.save-new-value'
+            );
 
-        const saveNewValueButton = optionBox.querySelector(
-            '.save-new-value'
-        );
+            if (enableCheckbox && valuesContainer) {
+                enableCheckbox.addEventListener(
+                    'change',
+                    function() {
+                        valuesContainer.style.display =
+                            this.checked ? 'block' : 'none';
 
-        if (enableCheckbox && valuesContainer) {
-            enableCheckbox.addEventListener(
-                'change',
-                function () {
-                    valuesContainer.style.display =
-                        this.checked ? 'block' : 'none';
-
-                    if (!this.checked) {
-                        valuesContainer
-                            .querySelectorAll(
-                                '.option-value-checkbox'
-                            )
-                            .forEach(function (checkbox) {
-                                checkbox.checked = false;
-                            });
+                        if (!this.checked) {
+                            valuesContainer
+                                .querySelectorAll(
+                                    '.option-value-checkbox'
+                                )
+                                .forEach(function(checkbox) {
+                                    checkbox.checked = false;
+                                });
+                        }
                     }
-                }
-            );
+                );
 
-            optionBox.addEventListener(
-                'change',
-                function (event) {
-                    if (
-                        event.target.classList.contains(
-                            'option-value-checkbox'
-                        )
-                        && event.target.checked
-                    ) {
-                        enableCheckbox.checked = true;
-                        valuesContainer.style.display = 'block';
+                optionBox.addEventListener(
+                    'change',
+                    function(event) {
+                        if (
+                            event.target.classList.contains(
+                                'option-value-checkbox'
+                            ) &&
+                            event.target.checked
+                        ) {
+                            enableCheckbox.checked = true;
+                            valuesContainer.style.display = 'block';
+                        }
                     }
-                }
-            );
+                );
+            }
+
+            if (showAddValueButton && newValueForm) {
+                showAddValueButton.addEventListener(
+                    'click',
+                    function() {
+                        newValueForm.style.display =
+                            newValueForm.style.display === 'none' ?
+                            'block' :
+                            'none';
+                    }
+                );
+            }
+
+            if (saveNewValueButton) {
+                saveNewValueButton.addEventListener(
+                    'click',
+                    async function() {
+                        const optionId = optionBox.dataset.optionId;
+
+                        const labelInput = optionBox.querySelector(
+                            '.new-value-label'
+                        );
+
+                        const valueInput = optionBox.querySelector(
+                            '.new-value-text'
+                        );
+
+                        const colorInput = optionBox.querySelector(
+                            '.new-value-color'
+                        );
+
+                        const messageBox = optionBox.querySelector(
+                            '.value-message'
+                        );
+
+                        const label = labelInput.value.trim();
+
+                        if (!label) {
+                            messageBox.innerHTML =
+                                '<span style="color:red;">Value label is required.</span>';
+
+                            return;
+                        }
+
+                        saveNewValueButton.disabled = true;
+                        saveNewValueButton.textContent = 'Saving...';
+
+                        try {
+                            const response = await fetch(
+                                '{{ url('/admin/product-options') }}/' +
+                                encodeURIComponent(optionId) +
+                                '/values', {
+                                    method: 'POST',
+
+                                    headers: {
+                                        'Content-Type': 'application/json',
+
+                                        'Accept': 'application/json',
+
+                                        'X-CSRF-TOKEN': csrfToken,
+                                    },
+
+                                    body: JSON.stringify({
+                                        label: label,
+
+                                        value: valueInput.value.trim() ||
+                                            null,
+
+                                        color_code: colorInput.value ||
+                                            null,
+                                    }),
+                                }
+                            );
+
+                            const data = await response.json();
+
+                            if (!response.ok) {
+                                throw new Error(
+                                    data.message ||
+                                    Object.values(
+                                        data.errors || {}
+                                    ).flat()[0] ||
+                                    'Unable to save value.'
+                                );
+                            }
+
+                            const valuesList = optionBox.querySelector(
+                                '.option-values-list'
+                            );
+
+                            valuesList.querySelector(
+                                '.no-values-message'
+                            )?.remove();
+
+                            const valueLabel =
+                                document.createElement('label');
+
+                            valueLabel.style.cssText =
+                                'display:flex;' +
+                                'align-items:center;' +
+                                'gap:7px;' +
+                                'padding:8px 11px;' +
+                                'border:1px solid #ddd;' +
+                                'border-radius:5px;' +
+                                'cursor:pointer;';
+
+                            valueLabel.innerHTML =
+                                '<input ' +
+                                'type="checkbox" ' +
+                                'class="option-value-checkbox" ' +
+                                'name="product_option_values[]" ' +
+                                'value="' +
+                                escapeHtml(data.value.id) +
+                                '" ' +
+                                'data-value-id="' +
+                                escapeHtml(data.value.id) +
+                                '" ' +
+                                'data-value-label="' +
+                                escapeHtml(data.value.label) +
+                                '" checked>' +
+                                '<span>' +
+                                escapeHtml(data.value.label) +
+                                '</span>';
+
+                            valuesList.appendChild(valueLabel);
+
+                            enableCheckbox.checked = true;
+                            valuesContainer.style.display = 'block';
+
+                            labelInput.value = '';
+                            valueInput.value = '';
+
+                            messageBox.innerHTML =
+                                '<span style="color:green;">' +
+                                escapeHtml(data.message) +
+                                '</span>';
+                        } catch (error) {
+                            messageBox.innerHTML =
+                                '<span style="color:red;">' +
+                                escapeHtml(error.message) +
+                                '</span>';
+                        } finally {
+                            saveNewValueButton.disabled = false;
+                            saveNewValueButton.textContent = 'Save';
+                        }
+                    }
+                );
+            }
         }
 
-        if (showAddValueButton && newValueForm) {
-            showAddValueButton.addEventListener(
+        document
+            .querySelectorAll('.product-option-box')
+            .forEach(bindOptionBox);
+
+        if (saveNewAttributeButton) {
+            saveNewAttributeButton.addEventListener(
                 'click',
-                function () {
-                    newValueForm.style.display =
-                        newValueForm.style.display === 'none'
-                            ? 'block'
-                            : 'none';
-                }
-            );
-        }
-
-        if (saveNewValueButton) {
-            saveNewValueButton.addEventListener(
-                'click',
-                async function () {
-                    const optionId = optionBox.dataset.optionId;
-
-                    const labelInput = optionBox.querySelector(
-                        '.new-value-label'
+                async function() {
+                    const nameInput = document.getElementById(
+                        'new-attribute-name'
                     );
 
-                    const valueInput = optionBox.querySelector(
-                        '.new-value-text'
+                    const typeInput = document.getElementById(
+                        'new-attribute-type'
                     );
 
-                    const colorInput = optionBox.querySelector(
-                        '.new-value-color'
+                    const messageBox = document.getElementById(
+                        'attribute-message'
                     );
 
-                    const messageBox = optionBox.querySelector(
-                        '.value-message'
-                    );
+                    const name = nameInput.value.trim();
 
-                    const label = labelInput.value.trim();
-
-                    if (!label) {
+                    if (!name) {
                         messageBox.innerHTML =
-                            '<span style="color:red;">Value label is required.</span>';
+                            '<span style="color:red;">Attribute name is required.</span>';
 
                         return;
                     }
 
-                    saveNewValueButton.disabled = true;
-                    saveNewValueButton.textContent = 'Saving...';
+                    saveNewAttributeButton.disabled = true;
+                    saveNewAttributeButton.textContent = 'Saving...';
 
                     try {
                         const response = await fetch(
-                            '{{ url('/admin/product-options') }}/'
-                                + encodeURIComponent(optionId)
-                                + '/values',
-                            {
+                            '{{ route('
+                            admin.product - options.store ') }}', {
                                 method: 'POST',
 
                                 headers: {
-                                    'Content-Type':
-                                        'application/json',
+                                    'Content-Type': 'application/json',
 
-                                    'Accept':
-                                        'application/json',
+                                    'Accept': 'application/json',
 
-                                    'X-CSRF-TOKEN':
-                                        csrfToken,
+                                    'X-CSRF-TOKEN': csrfToken,
                                 },
 
                                 body: JSON.stringify({
-                                    label: label,
-
-                                    value:
-                                        valueInput.value.trim()
-                                        || null,
-
-                                    color_code:
-                                        colorInput.value
-                                        || null,
+                                    name: name,
+                                    type: typeInput.value,
                                 }),
                             }
                         );
@@ -1429,470 +1480,334 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         if (!response.ok) {
                             throw new Error(
-                                data.message
-                                || Object.values(
+                                data.message ||
+                                Object.values(
                                     data.errors || {}
-                                ).flat()[0]
-                                || 'Unable to save value.'
+                                ).flat()[0] ||
+                                'Unable to save attribute.'
                             );
                         }
 
-                        const valuesList = optionBox.querySelector(
-                            '.option-values-list'
-                        );
-
-                        valuesList.querySelector(
-                            '.no-values-message'
-                        )?.remove();
-
-                        const valueLabel =
-                            document.createElement('label');
-
-                        valueLabel.style.cssText =
-                            'display:flex;'
-                            + 'align-items:center;'
-                            + 'gap:7px;'
-                            + 'padding:8px 11px;'
-                            + 'border:1px solid #ddd;'
-                            + 'border-radius:5px;'
-                            + 'cursor:pointer;';
-
-                        valueLabel.innerHTML =
-                            '<input '
-                            + 'type="checkbox" '
-                            + 'class="option-value-checkbox" '
-                            + 'name="product_option_values[]" '
-                            + 'value="'
-                            + escapeHtml(data.value.id)
-                            + '" '
-                            + 'data-value-id="'
-                            + escapeHtml(data.value.id)
-                            + '" '
-                            + 'data-value-label="'
-                            + escapeHtml(data.value.label)
-                            + '" checked>'
-                            + '<span>'
-                            + escapeHtml(data.value.label)
-                            + '</span>';
-
-                        valuesList.appendChild(valueLabel);
-
-                        enableCheckbox.checked = true;
-                        valuesContainer.style.display = 'block';
-
-                        labelInput.value = '';
-                        valueInput.value = '';
-
-                        messageBox.innerHTML =
-                            '<span style="color:green;">'
-                            + escapeHtml(data.message)
-                            + '</span>';
+                        window.location.reload();
                     } catch (error) {
                         messageBox.innerHTML =
-                            '<span style="color:red;">'
-                            + escapeHtml(error.message)
-                            + '</span>';
+                            '<span style="color:red;">' +
+                            escapeHtml(error.message) +
+                            '</span>';
                     } finally {
-                        saveNewValueButton.disabled = false;
-                        saveNewValueButton.textContent = 'Save';
+                        saveNewAttributeButton.disabled = false;
+                        saveNewAttributeButton.textContent = 'Save';
                     }
                 }
             );
         }
-    }
 
-    document
-        .querySelectorAll('.product-option-box')
-        .forEach(bindOptionBox);
+        function getSelectedOptionGroups() {
+            const groups = [];
 
-    if (saveNewAttributeButton) {
-        saveNewAttributeButton.addEventListener(
-            'click',
-            async function () {
-                const nameInput = document.getElementById(
-                    'new-attribute-name'
-                );
-
-                const typeInput = document.getElementById(
-                    'new-attribute-type'
-                );
-
-                const messageBox = document.getElementById(
-                    'attribute-message'
-                );
-
-                const name = nameInput.value.trim();
-
-                if (!name) {
-                    messageBox.innerHTML =
-                        '<span style="color:red;">Attribute name is required.</span>';
-
-                    return;
-                }
-
-                saveNewAttributeButton.disabled = true;
-                saveNewAttributeButton.textContent = 'Saving...';
-
-                try {
-                    const response = await fetch(
-                        '{{ route('admin.product-options.store') }}',
-                        {
-                            method: 'POST',
-
-                            headers: {
-                                'Content-Type':
-                                    'application/json',
-
-                                'Accept':
-                                    'application/json',
-
-                                'X-CSRF-TOKEN':
-                                    csrfToken,
-                            },
-
-                            body: JSON.stringify({
-                                name: name,
-                                type: typeInput.value,
-                            }),
-                        }
+            document
+                .querySelectorAll('.product-option-box')
+                .forEach(function(optionBox) {
+                    const enableCheckbox = optionBox.querySelector(
+                        '.enable-option-checkbox'
                     );
 
-                    const data = await response.json();
-
-                    if (!response.ok) {
-                        throw new Error(
-                            data.message
-                            || Object.values(
-                                data.errors || {}
-                            ).flat()[0]
-                            || 'Unable to save attribute.'
-                        );
+                    if (!enableCheckbox?.checked) {
+                        return;
                     }
 
-                    window.location.reload();
-                } catch (error) {
-                    messageBox.innerHTML =
-                        '<span style="color:red;">'
-                        + escapeHtml(error.message)
-                        + '</span>';
-                } finally {
-                    saveNewAttributeButton.disabled = false;
-                    saveNewAttributeButton.textContent = 'Save';
-                }
-            }
-        );
-    }
+                    const values = Array.from(
+                        optionBox.querySelectorAll(
+                            '.option-value-checkbox:checked'
+                        )
+                    );
 
-    function getSelectedOptionGroups() {
-        const groups = [];
+                    if (values.length === 0) {
+                        return;
+                    }
 
-        document
-            .querySelectorAll('.product-option-box')
-            .forEach(function (optionBox) {
-                const enableCheckbox = optionBox.querySelector(
-                    '.enable-option-checkbox'
-                );
+                    groups.push({
+                        option_id: optionBox.dataset.optionId,
+                        option_name: optionBox.dataset.optionName,
 
-                if (!enableCheckbox?.checked) {
-                    return;
-                }
+                        values: values.map(function(checkbox) {
+                            return {
+                                value_id: checkbox.dataset.valueId,
 
-                const values = Array.from(
-                    optionBox.querySelectorAll(
-                        '.option-value-checkbox:checked'
-                    )
-                );
-
-                if (values.length === 0) {
-                    return;
-                }
-
-                groups.push({
-                    option_id: optionBox.dataset.optionId,
-                    option_name: optionBox.dataset.optionName,
-
-                    values: values.map(function (checkbox) {
-                        return {
-                            value_id: checkbox.dataset.valueId,
-
-                            value_label:
-                                checkbox.dataset.valueLabel,
-                        };
-                    }),
-                });
-            });
-
-        return groups;
-    }
-
-    function cartesianProduct(groups) {
-        return groups.reduce(
-            function (combinations, group) {
-                const next = [];
-
-                combinations.forEach(function (combination) {
-                    group.values.forEach(function (value) {
-                        next.push(
-                            combination.concat([
-                                {
-                                    option_id: group.option_id,
-
-                                    option_name:
-                                        group.option_name,
-
-                                    value_id:
-                                        value.value_id,
-
-                                    value_label:
-                                        value.value_label,
-                                },
-                            ])
-                        );
+                                value_label: checkbox.dataset.valueLabel,
+                            };
+                        }),
                     });
                 });
 
-                return next;
-            },
-            [[]]
-        );
-    }
+            return groups;
+        }
 
-    function renderVariants(combinations) {
-        variantsContainer.innerHTML = '';
+        function cartesianProduct(groups) {
+            return groups.reduce(
+                function(combinations, group) {
+                    const next = [];
 
-        const regularPrice =
-            document.getElementById(
-                'regular_price'
-            ).value;
+                    combinations.forEach(function(combination) {
+                        group.values.forEach(function(value) {
+                            next.push(
+                                combination.concat([{
+                                    option_id: group.option_id,
 
-        const salePrice =
-            document.getElementById(
-                'sale_price'
-            ).value;
+                                    option_name: group.option_name,
 
-        combinations.forEach(
-            function (combination, variantIndex) {
-                const title = combination
-                    .map(function (item) {
-                        return item.option_name
-                            + ': '
-                            + item.value_label;
-                    })
-                    .join(' / ');
+                                    value_id: value.value_id,
 
-                const hiddenFields = combination
-                    .map(function (item, optionIndex) {
-                        return (
-                            '<input type="hidden" '
-                            + 'name="variants['
-                            + variantIndex
-                            + '][options]['
-                            + optionIndex
-                            + '][option_id]" '
-                            + 'value="'
-                            + escapeHtml(item.option_id)
-                            + '">'
-                            + '<input type="hidden" '
-                            + 'name="variants['
-                            + variantIndex
-                            + '][options]['
-                            + optionIndex
-                            + '][option_name]" '
-                            + 'value="'
-                            + escapeHtml(item.option_name)
-                            + '">'
-                            + '<input type="hidden" '
-                            + 'name="variants['
-                            + variantIndex
-                            + '][options]['
-                            + optionIndex
-                            + '][value_id]" '
-                            + 'value="'
-                            + escapeHtml(item.value_id)
-                            + '">'
-                            + '<input type="hidden" '
-                            + 'name="variants['
-                            + variantIndex
-                            + '][options]['
-                            + optionIndex
-                            + '][value_label]" '
-                            + 'value="'
-                            + escapeHtml(item.value_label)
-                            + '">'
+                                    value_label: value.value_label,
+                                }, ])
+                            );
+                        });
+                    });
+
+                    return next;
+                },
+                [
+                    []
+                ]
+            );
+        }
+
+        function renderVariants(combinations) {
+            variantsContainer.innerHTML = '';
+
+            const regularPrice =
+                document.getElementById(
+                    'regular_price'
+                ).value;
+
+            const salePrice =
+                document.getElementById(
+                    'sale_price'
+                ).value;
+
+            combinations.forEach(
+                function(combination, variantIndex) {
+                    const title = combination
+                        .map(function(item) {
+                            return item.option_name +
+                                ': ' +
+                                item.value_label;
+                        })
+                        .join(' / ');
+
+                    const hiddenFields = combination
+                        .map(function(item, optionIndex) {
+                            return (
+                                '<input type="hidden" ' +
+                                'name="variants[' +
+                                variantIndex +
+                                '][options][' +
+                                optionIndex +
+                                '][option_id]" ' +
+                                'value="' +
+                                escapeHtml(item.option_id) +
+                                '">' +
+                                '<input type="hidden" ' +
+                                'name="variants[' +
+                                variantIndex +
+                                '][options][' +
+                                optionIndex +
+                                '][option_name]" ' +
+                                'value="' +
+                                escapeHtml(item.option_name) +
+                                '">' +
+                                '<input type="hidden" ' +
+                                'name="variants[' +
+                                variantIndex +
+                                '][options][' +
+                                optionIndex +
+                                '][value_id]" ' +
+                                'value="' +
+                                escapeHtml(item.value_id) +
+                                '">' +
+                                '<input type="hidden" ' +
+                                'name="variants[' +
+                                variantIndex +
+                                '][options][' +
+                                optionIndex +
+                                '][value_label]" ' +
+                                'value="' +
+                                escapeHtml(item.value_label) +
+                                '">'
+                            );
+                        })
+                        .join('');
+
+                    const row = document.createElement('div');
+
+                    row.className = 'variant-row';
+
+                    row.style.cssText =
+                        'border:1px solid #ddd;' +
+                        'border-radius:7px;' +
+                        'padding:15px;' +
+                        'margin-bottom:15px;';
+
+                    row.innerHTML =
+                        '<div style="' +
+                        'display:flex;' +
+                        'justify-content:space-between;' +
+                        'align-items:center;' +
+                        'gap:15px;' +
+                        'margin-bottom:12px;' +
+                        '">' +
+                        '<strong>' +
+                        escapeHtml(title) +
+                        '</strong>' +
+                        '<button ' +
+                        'type="button" ' +
+                        'class="remove-variant" ' +
+                        'style="' +
+                        'padding:6px 10px;' +
+                        'border:0;' +
+                        'border-radius:4px;' +
+                        'background:#dc3545;' +
+                        'color:#fff;' +
+                        'cursor:pointer;' +
+                        '">' +
+                        'Remove' +
+                        '</button>' +
+                        '</div>' +
+                        hiddenFields +
+                        '<input ' +
+                        'type="hidden" ' +
+                        'name="variants[' +
+                        variantIndex +
+                        '][old_image]" ' +
+                        'value="">' +
+                        '<div style="' +
+                        'display:grid;' +
+                        'grid-template-columns:repeat(4, minmax(140px, 1fr));' +
+                        'gap:12px;' +
+                        '">' +
+                        '<div>' +
+                        '<label style="display:block;font-weight:bold;margin-bottom:5px;">SKU</label>' +
+                        '<input type="text" ' +
+                        'name="variants[' +
+                        variantIndex +
+                        '][sku]" ' +
+                        'style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">' +
+                        '</div>' +
+                        '<div>' +
+                        '<label style="display:block;font-weight:bold;margin-bottom:5px;">Regular Price</label>' +
+                        '<input type="number" ' +
+                        'name="variants[' +
+                        variantIndex +
+                        '][regular_price]" ' +
+                        'value="' +
+                        escapeHtml(regularPrice) +
+                        '" min="0" step="0.01" ' +
+                        'style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">' +
+                        '</div>' +
+                        '<div>' +
+                        '<label style="display:block;font-weight:bold;margin-bottom:5px;">Sale Price</label>' +
+                        '<input type="number" ' +
+                        'name="variants[' +
+                        variantIndex +
+                        '][sale_price]" ' +
+                        'value="' +
+                        escapeHtml(salePrice) +
+                        '" min="0" step="0.01" ' +
+                        'style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">' +
+                        '</div>' +
+                        '<div>' +
+                        '<label style="display:block;font-weight:bold;margin-bottom:5px;">Stock</label>' +
+                        '<input type="number" ' +
+                        'name="variants[' +
+                        variantIndex +
+                        '][stock]" ' +
+                        'value="0" min="0" step="1" ' +
+                        'style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">' +
+                        '</div>' +
+                        '<div>' +
+                        '<label style="display:block;font-weight:bold;margin-bottom:5px;">Image</label>' +
+                        '<input type="file" ' +
+                        'name="variants[' +
+                        variantIndex +
+                        '][image]" ' +
+                        'accept="image/*">' +
+                        '</div>' +
+                        '</div>';
+
+                    variantsContainer.appendChild(row);
+                }
+            );
+
+            bindRemoveVariantButtons();
+        }
+
+        if (generateVariantsButton) {
+            generateVariantsButton.addEventListener(
+                'click',
+                function() {
+                    const groups =
+                        getSelectedOptionGroups();
+
+                    if (groups.length === 0) {
+                        alert(
+                            'Please select at least one attribute value.'
                         );
-                    })
-                    .join('');
 
-                const row = document.createElement('div');
-
-                row.className = 'variant-row';
-
-                row.style.cssText =
-                    'border:1px solid #ddd;'
-                    + 'border-radius:7px;'
-                    + 'padding:15px;'
-                    + 'margin-bottom:15px;';
-
-                row.innerHTML =
-                    '<div style="'
-                    + 'display:flex;'
-                    + 'justify-content:space-between;'
-                    + 'align-items:center;'
-                    + 'gap:15px;'
-                    + 'margin-bottom:12px;'
-                    + '">'
-                    + '<strong>'
-                    + escapeHtml(title)
-                    + '</strong>'
-                    + '<button '
-                    + 'type="button" '
-                    + 'class="remove-variant" '
-                    + 'style="'
-                    + 'padding:6px 10px;'
-                    + 'border:0;'
-                    + 'border-radius:4px;'
-                    + 'background:#dc3545;'
-                    + 'color:#fff;'
-                    + 'cursor:pointer;'
-                    + '">'
-                    + 'Remove'
-                    + '</button>'
-                    + '</div>'
-                    + hiddenFields
-                    + '<input '
-                    + 'type="hidden" '
-                    + 'name="variants['
-                    + variantIndex
-                    + '][old_image]" '
-                    + 'value="">'
-                    + '<div style="'
-                    + 'display:grid;'
-                    + 'grid-template-columns:repeat(4, minmax(140px, 1fr));'
-                    + 'gap:12px;'
-                    + '">'
-                    + '<div>'
-                    + '<label style="display:block;font-weight:bold;margin-bottom:5px;">SKU</label>'
-                    + '<input type="text" '
-                    + 'name="variants['
-                    + variantIndex
-                    + '][sku]" '
-                    + 'style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">'
-                    + '</div>'
-                    + '<div>'
-                    + '<label style="display:block;font-weight:bold;margin-bottom:5px;">Regular Price</label>'
-                    + '<input type="number" '
-                    + 'name="variants['
-                    + variantIndex
-                    + '][regular_price]" '
-                    + 'value="'
-                    + escapeHtml(regularPrice)
-                    + '" min="0" step="0.01" '
-                    + 'style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">'
-                    + '</div>'
-                    + '<div>'
-                    + '<label style="display:block;font-weight:bold;margin-bottom:5px;">Sale Price</label>'
-                    + '<input type="number" '
-                    + 'name="variants['
-                    + variantIndex
-                    + '][sale_price]" '
-                    + 'value="'
-                    + escapeHtml(salePrice)
-                    + '" min="0" step="0.01" '
-                    + 'style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">'
-                    + '</div>'
-                    + '<div>'
-                    + '<label style="display:block;font-weight:bold;margin-bottom:5px;">Stock</label>'
-                    + '<input type="number" '
-                    + 'name="variants['
-                    + variantIndex
-                    + '][stock]" '
-                    + 'value="0" min="0" step="1" '
-                    + 'style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">'
-                    + '</div>'
-                    + '<div>'
-                    + '<label style="display:block;font-weight:bold;margin-bottom:5px;">Image</label>'
-                    + '<input type="file" '
-                    + 'name="variants['
-                    + variantIndex
-                    + '][image]" '
-                    + 'accept="image/*">'
-                    + '</div>'
-                    + '</div>';
-
-                variantsContainer.appendChild(row);
-            }
-        );
-
-        bindRemoveVariantButtons();
-    }
-
-    if (generateVariantsButton) {
-        generateVariantsButton.addEventListener(
-            'click',
-            function () {
-                const groups =
-                    getSelectedOptionGroups();
-
-                if (groups.length === 0) {
-                    alert(
-                        'Please select at least one attribute value.'
-                    );
-
-                    return;
-                }
-
-                if (
-                    !confirm(
-                        'Generating variants will replace the current visible variant rows. Continue?'
-                    )
-                ) {
-                    return;
-                }
-
-                renderVariants(
-                    cartesianProduct(groups)
-                );
-            }
-        );
-    }
-
-    function bindRemoveVariantButtons() {
-        document
-            .querySelectorAll('.remove-variant')
-            .forEach(function (button) {
-                if (button.dataset.bound === 'true') {
-                    return;
-                }
-
-                button.dataset.bound = 'true';
-
-                button.addEventListener(
-                    'click',
-                    function () {
-                        this.closest('.variant-row')?.remove();
-                        reindexVariants();
+                        return;
                     }
-                );
-            });
-    }
 
-    function reindexVariants() {
-        document
-            .querySelectorAll('.variant-row')
-            .forEach(function (row, index) {
-                row.querySelectorAll(
-                    'input[name^="variants["]'
-                ).forEach(function (input) {
-                    input.name = input.name.replace(
-                        /^variants\[\d+\]/,
-                        'variants[' + index + ']'
+                    if (
+                        !confirm(
+                            'Generating variants will replace the current visible variant rows. Continue?'
+                        )
+                    ) {
+                        return;
+                    }
+
+                    renderVariants(
+                        cartesianProduct(groups)
+                    );
+                }
+            );
+        }
+
+        function bindRemoveVariantButtons() {
+            document
+                .querySelectorAll('.remove-variant')
+                .forEach(function(button) {
+                    if (button.dataset.bound === 'true') {
+                        return;
+                    }
+
+                    button.dataset.bound = 'true';
+
+                    button.addEventListener(
+                        'click',
+                        function() {
+                            this.closest('.variant-row')?.remove();
+                            reindexVariants();
+                        }
                     );
                 });
-            });
-    }
+        }
 
-    bindRemoveVariantButtons();
-});
+        function reindexVariants() {
+            document
+                .querySelectorAll('.variant-row')
+                .forEach(function(row, index) {
+                    row.querySelectorAll(
+                        'input[name^="variants["]'
+                    ).forEach(function(input) {
+                        input.name = input.name.replace(
+                            /^variants\[\d+\]/,
+                            'variants[' + index + ']'
+                        );
+                    });
+                });
+        }
+
+        bindRemoveVariantButtons();
+    });
 </script>
 
 @endsection

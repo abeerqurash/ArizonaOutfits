@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Payment;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,7 +32,7 @@ class StripePaymentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' =>
-                    'Stripe payments are currently unavailable.',
+                'Stripe payments are currently unavailable.',
             ], 503);
         }
 
@@ -53,7 +52,7 @@ class StripePaymentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' =>
-                    'Stripe has not been configured correctly.',
+                'Stripe has not been configured correctly.',
             ], 503);
         }
 
@@ -66,7 +65,7 @@ class StripePaymentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' =>
-                    'Your cart is empty.',
+                'Your cart is empty.',
             ], 422);
         }
 
@@ -133,7 +132,7 @@ class StripePaymentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' =>
-                    'The order total must be greater than zero.',
+                'The order total must be greater than zero.',
             ], 422);
         }
 
@@ -156,7 +155,7 @@ class StripePaymentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' =>
-                    'The payment amount is invalid.',
+                'The payment amount is invalid.',
             ], 422);
         }
 
@@ -182,161 +181,127 @@ class StripePaymentController extends Controller
                 ): Order {
                     $order = Order::create([
                         'user_id' =>
-                            auth()->id(),
+                        auth()->id(),
 
                         'order_number' =>
-                            $this->generateOrderNumber(),
+                        $this->generateOrderNumber(),
 
                         'tracking_number' =>
-                            $this->generateTrackingNumber(),
+                        $this->generateTrackingNumber(),
 
                         'subtotal' =>
-                            $subtotal,
+                        $subtotal,
 
                         'discount' =>
-                            $discount,
+                        $discount,
 
                         'shipping' =>
-                            $shipping,
+                        $shipping,
 
                         'tax' =>
-                            $tax,
+                        $tax,
 
                         'total' =>
-                            $total,
+                        $total,
 
                         'currency' =>
-                            strtoupper(
-                                $currency
-                            ),
+                        strtoupper(
+                            $currency
+                        ),
 
                         'coupon_code' =>
-                            $coupon['code']
+                        $coupon['code']
                             ?? null,
 
                         'payment_method' =>
-                            'stripe',
+                        'stripe',
 
                         'payment_provider' =>
-                            'stripe',
+                        'stripe',
 
                         'payment_reference' =>
-                            null,
+                        null,
 
                         'payment_intent_id' =>
-                            null,
+                        null,
 
                         'payment_status' =>
-                            'pending',
+                        'pending',
 
                         'order_status' =>
-                            'pending',
+                        'pending',
 
                         'paid_at' =>
-                            null,
+                        null,
 
                         'payment_failed_at' =>
-                            null,
+                        null,
 
                         'payment_failure_message' =>
-                            null,
+                        null,
 
                         'payment_metadata' => [
                             'provider' =>
-                                'stripe',
+                            'stripe',
 
                             'created_from' =>
-                                'checkout',
+                            'checkout',
                         ],
 
                         'billing_name' =>
-                            $validated[
-                                'billing_name'
-                            ],
+                        $validated['billing_name'],
 
                         'billing_email' =>
-                            $validated[
-                                'billing_email'
-                            ],
+                        $validated['billing_email'],
 
                         'billing_phone' =>
-                            $validated[
-                                'billing_phone'
-                            ],
+                        $validated['billing_phone'],
 
                         'billing_address' =>
-                            $validated[
-                                'billing_address'
-                            ],
+                        $validated['billing_address'],
 
                         'billing_country' =>
-                            strtoupper(
-                                $validated[
-                                    'billing_country'
-                                ]
-                            ),
+                        strtoupper(
+                            $validated['billing_country']
+                        ),
 
                         'billing_state' =>
-                            $validated[
-                                'billing_state'
-                            ],
+                        $validated['billing_state'],
 
                         'billing_city' =>
-                            $validated[
-                                'billing_city'
-                            ],
+                        $validated['billing_city'],
 
                         'billing_zip' =>
-                            $validated[
-                                'billing_zip'
-                            ],
+                        $validated['billing_zip'],
 
                         'shipping_name' =>
-                            $shippingDetails[
-                                'name'
-                            ],
+                        $shippingDetails['name'],
 
                         'shipping_email' =>
-                            $shippingDetails[
-                                'email'
-                            ],
+                        $shippingDetails['email'],
 
                         'shipping_phone' =>
-                            $shippingDetails[
-                                'phone'
-                            ],
+                        $shippingDetails['phone'],
 
                         'shipping_address' =>
-                            $shippingDetails[
-                                'address'
-                            ],
+                        $shippingDetails['address'],
 
                         'shipping_country' =>
-                            strtoupper(
-                                $shippingDetails[
-                                    'country'
-                                ]
-                            ),
+                        strtoupper(
+                            $shippingDetails['country']
+                        ),
 
                         'shipping_state' =>
-                            $shippingDetails[
-                                'state'
-                            ],
+                        $shippingDetails['state'],
 
                         'shipping_city' =>
-                            $shippingDetails[
-                                'city'
-                            ],
+                        $shippingDetails['city'],
 
                         'shipping_zip' =>
-                            $shippingDetails[
-                                'zip'
-                            ],
+                        $shippingDetails['zip'],
 
                         'order_notes' =>
-                            $validated[
-                                'order_notes'
-                            ]
+                        $validated['order_notes']
                             ?? null,
                     ]);
 
@@ -354,7 +319,7 @@ class StripePaymentController extends Controller
             return response()->json([
                 'success' => false,
                 'message' =>
-                    'The order could not be created. Please try again.',
+                'The order could not be created. Please try again.',
             ], 500);
         }
 
@@ -366,126 +331,108 @@ class StripePaymentController extends Controller
 
             $paymentIntent =
                 $stripe
-                    ->paymentIntents
-                    ->create([
-                        'amount' =>
-                            $amount,
+                ->paymentIntents
+                ->create([
+                    'amount' =>
+                    $amount,
 
-                        'currency' =>
-                            $currency,
+                    'currency' =>
+                    $currency,
 
-                        /*
+                    /*
                          * Card payments also allow supported
                          * Apple Pay and Google Pay wallets.
                          */
-                        'payment_method_types' => [
-                            'card',
+                    'payment_method_types' => [
+                        'card',
+                    ],
+
+                    'receipt_email' =>
+                    $validated['billing_email'],
+
+                    'description' =>
+                    'Arizona Outfits order '
+                        . $order->order_number,
+
+                    'metadata' => [
+                        'order_id' =>
+                        (string) $order->id,
+
+                        'order_number' =>
+                        $order->order_number,
+
+                        'customer_email' =>
+                        $validated['billing_email'],
+
+                        'payment_method' =>
+                        'stripe',
+                    ],
+
+                    'shipping' => [
+                        'name' =>
+                        $shippingDetails['name'],
+
+                        'phone' =>
+                        $shippingDetails['phone'],
+
+                        'address' => [
+                            'line1' =>
+                            $shippingDetails['address'],
+
+                            'city' =>
+                            $shippingDetails['city'],
+
+                            'state' =>
+                            $shippingDetails['state'],
+
+                            'postal_code' =>
+                            $shippingDetails['zip'],
+
+                            'country' =>
+                            strtoupper(
+                                $shippingDetails['country']
+                            ),
                         ],
-
-                        'receipt_email' =>
-                            $validated[
-                                'billing_email'
-                            ],
-
-                        'description' =>
-                            'Arizona Outfits order '
-                            . $order->order_number,
-
-                        'metadata' => [
-                            'order_id' =>
-                                (string) $order->id,
-
-                            'order_number' =>
-                                $order->order_number,
-
-                            'customer_email' =>
-                                $validated[
-                                    'billing_email'
-                                ],
-
-                            'payment_method' =>
-                                'stripe',
-                        ],
-
-                        'shipping' => [
-                            'name' =>
-                                $shippingDetails[
-                                    'name'
-                                ],
-
-                            'phone' =>
-                                $shippingDetails[
-                                    'phone'
-                                ],
-
-                            'address' => [
-                                'line1' =>
-                                    $shippingDetails[
-                                        'address'
-                                    ],
-
-                                'city' =>
-                                    $shippingDetails[
-                                        'city'
-                                    ],
-
-                                'state' =>
-                                    $shippingDetails[
-                                        'state'
-                                    ],
-
-                                'postal_code' =>
-                                    $shippingDetails[
-                                        'zip'
-                                    ],
-
-                                'country' =>
-                                    strtoupper(
-                                        $shippingDetails[
-                                            'country'
-                                        ]
-                                    ),
-                            ],
-                        ],
-                    ], [
-                        /*
+                    ],
+                ], [
+                    /*
                          * Prevent accidental duplicate intents
                          * if the same request is retried.
                          */
-                        'idempotency_key' =>
-                            'order_'
-                            . $order->id
-                            . '_'
-                            . $order->order_number,
-                    ]);
+                    'idempotency_key' =>
+                    'order_'
+                        . $order->id
+                        . '_'
+                        . $order->order_number,
+                ]);
 
             $order->update([
                 'payment_reference' =>
-                    $paymentIntent->id,
+                $paymentIntent->id,
 
                 'payment_intent_id' =>
-                    $paymentIntent->id,
+                $paymentIntent->id,
 
                 'payment_status' =>
-                    $this->mapStripeStatus(
-                        $paymentIntent->status
-                    ),
+                $this->mapStripeStatus(
+                    $paymentIntent->status
+                ),
 
                 'payment_metadata' => [
                     'provider' =>
-                        'stripe',
+                    'stripe',
 
                     'created_from' =>
-                        'checkout',
+                    'checkout',
 
                     'stripe_status' =>
-                        $paymentIntent->status,
+                    $paymentIntent->status,
 
                     'amount' =>
-                        $paymentIntent->amount,
+                    $paymentIntent->amount,
 
                     'currency' =>
-                        $paymentIntent->currency,
+                    $paymentIntent->currency,
                 ],
             ]);
 
@@ -503,85 +450,85 @@ class StripePaymentController extends Controller
                 'success' => true,
 
                 'client_secret' =>
-                    $paymentIntent
-                        ->client_secret,
+                $paymentIntent
+                    ->client_secret,
 
                 'payment_intent_id' =>
-                    $paymentIntent->id,
+                $paymentIntent->id,
 
                 'order_number' =>
-                    $order->order_number,
+                $order->order_number,
 
                 'return_url' =>
-                    route(
-                        'checkout.stripe.return'
-                    ),
+                route(
+                    'checkout.stripe.return'
+                ),
             ]);
         } catch (ApiErrorException $exception) {
             report($exception);
 
             $order->update([
                 'payment_status' =>
-                    'failed',
+                'failed',
 
                 'payment_failed_at' =>
-                    now(),
+                now(),
 
                 'payment_failure_message' =>
-                    $exception->getMessage(),
+                $exception->getMessage(),
 
                 'payment_metadata' => [
                     'provider' =>
-                        'stripe',
+                    'stripe',
 
                     'created_from' =>
-                        'checkout',
+                    'checkout',
 
                     'error_type' =>
-                        get_class(
-                            $exception
-                        ),
+                    get_class(
+                        $exception
+                    ),
                 ],
             ]);
 
             return response()->json([
                 'success' => false,
                 'message' =>
-                    $this->safeStripeMessage(
-                        $exception
-                    ),
+                $this->safeStripeMessage(
+                    $exception
+                ),
             ], 422);
         } catch (Throwable $exception) {
             report($exception);
 
             $order->update([
                 'payment_status' =>
-                    'failed',
+                'failed',
 
                 'payment_failed_at' =>
-                    now(),
+                now(),
 
                 'payment_failure_message' =>
-                    $exception->getMessage(),
+                $exception->getMessage(),
 
                 'payment_metadata' => [
                     'provider' =>
-                        'stripe',
+                    'stripe',
 
                     'created_from' =>
-                        'checkout',
+                    'checkout',
 
                     'error_type' =>
-                        get_class(
-                            $exception
-                        ),
+                    get_class(
+                        $exception
+                    ),
                 ],
             ]);
 
             return response()->json([
                 'success' => false,
                 'message' =>
-                    'Stripe could not initialize the payment. Please try again.',
+                'Stripe could not initialize the payment. Please try again.',
             ], 500);
         }
     }
@@ -646,71 +593,39 @@ class StripePaymentController extends Controller
 
             $paymentIntent =
                 $stripe
-                    ->paymentIntents
-                    ->retrieve(
-                        $paymentIntentId,
-                        []
-                    );
+                ->paymentIntents
+                ->retrieve(
+                    $paymentIntentId,
+                    []
+                );
 
             $metadataOrderId =
                 (string) (
                     $paymentIntent
-                        ->metadata
-                        ->order_id
+                    ->metadata
+                    ->order_id
                     ?? ''
                 );
 
             if (
                 $metadataOrderId !== ''
                 && $metadataOrderId
-                    !== (string) $order->id
+                !== (string) $order->id
             ) {
                 abort(403);
             }
 
             if (
-                $paymentIntent->status
-                === 'succeeded'
+                $paymentIntent->status === 'succeeded'
             ) {
-                $order->update([
-                    'payment_status' =>
-                        'paid',
-
-                    'order_status' =>
-                        $order->order_status
-                        === 'pending'
-                            ? 'processing'
-                            : $order->order_status,
-
-                    'paid_at' =>
-                        $order->paid_at
-                        ?? now(),
-
-                    'payment_failed_at' =>
-                        null,
-
-                    'payment_failure_message' =>
-                        null,
-
-                    'payment_reference' =>
-                        $paymentIntent->id,
-
-                    'payment_metadata' => [
-                        'provider' =>
-                            'stripe',
-
-                        'stripe_status' =>
-                            $paymentIntent->status,
-
-                        'amount_received' =>
-                            $paymentIntent
-                                ->amount_received,
-
-                        'currency' =>
-                            $paymentIntent
-                                ->currency,
-                    ],
-                ]);
+                /*
+     * The Stripe webhook is responsible for:
+     * - verifying the payment
+     * - deducting inventory
+     * - marking the order as paid
+     *
+     * This return endpoint only redirects the customer.
+     */
 
                 session()->forget([
                     'cart',
@@ -727,8 +642,7 @@ class StripePaymentController extends Controller
                 return redirect()->route(
                     'checkout.thankyou',
                     [
-                        'order_number' =>
-                            $order->order_number,
+                        'order_number' => $order->order_number,
                     ]
                 );
             }
@@ -745,14 +659,14 @@ class StripePaymentController extends Controller
             ) {
                 $order->update([
                     'payment_status' =>
-                        'processing',
+                    'processing',
 
                     'payment_metadata' => [
                         'provider' =>
-                            'stripe',
+                        'stripe',
 
                         'stripe_status' =>
-                            $paymentIntent->status,
+                        $paymentIntent->status,
                     ],
                 ]);
 
@@ -766,8 +680,8 @@ class StripePaymentController extends Controller
                         'checkout.thankyou',
                         [
                             'order_number' =>
-                                $order
-                                    ->order_number,
+                            $order
+                                ->order_number,
                         ]
                     )
                     ->with(
@@ -778,26 +692,26 @@ class StripePaymentController extends Controller
 
             $failureMessage =
                 $paymentIntent
-                    ->last_payment_error
-                    ?->message
+                ->last_payment_error
+                ?->message
                 ?? 'The card payment was not completed.';
 
             $order->update([
                 'payment_status' =>
-                    'failed',
+                'failed',
 
                 'payment_failed_at' =>
-                    now(),
+                now(),
 
                 'payment_failure_message' =>
-                    $failureMessage,
+                $failureMessage,
 
                 'payment_metadata' => [
                     'provider' =>
-                        'stripe',
+                    'stripe',
 
                     'stripe_status' =>
-                        $paymentIntent->status,
+                    $paymentIntent->status,
                 ],
             ]);
 
@@ -971,90 +885,56 @@ class StripePaymentController extends Controller
         if ($shipToDifferentAddress) {
             return [
                 'name' =>
-                    $validated[
-                        'shipping_name'
-                    ],
+                $validated['shipping_name'],
 
                 'email' =>
-                    $validated[
-                        'shipping_email'
-                    ]
-                    ?? $validated[
-                        'billing_email'
-                    ],
+                $validated['shipping_email']
+                    ?? $validated['billing_email'],
 
                 'phone' =>
-                    $validated[
-                        'shipping_phone'
-                    ],
+                $validated['shipping_phone'],
 
                 'address' =>
-                    $validated[
-                        'shipping_address'
-                    ],
+                $validated['shipping_address'],
 
                 'country' =>
-                    $validated[
-                        'shipping_country'
-                    ],
+                $validated['shipping_country'],
 
                 'state' =>
-                    $validated[
-                        'shipping_state'
-                    ],
+                $validated['shipping_state'],
 
                 'city' =>
-                    $validated[
-                        'shipping_city'
-                    ],
+                $validated['shipping_city'],
 
                 'zip' =>
-                    $validated[
-                        'shipping_zip'
-                    ],
+                $validated['shipping_zip'],
             ];
         }
 
         return [
             'name' =>
-                $validated[
-                    'billing_name'
-                ],
+            $validated['billing_name'],
 
             'email' =>
-                $validated[
-                    'billing_email'
-                ],
+            $validated['billing_email'],
 
             'phone' =>
-                $validated[
-                    'billing_phone'
-                ],
+            $validated['billing_phone'],
 
             'address' =>
-                $validated[
-                    'billing_address'
-                ],
+            $validated['billing_address'],
 
             'country' =>
-                $validated[
-                    'billing_country'
-                ],
+            $validated['billing_country'],
 
             'state' =>
-                $validated[
-                    'billing_state'
-                ],
+            $validated['billing_state'],
 
             'city' =>
-                $validated[
-                    'billing_city'
-                ],
+            $validated['billing_city'],
 
             'zip' =>
-                $validated[
-                    'billing_zip'
-                ],
+            $validated['billing_zip'],
         ];
     }
 
@@ -1089,56 +969,41 @@ class StripePaymentController extends Controller
 
             OrderItem::create([
                 'order_id' =>
-                    $order->id,
+                $order->id,
 
                 'product_id' =>
-                    $item['product_id']
+                $item['product_id']
                     ?? null,
 
                 'variant_id' =>
-                    $item['variant_id']
+                $item['variant_id']
                     ?? null,
 
                 'product_title' =>
-                    $item['title']
+                $item['title']
                     ?? 'Product',
 
                 'sku' =>
-                    $item['sku']
+                $item['sku']
                     ?? null,
 
                 'price' =>
-                    $price,
+                $price,
 
                 'quantity' =>
-                    $quantity,
+                $quantity,
 
                 'options' =>
-                    is_array(
-                        $item['options']
+                is_array(
+                    $item['options']
                         ?? null
-                    )
-                        ? $item['options']
-                        : [],
+                )
+                    ? $item['options']
+                    : [],
 
                 'total' =>
-                    $lineTotal,
+                $lineTotal,
             ]);
-
-            if (
-                !empty(
-                    $item['product_id']
-                )
-            ) {
-                Product::query()
-                    ->whereKey(
-                        $item['product_id']
-                    )
-                    ->increment(
-                        'purchase_count',
-                        $quantity
-                    );
-            }
         }
     }
 
@@ -1158,18 +1023,18 @@ class StripePaymentController extends Controller
 
         $previousOrder =
             Order::query()
-                ->whereKey(
-                    $previousOrderId
-                )
-                ->where(
-                    'payment_provider',
-                    'stripe'
-                )
-                ->where(
-                    'payment_status',
-                    'pending'
-                )
-                ->first();
+            ->whereKey(
+                $previousOrderId
+            )
+            ->where(
+                'payment_provider',
+                'stripe'
+            )
+            ->where(
+                'payment_status',
+                'pending'
+            )
+            ->first();
 
         if (
             $previousOrder
@@ -1233,16 +1098,12 @@ class StripePaymentController extends Controller
             isset(
                 $coupon['discount']
             )
-            && (float) $coupon[
-                'discount'
-            ] > 0
+            && (float) $coupon['discount'] > 0
         ) {
             return round(
                 min(
                     $subtotal,
-                    (float) $coupon[
-                        'discount'
-                    ]
+                    (float) $coupon['discount']
                 ),
                 2
             );
@@ -1262,7 +1123,7 @@ class StripePaymentController extends Controller
 
         $discount = match ($type) {
             'percentage' =>
-                $subtotal
+            $subtotal
                 * (
                     min(
                         100,
@@ -1271,10 +1132,10 @@ class StripePaymentController extends Controller
                 ),
 
             'fixed' =>
-                $value,
+            $value,
 
             default =>
-                0,
+            0,
         };
 
         return round(
@@ -1300,7 +1161,7 @@ class StripePaymentController extends Controller
         $countryCode = strtoupper(
             trim(
                 $countryCode
-                ?? ''
+                    ?? ''
             )
         );
 
@@ -1385,17 +1246,17 @@ class StripePaymentController extends Controller
     ): string {
         return match ($status) {
             'succeeded' =>
-                'paid',
+            'paid',
 
             'processing',
             'requires_capture' =>
-                'processing',
+            'processing',
 
             'canceled' =>
-                'cancelled',
+            'cancelled',
 
             default =>
-                'pending',
+            'pending',
         };
     }
 
@@ -1434,11 +1295,11 @@ class StripePaymentController extends Controller
                 );
         } while (
             Order::query()
-                ->where(
-                    'order_number',
-                    $orderNumber
-                )
-                ->exists()
+            ->where(
+                'order_number',
+                $orderNumber
+            )
+            ->exists()
         );
 
         return $orderNumber;

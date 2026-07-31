@@ -2603,7 +2603,8 @@ body {
     border-top: 1px none var(--pin-stripe);
     border-bottom: 1px none var(--pin-stripe);
     height: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: flex-start;
     grid-gap: 15px;
     margin-top: 40px;

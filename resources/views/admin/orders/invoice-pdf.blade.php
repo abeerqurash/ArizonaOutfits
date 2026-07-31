@@ -1,197 +1,237 @@
 @php
-    $orderNumber = $order->order_number
-        ?: 'ORD-' . str_pad((string) $order->id, 6, '0', STR_PAD_LEFT);
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
-    $invoiceNumber = 'INV-' . str_pad(
-        (string) $order->id,
-        6,
-        '0',
-        STR_PAD_LEFT
-    );
+$orderNumber = $order->order_number
+?: 'ORD-' . str_pad((string) $order->id, 6, '0', STR_PAD_LEFT);
 
-    $currencyCode = strtoupper($order->currency ?: 'PKR');
+$generator = new BarcodeGeneratorPNG();
 
-    $currencySymbols = [
-        'PKR' => 'Rs ',
-        'USD' => '$',
-        'GBP' => '£',
-        'EUR' => '€',
-        'AED' => 'AED ',
-        'SAR' => 'SAR ',
-        'CAD' => 'CA$',
-        'AUD' => 'A$',
-    ];
+$barcode = base64_encode(
+$generator->getBarcode(
+$orderNumber,
+$generator::TYPE_CODE_128,
+2,
+60
+)
+);
 
-    $currencySymbol = $currencySymbols[$currencyCode]
-        ?? $currencyCode . ' ';
+$qrPayload = implode("\n", [
+'Invoice',
+'Order: '.$orderNumber,
+'Customer: '.($order->billing_name ?: $order->user?->name ?: 'Guest'),
+]);
 
-    $money = function ($amount) use ($currencySymbol) {
-        return $currencySymbol . number_format((float) $amount, 2);
-    };
+$qrResult = new \Endroid\QrCode\Builder\Builder(
+writer: new \Endroid\QrCode\Writer\PngWriter(),
+writerOptions: [],
+validateResult: false,
+data: $qrPayload,
+encoding: new \Endroid\QrCode\Encoding\Encoding('UTF-8'),
+errorCorrectionLevel: \Endroid\QrCode\ErrorCorrectionLevel::Medium,
+size: 180,
+margin: 5
+);
 
-    $customerName = $order->billing_name
-        ?: $order->shipping_name
-        ?: $order->user?->name
-        ?: 'Guest customer';
+$qr = base64_encode(
+$qrResult->build()->getString()
+);
+@endphp
 
-    $customerEmail = $order->billing_email
-        ?: $order->shipping_email
-        ?: $order->user?->email
-        ?: null;
+@php
+$orderNumber = $order->order_number
+?: 'ORD-' . str_pad((string) $order->id, 6, '0', STR_PAD_LEFT);
 
-    $customerPhone = $order->billing_phone
-        ?: $order->shipping_phone
-        ?: null;
+$invoiceNumber = 'INV-' . str_pad(
+(string) $order->id,
+6,
+'0',
+STR_PAD_LEFT
+);
 
-    $billingAddress = array_filter([
-        $order->billing_address
-            ?? $order->billing_address_line_1
-            ?? $order->billing_address1
-            ?? null,
+$currencyCode = strtoupper($order->currency ?: 'PKR');
 
-        $order->billing_address_line_2
-            ?? $order->billing_address2
-            ?? null,
+$currencySymbols = [
+'PKR' => 'Rs ',
+'USD' => '$',
+'GBP' => '£',
+'EUR' => '€',
+'AED' => 'AED ',
+'SAR' => 'SAR ',
+'CAD' => 'CA$',
+'AUD' => 'A$',
+];
 
-        trim(
-            ($order->billing_city ?? '')
-            . (!empty($order->billing_state)
-                ? ', ' . $order->billing_state
-                : '')
-        ),
+$currencySymbol = $currencySymbols[$currencyCode]
+?? $currencyCode . ' ';
 
-        trim(
-            ($order->billing_postcode
-                ?? $order->billing_zip
-                ?? '')
-            . (!empty($order->billing_country)
-                ? ', ' . $order->billing_country
-                : '')
-        ),
-    ]);
+$money = function ($amount) use ($currencySymbol) {
+return $currencySymbol . number_format((float) $amount, 2);
+};
 
-    $shippingAddress = array_filter([
-        $order->shipping_address
-            ?? $order->shipping_address_line_1
-            ?? $order->shipping_address1
-            ?? null,
+$customerName = $order->billing_name
+?: $order->shipping_name
+?: $order->user?->name
+?: 'Guest customer';
 
-        $order->shipping_address_line_2
-            ?? $order->shipping_address2
-            ?? null,
+$customerEmail = $order->billing_email
+?: $order->shipping_email
+?: $order->user?->email
+?: null;
 
-        trim(
-            ($order->shipping_city ?? '')
-            . (!empty($order->shipping_state)
-                ? ', ' . $order->shipping_state
-                : '')
-        ),
+$customerPhone = $order->billing_phone
+?: $order->shipping_phone
+?: null;
 
-        trim(
-            ($order->shipping_postcode
-                ?? $order->shipping_zip
-                ?? '')
-            . (!empty($order->shipping_country)
-                ? ', ' . $order->shipping_country
-                : '')
-        ),
-    ]);
+$billingAddress = array_filter([
+$order->billing_address
+?? $order->billing_address_line_1
+?? $order->billing_address1
+?? null,
 
-    $subtotal = (float) ($order->subtotal ?? 0);
-    $discount = (float) ($order->discount ?? 0);
-    $shipping = (float) ($order->shipping ?? 0);
-    $tax = (float) ($order->tax ?? 0);
-    $total = (float) ($order->total ?? 0);
+$order->billing_address_line_2
+?? $order->billing_address2
+?? null,
 
-    $paymentMethod = $order->payment_method
-        ? ucwords(
-            str_replace(
-                ['_', '-'],
-                ' ',
-                $order->payment_method
-            )
-        )
-        : 'Not specified';
+trim(
+($order->billing_city ?? '')
+. (!empty($order->billing_state)
+? ', ' . $order->billing_state
+: '')
+),
 
-    $paymentStatus = ucwords(
-        str_replace(
-            ['_', '-'],
-            ' ',
-            $order->payment_status ?: 'pending'
-        )
-    );
+trim(
+($order->billing_postcode
+?? $order->billing_zip
+?? '')
+. (!empty($order->billing_country)
+? ', ' . $order->billing_country
+: '')
+),
+]);
 
-    $orderStatus = ucwords(
-        str_replace(
-            ['_', '-'],
-            ' ',
-            $order->order_status ?: 'pending'
-        )
-    );
+$shippingAddress = array_filter([
+$order->shipping_address
+?? $order->shipping_address_line_1
+?? $order->shipping_address1
+?? null,
 
-    $paymentReference = $order->payment_reference
-        ?? $order->transaction_id
-        ?? null;
+$order->shipping_address_line_2
+?? $order->shipping_address2
+?? null,
 
-    $resolveImagePath = function ($item) {
-        $product = $item->product;
+trim(
+($order->shipping_city ?? '')
+. (!empty($order->shipping_state)
+? ', ' . $order->shipping_state
+: '')
+),
 
-        if (!$product) {
-            return null;
-        }
+trim(
+($order->shipping_postcode
+?? $order->shipping_zip
+?? '')
+. (!empty($order->shipping_country)
+? ', ' . $order->shipping_country
+: '')
+),
+]);
 
-        $imagePath = $product->featured_image
-            ?? $product->image
-            ?? $product->image_path
-            ?? null;
+$subtotal = (float) ($order->subtotal ?? 0);
+$discount = (float) ($order->discount ?? 0);
+$shipping = (float) ($order->shipping ?? 0);
+$tax = (float) ($order->tax ?? 0);
+$total = (float) ($order->total ?? 0);
 
-        if (!$imagePath && $product->images?->isNotEmpty()) {
-            $firstImage = $product->images->first();
+$paymentMethod = $order->payment_method
+? ucwords(
+str_replace(
+['_', '-'],
+' ',
+$order->payment_method
+)
+)
+: 'Not specified';
 
-            $imagePath = $firstImage->path
-                ?? $firstImage->image
-                ?? $firstImage->image_path
-                ?? $firstImage->url
-                ?? null;
-        }
+$paymentStatus = ucwords(
+str_replace(
+['_', '-'],
+' ',
+$order->payment_status ?: 'pending'
+)
+);
 
-        if (!$imagePath) {
-            return null;
-        }
+$orderStatus = ucwords(
+str_replace(
+['_', '-'],
+' ',
+$order->order_status ?: 'pending'
+)
+);
 
-        if (
-            str_starts_with($imagePath, 'http://')
-            || str_starts_with($imagePath, 'https://')
-        ) {
-            return $imagePath;
-        }
+$paymentReference = $order->payment_reference
+?? $order->transaction_id
+?? null;
 
-        $imagePath = ltrim($imagePath, '/');
+$resolveImagePath = function ($item) {
+$product = $item->product;
 
-        $possiblePaths = [
-            public_path($imagePath),
-            public_path('storage/' . $imagePath),
-        ];
+if (!$product) {
+return null;
+}
 
-        if (str_starts_with($imagePath, 'storage/')) {
-            array_unshift(
-                $possiblePaths,
-                public_path($imagePath)
-            );
-        }
+$imagePath = $product->featured_image
+?? $product->image
+?? $product->image_path
+?? null;
 
-        foreach ($possiblePaths as $possiblePath) {
-            if (is_file($possiblePath)) {
-                return $possiblePath;
-            }
-        }
+if (!$imagePath && $product->images?->isNotEmpty()) {
+$firstImage = $product->images->first();
 
-        return null;
-    };
+$imagePath = $firstImage->path
+?? $firstImage->image
+?? $firstImage->image_path
+?? $firstImage->url
+?? null;
+}
+
+if (!$imagePath) {
+return null;
+}
+
+if (
+str_starts_with($imagePath, 'http://')
+|| str_starts_with($imagePath, 'https://')
+) {
+return $imagePath;
+}
+
+$imagePath = ltrim($imagePath, '/');
+
+$possiblePaths = [
+public_path($imagePath),
+public_path('storage/' . $imagePath),
+];
+
+if (str_starts_with($imagePath, 'storage/')) {
+array_unshift(
+$possiblePaths,
+public_path($imagePath)
+);
+}
+
+foreach ($possiblePaths as $possiblePath) {
+if (is_file($possiblePath)) {
+return $possiblePath;
+}
+}
+
+return null;
+};
 @endphp
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
@@ -484,7 +524,7 @@
             margin-top: 8px;
         }
 
-        .summary-table > tbody > tr > td {
+        .summary-table>tbody>tr>td {
             vertical-align: top;
         }
 
@@ -617,18 +657,6 @@
             text-align: center;
         }
 
-        .barcode {
-            height: 34px;
-            margin-bottom: 5px;
-            background:
-                repeating-linear-gradient(
-                    90deg,
-                    #111827 0,
-                    #111827 2px,
-                    transparent 2px,
-                    transparent 4px
-                );
-        }
 
         .reference-number {
             color: #111827;
@@ -677,8 +705,7 @@
 
             <td
                 width="42%"
-                class="invoice-heading-cell"
-            >
+                class="invoice-heading-cell">
                 <div class="invoice-heading">
                     Invoice
                 </div>
@@ -699,7 +726,37 @@
             </td>
         </tr>
     </table>
+    <table width="100%" style="margin-top:15px;">
+        <tr>
 
+            <td width="70%">
+
+                <img
+                    src="data:image/png;base64,{{ $barcode }}"
+                    style="width:100%;height:60px;">
+
+                <div
+                    style="
+font-size:11px;
+text-align:center;
+font-weight:bold;
+margin-top:5px;
+">
+                    {{ $orderNumber }}
+                </div>
+
+            </td>
+
+            <td width="30%" align="right">
+
+                <img
+                    src="data:image/png;base64,{{ $qr }}"
+                    style="width:90px;height:90px;">
+
+            </td>
+
+        </tr>
+    </table>
     <table class="meta-table">
         <tr>
             <td>
@@ -757,25 +814,25 @@
                     </div>
 
                     @forelse ($billingAddress as $line)
-                        <div class="address-line">
-                            {{ $line }}
-                        </div>
+                    <div class="address-line">
+                        {{ $line }}
+                    </div>
                     @empty
-                        <div class="address-line">
-                            No billing address provided.
-                        </div>
+                    <div class="address-line">
+                        No billing address provided.
+                    </div>
                     @endforelse
 
                     @if ($customerEmail)
-                        <div class="address-line">
-                            {{ $customerEmail }}
-                        </div>
+                    <div class="address-line">
+                        {{ $customerEmail }}
+                    </div>
                     @endif
 
                     @if ($customerPhone)
-                        <div class="address-line">
-                            {{ $customerPhone }}
-                        </div>
+                    <div class="address-line">
+                        {{ $customerPhone }}
+                    </div>
                     @endif
                 </div>
             </td>
@@ -791,25 +848,25 @@
                     </div>
 
                     @forelse ($shippingAddress as $line)
-                        <div class="address-line">
-                            {{ $line }}
-                        </div>
+                    <div class="address-line">
+                        {{ $line }}
+                    </div>
                     @empty
-                        <div class="address-line">
-                            No shipping address provided.
-                        </div>
+                    <div class="address-line">
+                        No shipping address provided.
+                    </div>
                     @endforelse
 
                     @if ($order->shipping_email)
-                        <div class="address-line">
-                            {{ $order->shipping_email }}
-                        </div>
+                    <div class="address-line">
+                        {{ $order->shipping_email }}
+                    </div>
                     @endif
 
                     @if ($order->shipping_phone)
-                        <div class="address-line">
-                            {{ $order->shipping_phone }}
-                        </div>
+                    <div class="address-line">
+                        {{ $order->shipping_phone }}
+                    </div>
                     @endif
                 </div>
             </td>
@@ -841,111 +898,109 @@
 
         <tbody>
             @forelse ($order->items as $item)
-                @php
-                    $productName = $item->product_name
-                        ?: $item->product?->title
-                        ?: $item->product_title
-                        ?: 'Deleted product';
+            @php
+            $productName = $item->product_name
+            ?: $item->product?->title
+            ?: $item->product_title
+            ?: 'Deleted product';
 
-                    $productImage = $resolveImagePath($item);
+            $productImage = $resolveImagePath($item);
 
-                    $lineTotal = $item->subtotal !== null
-                        ? (float) $item->subtotal
-                        : (float) $item->price
-                            * (int) $item->quantity;
+            $lineTotal = $item->subtotal !== null
+            ? (float) $item->subtotal
+            : (float) $item->price
+            * (int) $item->quantity;
 
-                    $displayOptions = $item->display_options ?? [];
+            $displayOptions = $item->display_options ?? [];
 
-                    if (
-                        empty($displayOptions)
-                        && is_array($item->options ?? null)
-                    ) {
-                        $displayOptions = collect($item->options)
-                            ->map(function ($value, $name) {
-                                return [
-                                    'name' => ucwords(
-                                        str_replace(
-                                            ['_', '-'],
-                                            ' ',
-                                            (string) $name
-                                        )
-                                    ),
+            if (
+            empty($displayOptions)
+            && is_array($item->options ?? null)
+            ) {
+            $displayOptions = collect($item->options)
+            ->map(function ($value, $name) {
+            return [
+            'name' => ucwords(
+            str_replace(
+            ['_', '-'],
+            ' ',
+            (string) $name
+            )
+            ),
 
-                                    'value' => is_array($value)
-                                        ? implode(', ', $value)
-                                        : (string) $value,
-                                ];
-                            })
-                            ->values()
-                            ->all();
-                    }
-                @endphp
+            'value' => is_array($value)
+            ? implode(', ', $value)
+            : (string) $value,
+            ];
+            })
+            ->values()
+            ->all();
+            }
+            @endphp
 
-                <tr>
-                    <td>
-                        <table class="product-table">
-                            <tr>
-                                <td class="product-image-cell">
-                                    @if ($productImage)
-                                        <img
-                                            src="{{ $productImage }}"
-                                            alt="{{ $productName }}"
-                                            class="product-image"
-                                        >
-                                    @else
-                                        <div class="product-placeholder">
-                                            No image
-                                        </div>
-                                    @endif
-                                </td>
+            <tr>
+                <td>
+                    <table class="product-table">
+                        <tr>
+                            <td class="product-image-cell">
+                                @if ($productImage)
+                                <img
+                                    src="{{ $productImage }}"
+                                    alt="{{ $productName }}"
+                                    class="product-image">
+                                @else
+                                <div class="product-placeholder">
+                                    No image
+                                </div>
+                                @endif
+                            </td>
 
-                                <td>
-                                    <div class="product-name">
-                                        {{ $productName }}
-                                    </div>
+                            <td>
+                                <div class="product-name">
+                                    {{ $productName }}
+                                </div>
 
-                                    @foreach ($displayOptions as $option)
-                                        <span class="product-option">
-                                            {{ $option['name'] ?? 'Option' }}:
-                                            {{ $option['value'] ?? '' }}
-                                        </span>
-                                    @endforeach
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
+                                @foreach ($displayOptions as $option)
+                                <span class="product-option">
+                                    {{ $option['name'] ?? 'Option' }}:
+                                    {{ $option['value'] ?? '' }}
+                                </span>
+                                @endforeach
+                            </td>
+                        </tr>
+                    </table>
+                </td>
 
-                    <td>
-                        <span class="sku">
-                            {{ $item->sku
+                <td>
+                    <span class="sku">
+                        {{ $item->sku
                                 ?: $item->product?->sku
                                 ?: 'N/A' }}
-                        </span>
-                    </td>
+                    </span>
+                </td>
 
-                    <td class="right">
-                        {{ $money($item->price) }}
-                    </td>
+                <td class="right">
+                    {{ $money($item->price) }}
+                </td>
 
-                    <td class="right">
-                        {{ $item->quantity }}
-                    </td>
+                <td class="right">
+                    {{ $item->quantity }}
+                </td>
 
-                    <td class="right">
-                        <strong>
-                            {{ $money($lineTotal) }}
-                        </strong>
-                    </td>
-                </tr>
+                <td class="right">
+                    <strong>
+                        {{ $money($lineTotal) }}
+                    </strong>
+                </td>
+            </tr>
             @empty
-                <tr>
-                    <td
-                        colspan="5"
-                        class="empty-row"
-                    >
-                        No order items were found.
-                    </td>
-                </tr>
+            <tr>
+                <td
+                    colspan="5"
+                    class="empty-row">
+                    No order items were found.
+                </td>
+            </tr>
             @endforelse
         </tbody>
     </table>
@@ -1023,7 +1078,7 @@
 
                             <td class="totals-value discount-value">
                                 @if ($discount > 0)
-                                    -
+                                -
                                 @endif
 
                                 {{ $money($discount) }}
@@ -1070,15 +1125,15 @@
     </table>
 
     @if (!empty($order->admin_notes))
-        <div class="notes-box">
-            <div class="notes-title">
-                Order notes
-            </div>
-
-            <div class="notes-text">
-                {{ $order->admin_notes }}
-            </div>
+    <div class="notes-box">
+        <div class="notes-title">
+            Order notes
         </div>
+
+        <div class="notes-text">
+            {{ $order->admin_notes }}
+        </div>
+    </div>
     @endif
 
     <table class="footer-table">
@@ -1097,7 +1152,9 @@
 
             <td width="27%">
                 <div class="reference-box">
-                    <div class="barcode"></div>
+                    <img
+                        src="data:image/png;base64,{{ $barcode }}"
+                        style="width:100%;height:40px;">
 
                     <div class="reference-number">
                         {{ $orderNumber }}
@@ -1134,4 +1191,5 @@
         }
     </script>
 </body>
+
 </html>

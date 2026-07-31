@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use App\Services\InventoryService;
 use Illuminate\View\View;
+use App\Services\OrderEmailService;
+use RuntimeException;
 use Throwable;
+
 
 class CheckoutController extends Controller
 {
@@ -32,9 +35,7 @@ class CheckoutController extends Controller
                 );
         }
 
-        $subtotal = $this->calculateSubtotal(
-            $cart
-        );
+        $subtotal = $this->calculateSubtotal($cart);
 
         $coupon = session()->get(
             'cart_coupon',
@@ -46,15 +47,29 @@ class CheckoutController extends Controller
             $coupon
         );
 
-        /*
-         * Initial international shipping estimate.
-         *
-         * This amount is updated when the customer
-         * selects their delivery country.
-         */
-        $shipping = $this->calculateShipping(
-            $subtotal
+        $shippingMethods = $this->getShippingMethods();
+
+        $selectedShippingMethod = old(
+            'shipping_method',
+            config('shipping.default', 'standard')
         );
+
+        if (
+            !array_key_exists(
+                $selectedShippingMethod,
+                $shippingMethods
+            )
+        ) {
+            $selectedShippingMethod = array_key_first(
+                $shippingMethods
+            );
+        }
+
+        $shippingDetails = $this->resolveShippingMethod(
+            $selectedShippingMethod
+        );
+
+        $shipping = $shippingDetails['price'];
 
         $tax = 0;
 
@@ -68,7 +83,7 @@ class CheckoutController extends Controller
         $currency = strtoupper(
             config(
                 'payments.currency',
-                'USD'
+                config('shipping.currency', 'USD')
             )
         );
 
@@ -81,22 +96,28 @@ class CheckoutController extends Controller
                 'shipping',
                 'tax',
                 'total',
-                'currency'
+                'currency',
+                'shippingMethods',
+                'selectedShippingMethod'
             )
         );
     }
 
     /**
-     * Return a live shipping quotation.
+     * Return a live shipping-method quotation.
      */
     public function shippingQuote(
         Request $request
     ): JsonResponse {
+        $shippingMethods = $this->getShippingMethods();
+
         $validated = $request->validate([
-            'country_code' => [
+            'shipping_method' => [
                 'required',
                 'string',
-                'size:2',
+                Rule::in(
+                    array_keys($shippingMethods)
+                ),
             ],
         ]);
 
@@ -109,9 +130,7 @@ class CheckoutController extends Controller
             ], 422);
         }
 
-        $subtotal = $this->calculateSubtotal(
-            $cart
-        );
+        $subtotal = $this->calculateSubtotal($cart);
 
         $coupon = session()->get(
             'cart_coupon',
@@ -123,10 +142,11 @@ class CheckoutController extends Controller
             $coupon
         );
 
-        $shipping = $this->calculateShipping(
-            $subtotal,
-            $validated['country_code']
+        $shippingDetails = $this->resolveShippingMethod(
+            $validated['shipping_method']
         );
+
+        $shipping = $shippingDetails['price'];
 
         $tax = 0;
 
@@ -137,8 +157,24 @@ class CheckoutController extends Controller
             $tax
         );
 
+        $currency = strtoupper(
+            config(
+                'payments.currency',
+                config('shipping.currency', 'USD')
+            )
+        );
+
         return response()->json([
             'success' => true,
+
+            'shipping_method' =>
+            $validated['shipping_method'],
+
+            'shipping_name' =>
+            $shippingDetails['name'],
+
+            'delivery_time' =>
+            $shippingDetails['delivery_time'],
 
             'subtotal' => round(
                 $subtotal,
@@ -165,26 +201,25 @@ class CheckoutController extends Controller
                 2
             ),
 
-            'currency' => strtoupper(
-                config(
-                    'payments.currency',
-                    'USD'
-                )
-            ),
+            'currency' => $currency,
 
             'formatted_shipping' =>
-            $shipping > 0
-                ? '$' . number_format(
-                    $shipping,
-                    2
-                )
-                : 'Free',
+            '$' . number_format(
+                $shipping,
+                2
+            ),
 
             'formatted_total' =>
             '$' . number_format(
                 $total,
                 2
             ),
+
+            'message' =>
+            $shippingDetails['name']
+                . ' selected. Estimated delivery: '
+                . $shippingDetails['delivery_time']
+                . '.',
         ]);
     }
 
@@ -215,9 +250,6 @@ class CheckoutController extends Controller
         /*
          * Stripe checkout is handled through JavaScript
          * and StripePaymentController.
-         *
-         * This fallback prevents a Stripe order from being
-         * created without an actual payment attempt.
          */
         if (
             $validated['payment_method']
@@ -232,7 +264,7 @@ class CheckoutController extends Controller
         }
 
         /*
-         * Only direct bank transfer can reach this point.
+         * Only direct bank transfer can reach this method.
          */
         if (
             $validated['payment_method']
@@ -251,14 +283,9 @@ class CheckoutController extends Controller
                 'ship_to_different_address'
             );
 
-        $deliveryCountry =
-            $shipToDifferentAddress
-            ? $validated['shipping_country']
-            : $validated['billing_country'];
-
         /*
-         * Never trust totals submitted by the browser.
-         * Calculate everything again from the session cart.
+         * Never trust totals or shipping prices
+         * submitted by the browser.
          */
         $subtotal = $this->calculateSubtotal(
             $cart
@@ -274,10 +301,13 @@ class CheckoutController extends Controller
             $coupon
         );
 
-        $shipping = $this->calculateShipping(
-            $subtotal,
-            $deliveryCountry
-        );
+        $shippingMethodDetails =
+            $this->resolveShippingMethod(
+                $validated['shipping_method']
+            );
+
+        $shipping =
+            $shippingMethodDetails['price'];
 
         $tax = 0;
 
@@ -288,8 +318,8 @@ class CheckoutController extends Controller
             $tax
         );
 
-        $shippingDetails =
-            $this->resolveShippingDetails(
+        $shippingAddressDetails =
+            $this->resolveShippingAddress(
                 $validated,
                 $shipToDifferentAddress
             );
@@ -305,7 +335,8 @@ class CheckoutController extends Controller
                     $tax,
                     $total,
                     $coupon,
-                    $shippingDetails
+                    $shippingAddressDetails,
+                    $shippingMethodDetails
                 ): Order {
                     $order = Order::create([
                         'user_id' => auth()->id(),
@@ -318,14 +349,32 @@ class CheckoutController extends Controller
 
                         'subtotal' => $subtotal,
                         'discount' => $discount,
+
+                        /*
+                         * Keep the existing shipping column
+                         * synchronized with shipping_price.
+                         */
                         'shipping' => $shipping,
+
+                        'shipping_method' =>
+                        $shippingMethodDetails['name'],
+
+                        'shipping_price' =>
+                        $shipping,
+
+                        'estimated_delivery' =>
+                        $shippingMethodDetails['delivery_time'],
+
                         'tax' => $tax,
                         'total' => $total,
 
                         'currency' => strtoupper(
                             config(
                                 'payments.currency',
-                                'USD'
+                                config(
+                                    'shipping.currency',
+                                    'USD'
+                                )
                             )
                         ),
 
@@ -339,11 +388,8 @@ class CheckoutController extends Controller
                         'payment_provider' =>
                         'bank_transfer',
 
-                        'payment_reference' =>
-                        null,
-
-                        'payment_intent_id' =>
-                        null,
+                        'payment_reference' => null,
+                        'payment_intent_id' => null,
 
                         /*
                          * Bank-transfer orders remain pending
@@ -366,6 +412,18 @@ class CheckoutController extends Controller
                         'payment_metadata' => [
                             'method' =>
                             'bank_transfer',
+
+                            'shipping_method_key' =>
+                            $validated['shipping_method'],
+
+                            'shipping_method_name' =>
+                            $shippingMethodDetails['name'],
+
+                            'shipping_price' =>
+                            $shipping,
+
+                            'estimated_delivery' =>
+                            $shippingMethodDetails['delivery_time'],
 
                             'bank_name' =>
                             config(
@@ -405,30 +463,30 @@ class CheckoutController extends Controller
                         $validated['billing_zip'],
 
                         'shipping_name' =>
-                        $shippingDetails['name'],
+                        $shippingAddressDetails['name'],
 
                         'shipping_email' =>
-                        $shippingDetails['email'],
+                        $shippingAddressDetails['email'],
 
                         'shipping_phone' =>
-                        $shippingDetails['phone'],
+                        $shippingAddressDetails['phone'],
 
                         'shipping_address' =>
-                        $shippingDetails['address'],
+                        $shippingAddressDetails['address'],
 
                         'shipping_country' =>
                         strtoupper(
-                            $shippingDetails['country']
+                            $shippingAddressDetails['country']
                         ),
 
                         'shipping_state' =>
-                        $shippingDetails['state'],
+                        $shippingAddressDetails['state'],
 
                         'shipping_city' =>
-                        $shippingDetails['city'],
+                        $shippingAddressDetails['city'],
 
                         'shipping_zip' =>
-                        $shippingDetails['zip'],
+                        $shippingAddressDetails['zip'],
 
                         'order_notes' =>
                         $validated['order_notes']
@@ -440,9 +498,20 @@ class CheckoutController extends Controller
                         $cart
                     );
 
+                    $this->inventoryService->deductForOrder(
+                        $order
+                    );
+
                     return $order;
                 }
             );
+        } catch (RuntimeException $exception) {
+            return back()
+                ->withInput()
+                ->with(
+                    'error',
+                    $exception->getMessage()
+                );
         } catch (Throwable $exception) {
             report($exception);
 
@@ -450,14 +519,13 @@ class CheckoutController extends Controller
                 ->withInput()
                 ->with(
                     'error',
-                    'The order could not be placed. Please try again.'
+                    'We could not complete your order. Please try again.'
                 );
         }
 
-        /*
-         * Bank-transfer order creation is complete.
-         * The cart can now safely be cleared.
-         */
+
+        $this->orderEmailService->sendOrderEmails($order);
+
         session()->forget([
             'cart',
             'cart_coupon',
@@ -493,14 +561,6 @@ class CheckoutController extends Controller
             )
             ->firstOrFail();
 
-        /*
-         * Prevent completely unrelated guest orders
-         * from being freely opened by changing the URL.
-         *
-         * Authenticated users may view their own orders.
-         * Guests may view the order just completed in
-         * their current session.
-         */
         $canViewOrder = false;
 
         if (
@@ -555,6 +615,9 @@ class CheckoutController extends Controller
             $availablePaymentMethods[] =
                 'bank_transfer';
         }
+
+        $shippingMethods =
+            $this->getShippingMethods();
 
         return $request->validate([
             'billing_name' => [
@@ -666,6 +729,18 @@ class CheckoutController extends Controller
                 'max:30',
             ],
 
+            /*
+             * The customer selects one of the
+             * configured shipping methods.
+             */
+            'shipping_method' => [
+                'required',
+                'string',
+                Rule::in(
+                    array_keys($shippingMethods)
+                ),
+            ],
+
             'order_notes' => [
                 'nullable',
                 'string',
@@ -689,7 +764,7 @@ class CheckoutController extends Controller
     /**
      * Resolve the final shipping address.
      */
-    private function resolveShippingDetails(
+    private function resolveShippingAddress(
         array $validated,
         bool $shipToDifferentAddress
     ): array {
@@ -746,6 +821,75 @@ class CheckoutController extends Controller
 
             'zip' =>
             $validated['billing_zip'],
+        ];
+    }
+
+    /**
+     * Return configured shipping methods.
+     */
+    private function getShippingMethods(): array
+    {
+        $shippingMethods = config(
+            'shipping.methods',
+            []
+        );
+
+        return is_array($shippingMethods)
+            ? $shippingMethods
+            : [];
+    }
+
+    /**
+     * Resolve and normalize one shipping method.
+     */
+    private function resolveShippingMethod(
+        string $shippingMethod
+    ): array {
+        $shippingMethods =
+            $this->getShippingMethods();
+
+        $method =
+            $shippingMethods[$shippingMethod]
+            ?? null;
+
+        if (!is_array($method)) {
+            abort(
+                422,
+                'The selected shipping method is unavailable.'
+            );
+        }
+
+        return [
+            'key' => $shippingMethod,
+
+            'name' =>
+            (string) (
+                $method['name']
+                ?? ucfirst($shippingMethod)
+            ),
+
+            'price' => round(
+                max(
+                    0,
+                    (float) (
+                        $method['price']
+                        ?? 0
+                    )
+                ),
+                2
+            ),
+
+            'delivery_time' =>
+            (string) (
+                $method['delivery_time']
+                ?? 'Delivery time unavailable'
+            ),
+
+            'description' =>
+            (string) (
+                $method['description']
+                ?? ''
+            ),
         ];
     }
 
@@ -815,19 +959,6 @@ class CheckoutController extends Controller
                 'total' =>
                 $lineTotal,
             ]);
-
-            if (
-                !empty($item['product_id'])
-            ) {
-                Product::query()
-                    ->whereKey(
-                        $item['product_id']
-                    )
-                    ->increment(
-                        'purchase_count',
-                        $quantity
-                    );
-            }
         }
     }
 
@@ -874,10 +1005,6 @@ class CheckoutController extends Controller
             return 0;
         }
 
-        /*
-         * Support coupons that already contain
-         * a calculated discount.
-         */
         if (
             isset($coupon['discount'])
             && (float) $coupon['discount'] > 0
@@ -925,36 +1052,6 @@ class CheckoutController extends Controller
             ),
             2
         );
-    }
-
-    /**
-     * Calculate shipping by delivery country.
-     */
-    private function calculateShipping(
-        float $subtotal,
-        ?string $countryCode = null
-    ): float {
-        /*
-         * Free shipping for orders of $400 or above.
-         */
-        if ($subtotal >= 400) {
-            return 0;
-        }
-
-        $countryCode = strtoupper(
-            trim(
-                $countryCode
-                    ?? ''
-            )
-        );
-
-        return match ($countryCode) {
-            'PK' => 5,
-            'US' => 10,
-            'CA' => 15,
-            'GB' => 18,
-            default => 25,
-        };
     }
 
     /**
@@ -1011,4 +1108,9 @@ class CheckoutController extends Controller
                 Str::random(12)
             );
     }
+
+    public function __construct(
+        private readonly InventoryService $inventoryService,
+        private readonly OrderEmailService $orderEmailService
+    ) {}
 }

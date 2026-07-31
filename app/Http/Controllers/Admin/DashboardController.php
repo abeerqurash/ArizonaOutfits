@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Models\Review;
 use App\Models\User;
+use App\Models\InventoryAlert;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -358,7 +359,7 @@ class DashboardController extends AdminController
 
         $orderStatusOverview = $this->getOrderStatusOverview();
 
-      
+
 
 
 
@@ -446,6 +447,15 @@ class DashboardController extends AdminController
                 ->count(),
         ];
 
+        $activeInventoryAlerts = InventoryAlert::with([
+            'product',
+            'variant.product',
+        ])
+            ->where('status', 'active')
+            ->latest()
+            ->take(10)
+            ->get();
+
         return view('admin.dashboard', compact(
             'statistics',
             'recentOrders',
@@ -461,6 +471,7 @@ class DashboardController extends AdminController
             'dashboardAlerts',
             'dashboardAlertSummary',
             'customerAnalytics',
+            'activeInventoryAlerts',
             'topCustomers'
         ));
     }
@@ -1382,6 +1393,4 @@ class DashboardController extends AdminController
                 return $customer;
             });
     }
-
-    
 }

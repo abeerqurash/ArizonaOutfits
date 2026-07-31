@@ -47,7 +47,7 @@ class CartController extends Controller
         if (empty($cart)) {
             return back()->withErrors([
                 'coupon_code' =>
-                    'You cannot apply a coupon to an empty cart.',
+                'You cannot apply a coupon to an empty cart.',
             ]);
         }
 
@@ -73,7 +73,7 @@ class CartController extends Controller
                 ->withInput()
                 ->withErrors([
                     'coupon_code' =>
-                        'The coupon code is invalid or inactive.',
+                    'The coupon code is invalid or inactive.',
                 ]);
         }
 
@@ -90,7 +90,7 @@ class CartController extends Controller
                 ->withInput()
                 ->withErrors([
                     'coupon_code' =>
-                        'This coupon is not active yet.',
+                    'This coupon is not active yet.',
                 ]);
         }
 
@@ -105,7 +105,7 @@ class CartController extends Controller
                 ->withInput()
                 ->withErrors([
                     'coupon_code' =>
-                        'This coupon has expired.',
+                    'This coupon has expired.',
                 ]);
         }
 
@@ -123,7 +123,7 @@ class CartController extends Controller
                 ->withInput()
                 ->withErrors([
                     'coupon_code' =>
-                        'A minimum order amount of $'
+                    'A minimum order amount of $'
                         . number_format(
                             $minimumOrderAmount,
                             2
@@ -142,7 +142,7 @@ class CartController extends Controller
                 ->withInput()
                 ->withErrors([
                     'coupon_code' =>
-                        'This coupon does not provide a valid discount.',
+                    'This coupon does not provide a valid discount.',
                 ]);
         }
 
@@ -152,7 +152,7 @@ class CartController extends Controller
             'type' => $coupon->type,
             'value' => (float) $coupon->value,
             'minimum_order_amount' =>
-                (float) ($coupon->minimum_order_amount ?? 0),
+            (float) ($coupon->minimum_order_amount ?? 0),
             'discount' => $discount,
         ]);
 
@@ -249,7 +249,7 @@ class CartController extends Controller
         $requiredOptionIds = $product->options
             ->pluck('id')
             ->map(
-                fn ($id) => (int) $id
+                fn($id) => (int) $id
             )
             ->values();
 
@@ -258,7 +258,7 @@ class CartController extends Controller
         )
             ->pluck('option_id')
             ->map(
-                fn ($id) => (int) $id
+                fn($id) => (int) $id
             )
             ->unique()
             ->values();
@@ -276,7 +276,7 @@ class CartController extends Controller
                 $requiredOptionIds->isEmpty()
                 || $missingOptionIds->isNotEmpty()
                 || $selectedOptionIds->count()
-                    !== $requiredOptionIds->count()
+                !== $requiredOptionIds->count()
             )
         ) {
             return $this->cartError(
@@ -322,15 +322,15 @@ class CartController extends Controller
 
             $submittedOptionMap =
                 collect($selectedOptions)
-                    ->mapWithKeys(
-                        function (array $option) {
-                            return [
-                                (string) $option['option_id']
-                                    => (string) $option['value_id'],
-                            ];
-                        }
-                    )
-                    ->all();
+                ->mapWithKeys(
+                    function (array $option) {
+                        return [
+                            (string) $option['option_id']
+                            => (string) $option['value_id'],
+                        ];
+                    }
+                )
+                ->all();
 
             ksort($variantOptions);
             ksort($submittedOptionMap);
@@ -386,21 +386,21 @@ class CartController extends Controller
         $regularPrice = $variant
             ? (
                 $variant->regular_price !== null
-                    ? (float) $variant->regular_price
-                    : (float) $product->regular_price
+                ? (float) $variant->regular_price
+                : (float) $product->regular_price
             )
             : (float) $product->regular_price;
 
         $salePrice = $variant
             ? (
                 $variant->sale_price !== null
-                    ? (float) $variant->sale_price
-                    : null
+                ? (float) $variant->sale_price
+                : null
             )
             : (
                 $product->sale_price !== null
-                    ? (float) $product->sale_price
-                    : null
+                ? (float) $product->sale_price
+                : null
             );
 
         $price = (
@@ -469,7 +469,7 @@ class CartController extends Controller
             ];
         }
 
-        
+
 
         session()->put(
             'cart',
@@ -487,11 +487,11 @@ class CartController extends Controller
             return response()->json([
                 'success' => true,
                 'message' =>
-                    'Product added to cart.',
+                'Product added to cart.',
                 'cart_count' =>
-                    $this->cartCount($cart),
+                $this->cartCount($cart),
                 'cart_subtotal' =>
-                    $this->cartSubtotal($cart),
+                $this->cartSubtotal($cart),
                 'cart' => $cart,
             ]);
         }
@@ -565,24 +565,67 @@ class CartController extends Controller
             $quantity =
                 (int) $validated['quantity'];
 
-            $availableStock =
-                (int) (
-                    $cart[$cartKey]['stock']
-                    ?? 0
-                );
+            $product = Product::query()
+                ->whereKey(
+                    $cart[$cartKey]['product_id']
+                )
+                ->where('status', 'active')
+                ->first();
 
-            if (
-                $availableStock > 0
-                && $quantity > $availableStock
-            ) {
+            if (!$product) {
+                return $this->cartError(
+                    $request,
+                    'This product no longer exists.',
+                    404
+                );
+            }
+
+            $variant = null;
+
+            if (!empty($cart[$cartKey]['variant_id'])) {
+                $variant = ProductVariant::query()
+                    ->whereKey(
+                        $cart[$cartKey]['variant_id']
+                    )
+                    ->where(
+                        'product_id',
+                        $product->id
+                    )
+                    ->first();
+
+                if (!$variant) {
+                    return $this->cartError(
+                        $request,
+                        'The selected product variant no longer exists.',
+                        404
+                    );
+                }
+            }
+
+            $availableStock = $variant
+                ? (int) $variant->stock
+                : (int) $product->stock;
+
+            if ($availableStock < 1) {
+                return $this->cartError(
+                    $request,
+                    'This product is now out of stock.'
+                );
+            }
+
+            if ($quantity > $availableStock) {
                 return $this->cartError(
                     $request,
                     "Only {$availableStock} item(s) are currently available."
                 );
             }
 
-            $cart[$cartKey]['quantity'] =
-                $quantity;
+            $cart[$cartKey]['quantity'] = $quantity;
+
+            /*
+ * Refresh session stock in case it changed.
+ */
+            $cart[$cartKey]['stock'] = $availableStock;
 
             session()->put(
                 'cart',
@@ -602,11 +645,11 @@ class CartController extends Controller
                     2
                 ),
                 'cart_count' =>
-                    $this->cartCount($cart),
+                $this->cartCount($cart),
                 'cart_subtotal' =>
-                    $this->cartSubtotal($cart),
+                $this->cartSubtotal($cart),
                 'coupon' =>
-                    session('cart_coupon'),
+                session('cart_coupon'),
             ]);
         }
 
@@ -623,22 +666,52 @@ class CartController extends Controller
                 (int) $quantity
             );
 
-            $availableStock =
-                (int) (
-                    $cart[$cartKey]['stock']
-                    ?? 0
-                );
+            $product = Product::query()
+                ->whereKey(
+                    $cart[$cartKey]['product_id']
+                )
+                ->where('status', 'active')
+                ->first();
 
-            if (
-                $availableStock > 0
-                && $quantity > $availableStock
-            ) {
-                $quantity =
-                    $availableStock;
+            if (!$product) {
+                unset($cart[$cartKey]);
+                continue;
             }
 
-            $cart[$cartKey]['quantity'] =
-                $quantity;
+            $variant = null;
+
+            if (!empty($cart[$cartKey]['variant_id'])) {
+                $variant = ProductVariant::query()
+                    ->whereKey(
+                        $cart[$cartKey]['variant_id']
+                    )
+                    ->where(
+                        'product_id',
+                        $product->id
+                    )
+                    ->first();
+
+                if (!$variant) {
+                    unset($cart[$cartKey]);
+                    continue;
+                }
+            }
+
+            $availableStock = $variant
+                ? (int) $variant->stock
+                : (int) $product->stock;
+
+            if ($availableStock <= 0) {
+                unset($cart[$cartKey]);
+                continue;
+            }
+
+            if ($quantity > $availableStock) {
+                $quantity = $availableStock;
+            }
+
+            $cart[$cartKey]['quantity'] = $quantity;
+            $cart[$cartKey]['stock'] = $availableStock;
         }
 
         session()->put(
@@ -733,16 +806,16 @@ class CartController extends Controller
             return response()->json([
                 'success' => true,
                 'message' =>
-                    'Product removed from cart.',
+                'Product removed from cart.',
                 'cart_key' => $cartKey,
                 'cart_count' =>
-                    $this->cartCount($cart),
+                $this->cartCount($cart),
                 'cart_subtotal' =>
-                    $this->cartSubtotal($cart),
+                $this->cartSubtotal($cart),
                 'cart_empty' =>
-                    empty($cart),
+                empty($cart),
                 'coupon' =>
-                    session('cart_coupon'),
+                session('cart_coupon'),
             ]);
         }
 
@@ -787,13 +860,13 @@ class CartController extends Controller
 
             $selectedOptions[] = [
                 'option_id' =>
-                    (int) $option->id,
+                (int) $option->id,
                 'option_name' =>
-                    $option->name,
+                $option->name,
                 'value_id' =>
-                    (int) $value->id,
+                (int) $value->id,
                 'value_label' =>
-                    $value->label
+                $value->label
                     ?: $value->value,
             ];
         }
@@ -850,9 +923,7 @@ class CartController extends Controller
                     $key !== ''
                     && $option !== ''
                 ) {
-                    $normalized[
-                        (string) $key
-                    ] = (string) $option;
+                    $normalized[(string) $key] = (string) $option;
                 }
 
                 continue;
@@ -874,9 +945,7 @@ class CartController extends Controller
                 $optionId !== null
                 && $valueId !== null
             ) {
-                $normalized[
-                    (string) $optionId
-                ] = (string) $valueId;
+                $normalized[(string) $optionId] = (string) $valueId;
             }
         }
 
@@ -1074,7 +1143,7 @@ class CartController extends Controller
         if (
             $minimumOrderAmount > 0
             && $subtotal
-                < $minimumOrderAmount
+            < $minimumOrderAmount
         ) {
             session()->forget(
                 'cart_coupon'
@@ -1101,20 +1170,20 @@ class CartController extends Controller
             'cart_coupon',
             [
                 'id' =>
-                    (int) $coupon->id,
+                (int) $coupon->id,
                 'code' =>
-                    $coupon->code,
+                $coupon->code,
                 'type' =>
-                    $coupon->type,
+                $coupon->type,
                 'value' =>
-                    (float) $coupon->value,
+                (float) $coupon->value,
                 'minimum_order_amount' =>
-                    (float) (
-                        $coupon->minimum_order_amount
-                        ?? 0
-                    ),
+                (float) (
+                    $coupon->minimum_order_amount
+                    ?? 0
+                ),
                 'discount' =>
-                    $discount,
+                $discount,
             ]
         );
     }

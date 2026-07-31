@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('title', 'Products')
 
@@ -19,8 +19,7 @@
                         gap:20px;
                         flex-wrap:wrap;
                         margin-bottom:20px;
-                    "
-                >
+                    ">
                     <div>
                         <h1 style="margin:0 0 5px;">
                             Products
@@ -40,70 +39,66 @@
                             color:#fff;
                             text-decoration:none;
                             border-radius:5px;
-                        "
-                    >
+                        ">
                         Add Product
                     </a>
                 </div>
 
                 @if (session('success'))
 
-                    <div
-                        style="
+                <div
+                    style="
                             padding:15px;
                             background:#d4edda;
                             color:#155724;
                             border:1px solid #c3e6cb;
                             border-radius:5px;
                             margin-bottom:20px;
-                        "
-                    >
-                        {{ session('success') }}
-                    </div>
+                        ">
+                    {{ session('success') }}
+                </div>
 
                 @endif
 
                 @if (session('error'))
 
-                    <div
-                        style="
+                <div
+                    style="
                             padding:15px;
                             background:#f8d7da;
                             color:#721c24;
                             border:1px solid #f5c6cb;
                             border-radius:5px;
                             margin-bottom:20px;
-                        "
-                    >
-                        {{ session('error') }}
-                    </div>
+                        ">
+                    {{ session('error') }}
+                </div>
 
                 @endif
 
                 @if ($errors->any())
 
-                    <div
-                        style="
+                <div
+                    style="
                             padding:15px;
                             background:#f8d7da;
                             color:#721c24;
                             border:1px solid #f5c6cb;
                             border-radius:5px;
                             margin-bottom:20px;
-                        "
-                    >
-                        <strong>
-                            Please fix the following errors:
-                        </strong>
+                        ">
+                    <strong>
+                        Please fix the following errors:
+                    </strong>
 
-                        <ul style="margin:10px 0 0;padding-left:20px;">
-                            @foreach ($errors->all() as $error)
-                                <li>
-                                    {{ $error }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                    <ul style="margin:10px 0 0;padding-left:20px;">
+                        @foreach ($errors->all() as $error)
+                        <li>
+                            {{ $error }}
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
 
                 @endif
 
@@ -115,23 +110,22 @@
                         gap:15px;
                         flex-wrap:wrap;
                         margin-bottom:20px;
-                    "
-                >
+                    ">
                     <div style="color:#666;">
 
                         @if (method_exists($products, 'total'))
 
-                            Total products:
-                            <strong>
-                                {{ $products->total() }}
-                            </strong>
+                        Total products:
+                        <strong>
+                            {{ $products->total() }}
+                        </strong>
 
                         @else
 
-                            Total products:
-                            <strong>
-                                {{ $products->count() }}
-                            </strong>
+                        Total products:
+                        <strong>
+                            {{ $products->count() }}
+                        </strong>
 
                         @endif
 
@@ -145,8 +139,7 @@
                             align-items:center;
                             gap:10px;
                             flex-wrap:wrap;
-                        "
-                    >
+                        ">
                         <input
                             type="text"
                             name="search"
@@ -157,8 +150,7 @@
                                 padding:9px 12px;
                                 border:1px solid #ccc;
                                 border-radius:5px;
-                            "
-                        >
+                            ">
 
                         <select
                             name="status"
@@ -166,30 +158,26 @@
                                 padding:9px 12px;
                                 border:1px solid #ccc;
                                 border-radius:5px;
-                            "
-                        >
+                            ">
                             <option value="">
                                 All statuses
                             </option>
 
                             <option
                                 value="active"
-                                {{ request('status') === 'active' ? 'selected' : '' }}
-                            >
+                                {{ request('status') === 'active' ? 'selected' : '' }}>
                                 Active
                             </option>
 
                             <option
                                 value="draft"
-                                {{ request('status') === 'draft' ? 'selected' : '' }}
-                            >
+                                {{ request('status') === 'draft' ? 'selected' : '' }}>
                                 Draft
                             </option>
 
                             <option
                                 value="inactive"
-                                {{ request('status') === 'inactive' ? 'selected' : '' }}
-                            >
+                                {{ request('status') === 'inactive' ? 'selected' : '' }}>
                                 Inactive
                             </option>
                         </select>
@@ -203,25 +191,23 @@
                                 border:0;
                                 border-radius:5px;
                                 cursor:pointer;
-                            "
-                        >
+                            ">
                             Filter
                         </button>
 
                         @if (request()->filled('search') || request()->filled('status'))
 
-                            <a
-                                href="{{ route('admin.products.index') }}"
-                                style="
+                        <a
+                            href="{{ route('admin.products.index') }}"
+                            style="
                                     padding:9px 16px;
                                     background:#eee;
                                     color:#222;
                                     text-decoration:none;
                                     border-radius:5px;
-                                "
-                            >
-                                Reset
-                            </a>
+                                ">
+                            Reset
+                        </a>
 
                         @endif
                     </form>
@@ -238,8 +224,7 @@
                             border-collapse:collapse;
                             min-width:1500px;
                             background:#fff;
-                        "
-                    >
+                        ">
                         <thead>
 
                             <tr style="background:#f5f5f5;">
@@ -304,41 +289,41 @@
 
                             @forelse ($products as $product)
 
-                                @php
-                                    $regularPrice = (float) ($product->regular_price ?? 0);
-                                    $salePrice = $product->sale_price !== null
-                                        ? (float) $product->sale_price
-                                        : null;
+                            @php
+                            $regularPrice = (float) ($product->regular_price ?? 0);
+                            $salePrice = $product->sale_price !== null
+                            ? (float) $product->sale_price
+                            : null;
 
-                                    $hasSalePrice = $salePrice !== null
-                                        && $salePrice > 0
-                                        && $salePrice < $regularPrice;
+                            $hasSalePrice = $salePrice !== null
+                            && $salePrice > 0
+                            && $salePrice < $regularPrice;
 
-                                    $categoryTitles = $product->relationLoaded('categories')
-                                        ? $product->categories
-                                            ->pluck('title')
-                                            ->filter()
-                                            ->values()
-                                        : collect();
+                                $categoryTitles=$product->relationLoaded('categories')
+                                ? $product->categories
+                                ->pluck('title')
+                                ->filter()
+                                ->values()
+                                : collect();
 
-                                    $tagTitles = $product->relationLoaded('tags')
-                                        ? $product->tags
-                                            ->pluck('title')
-                                            ->filter()
-                                            ->values()
-                                        : collect();
+                                $tagTitles = $product->relationLoaded('tags')
+                                ? $product->tags
+                                ->pluck('title')
+                                ->filter()
+                                ->values()
+                                : collect();
 
-                                    $productOptions = $product->relationLoaded('options')
-                                        ? $product->options
-                                        : collect();
+                                $productOptions = $product->relationLoaded('options')
+                                ? $product->options
+                                : collect();
 
-                                    $variantCount = $product->relationLoaded('variants')
-                                        ? $product->variants->count()
-                                        : ($product->variants_count ?? 0);
+                                $variantCount = $product->relationLoaded('variants')
+                                ? $product->variants->count()
+                                : ($product->variants_count ?? 0);
 
-                                    $viewsCount = $product->views_count ?? 0;
-                                    $favoritesCount = $product->favorites_count ?? 0;
-                                    $stock = (int) ($product->stock ?? 0);
+                                $viewsCount = $product->views_count ?? 0;
+                                $favoritesCount = $product->favorites_count ?? 0;
+                                $stock = (int) ($product->stock ?? 0);
                                 @endphp
 
                                 <tr>
@@ -347,23 +332,22 @@
 
                                         @if (!empty($product->featured_image))
 
-                                            <img
-                                                src="{{ asset('storage/' . $product->featured_image) }}"
-                                                alt="{{ $product->title }}"
-                                                width="70"
-                                                height="70"
-                                                loading="lazy"
-                                                style="
+                                        <img
+                                            src="{{ asset('storage/' . $product->featured_image) }}"
+                                            alt="{{ $product->title }}"
+                                            width="70"
+                                            height="70"
+                                            loading="lazy"
+                                            style="
                                                     object-fit:cover;
                                                     border-radius:8px;
                                                     border:1px solid #ddd;
-                                                "
-                                            >
+                                                ">
 
                                         @else
 
-                                            <div
-                                                style="
+                                        <div
+                                            style="
                                                     width:70px;
                                                     height:70px;
                                                     margin:auto;
@@ -373,10 +357,9 @@
                                                     justify-content:center;
                                                     border-radius:8px;
                                                     color:#777;
-                                                "
-                                            >
-                                                N/A
-                                            </div>
+                                                ">
+                                            N/A
+                                        </div>
 
                                         @endif
 
@@ -396,19 +379,18 @@
 
                                         @if (!empty($product->short_description))
 
-                                            <div
-                                                style="
+                                        <div
+                                            style="
                                                     margin-top:8px;
                                                     color:#666;
                                                     font-size:13px;
                                                     line-height:1.4;
-                                                "
-                                            >
-                                                {{ \Illuminate\Support\Str::limit(
+                                                ">
+                                            {{ \Illuminate\Support\Str::limit(
                                                     strip_tags($product->short_description),
                                                     80
                                                 ) }}
-                                            </div>
+                                        </div>
 
                                         @endif
 
@@ -424,26 +406,25 @@
 
                                         @if ($hasSalePrice)
 
-                                            <span
-                                                style="
+                                        <span
+                                            style="
                                                     text-decoration:line-through;
                                                     color:#999;
-                                                "
-                                            >
-                                                ${{ number_format($regularPrice, 2) }}
-                                            </span>
+                                                ">
+                                            ${{ number_format($regularPrice, 2) }}
+                                        </span>
 
-                                            <br>
+                                        <br>
 
-                                            <strong style="color:#c0392b;">
-                                                ${{ number_format($salePrice, 2) }}
-                                            </strong>
+                                        <strong style="color:#c0392b;">
+                                            ${{ number_format($salePrice, 2) }}
+                                        </strong>
 
                                         @else
 
-                                            <strong>
-                                                ${{ number_format($regularPrice, 2) }}
-                                            </strong>
+                                        <strong>
+                                            ${{ number_format($regularPrice, 2) }}
+                                        </strong>
 
                                         @endif
 
@@ -454,21 +435,20 @@
                                         @if ($stock <= 0)
 
                                             <span
-                                                style="
+                                            style="
                                                     display:inline-block;
                                                     padding:4px 8px;
                                                     background:#f8d7da;
                                                     color:#721c24;
                                                     border-radius:4px;
                                                     font-weight:bold;
-                                                "
-                                            >
-                                                Out of stock
+                                                ">
+                                            Out of stock
                                             </span>
 
-                                        @elseif ($stock <= 5)
+                                            @elseif ($stock <= 5)
 
-                                            <span
+                                                <span
                                                 style="
                                                     display:inline-block;
                                                     padding:4px 8px;
@@ -476,27 +456,25 @@
                                                     color:#856404;
                                                     border-radius:4px;
                                                     font-weight:bold;
-                                                "
-                                            >
+                                                ">
                                                 {{ $stock }} left
-                                            </span>
+                                                </span>
 
-                                        @else
+                                                @else
 
-                                            <span
-                                                style="
+                                                <span
+                                                    style="
                                                     display:inline-block;
                                                     padding:4px 8px;
                                                     background:#d4edda;
                                                     color:#155724;
                                                     border-radius:4px;
                                                     font-weight:bold;
-                                                "
-                                            >
-                                                {{ $stock }}
-                                            </span>
+                                                ">
+                                                    {{ $stock }}
+                                                </span>
 
-                                        @endif
+                                                @endif
 
                                     </td>
 
@@ -504,11 +482,11 @@
 
                                         @if ($categoryTitles->isNotEmpty())
 
-                                            {{ $categoryTitles->join(', ') }}
+                                        {{ $categoryTitles->join(', ') }}
 
                                         @else
 
-                                            -
+                                        -
 
                                         @endif
 
@@ -518,11 +496,11 @@
 
                                         @if ($tagTitles->isNotEmpty())
 
-                                            {{ $tagTitles->join(', ') }}
+                                        {{ $tagTitles->join(', ') }}
 
                                         @else
 
-                                            -
+                                        -
 
                                         @endif
 
@@ -532,10 +510,10 @@
 
                                         @if ($productOptions->isNotEmpty())
 
-                                            @foreach ($productOptions as $option)
+                                        @foreach ($productOptions as $option)
 
-                                                <span
-                                                    style="
+                                        <span
+                                            style="
                                                         display:inline-block;
                                                         padding:3px 7px;
                                                         margin:2px;
@@ -543,16 +521,15 @@
                                                         border:1px solid #d9e0e8;
                                                         border-radius:4px;
                                                         font-size:12px;
-                                                    "
-                                                >
-                                                    {{ $option->name }}
-                                                </span>
+                                                    ">
+                                            {{ $option->name }}
+                                        </span>
 
-                                            @endforeach
+                                        @endforeach
 
                                         @else
 
-                                            -
+                                        -
 
                                         @endif
 
@@ -562,8 +539,8 @@
 
                                         @if ($variantCount > 0)
 
-                                            <span
-                                                style="
+                                        <span
+                                            style="
                                                     display:inline-block;
                                                     min-width:30px;
                                                     padding:4px 8px;
@@ -571,16 +548,15 @@
                                                     color:#084298;
                                                     border-radius:4px;
                                                     font-weight:bold;
-                                                "
-                                            >
-                                                {{ $variantCount }}
-                                            </span>
+                                                ">
+                                            {{ $variantCount }}
+                                        </span>
 
                                         @else
 
-                                            <span style="color:#777;">
-                                                0
-                                            </span>
+                                        <span style="color:#777;">
+                                            0
+                                        </span>
 
                                         @endif
 
@@ -602,48 +578,45 @@
 
                                         @if ($product->status === 'active')
 
-                                            <span
-                                                style="
+                                        <span
+                                            style="
                                                     display:inline-block;
                                                     padding:5px 9px;
                                                     background:#d4edda;
                                                     color:#155724;
                                                     border-radius:4px;
                                                     font-weight:bold;
-                                                "
-                                            >
-                                                Active
-                                            </span>
+                                                ">
+                                            Active
+                                        </span>
 
                                         @elseif ($product->status === 'draft')
 
-                                            <span
-                                                style="
+                                        <span
+                                            style="
                                                     display:inline-block;
                                                     padding:5px 9px;
                                                     background:#fff3cd;
                                                     color:#856404;
                                                     border-radius:4px;
                                                     font-weight:bold;
-                                                "
-                                            >
-                                                Draft
-                                            </span>
+                                                ">
+                                            Draft
+                                        </span>
 
                                         @else
 
-                                            <span
-                                                style="
+                                        <span
+                                            style="
                                                     display:inline-block;
                                                     padding:5px 9px;
                                                     background:#f8d7da;
                                                     color:#721c24;
                                                     border-radius:4px;
                                                     font-weight:bold;
-                                                "
-                                            >
-                                                Inactive
-                                            </span>
+                                                ">
+                                            Inactive
+                                        </span>
 
                                         @endif
 
@@ -657,25 +630,23 @@
                                                 align-items:center;
                                                 gap:8px;
                                                 flex-wrap:wrap;
-                                            "
-                                        >
+                                            ">
                                             @if (!empty($product->slug))
 
-                                                <a
-                                                    href="{{ route('products.show', $product->slug) }}"
-                                                    target="_blank"
-                                                    rel="noopener"
-                                                    style="
+                                            <a
+                                                href="{{ route('products.show', $product->slug) }}"
+                                                target="_blank"
+                                                rel="noopener"
+                                                style="
                                                         display:inline-block;
                                                         padding:6px 10px;
                                                         background:#e7f1ff;
                                                         color:#084298;
                                                         text-decoration:none;
                                                         border-radius:4px;
-                                                    "
-                                                >
-                                                    View
-                                                </a>
+                                                    ">
+                                                View
+                                            </a>
 
                                             @endif
 
@@ -688,17 +659,26 @@
                                                     color:#856404;
                                                     text-decoration:none;
                                                     border-radius:4px;
-                                                "
-                                            >
+                                                ">
                                                 Edit
                                             </a>
-
+                                            <a
+                                                href="{{ route('admin.products.inventory.edit', $product) }}"
+                                                style="
+        display:inline-block;
+        padding:6px 10px;
+        background:#d1ecf1;
+        color:#0c5460;
+        text-decoration:none;
+        border-radius:4px;
+    ">
+                                                Inventory
+                                            </a>
                                             <form
                                                 action="{{ route('admin.products.destroy', $product->id) }}"
                                                 method="POST"
                                                 style="display:inline;"
-                                                onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone.');"
-                                            >
+                                                onsubmit="return confirm('Are you sure you want to delete this product? This action cannot be undone.');">
                                                 @csrf
                                                 @method('DELETE')
 
@@ -711,8 +691,7 @@
                                                         border:0;
                                                         border-radius:4px;
                                                         cursor:pointer;
-                                                    "
-                                                >
+                                                    ">
                                                     Delete
                                                 </button>
 
@@ -723,7 +702,7 @@
 
                                 </tr>
 
-                            @empty
+                                @empty
 
                                 <tr>
 
@@ -732,8 +711,7 @@
                                         style="
                                             text-align:center;
                                             padding:40px;
-                                        "
-                                    >
+                                        ">
                                         <strong>
                                             No products found.
                                         </strong>
@@ -749,8 +727,7 @@
                                                 color:#fff;
                                                 text-decoration:none;
                                                 border-radius:5px;
-                                            "
-                                        >
+                                            ">
                                             Create First Product
                                         </a>
 
@@ -758,7 +735,7 @@
 
                                 </tr>
 
-                            @endforelse
+                                @endforelse
 
                         </tbody>
 
@@ -768,11 +745,11 @@
 
                 @if (method_exists($products, 'links'))
 
-                    <div style="margin-top:20px;">
+                <div style="margin-top:20px;">
 
-                        {{ $products->withQueryString()->links() }}
+                    {{ $products->withQueryString()->links() }}
 
-                    </div>
+                </div>
 
                 @endif
 

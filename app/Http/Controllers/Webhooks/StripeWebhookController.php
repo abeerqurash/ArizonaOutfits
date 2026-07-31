@@ -4,17 +4,28 @@ namespace App\Http\Controllers\Webhooks;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Services\InventoryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\PaymentIntent;
 use Stripe\Webhook;
+use App\Services\OrderEmailService;
 use Throwable;
 use UnexpectedValueException;
 
 class StripeWebhookController extends Controller
 {
+    private InventoryService $inventoryService;
+
+    public function __construct(
+        InventoryService $inventoryService,
+        private readonly OrderEmailService $orderEmailService
+    ) {
+        $this->inventoryService = $inventoryService;
+    }
+
     /**
      * Receive and process Stripe webhook events.
      */
@@ -90,31 +101,31 @@ class StripeWebhookController extends Controller
         try {
             match ($event->type) {
                 'payment_intent.succeeded' =>
-                    $this->handlePaymentSucceeded(
-                        $event->data->object,
-                        $event->id
-                    ),
+                $this->handlePaymentSucceeded(
+                    $event->data->object,
+                    $event->id
+                ),
 
                 'payment_intent.processing' =>
-                    $this->handlePaymentProcessing(
-                        $event->data->object,
-                        $event->id
-                    ),
+                $this->handlePaymentProcessing(
+                    $event->data->object,
+                    $event->id
+                ),
 
                 'payment_intent.payment_failed' =>
-                    $this->handlePaymentFailed(
-                        $event->data->object,
-                        $event->id
-                    ),
+                $this->handlePaymentFailed(
+                    $event->data->object,
+                    $event->id
+                ),
 
                 'payment_intent.canceled' =>
-                    $this->handlePaymentCancelled(
-                        $event->data->object,
-                        $event->id
-                    ),
+                $this->handlePaymentCancelled(
+                    $event->data->object,
+                    $event->id
+                ),
 
                 default =>
-                    null,
+                null,
             };
         } catch (Throwable $exception) {
             report($exception);
@@ -141,10 +152,10 @@ class StripeWebhookController extends Controller
         PaymentIntent $paymentIntent,
         string $eventId
     ): void {
-        DB::transaction(function () use (
+        $order = DB::transaction(function () use (
             $paymentIntent,
             $eventId
-        ): void {
+        ): Order {
             $order = $this->findAndLockOrder(
                 $paymentIntent
             );
@@ -152,7 +163,7 @@ class StripeWebhookController extends Controller
             if (!$order) {
                 throw new \RuntimeException(
                     'Stripe order not found for PaymentIntent: '
-                    . $paymentIntent->id
+                        . $paymentIntent->id
                 );
             }
 
@@ -162,64 +173,73 @@ class StripeWebhookController extends Controller
             );
 
             /*
-             * Stripe may resend the same event.
-             * Updating an already-paid order remains safe.
-             */
+ * Deduct inventory only after Stripe confirms
+ * that the payment succeeded and the amount
+ * and currency match the local order.
+ *
+ * InventoryService uses inventory_deducted_at,
+ * so duplicate Stripe webhooks cannot deduct
+ * the stock more than once.
+ */
+            $this->inventoryService->deductForOrder(
+                $order
+            );
+
+            /*
+ * Stripe may resend the same event.
+ * Updating an already-paid order remains safe.
+ */
             $metadata = $this->mergePaymentMetadata(
                 $order,
                 [
                     'provider' => 'stripe',
                     'stripe_event_id' => $eventId,
                     'stripe_event_type' =>
-                        'payment_intent.succeeded',
+                    'payment_intent.succeeded',
                     'stripe_status' =>
-                        $paymentIntent->status,
+                    $paymentIntent->status,
                     'stripe_payment_intent_id' =>
-                        $paymentIntent->id,
+                    $paymentIntent->id,
                     'amount' =>
-                        $paymentIntent->amount,
+                    $paymentIntent->amount,
                     'amount_received' =>
-                        $paymentIntent->amount_received,
+                    $paymentIntent->amount_received,
                     'currency' =>
-                        strtolower(
-                            (string) $paymentIntent->currency
-                        ),
+                    strtolower(
+                        (string) $paymentIntent->currency
+                    ),
                     'latest_charge' =>
-                        $this->extractStripeIdentifier(
-                            $paymentIntent->latest_charge
-                        ),
+                    $this->extractStripeIdentifier(
+                        $paymentIntent->latest_charge
+                    ),
                     'processed_at' =>
-                        now()->toIso8601String(),
+                    now()->toIso8601String(),
                 ]
             );
 
             $order->update([
                 'payment_provider' => 'stripe',
 
-                'payment_reference' =>
-                    $paymentIntent->id,
+                'payment_reference' => $paymentIntent->id,
 
-                'payment_intent_id' =>
-                    $paymentIntent->id,
+                'payment_intent_id' => $paymentIntent->id,
 
                 'payment_status' => 'paid',
 
-                'order_status' =>
-                    in_array(
-                        $order->order_status,
-                        [
-                            null,
-                            '',
-                            'pending',
-                            'payment_pending',
-                        ],
-                        true
-                    )
-                        ? 'processing'
-                        : $order->order_status,
+                'order_status' => in_array(
+                    $order->order_status,
+                    [
+                        null,
+                        '',
+                        'pending',
+                        'payment_pending',
+                    ],
+                    true
+                )
+                    ? 'processing'
+                    : $order->order_status,
 
-                'paid_at' =>
-                    $order->paid_at ?? now(),
+                'paid_at' => $order->paid_at ?? now(),
 
                 'payment_failed_at' => null,
 
@@ -227,7 +247,13 @@ class StripeWebhookController extends Controller
 
                 'payment_metadata' => $metadata,
             ]);
+
+            return $order;
         });
+
+        $this->orderEmailService->sendOrderEmails(
+            $order->fresh()
+        );
     }
 
     /**
@@ -248,7 +274,7 @@ class StripeWebhookController extends Controller
             if (!$order) {
                 throw new \RuntimeException(
                     'Stripe order not found for PaymentIntent: '
-                    . $paymentIntent->id
+                        . $paymentIntent->id
                 );
             }
 
@@ -271,19 +297,19 @@ class StripeWebhookController extends Controller
                     'provider' => 'stripe',
                     'stripe_event_id' => $eventId,
                     'stripe_event_type' =>
-                        'payment_intent.processing',
+                    'payment_intent.processing',
                     'stripe_status' =>
-                        $paymentIntent->status,
+                    $paymentIntent->status,
                     'stripe_payment_intent_id' =>
-                        $paymentIntent->id,
+                    $paymentIntent->id,
                     'amount' =>
-                        $paymentIntent->amount,
+                    $paymentIntent->amount,
                     'currency' =>
-                        strtolower(
-                            (string) $paymentIntent->currency
-                        ),
+                    strtolower(
+                        (string) $paymentIntent->currency
+                    ),
                     'processed_at' =>
-                        now()->toIso8601String(),
+                    now()->toIso8601String(),
                 ]
             );
 
@@ -291,10 +317,10 @@ class StripeWebhookController extends Controller
                 'payment_provider' => 'stripe',
 
                 'payment_reference' =>
-                    $paymentIntent->id,
+                $paymentIntent->id,
 
                 'payment_intent_id' =>
-                    $paymentIntent->id,
+                $paymentIntent->id,
 
                 'payment_status' => 'processing',
 
@@ -325,7 +351,7 @@ class StripeWebhookController extends Controller
             if (!$order) {
                 throw new \RuntimeException(
                     'Stripe order not found for PaymentIntent: '
-                    . $paymentIntent->id
+                        . $paymentIntent->id
                 );
             }
 
@@ -339,19 +365,19 @@ class StripeWebhookController extends Controller
 
             $failureMessage =
                 $paymentIntent
-                    ->last_payment_error
-                    ?->message
+                ->last_payment_error
+                ?->message
                 ?? 'The Stripe payment was not completed.';
 
             $failureCode =
                 $paymentIntent
-                    ->last_payment_error
-                    ?->code;
+                ->last_payment_error
+                ?->code;
 
             $declineCode =
                 $paymentIntent
-                    ->last_payment_error
-                    ?->decline_code;
+                ->last_payment_error
+                ?->decline_code;
 
             $metadata = $this->mergePaymentMetadata(
                 $order,
@@ -359,17 +385,17 @@ class StripeWebhookController extends Controller
                     'provider' => 'stripe',
                     'stripe_event_id' => $eventId,
                     'stripe_event_type' =>
-                        'payment_intent.payment_failed',
+                    'payment_intent.payment_failed',
                     'stripe_status' =>
-                        $paymentIntent->status,
+                    $paymentIntent->status,
                     'stripe_payment_intent_id' =>
-                        $paymentIntent->id,
+                    $paymentIntent->id,
                     'failure_code' => $failureCode,
                     'decline_code' => $declineCode,
                     'failure_message' =>
-                        $failureMessage,
+                    $failureMessage,
                     'processed_at' =>
-                        now()->toIso8601String(),
+                    now()->toIso8601String(),
                 ]
             );
 
@@ -377,17 +403,17 @@ class StripeWebhookController extends Controller
                 'payment_provider' => 'stripe',
 
                 'payment_reference' =>
-                    $paymentIntent->id,
+                $paymentIntent->id,
 
                 'payment_intent_id' =>
-                    $paymentIntent->id,
+                $paymentIntent->id,
 
                 'payment_status' => 'failed',
 
                 'payment_failed_at' => now(),
 
                 'payment_failure_message' =>
-                    $failureMessage,
+                $failureMessage,
 
                 'payment_metadata' => $metadata,
             ]);
@@ -412,7 +438,7 @@ class StripeWebhookController extends Controller
             if (!$order) {
                 throw new \RuntimeException(
                     'Stripe order not found for PaymentIntent: '
-                    . $paymentIntent->id
+                        . $paymentIntent->id
                 );
             }
 
@@ -430,15 +456,15 @@ class StripeWebhookController extends Controller
                     'provider' => 'stripe',
                     'stripe_event_id' => $eventId,
                     'stripe_event_type' =>
-                        'payment_intent.canceled',
+                    'payment_intent.canceled',
                     'stripe_status' =>
-                        $paymentIntent->status,
+                    $paymentIntent->status,
                     'stripe_payment_intent_id' =>
-                        $paymentIntent->id,
+                    $paymentIntent->id,
                     'cancellation_reason' =>
-                        $cancellationReason,
+                    $cancellationReason,
                     'processed_at' =>
-                        now()->toIso8601String(),
+                    now()->toIso8601String(),
                 ]
             );
 
@@ -446,19 +472,19 @@ class StripeWebhookController extends Controller
                 'payment_provider' => 'stripe',
 
                 'payment_reference' =>
-                    $paymentIntent->id,
+                $paymentIntent->id,
 
                 'payment_intent_id' =>
-                    $paymentIntent->id,
+                $paymentIntent->id,
 
                 'payment_status' => 'cancelled',
 
                 'payment_failed_at' => now(),
 
                 'payment_failure_message' =>
-                    is_string($cancellationReason)
-                        ? $cancellationReason
-                        : 'Stripe payment was cancelled.',
+                is_string($cancellationReason)
+                    ? $cancellationReason
+                    : 'Stripe payment was cancelled.',
 
                 'payment_metadata' => $metadata,
             ]);
@@ -555,8 +581,8 @@ class StripeWebhookController extends Controller
         if ($orderCurrency !== $stripeCurrency) {
             throw new \RuntimeException(
                 'Stripe currency does not match order '
-                . $order->order_number
-                . '.'
+                    . $order->order_number
+                    . '.'
             );
         }
 
@@ -571,8 +597,8 @@ class StripeWebhookController extends Controller
         ) {
             throw new \RuntimeException(
                 'Stripe amount does not match order '
-                . $order->order_number
-                . '.'
+                    . $order->order_number
+                    . '.'
             );
         }
 
@@ -584,7 +610,7 @@ class StripeWebhookController extends Controller
         if (
             $metadataOrderId !== null
             && (string) $metadataOrderId
-                !== (string) $order->id
+            !== (string) $order->id
         ) {
             throw new \RuntimeException(
                 'Stripe metadata order ID does not match.'
@@ -599,7 +625,7 @@ class StripeWebhookController extends Controller
         if (
             $metadataOrderNumber !== null
             && $metadataOrderNumber
-                !== $order->order_number
+            !== $order->order_number
         ) {
             throw new \RuntimeException(
                 'Stripe metadata order number does not match.'

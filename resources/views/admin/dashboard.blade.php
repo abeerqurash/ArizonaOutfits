@@ -212,6 +212,110 @@
 
     </section>
 
+    @if(($activeInventoryAlerts ?? collect())->isNotEmpty())
+
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+                Inventory Alerts
+            </h5>
+
+            <a
+                href="{{ route('admin.inventory-alerts.index') }}"
+                class="btn btn-sm btn-primary">
+
+                View All
+
+            </a>
+
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Product</th>
+
+                        <th>Type</th>
+
+                        <th>Stock</th>
+
+                        <th></th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    @foreach($activeInventoryAlerts as $alert)
+
+                    <tr>
+
+                        <td>
+
+                            {{ $alert->item_name }}
+
+                        </td>
+
+                        <td>
+
+                            @if($alert->isLowStock())
+
+                            <span class="badge bg-warning text-dark">
+
+                                Low Stock
+
+                            </span>
+
+                            @else
+
+                            <span class="badge bg-danger">
+
+                                Out Of Stock
+
+                            </span>
+
+                            @endif
+
+                        </td>
+
+                        <td>
+
+                            {{ $alert->stock_level }}
+
+                        </td>
+
+                        <td class="text-end">
+
+                            <a
+                                href="{{ route('admin.inventory-alerts.index') }}"
+                                class="btn btn-sm btn-outline-primary">
+
+                                Open
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    @endforeach
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+    @endif
     <div id="dashboardAlertsContainer">
         @include('admin.dashboard.dashboard-alerts', [
         'dashboardAlerts' => $dashboardAlerts,

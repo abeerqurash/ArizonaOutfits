@@ -1113,6 +1113,28 @@ body.admin-menu-open {
     display:none!important;
 }
 
+.inventory-alert-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    margin-left: auto;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #dc3545;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.sidebar li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 @media (max-width: 1200px) {
     .admin-statistics-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -19,17 +20,20 @@ class Order extends Model
 
         'subtotal',
         'discount',
+
         'shipping',
+        'shipping_method',
+        'shipping_price',
+        'estimated_delivery',
+
         'tax',
         'total',
-
         'currency',
 
         'coupon_code',
 
         'payment_method',
         'payment_status',
-
         'order_status',
 
         'billing_name',
@@ -51,13 +55,22 @@ class Order extends Model
         'shipping_country',
 
         'order_notes',
+
         'payment_provider',
         'payment_reference',
         'payment_intent_id',
+
         'paid_at',
+
+        /*
+         * Prevents duplicate stock deductions.
+         */
+        'inventory_deducted_at',
+
         'payment_failed_at',
         'payment_failure_message',
         'payment_metadata',
+
         'admin_notes',
     ];
 
@@ -68,12 +81,20 @@ class Order extends Model
         'subtotal' => 'decimal:2',
         'discount' => 'decimal:2',
         'shipping' => 'decimal:2',
+        'shipping_price' => 'decimal:2',
         'tax' => 'decimal:2',
         'total' => 'decimal:2',
 
         'paid_at' => 'datetime',
-        'payment_failed_at' => 'datetime',
-        'payment_metadata' => 'array',
+
+        'inventory_deducted_at' =>
+        'datetime',
+
+        'payment_failed_at' =>
+        'datetime',
+
+        'payment_metadata' =>
+        'array',
     ];
 
     /**
@@ -81,7 +102,9 @@ class Order extends Model
      */
     public function items(): HasMany
     {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(
+            OrderItem::class
+        );
     }
 
     /**
@@ -89,22 +112,32 @@ class Order extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(
+            User::class
+        );
     }
 
     /**
-     * Activity history for this order.
+     * Activity history.
      */
     public function activities(): HasMany
     {
-        return $this->hasMany(OrderActivity::class);
+        return $this->hasMany(
+            OrderActivity::class
+        );
     }
 
     /**
-     * Notes attached to this order.
+     * Order notes.
      */
     public function notes(): HasMany
     {
-        return $this->hasMany(OrderNote::class);
+        return $this->hasMany(
+            OrderNote::class
+        );
+    }
+    public function inventoryHistories(): HasMany
+    {
+        return $this->hasMany(InventoryHistory::class);
     }
 }

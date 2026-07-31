@@ -16,6 +16,13 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use Picqer\Barcode\BarcodeGeneratorPNG;
+use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelMedium;
+use Endroid\QrCode\Writer\PngWriter;
+
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class OrderController extends AdminController
@@ -984,6 +991,9 @@ class OrderController extends AdminController
     /**
      * Download Packing Slip PDF
      */
+    /**
+     * Download an order packing slip as a PDF.
+     */
     public function downloadPackingSlip(Order $order)
     {
         $order->load([
@@ -992,17 +1002,230 @@ class OrderController extends AdminController
             'items.variant',
         ]);
 
+        $orderNumber = $order->order_number
+            ?: 'ORD-' . str_pad(
+                (string) $order->id,
+                6,
+                '0',
+                STR_PAD_LEFT
+            );
+
+        $safeOrderNumber = preg_replace(
+            '/[^A-Za-z0-9\-_]/',
+            '-',
+            $orderNumber
+        );
+
         $pdf = Pdf::loadView(
             'admin.orders.packing-slip-pdf',
             compact('order')
         );
 
-        $pdf->setPaper('a4');
+        $pdf->setPaper('a4', 'portrait');
+
+        $pdf->setOptions([
+            'isRemoteEnabled' => true,
+            'isHtml5ParserEnabled' => true,
+            'defaultFont' => 'DejaVu Sans',
+        ]);
 
         return $pdf->download(
-            'Packing-Slip-' .
-                ($order->order_number ?: $order->id) .
-                '.pdf'
+            'Packing-Slip-' . $safeOrderNumber . '.pdf'
+        );
+    }
+    /**
+     * Display the shipping-label preview.
+     */
+    public function shippingLabel(Order $order): View
+    {
+        $order->load([
+            'user',
+            'items.product.images',
+            'items.variant',
+        ]);
+
+        return view(
+            'admin.orders.shipping-label',
+            compact('order')
+        );
+    }
+
+    /**
+     * Download the shipping label as a 4 × 6 PDF.
+     */
+    /**
+     * Download the shipping label as a 4 × 6 PDF.
+     */
+    public function downloadShippingLabel(Order $order)
+    {
+        $order->load([
+            'user',
+            'items.product.images',
+            'items.variant',
+        ]);
+
+        $orderNumber = $order->order_number
+            ?: 'ORD-' . str_pad(
+                (string) $order->id,
+                6,
+                '0',
+                STR_PAD_LEFT
+            );
+
+        $safeOrderNumber = preg_replace(
+            '/[^A-Za-z0-9\-_]/',
+            '-',
+            $orderNumber
+        );
+
+        $trackingNumber = $order->tracking_number
+            ?? $order->shipment_tracking_number
+            ?? $orderNumber;
+
+        /*
+    |--------------------------------------------------------------------------
+    | Generate Code 128 barcode
+    |--------------------------------------------------------------------------
+    */
+
+        $barcodeGenerator = new BarcodeGeneratorPNG();
+
+        $barcodeImage = $barcodeGenerator->getBarcode(
+            $trackingNumber,
+            $barcodeGenerator::TYPE_CODE_128,
+            2,
+            70
+        );
+
+        $barcodeBase64 = base64_encode($barcodeImage);
+
+        /*
+    |--------------------------------------------------------------------------
+    | Generate QR code
+    |--------------------------------------------------------------------------
+    */
+        $customerName = $order->shipping_name
+            ?: $order->billing_name
+            ?: $order->user?->name
+            ?: 'Guest Customer';
+
+        $qrPayload = implode("\n", [
+            'Order: ' . $orderNumber,
+            'Tracking: ' . $trackingNumber,
+            'Customer: ' . $customerName,
+        ]);
+
+        $qrResult = QrCodeBuilder::create()
+            ->writer(new PngWriter())
+            ->data($qrPayload)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(new ErrorCorrectionLevelMedium())
+            ->size(180)
+            ->margin(5)
+            ->build();
+
+        $qrCode = $qrResult->build();
+
+
+        $qrBase64 = base64_encode(
+            QrCodeBuilder::create()
+                ->writer(new PngWriter())
+                ->data($qrPayload)
+                ->encoding(new Encoding('UTF-8'))
+                ->errorCorrectionLevel(new ErrorCorrectionLevelMedium())
+                ->size(180)
+                ->margin(5)
+                ->build()
+                ->getString()
+        );
+        $pdf = Pdf::loadView(
+            'admin.orders.shipping-label-pdf',
+            compact(
+                'order',
+                'barcodeBase64',
+                'qrBase64'
+            )
+        );
+
+        $pdf->setPaper(
+            [0, 0, 288, 432],
+            'portrait'
+        );
+
+        $pdf->setOptions([
+            'isRemoteEnabled' => true,
+            'isHtml5ParserEnabled' => true,
+            'defaultFont' => 'DejaVu Sans',
+        ]);
+
+        return $pdf->download(
+            'Shipping-Label-' . $safeOrderNumber . '.pdf'
+        );
+    }
+
+    public function emailInvoice(Order $order)
+    {
+        $order->load([
+            'user',
+            'items.product.images',
+        ]);
+
+        $customerEmail = $order->billing_email
+            ?: $order->shipping_email
+            ?: $order->user?->email;
+
+        if (!$customerEmail) {
+            return back()->with(
+                'error',
+                'Customer email address is not available.'
+            );
+        }
+
+        $orderNumber = $order->order_number
+            ?: 'ORD-' . str_pad(
+                (string) $order->id,
+                6,
+                '0',
+                STR_PAD_LEFT
+            );
+
+        $invoiceNumber = 'INV-' . str_pad(
+            (string) $order->id,
+            6,
+            '0',
+            STR_PAD_LEFT
+        );
+
+        $pdf = Pdf::loadView(
+            'admin.orders.invoice-pdf',
+            compact('order')
+        )->setPaper('a4');
+
+        Mail::send(
+            'emails.orders.invoice',
+            compact('order', 'orderNumber', 'invoiceNumber'),
+            function ($message) use (
+                $customerEmail,
+                $orderNumber,
+                $invoiceNumber,
+                $pdf
+            ) {
+                $message
+                    ->to($customerEmail)
+                    ->subject('Invoice for order ' . $orderNumber)
+                    ->attachData(
+                        $pdf->output(),
+                        $invoiceNumber . '.pdf',
+                        [
+                            'mime' => 'application/pdf',
+                        ]
+                    );
+            }
+        );
+
+        return back()->with(
+            'success',
+            'Invoice email sent successfully.'
         );
     }
 }
