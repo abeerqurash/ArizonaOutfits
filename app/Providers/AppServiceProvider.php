@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             $view->with('popularCategories', Category::withCount('posts')
-                ->having('posts_count', '>', 0)
+                ->has('posts')
                 ->orderByDesc('posts_count')
                 ->take(10)
                 ->get());

@@ -9,41 +9,85 @@ return new class extends Migration
 {
     public function up(): void
     {
-        DB::table('favorites')
-            ->whereNull('user_id')
-            ->delete();
+        if (!Schema::hasTable('favorites')) {
+            return;
+        }
 
-        Schema::table('favorites', function (Blueprint $table) {
-            $table->dropColumn('session_id');
-        });
+        if (Schema::hasColumn('favorites', 'user_id')) {
+            DB::table('favorites')
+                ->whereNull('user_id')
+                ->delete();
+        }
 
-        Schema::table('favorites', function (Blueprint $table) {
-            $table->foreignId('user_id')
-                ->nullable(false)
-                ->change();
+        if (Schema::hasColumn('favorites', 'session_id')) {
+            Schema::table('favorites', function (Blueprint $table): void {
+                $table->dropColumn('session_id');
+            });
+        }
 
-            $table->unique([
-                'user_id',
-                'product_id',
-            ]);
-        });
+        if (Schema::hasColumn('favorites', 'user_id')) {
+            Schema::table('favorites', function (Blueprint $table): void {
+                $table->foreignId('user_id')
+                    ->nullable(false)
+                    ->change();
+            });
+        }
+
+        if (
+            Schema::hasColumn('favorites', 'user_id')
+            && Schema::hasColumn('favorites', 'product_id')
+            && !Schema::hasIndex(
+                'favorites',
+                ['user_id', 'product_id'],
+                'unique'
+            )
+        ) {
+            Schema::table('favorites', function (Blueprint $table): void {
+                $table->unique([
+                    'user_id',
+                    'product_id',
+                ]);
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('favorites', function (Blueprint $table) {
-            $table->dropUnique([
-                'user_id',
-                'product_id',
-            ]);
+        if (!Schema::hasTable('favorites')) {
+            return;
+        }
 
-            $table->foreignId('user_id')
-                ->nullable()
-                ->change();
+        if (
+            Schema::hasColumn('favorites', 'user_id')
+            && Schema::hasColumn('favorites', 'product_id')
+            && Schema::hasIndex(
+                'favorites',
+                ['user_id', 'product_id'],
+                'unique'
+            )
+        ) {
+            Schema::table('favorites', function (Blueprint $table): void {
+                $table->dropUnique([
+                    'user_id',
+                    'product_id',
+                ]);
+            });
+        }
 
-            $table->string('session_id')
-                ->nullable()
-                ->after('product_id');
-        });
+        if (Schema::hasColumn('favorites', 'user_id')) {
+            Schema::table('favorites', function (Blueprint $table): void {
+                $table->foreignId('user_id')
+                    ->nullable()
+                    ->change();
+            });
+        }
+
+        if (!Schema::hasColumn('favorites', 'session_id')) {
+            Schema::table('favorites', function (Blueprint $table): void {
+                $table->string('session_id')
+                    ->nullable()
+                    ->after('product_id');
+            });
+        }
     }
 };

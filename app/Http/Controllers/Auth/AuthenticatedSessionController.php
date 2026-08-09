@@ -41,7 +41,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->forget('url.intended');
 
-        return redirect()->route('customer.dashboard');
+        return redirect()->route('dashboard');
     }
 
     public function destroy(Request $request): RedirectResponse
