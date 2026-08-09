@@ -357,6 +357,62 @@ $oldVariants = old('variants', []);
 
                             </div>
 
+                            <div>
+                                <label
+                                    for="reorder_point"
+                                    style="display:block;font-weight:bold;margin-bottom:6px;">
+
+                                    Reorder Point
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="reorder_point"
+                                    name="reorder_point"
+                                    value="{{ old('reorder_point', 5) }}"
+                                    min="0"
+                                    step="1"
+                                    style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
+
+                                <small style="display:block;margin-top:6px;color:#777;line-height:1.5;">
+                                    Restocking will be recommended when stock reaches this number.
+                                </small>
+
+                                @error('reorder_point')
+                                <small style="color:red;">
+                                    {{ $message }}
+                                </small>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label
+                                    for="reorder_quantity"
+                                    style="display:block;font-weight:bold;margin-bottom:6px;">
+
+                                    Reorder Quantity
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="reorder_quantity"
+                                    name="reorder_quantity"
+                                    value="{{ old('reorder_quantity', 10) }}"
+                                    min="1"
+                                    step="1"
+                                    style="width:100%;padding:11px;border:1px solid #ccc;border-radius:5px;">
+
+                                <small style="display:block;margin-top:6px;color:#777;line-height:1.5;">
+                                    The suggested quantity to purchase when restocking.
+                                </small>
+
+                                @error('reorder_quantity')
+                                <small style="color:red;">
+                                    {{ $message }}
+                                </small>
+                                @enderror
+                            </div>
+
                             {{-- ATTRIBUTES --}}
                             <div style="{{ $cardStyle }}">
 
@@ -822,7 +878,7 @@ $oldVariants = old('variants', []);
                                         <div
                                             style="
                                                         display:grid;
-                                                        grid-template-columns:repeat(4, minmax(140px, 1fr));
+                                                        grid-template-columns:repeat(3, minmax(160px, 1fr));
                                                         gap:12px;
                                                     ">
                                             <div>
@@ -875,6 +931,62 @@ $oldVariants = old('variants', []);
                                                     name="variants[{{ $variantIndex }}][stock]"
                                                     value="{{ $variant['stock'] ?? 0 }}"
                                                     min="0"
+                                                    step="1"
+                                                    style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
+                                            </div>
+
+                                            <div>
+                                                <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                    Reorder Point
+                                                </label>
+
+                                                <input
+                                                    type="number"
+                                                    name="variants[${variantIndex}][reorder_point]"
+                                                    value="5"
+                                                    min="0"
+                                                    step="1"
+                                                    style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
+                                            </div>
+
+                                            <div>
+                                                <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                    Reorder Quantity
+                                                </label>
+
+                                                <input
+                                                    type="number"
+                                                    name="variants[${variantIndex}][reorder_quantity]"
+                                                    value="10"
+                                                    min="1"
+                                                    step="1"
+                                                    style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
+                                            </div>
+
+                                            <div>
+                                                <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                    Reorder Point
+                                                </label>
+
+                                                <input
+                                                    type="number"
+                                                    name="variants[{{ $variantIndex }}][reorder_point]"
+                                                    value="{{ $variant['reorder_point'] ?? 5 }}"
+                                                    min="0"
+                                                    step="1"
+                                                    style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
+                                            </div>
+
+                                            <div>
+                                                <label style="display:block;font-weight:bold;margin-bottom:5px;">
+                                                    Reorder Quantity
+                                                </label>
+
+                                                <input
+                                                    type="number"
+                                                    name="variants[{{ $variantIndex }}][reorder_quantity]"
+                                                    value="{{ $variant['reorder_quantity'] ?? 10 }}"
+                                                    min="1"
                                                     step="1"
                                                     style="width:100%;padding:9px;border:1px solid #ccc;border-radius:5px;">
                                             </div>
@@ -1332,7 +1444,7 @@ $oldVariants = old('variants', []);
 
                         try {
                             const response = await fetch(
-                                '{{ url('/admin/product-options') }}/' +
+                                '{{ url(' / admin / product - options ') }}/' +
                                 encodeURIComponent(optionId) +
                                 '/values', {
                                     method: 'POST',
@@ -1489,8 +1601,7 @@ $oldVariants = old('variants', []);
 
                     try {
                         const response = await fetch(
-                            '{{ route('
-                            admin.product - options.store ') }}', {
+                            '{{ route('admin.product-options.store') }}', {
                                 method: 'POST',
 
                                 headers: {

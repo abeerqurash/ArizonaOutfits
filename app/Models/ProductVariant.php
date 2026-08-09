@@ -15,6 +15,8 @@ class ProductVariant extends Model
         'regular_price',
         'sale_price',
         'stock',
+        'reorder_point',
+        'reorder_quantity',
         'image',
         'options',
     ];
@@ -23,50 +25,30 @@ class ProductVariant extends Model
         'regular_price' => 'decimal:2',
         'sale_price' => 'decimal:2',
         'stock' => 'integer',
+        'reorder_point' => 'integer',
+        'reorder_quantity' => 'integer',
     ];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Product relationship
-    |--------------------------------------------------------------------------
-    */
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(
-            Product::class
-        );
+        return $this->belongsTo(Product::class);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Variant options
-    |--------------------------------------------------------------------------
-    |
-    | This accessor and mutator prevent options from being JSON encoded
-    | more than once.
-    |
-    | It also safely reads older variant records that were stored as
-    | double-encoded JSON strings.
-    |
-    */
+    public function supplierProducts(): HasMany
+    {
+        return $this->hasMany(
+            SupplierProduct::class,
+            'product_variant_id'
+        );
+    }
 
     protected function options(): Attribute
     {
         return Attribute::make(
-            get: function (mixed $value): array {
-                return $this->decodeOptions(
-                    $value
-                );
-            },
-
+            get: fn (mixed $value): array => $this->decodeOptions($value),
             set: function (mixed $value): string {
-                $options = $this->decodeOptions(
-                    $value
-                );
-
                 return json_encode(
-                    $options,
+                    $this->decodeOptions($value),
                     JSON_UNESCAPED_UNICODE
                         | JSON_UNESCAPED_SLASHES
                         | JSON_THROW_ON_ERROR
@@ -75,47 +57,24 @@ class ProductVariant extends Model
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Decode options safely
-    |--------------------------------------------------------------------------
-    */
-
-    private function decodeOptions(
-        mixed $value
-    ): array {
+    private function decodeOptions(mixed $value): array
+    {
         if (is_array($value)) {
             return $value;
         }
 
-        if (
-            $value === null
-            || $value === ''
-        ) {
+        if ($value === null || $value === '') {
             return [];
         }
 
-        /*
-         * Older records may be encoded more than once:
-         *
-         * "\"{\\\"Color\\\":\\\"Black\\\"}\""
-         *
-         * Decode repeatedly until an array is obtained.
-         */
         for ($attempt = 0; $attempt < 5; $attempt++) {
             if (!is_string($value)) {
                 break;
             }
 
-            $decoded = json_decode(
-                $value,
-                true
-            );
+            $decoded = json_decode($value, true);
 
-            if (
-                json_last_error()
-                !== JSON_ERROR_NONE
-            ) {
+            if (json_last_error() !== JSON_ERROR_NONE) {
                 return [];
             }
 
@@ -126,9 +85,7 @@ class ProductVariant extends Model
             }
         }
 
-        return is_array($value)
-            ? $value
-            : [];
+        return is_array($value) ? $value : [];
     }
 
     public function inventoryHistories(): HasMany

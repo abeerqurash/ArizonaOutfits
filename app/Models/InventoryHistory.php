@@ -17,21 +17,32 @@ class InventoryHistory extends Model
     |--------------------------------------------------------------------------
     */
 
-    public const TYPE_ORDER_DEDUCTION = 'order_deduction';
+    public const TYPE_ORDER_DEDUCTION =
+        'order_deduction';
 
-    public const TYPE_RESTOCK = 'restock';
+    public const TYPE_RESTOCK =
+        'restock';
 
-    public const TYPE_MANUAL_ADJUSTMENT = 'manual_adjustment';
+    public const TYPE_PURCHASE_ORDER_RECEIPT =
+        'purchase_order_receipt';
 
-    public const TYPE_ORDER_CANCELLED = 'order_cancelled';
+    public const TYPE_MANUAL_ADJUSTMENT =
+        'manual_adjustment';
 
-    public const TYPE_ORDER_REFUND = 'order_refund';
+    public const TYPE_ORDER_CANCELLED =
+        'order_cancelled';
 
-    public const TYPE_INVENTORY_CORRECTION = 'inventory_correction';
+    public const TYPE_ORDER_REFUND =
+        'order_refund';
 
-    public const TYPE_VARIANT_ADJUSTMENT = 'variant_adjustment';
+    public const TYPE_INVENTORY_CORRECTION =
+        'inventory_correction';
 
-    public const TYPE_INITIAL_STOCK = 'initial_stock';
+    public const TYPE_VARIANT_ADJUSTMENT =
+        'variant_adjustment';
+
+    public const TYPE_INITIAL_STOCK =
+        'initial_stock';
 
     /*
     |--------------------------------------------------------------------------
@@ -65,14 +76,31 @@ class InventoryHistory extends Model
     {
         return [
             'product_id' => 'integer',
+
             'product_variant_id' => 'integer',
+
             'order_id' => 'integer',
+
             'user_id' => 'integer',
+
             'quantity_change' => 'integer',
+
             'stock_before' => 'integer',
+
             'stock_after' => 'integer',
+
+            /*
+             * This must be a valid Laravel cast type.
+             * Do not set this to purchase_order_receipt.
+             */
+            'movement_type' => 'string',
+
+            'reference_id' => 'string',
+
             'metadata' => 'array',
+
             'created_at' => 'datetime',
+
             'updated_at' => 'datetime',
         ];
     }
@@ -85,7 +113,9 @@ class InventoryHistory extends Model
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(
+            Product::class
+        );
     }
 
     public function variant(): BelongsTo
@@ -98,12 +128,16 @@ class InventoryHistory extends Model
 
     public function order(): BelongsTo
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(
+            Order::class
+        );
     }
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(
+            User::class
+        );
     }
 
     /*
@@ -116,7 +150,10 @@ class InventoryHistory extends Model
         Builder $query,
         int $productId
     ): Builder {
-        return $query->where('product_id', $productId);
+        return $query->where(
+            'product_id',
+            $productId
+        );
     }
 
     public function scopeForVariant(
@@ -133,7 +170,10 @@ class InventoryHistory extends Model
         Builder $query,
         int $orderId
     ): Builder {
-        return $query->where('order_id', $orderId);
+        return $query->where(
+            'order_id',
+            $orderId
+        );
     }
 
     public function scopeOfType(
@@ -146,14 +186,24 @@ class InventoryHistory extends Model
         );
     }
 
-    public function scopeStockAdded(Builder $query): Builder
-    {
-        return $query->where('quantity_change', '>', 0);
+    public function scopeStockAdded(
+        Builder $query
+    ): Builder {
+        return $query->where(
+            'quantity_change',
+            '>',
+            0
+        );
     }
 
-    public function scopeStockRemoved(Builder $query): Builder
-    {
-        return $query->where('quantity_change', '<', 0);
+    public function scopeStockRemoved(
+        Builder $query
+    ): Builder {
+        return $query->where(
+            'quantity_change',
+            '<',
+            0
+        );
     }
 
     /*
@@ -179,11 +229,15 @@ class InventoryHistory extends Model
 
     public function isOrderMovement(): bool
     {
-        return in_array($this->movement_type, [
-            self::TYPE_ORDER_DEDUCTION,
-            self::TYPE_ORDER_CANCELLED,
-            self::TYPE_ORDER_REFUND,
-        ], true);
+        return in_array(
+            $this->movement_type,
+            [
+                self::TYPE_ORDER_DEDUCTION,
+                self::TYPE_ORDER_CANCELLED,
+                self::TYPE_ORDER_REFUND,
+            ],
+            true
+        );
     }
 
     /*
@@ -195,27 +249,56 @@ class InventoryHistory extends Model
     public function getMovementLabelAttribute(): string
     {
         return match ($this->movement_type) {
-            self::TYPE_ORDER_DEDUCTION => 'Order Deduction',
-            self::TYPE_RESTOCK => 'Restock',
-            self::TYPE_MANUAL_ADJUSTMENT => 'Manual Adjustment',
-            self::TYPE_ORDER_CANCELLED => 'Order Cancellation',
-            self::TYPE_ORDER_REFUND => 'Order Refund',
-            self::TYPE_INVENTORY_CORRECTION => 'Inventory Correction',
-            self::TYPE_VARIANT_ADJUSTMENT => 'Variant Adjustment',
-            self::TYPE_INITIAL_STOCK => 'Initial Stock',
-            default => ucwords(
-                str_replace('_', ' ', $this->movement_type)
-            ),
+            self::TYPE_ORDER_DEDUCTION =>
+                'Order Deduction',
+
+            self::TYPE_RESTOCK =>
+                'Restock',
+
+            self::TYPE_PURCHASE_ORDER_RECEIPT =>
+                'Purchase Order Receipt',
+
+            self::TYPE_MANUAL_ADJUSTMENT =>
+                'Manual Adjustment',
+
+            self::TYPE_ORDER_CANCELLED =>
+                'Order Cancellation',
+
+            self::TYPE_ORDER_REFUND =>
+                'Order Refund',
+
+            self::TYPE_INVENTORY_CORRECTION =>
+                'Inventory Correction',
+
+            self::TYPE_VARIANT_ADJUSTMENT =>
+                'Variant Adjustment',
+
+            self::TYPE_INITIAL_STOCK =>
+                'Initial Stock',
+
+            default =>
+                ucwords(
+                    str_replace(
+                        '_',
+                        ' ',
+                        (string) $this->movement_type
+                    )
+                ),
         };
     }
 
     public function getFormattedQuantityChangeAttribute(): string
     {
         if ($this->quantity_change > 0) {
-            return '+' . number_format($this->quantity_change);
+            return '+'
+                . number_format(
+                    $this->quantity_change
+                );
         }
 
-        return number_format($this->quantity_change);
+        return number_format(
+            $this->quantity_change
+        );
     }
 
     public function getDirectionAttribute(): string
@@ -233,22 +316,27 @@ class InventoryHistory extends Model
 
     public function getItemNameAttribute(): string
     {
-        $productTitle = $this->variant?->product?->title
+        $productTitle =
+            $this->variant?->product?->title
             ?? $this->product?->title
             ?? 'Deleted product';
 
-        $variantDescription = $this->variantDescription();
+        $variantDescription =
+            $this->variantDescription();
 
         if ($variantDescription === '') {
             return $productTitle;
         }
 
-        return $productTitle . ' — ' . $variantDescription;
+        return $productTitle
+            . ' — '
+            . $variantDescription;
     }
 
     public function getPerformedByAttribute(): string
     {
-        return $this->user?->name ?? 'System';
+        return $this->user?->name
+            ?? 'System';
     }
 
     public function getOrderReferenceAttribute(): ?string
@@ -258,7 +346,8 @@ class InventoryHistory extends Model
         }
 
         return $this->order->order_number
-            ?? '#' . $this->order->id;
+            ?? '#'
+            . $this->order->id;
     }
 
     /*
@@ -284,22 +373,33 @@ class InventoryHistory extends Model
         ];
 
         foreach ($possibleFields as $field) {
-            $value = $this->variant->{$field} ?? null;
+            $value =
+                $this->variant->{$field}
+                ?? null;
 
             if (
                 is_string($value)
                 && trim($value) !== ''
-                && !in_array(trim($value), $parts, true)
+                && !in_array(
+                    trim($value),
+                    $parts,
+                    true
+                )
             ) {
-                $parts[] = trim($value);
+                $parts[] =
+                    trim($value);
             }
         }
 
         if (!empty($parts)) {
-            return implode(' / ', $parts);
+            return implode(
+                ' / ',
+                $parts
+            );
         }
 
-        return 'Variant #' . $this->variant->id;
+        return 'Variant #'
+            . $this->variant->id;
     }
 
     /*
@@ -311,14 +411,32 @@ class InventoryHistory extends Model
     public static function movementTypes(): array
     {
         return [
-            self::TYPE_ORDER_DEDUCTION => 'Order Deduction',
-            self::TYPE_RESTOCK => 'Restock',
-            self::TYPE_MANUAL_ADJUSTMENT => 'Manual Adjustment',
-            self::TYPE_ORDER_CANCELLED => 'Order Cancellation',
-            self::TYPE_ORDER_REFUND => 'Order Refund',
-            self::TYPE_INVENTORY_CORRECTION => 'Inventory Correction',
-            self::TYPE_VARIANT_ADJUSTMENT => 'Variant Adjustment',
-            self::TYPE_INITIAL_STOCK => 'Initial Stock',
+            self::TYPE_ORDER_DEDUCTION =>
+                'Order Deduction',
+
+            self::TYPE_RESTOCK =>
+                'Restock',
+
+            self::TYPE_PURCHASE_ORDER_RECEIPT =>
+                'Purchase Order Receipt',
+
+            self::TYPE_MANUAL_ADJUSTMENT =>
+                'Manual Adjustment',
+
+            self::TYPE_ORDER_CANCELLED =>
+                'Order Cancellation',
+
+            self::TYPE_ORDER_REFUND =>
+                'Order Refund',
+
+            self::TYPE_INVENTORY_CORRECTION =>
+                'Inventory Correction',
+
+            self::TYPE_VARIANT_ADJUSTMENT =>
+                'Variant Adjustment',
+
+            self::TYPE_INITIAL_STOCK =>
+                'Initial Stock',
         ];
     }
 }

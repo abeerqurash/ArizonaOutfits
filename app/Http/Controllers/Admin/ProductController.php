@@ -142,6 +142,12 @@ class ProductController extends AdminController
                 'stock' =>
                 $validated['stock'] ?? 0,
 
+                'reorder_point' =>
+                $validated['reorder_point'] ?? null,
+
+                'reorder_quantity' =>
+                $validated['reorder_quantity'] ?? null,
+
                 'status' =>
                 $validated['status'],
 
@@ -314,6 +320,12 @@ class ProductController extends AdminController
 
                 'stock' =>
                 $validated['stock'] ?? 0,
+
+                'reorder_point' =>
+                $validated['reorder_point'] ?? null,
+
+                'reorder_quantity' =>
+                $validated['reorder_quantity'] ?? null,
 
                 'status' =>
                 $validated['status'],
@@ -529,6 +541,20 @@ class ProductController extends AdminController
                 'min:0',
             ],
 
+            'reorder_point' => [
+                'nullable',
+                'integer',
+                'min:0',
+                'max:1000000',
+            ],
+
+            'reorder_quantity' => [
+                'nullable',
+                'integer',
+                'min:1',
+                'max:1000000',
+            ],
+
             'status' => [
                 'required',
 
@@ -615,6 +641,20 @@ class ProductController extends AdminController
                 'nullable',
                 'integer',
                 'min:0',
+            ],
+
+            'variants.*.reorder_point' => [
+                'nullable',
+                'integer',
+                'min:0',
+                'max:1000000',
+            ],
+
+            'variants.*.reorder_quantity' => [
+                'nullable',
+                'integer',
+                'min:1',
+                'max:1000000',
             ],
 
             'variants.*.image' => [
@@ -760,6 +800,12 @@ class ProductController extends AdminController
 
                 'stock' =>
                 $variantData['stock'] ?? 0,
+
+                'reorder_point' =>
+                $variantData['reorder_point'] ?? null,
+
+                'reorder_quantity' =>
+                $variantData['reorder_quantity'] ?? null,
 
                 'image' =>
                 $variantImagePath,

@@ -5,6 +5,7 @@
         <a
             href="{{ route('admin.dashboard') }}"
             class="admin-brand">
+
             <span class="admin-brand-icon">
                 <i class="fa-solid fa-shirt"></i>
             </span>
@@ -13,6 +14,7 @@
                 <strong>Arizona Outfits</strong>
                 <small>Administration</small>
             </span>
+
         </a>
 
         <button
@@ -20,13 +22,16 @@
             class="admin-sidebar-close"
             id="adminSidebarClose"
             aria-label="Close admin sidebar">
+
             <i class="fa-solid fa-xmark"></i>
+
         </button>
 
     </div>
 
     <div class="admin-sidebar-content">
 
+        {{-- Overview --}}
         <div class="admin-menu-section">
 
             <span class="admin-menu-heading">
@@ -42,6 +47,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-chart-pie"></i>
                     </span>
@@ -49,12 +55,14 @@
                     <span class="admin-menu-text">
                         Dashboard
                     </span>
+
                 </a>
 
             </nav>
 
         </div>
 
+        {{-- Store Management --}}
         <div class="admin-menu-section">
 
             <span class="admin-menu-heading">
@@ -70,6 +78,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-bag-shopping"></i>
                     </span>
@@ -77,6 +86,7 @@
                     <span class="admin-menu-text">
                         Orders
                     </span>
+
                 </a>
 
                 <a
@@ -86,6 +96,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-box-open"></i>
                     </span>
@@ -93,6 +104,7 @@
                     <span class="admin-menu-text">
                         Products
                     </span>
+
                 </a>
 
                 <a
@@ -102,6 +114,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-layer-group"></i>
                     </span>
@@ -109,6 +122,7 @@
                     <span class="admin-menu-text">
                         Product Categories
                     </span>
+
                 </a>
 
                 <a
@@ -118,6 +132,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-tags"></i>
                     </span>
@@ -125,6 +140,7 @@
                     <span class="admin-menu-text">
                         Product Tags
                     </span>
+
                 </a>
 
                 <a
@@ -134,6 +150,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-ticket"></i>
                     </span>
@@ -141,47 +158,171 @@
                     <span class="admin-menu-text">
                         Coupons
                     </span>
+
                 </a>
 
                 <a
                     href="{{ route('admin.inventory-alerts.index') }}"
-                    class="admin-menu-link {{ request()->routeIs('admin.inventory-alerts.*') ? 'active' : '' }}">
+                    class="admin-menu-link {{
+                        request()->routeIs('admin.inventory-alerts.*')
+                            ? 'active'
+                            : ''
+                    }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-regular fa-bell"></i>
                     </span>
-                    <span class="admin-menu-text">Inventory Alerts</span>
 
-                    @if(($activeInventoryAlertCount ?? 0) > 0)
-                    <span class="inventory-alert-count">
-                        {{ $activeInventoryAlertCount > 99 ? '99+' : $activeInventoryAlertCount }}
+                    <span class="admin-menu-text">
+                        Inventory Alerts
                     </span>
+
+                    @if (($activeInventoryAlertCount ?? 0) > 0)
+
+                    <span class="inventory-alert-count">
+
+                        {{
+                                $activeInventoryAlertCount > 99
+                                    ? '99+'
+                                    : $activeInventoryAlertCount
+                            }}
+
+                    </span>
+
                     @endif
+
                 </a>
 
                 <a
                     href="{{ route('admin.inventory-history.index') }}"
-                    class="admin-menu-link {{ request()->routeIs('admin.inventory-history.*') ? 'active' : '' }}">
+                    class="admin-menu-link {{
+                        request()->routeIs('admin.inventory-history.*')
+                            ? 'active'
+                            : ''
+                    }}">
 
-                    <i class="fas fa-history"></i>
+                    <span class="admin-menu-icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </span>
 
-                    <span>
-
+                    <span class="admin-menu-text">
                         Inventory History
+                    </span>
 
+                </a>
+
+                <a
+                    href="{{ route('admin.inventory-reports.index') }}"
+                    class="admin-menu-link {{
+                        request()->routeIs('admin.inventory-reports.*')
+                            ? 'active'
+                            : ''
+                    }}">
+
+                    <span class="admin-menu-icon">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </span>
+
+                    <span class="admin-menu-text">
+                        Inventory Reports
+                    </span>
+
+                </a>
+
+                {{-- Stock Valuation --}}
+                <a
+                    href="{{ route('admin.stock-valuation.index') }}"
+                    class="admin-menu-link {{
+                        request()->routeIs('admin.stock-valuation.*')
+                            ? 'active'
+                            : ''
+                    }}">
+
+                    <span class="admin-menu-icon">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </span>
+
+                    <span class="admin-menu-text">
+                        Stock Valuation
                     </span>
 
                 </a>
                 <a
-                    href="{{ route('admin.inventory-reports.index') }}"
-                    class="admin-menu-link {{ request()->routeIs('admin.inventory-reports.*') ? 'active' : '' }}">
-                    <i class="fas fa-file"></i>
-                    <span>Inventory Reports</span>
-                </a>
+                    href="{{ route('admin.reorder-dashboard.index') }}"
+                    class="admin-menu-link {{
+        request()->routeIs('admin.reorder-dashboard.*')
+            ? 'active'
+            : ''
+    }}">
 
+                    <span class="admin-menu-icon">
+                        <i class="fa-solid fa-cart-flatbed"></i>
+                    </span>
+
+                    <span class="admin-menu-text">
+                        Reorder Dashboard
+                    </span>
+
+                    @if (($reorderRequiredCount ?? 0) > 0)
+
+                    <span class="inventory-alert-count">
+
+                        {{
+                $reorderRequiredCount > 99
+                    ? '99+'
+                    : $reorderRequiredCount
+            }}
+
+                    </span>
+
+                    @endif
+
+                </a>
+                <a
+                    href="{{ route('admin.purchase-orders.index') }}"
+                    class="admin-menu-link {{
+                        request()->routeIs('admin.purchase-orders.*')
+                            ? 'active'
+                            : ''
+                    }}">
+
+                    <span class="admin-menu-icon">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </span>
+
+                    <span class="admin-menu-text">
+                        Purchase Orders
+                    </span>
+
+                </a>
+                <a
+                    href="{{ route(
+        'admin.suppliers.index'
+    ) }}"
+                    class="admin-menu-link {{
+        request()->routeIs(
+            'admin.suppliers.*'
+        )
+            ? 'active'
+            : ''
+    }}">
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-truck-field"></i>
+
+                    </span>
+
+                    <span class="admin-menu-text">
+                        Suppliers
+                    </span>
+
+                </a>
             </nav>
 
         </div>
 
+        {{-- Customers --}}
         <div class="admin-menu-section">
 
             <span class="admin-menu-heading">
@@ -197,6 +338,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-users"></i>
                     </span>
@@ -204,6 +346,7 @@
                     <span class="admin-menu-text">
                         Customers
                     </span>
+
                 </a>
 
                 <a
@@ -213,6 +356,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-star"></i>
                     </span>
@@ -220,12 +364,14 @@
                     <span class="admin-menu-text">
                         Reviews
                     </span>
+
                 </a>
 
             </nav>
 
         </div>
 
+        {{-- Content --}}
         <div class="admin-menu-section">
 
             <span class="admin-menu-heading">
@@ -241,6 +387,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-newspaper"></i>
                     </span>
@@ -248,6 +395,7 @@
                     <span class="admin-menu-text">
                         Blog Posts
                     </span>
+
                 </a>
 
                 <a
@@ -257,6 +405,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-folder-tree"></i>
                     </span>
@@ -264,12 +413,14 @@
                     <span class="admin-menu-text">
                         Blog Categories
                     </span>
+
                 </a>
 
             </nav>
 
         </div>
 
+        {{-- Configuration --}}
         <div class="admin-menu-section">
 
             <span class="admin-menu-heading">
@@ -285,6 +436,7 @@
                             ? 'active'
                             : ''
                     }}">
+
                     <span class="admin-menu-icon">
                         <i class="fa-solid fa-gear"></i>
                     </span>
@@ -292,8 +444,9 @@
                     <span class="admin-menu-text">
                         Store Settings
                     </span>
-                </a>
 
+                </a>
+                @include('admin.partials.administration-links')
             </nav>
 
         </div>
@@ -307,6 +460,7 @@
             class="admin-menu-link"
             target="_blank"
             rel="noopener">
+
             <span class="admin-menu-icon">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </span>
@@ -314,16 +468,19 @@
             <span class="admin-menu-text">
                 View Website
             </span>
+
         </a>
 
         <form
             action="{{ route('admin.logout') }}"
             method="POST">
+
             @csrf
 
             <button
                 type="submit"
                 class="admin-menu-link admin-logout-button">
+
                 <span class="admin-menu-icon">
                     <i class="fa-solid fa-right-from-bracket"></i>
                 </span>
@@ -331,7 +488,9 @@
                 <span class="admin-menu-text">
                     Logout
                 </span>
+
             </button>
+
         </form>
 
     </div>

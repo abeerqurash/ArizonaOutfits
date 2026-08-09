@@ -22,22 +22,7 @@
         <div class="menu-wrapper">
             <div class="navigaiton">
                 <div class="navigation-links">
-                    <a href="/" class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header">
-                        <div class="button-text text-uppercase letter-space-3px">Home</div>
-                    </a>
-                    <a href="/about" class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header">
-                        <div class="button-text text-uppercase letter-space-3px">About Us</div>
-                    </a>
-                    <a href="/blogs" class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header">
-                        <div class="button-text text-uppercase letter-space-3px">Blogs</div>
-                    </a>
-                    <a href="/shop" class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header">
-                        <div class="button-text text-uppercase letter-space-3px">Shop</div>
-                    </a>
-                    
-                    <a href="/contact" class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header">
-                        <div class="button-text text-uppercase letter-space-3px">Contact</div>
-                    </a>
+                    @include('partials.header-menu-links')
                 </div>
             </div>
             <div class="navigation-cover">
@@ -76,78 +61,15 @@
                     </div>
                     <div class="category-list">
                         <div class="list-collection">
-                            <div class="list-item">
-                                <a href="/category/ai-machine-learning" class="list">
-                                    <div class="list-description">
-                                        <div class="list-item-text">AI Machine Learning</div>
-                                    </div>
-                                    <i class="fa-solid fa-arrow-right-long right-arrow-icon"></i>
-                                </a>
-                            </div>
-                            <div class="list-item">
-                                <a href="/category/cybersecurity-data-privacy" class="list">
-                                    <div class="list-description">
-                                        <div class="list-item-text">Cybersecurity Data Privacy</div>
-                                    </div>
-                                    <i class="fa-solid fa-arrow-right-long right-arrow-icon"></i>
-                                </a>
-                            </div>
-                            <div class="list-item">
-                                <a href="/category/fintech-digital-banking" class="list">
-                                    <div class="list-description">
-                                        <div class="list-item-text">Fintech Digital Banking</div>
-                                    </div>
-                                    <i class="fa-solid fa-arrow-right-long right-arrow-icon"></i>
-                                </a>
-                            </div>
-                            <div class="list-item">
-                                <a href="/category/climate-tech-green-energy" class="list">
-                                    <div class="list-description">
-                                        <div class="list-item-text">Climate Tech Green Energy</div>
-                                    </div>
-                                    <i class="fa-solid fa-arrow-right-long right-arrow-icon"></i>
-                                </a>
-                            </div>
-                            <div class="list-item">
-                                <a href="/category/health-tech-digital-wellness" class="list">
-                                    <div class="list-description">
-                                        <div class="list-item-text">Health Tech Digital Wellness</div>
-                                    </div>
-                                    <i class="fa-solid fa-arrow-right-long right-arrow-icon"></i>
-                                </a>
-                            </div>
-                            <div class="list-item">
-                                <a href="/category/cryptocurrency-web3" class="list">
-                                    <div class="list-description">
-                                        <div class="list-item-text">Cryptocurrency Web3</div>
-                                    </div>
-                                    <i class="fa-solid fa-arrow-right-long right-arrow-icon"></i>
-                                </a>
-                            </div>
-                            <div class="list-item">
-                                <a href="/category/e-commerce-retail-tech" class="list">
-                                    <div class="list-description">
-                                        <div class="list-item-text">E-Commerce Retail Tech</div>
-                                    </div>
-                                    <i class="fa-solid fa-arrow-right-long right-arrow-icon"></i>
-                                </a>
-                            </div>
-                            <div class="list-item">
-                                <a href="/category/remote-work-future-of-work" class="list">
-                                    <div class="list-description">
-                                        <div class="list-item-text">Remote Work Future Of Work</div>
-                                    </div>
-                                    <i class="fa-solid fa-arrow-right-long right-arrow-icon"></i>
-                                </a>
-                            </div>
-                            <div class="list-item">
-                                <a href="/category/edtech-online-learning" class="list">
-                                    <div class="list-description">
-                                        <div class="list-item-text">EDTech Online Learning</div>
-                                    </div>
-                                    <i class="fa-solid fa-arrow-right-long right-arrow-icon"></i>
-                                </a>
-                            </div>
+                            <div class="list-item"><a href="/category/ai-machine-learning" class="list"><div class="list-description"><div class="list-item-text">AI Machine Learning</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/cybersecurity-data-privacy" class="list"><div class="list-description"><div class="list-item-text">Cybersecurity Data Privacy</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/fintech-digital-banking" class="list"><div class="list-description"><div class="list-item-text">Fintech Digital Banking</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/climate-tech-green-energy" class="list"><div class="list-description"><div class="list-item-text">Climate Tech Green Energy</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/health-tech-digital-wellness" class="list"><div class="list-description"><div class="list-item-text">Health Tech Digital Wellness</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/cryptocurrency-web3" class="list"><div class="list-description"><div class="list-item-text">Cryptocurrency Web3</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/e-commerce-retail-tech" class="list"><div class="list-description"><div class="list-item-text">E-Commerce Retail Tech</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/remote-work-future-of-work" class="list"><div class="list-description"><div class="list-item-text">Remote Work Future Of Work</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/edtech-online-learning" class="list"><div class="list-description"><div class="list-item-text">EDTech Online Learning</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
                         </div>
                     </div>
                 </div>

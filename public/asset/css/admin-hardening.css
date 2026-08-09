@@ -1,0 +1,14 @@
+/* Final responsive and accessibility layer for the Arizona Outfits admin. */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body.admin-body{overflow-x:hidden}
+.admin-content img{max-width:100%;height:auto}
+.admin-content table{max-width:100%}
+.admin-content :is(input,select,textarea,button,a):focus-visible{outline:3px solid rgba(37,99,235,.28);outline-offset:2px}
+.admin-content :is(input,select,textarea){max-width:100%}
+.admin-content :is(.table-responsive,.table-wrap,.audit-table-wrap){max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.admin-button,.admin-menu-link,.admin-topbar-action{touch-action:manipulation}
+@media(max-width:900px){.admin-content{padding:20px}.admin-page-header{align-items:stretch;flex-direction:column}.admin-page-actions{justify-content:flex-start}.admin-page-actions>*{flex:1}.admin-content table{min-width:760px}.admin-content :is(.admin-panel,.analytics-panel,.backup-panel){min-width:0}}
+@media(max-width:600px){.admin-content{padding:14px}.admin-topbar{padding-right:14px;padding-left:14px}.admin-profile-details{display:none}.admin-page-actions{flex-direction:column}.admin-page-actions>*{width:100%}.admin-content :is(button,.admin-button,input,select){min-height:42px}.admin-content textarea{font-size:16px}.admin-content input,.admin-content select{font-size:16px}.admin-dropdown{right:10px;left:10px}.admin-alert{align-items:flex-start}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+@media print{.admin-sidebar,.admin-topbar,.admin-page-actions,.admin-alert{display:none!important}.admin-main{margin:0!important}.admin-content{max-width:none!important;padding:0!important}.admin-panel{box-shadow:none!important}}

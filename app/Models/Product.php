@@ -22,6 +22,8 @@ class Product extends Model
         'sale_price',
         'cost_price',
         'stock',
+        'reorder_point',
+        'reorder_quantity',
         'status',
         'featured_image',
         'views_count',
@@ -39,18 +41,14 @@ class Product extends Model
         'sale_price' => 'decimal:2',
         'cost_price' => 'decimal:2',
         'stock' => 'integer',
+        'reorder_point' => 'integer',
+        'reorder_quantity' => 'integer',
         'views_count' => 'integer',
         'favorites_count' => 'integer',
         'cart_count' => 'integer',
         'purchase_count' => 'integer',
         'average_rating' => 'decimal:2',
     ];
-
-    /*
-    |--------------------------------------------------------------------------
-    | Product categories
-    |--------------------------------------------------------------------------
-    */
 
     public function categories(): BelongsToMany
     {
@@ -62,12 +60,6 @@ class Product extends Model
         )->withTimestamps();
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Product tags
-    |--------------------------------------------------------------------------
-    */
-
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -77,12 +69,6 @@ class Product extends Model
             'product_tag_id'
         )->withTimestamps();
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Product options
-    |--------------------------------------------------------------------------
-    */
 
     public function options(): BelongsToMany
     {
@@ -94,12 +80,6 @@ class Product extends Model
         )->withTimestamps();
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Product option values
-    |--------------------------------------------------------------------------
-    */
-
     public function optionValues(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -110,12 +90,6 @@ class Product extends Model
         )->withTimestamps();
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Product variants
-    |--------------------------------------------------------------------------
-    */
-
     public function variants(): HasMany
     {
         return $this->hasMany(
@@ -124,12 +98,6 @@ class Product extends Model
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Product images
-    |--------------------------------------------------------------------------
-    */
-
     public function images(): HasMany
     {
         return $this->hasMany(
@@ -137,12 +105,6 @@ class Product extends Model
             'product_id'
         );
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Reviews
-    |--------------------------------------------------------------------------
-    */
 
     public function reviews(): HasMany
     {
@@ -160,11 +122,32 @@ class Product extends Model
         )->where('status', 'approved');
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Featured image URL
-    |--------------------------------------------------------------------------
-    */
+    /**
+     * Supplier-specific prices, SKUs, lead times, and minimum quantities.
+     */
+    public function supplierProducts(): HasMany
+    {
+        return $this->hasMany(SupplierProduct::class);
+    }
+
+    public function suppliers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Supplier::class,
+            'supplier_products'
+        )
+            ->withPivot([
+                'product_variant_id',
+                'supplier_sku',
+                'unit_cost',
+                'minimum_order_quantity',
+                'lead_time_days',
+                'is_preferred',
+                'is_active',
+                'notes',
+            ])
+            ->withTimestamps();
+    }
 
     protected function featuredImageUrl(): Attribute
     {
@@ -172,9 +155,6 @@ class Product extends Model
             get: function (): ?string {
                 $imagePath = $this->featured_image;
 
-                /*
-                 * Use the first gallery image when no featured image exists.
-                 */
                 if (blank($imagePath)) {
                     $firstImage = $this->relationLoaded('images')
                         ? $this->images->first()
@@ -195,18 +175,11 @@ class Product extends Model
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Final product price
-    |--------------------------------------------------------------------------
-    */
-
     public function getFinalPriceAttribute(): float
     {
         if (
             $this->sale_price !== null
-            && (float) $this->sale_price
-            < (float) $this->regular_price
+            && (float) $this->sale_price < (float) $this->regular_price
         ) {
             return (float) $this->sale_price;
         }
@@ -214,16 +187,9 @@ class Product extends Model
         return (float) $this->regular_price;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Discount percentage
-    |--------------------------------------------------------------------------
-    */
-
     public function getDiscountPercentAttribute(): ?int
     {
         $regularPrice = (float) $this->regular_price;
-
         $salePrice = $this->sale_price !== null
             ? (float) $this->sale_price
             : null;
@@ -234,25 +200,15 @@ class Product extends Model
             && $salePrice < $regularPrice
         ) {
             return (int) round(
-                (
-                    ($regularPrice - $salePrice)
-                    / $regularPrice
-                ) * 100
+                (($regularPrice - $salePrice) / $regularPrice) * 100
             );
         }
 
         return null;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Resolve stored image path
-    |--------------------------------------------------------------------------
-    */
-
-    private function resolveImageUrl(
-        mixed $imagePath
-    ): ?string {
+    private function resolveImageUrl(mixed $imagePath): ?string
+    {
         if (!is_string($imagePath)) {
             return null;
         }
@@ -263,73 +219,31 @@ class Product extends Model
             return null;
         }
 
-        /*
-         * The image is already an absolute URL.
-         */
         if (
             Str::startsWith(
                 $imagePath,
-                [
-                    'http://',
-                    'https://',
-                    'data:',
-                    '//',
-                ]
+                ['http://', 'https://', 'data:', '//']
             )
         ) {
             return $imagePath;
         }
 
-        $normalizedPath = str_replace(
-            '\\',
-            '/',
-            $imagePath
-        );
+        $normalizedPath = str_replace('\\', '/', $imagePath);
+        $normalizedPath = preg_replace('#^/?public/#', '', $normalizedPath);
 
-        /*
-         * Remove common path prefixes.
-         */
-        $normalizedPath = preg_replace(
-            '#^/?public/#',
-            '',
-            $normalizedPath
-        );
-
-        /*
-         * Path already points to the public storage link.
-         */
         if (
             Str::startsWith(
                 $normalizedPath,
-                [
-                    '/storage/',
-                    'storage/',
-                ]
+                ['/storage/', 'storage/']
             )
         ) {
-            return asset(
-                ltrim($normalizedPath, '/')
-            );
+            return asset(ltrim($normalizedPath, '/'));
         }
 
-        /*
-         * File exists directly inside public/.
-         */
-        if (
-            file_exists(
-                public_path(
-                    ltrim($normalizedPath, '/')
-                )
-            )
-        ) {
-            return asset(
-                ltrim($normalizedPath, '/')
-            );
+        if (file_exists(public_path(ltrim($normalizedPath, '/')))) {
+            return asset(ltrim($normalizedPath, '/'));
         }
 
-        /*
-         * File exists on Laravel's public storage disk.
-         */
         if (
             Storage::disk('public')->exists(
                 ltrim($normalizedPath, '/')
@@ -340,14 +254,11 @@ class Product extends Model
             );
         }
 
-        /*
-         * Most uploaded product images are stored on the public disk.
-         * Return the expected storage URL as the final fallback.
-         */
         return Storage::disk('public')->url(
             ltrim($normalizedPath, '/')
         );
     }
+
     public function inventoryHistories(): HasMany
     {
         return $this->hasMany(InventoryHistory::class);
