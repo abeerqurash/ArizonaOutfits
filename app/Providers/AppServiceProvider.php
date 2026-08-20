@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use App\Services\NavigationMenuService;
+use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,12 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Password::defaults(fn () => Password::min(10)
+            ->letters()
+            ->mixedCase()
+            ->numbers()
+            ->symbols());
+
         RateLimiter::for('admin', function (Request $request): Limit {
             return Limit::perMinute(180)->by(
                 (string) ($request->user()?->id ?? $request->ip())

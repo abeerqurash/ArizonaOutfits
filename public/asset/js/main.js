@@ -576,6 +576,10 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById('blog-form-submission');
 
+    if (!form) {
+        return;
+    }
+
     form.addEventListener('submit', function (e) {
         e.preventDefault(); // stop default submit
 

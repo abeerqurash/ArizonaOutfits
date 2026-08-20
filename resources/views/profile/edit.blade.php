@@ -1,6 +1,10 @@
-@extends('layouts.app')
+@extends(auth()->user()?->is_admin ? 'admin.layouts.app' : 'customer.layouts.app')
 @section('title', 'My Profile')
-@include('customer.partials.styles')
+@section('page-heading', 'Profile & Security')
+@push('page-styles')
+    @include('customer.partials.styles')
+@endpush
 @section('content')
-<section class="customer-account"><div class="account-shell"><header class="account-heading"><div><small>Customer account</small><h1>My profile</h1><p>Manage your contact details, password and account settings.</p></div></header>@include('customer.partials.navigation')<div class="profile-stack"><section class="account-panel profile-block">@include('profile.partials.update-profile-information-form')</section><section class="account-panel profile-block">@include('profile.partials.update-password-form')</section><section class="account-panel profile-block">@include('profile.partials.delete-user-form')</section></div></div></section>
+<header class="customer-page-heading"><div><span>Account settings</span><h2>My profile</h2><p>Manage your contact details, password and account security.</p></div></header>
+<div class="customer-profile-grid"><section class="customer-panel customer-form-card">@include('profile.partials.update-profile-information-form')</section><section class="customer-panel customer-form-card">@include('profile.partials.update-password-form')</section><section class="customer-panel customer-form-card danger">@include('profile.partials.delete-user-form')</section></div>
 @endsection

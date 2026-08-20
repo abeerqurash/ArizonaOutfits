@@ -1,0 +1,68 @@
+PHASE 14.2 - XAMPP NOW, HOSTINGER LATER
+
+RECOMMENDED EMAIL ARRANGEMENT
+- Use a Hostinger mailbox such as info@your-domain.com for receiving replies.
+- Use Brevo SMTP for Laravel transactional delivery.
+- Verify the sender/domain inside Brevo before sending production email.
+- MAIL_PASSWORD must be a Brevo SMTP key, not the Brevo account password or API key.
+
+LOCAL XAMPP .ENV VALUES
+
+MAIL_MAILER=smtp
+MAIL_SCHEME=null
+MAIL_HOST=smtp-relay.brevo.com
+MAIL_PORT=587
+MAIL_USERNAME="YOUR_BREVO_SMTP_LOGIN"
+MAIL_PASSWORD="YOUR_BREVO_SMTP_KEY"
+MAIL_FROM_ADDRESS="info@your-domain.com"
+MAIL_FROM_NAME="Arizona Outfits"
+MAIL_EHLO_DOMAIN=your-domain.com
+
+QUEUE_CONNECTION=database
+QUEUE_FAILED_DRIVER=database-uuids
+DB_QUEUE=default
+DB_QUEUE_RETRY_AFTER=180
+
+LOCAL XAMPP COMMANDS
+
+php artisan optimize:clear
+php artisan migrate
+php artisan mail:test your-private-email@example.com
+php artisan queue:work --queue=default --tries=3 --timeout=120
+
+Keep the queue:work terminal open while testing queued emails. Press Ctrl+C to stop it.
+
+HOSTINGER PRODUCTION .ENV DIFFERENCES
+
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://your-domain.com
+SESSION_SECURE_COOKIE=true
+
+Keep the same Brevo MAIL_* and database QUEUE_* values shown above.
+
+HOSTINGER CRON JOB 1 - LARAVEL SCHEDULER (EVERY MINUTE)
+
+/usr/bin/php /home/YOUR_HOSTINGER_USER/domains/YOUR_DOMAIN/public_html/artisan schedule:run
+
+HOSTINGER CRON JOB 2 - PROCESS QUEUED JOBS (EVERY MINUTE)
+
+/usr/bin/php /home/YOUR_HOSTINGER_USER/domains/YOUR_DOMAIN/public_html/artisan queue:work database --queue=default --stop-when-empty --tries=3 --timeout=120
+
+Replace YOUR_HOSTINGER_USER and YOUR_DOMAIN using the absolute path shown in hPanel.
+
+DEPLOYMENT COMMANDS
+
+php artisan migrate --force
+php artisan optimize:clear
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan queue:restart
+
+Useful queue checks:
+
+php artisan queue:failed
+php artisan queue:retry all
+
+Never commit the real SMTP key, Stripe secret, database password, or APP_KEY.
