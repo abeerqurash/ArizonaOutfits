@@ -5937,6 +5937,29 @@ button#load-less-btn {
     color: #fff;
 }
 
+.product-featured-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 3;
+
+    padding: 7px 11px;
+
+    background: #111;
+    color: #fff;
+
+    border-radius: 4px;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    letter-spacing: 1px;
+
+    pointer-events: none;
+}
+
 @media (max-width:1200px) {
     .navbar .left-navbar {
         max-width: 100%;

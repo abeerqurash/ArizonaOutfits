@@ -79,7 +79,10 @@ class ShopController extends Controller
                 'nullable',
                 'in:on_sale',
             ],
-
+            'featured' => [
+                'nullable',
+                'in:1',
+            ],
             /*
             |--------------------------------------------------------------------------
             | Dynamic variant option filters
@@ -112,6 +115,7 @@ class ShopController extends Controller
                 'nullable',
                 'in:newest,price_low,price_high,popular,rating,best_selling,discount',
             ],
+
         ]);
 
         /*
@@ -469,6 +473,21 @@ class ShopController extends Controller
                                 );
                             }
                         );
+                    /*
+|--------------------------------------------------------------------------
+| Featured products
+|--------------------------------------------------------------------------
+*/
+
+                    if (
+                        isset($filters['featured'])
+                        && (string) $filters['featured'] === '1'
+                    ) {
+                        $query->where(
+                            'is_featured',
+                            true
+                        );
+                    }
                 }
             );
         }

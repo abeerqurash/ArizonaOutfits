@@ -17,6 +17,11 @@ class User extends Authenticatable
         'email',
         'phone',
         'password',
+
+        'google_id',
+        'facebook_id',
+        'avatar',
+
         'status',
         'is_admin',
         'is_super_admin',
@@ -83,7 +88,7 @@ class User extends Authenticatable
             $this->resolvedAdminPermissions = AdminPermission::query()
                 ->whereHas(
                     'roles.users',
-                    fn ($query) => $query->whereKey($this->id)
+                    fn($query) => $query->whereKey($this->id)
                 )
                 ->pluck('slug')
                 ->all();

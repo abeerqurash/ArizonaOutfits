@@ -436,6 +436,55 @@ $databaseVariants
                                             </option>
                                         </select>
                                     </div>
+                                    <div>
+    <label
+        for="is_featured"
+        style="
+            display:flex;
+            align-items:center;
+            gap:10px;
+            cursor:pointer;
+            font-weight:bold;
+        ">
+
+        <input
+            type="checkbox"
+            id="is_featured"
+            name="is_featured"
+            value="1"
+            {{
+                old(
+                    'is_featured',
+                    $product->is_featured
+                )
+                    ? 'checked'
+                    : ''
+            }}
+            style="
+                width:18px;
+                height:18px;
+                cursor:pointer;
+            ">
+
+        Featured Product
+    </label>
+
+    <small
+        style="
+            display:block;
+            margin-top:7px;
+            color:#777;
+            line-height:1.5;
+        ">
+        Featured products can be highlighted and filtered on the storefront.
+    </small>
+
+    @error('is_featured')
+        <small style="color:red;">
+            {{ $message }}
+        </small>
+    @enderror
+</div>
                                 </div>
 
                             </div>
@@ -839,6 +888,12 @@ $databaseVariants
                                                     gap:15px;
                                                     margin-bottom:12px;
                                                 ">
+                                            @if (!empty($variant['id']))
+                                            <input
+                                                type="hidden"
+                                                name="variants[{{ $variantIndex }}][id]"
+                                                value="{{ $variant['id'] }}">
+                                            @endif
                                             <strong class="variant-title">
                                                 {{ $variantTitle ?: 'Variant ' . ($variantIndex + 1) }}
                                             </strong>
@@ -1577,7 +1632,8 @@ $databaseVariants
 
                     try {
                         const response = await fetch(
-                            '{{ route('admin.product-options.store') }}', {
+                            '{{ route('
+                            admin.product - options.store ') }}', {
                                 method: 'POST',
 
                                 headers: {

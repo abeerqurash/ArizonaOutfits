@@ -353,6 +353,48 @@ $oldVariants = old('variants', []);
                                             </option>
                                         </select>
                                     </div>
+                                    <div>
+    <label
+        for="is_featured"
+        style="
+            display:flex;
+            align-items:center;
+            gap:10px;
+            cursor:pointer;
+            font-weight:bold;
+        ">
+
+        <input
+            type="checkbox"
+            id="is_featured"
+            name="is_featured"
+            value="1"
+            {{ old('is_featured') ? 'checked' : '' }}
+            style="
+                width:18px;
+                height:18px;
+                cursor:pointer;
+            ">
+
+        Featured Product
+    </label>
+
+    <small
+        style="
+            display:block;
+            margin-top:7px;
+            color:#777;
+            line-height:1.5;
+        ">
+        Mark this product as featured so it can be highlighted in the storefront.
+    </small>
+
+    @error('is_featured')
+        <small style="color:red;">
+            {{ $message }}
+        </small>
+    @enderror
+</div>
                                 </div>
 
                             </div>

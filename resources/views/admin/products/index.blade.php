@@ -181,7 +181,31 @@
                                 Inactive
                             </option>
                         </select>
+                        <select
+                            name="featured"
+                            style="
+                                padding:9px 12px;
+                                border:1px solid #ccc;
+                                border-radius:5px;
+                            ">
 
+                            <option value="">
+                                All products
+                            </option>
+
+                            <option
+                                value="1"
+                                {{ request('featured') === '1' ? 'selected' : '' }}>
+                                Featured
+                            </option>
+
+                            <option
+                                value="0"
+                                {{ request('featured') === '0' ? 'selected' : '' }}>
+                                Not Featured
+                            </option>
+
+                        </select>
                         <button
                             type="submit"
                             style="
@@ -195,7 +219,11 @@
                             Filter
                         </button>
 
-                        @if (request()->filled('search') || request()->filled('status'))
+                        @if (
+                        request()->filled('search')
+                        || request()->filled('status')
+                        || request()->filled('featured')
+                        )
 
                         <a
                             href="{{ route('admin.products.index') }}"
@@ -222,7 +250,7 @@
                         width="100%"
                         style="
                             border-collapse:collapse;
-                            min-width:1500px;
+                            min-width:1600px;
                             background:#fff;
                         ">
                         <thead>
@@ -271,6 +299,10 @@
 
                                 <th>
                                     Favorites
+                                </th>
+
+                                <th>
+                                    Featured
                                 </th>
 
                                 <th>
@@ -574,6 +606,32 @@
 
                                     </td>
 
+                                    <td style="text-align:center;">
+
+                                        @if ($product->is_featured)
+
+                                        <span
+                                            style="
+                                                display:inline-block;
+                                                padding:5px 9px;
+                                                background:#111;
+                                                color:#fff;
+                                                border-radius:4px;
+                                                font-weight:bold;
+                                            ">
+                                            Featured
+                                        </span>
+
+                                        @else
+
+                                        <span style="color:#777;">
+                                            No
+                                        </span>
+
+                                        @endif
+
+                                    </td>
+
                                     <td>
 
                                         @if ($product->status === 'active')
@@ -707,7 +765,7 @@
                                 <tr>
 
                                     <td
-                                        colspan="13"
+                                        colspan="14"
                                         style="
                                             text-align:center;
                                             padding:40px;

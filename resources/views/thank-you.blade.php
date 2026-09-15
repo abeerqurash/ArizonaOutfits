@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Ideostream — Every Topic the World Is Talking About') {{-- or $title if passed from controller --}}
-@section('meta_description', 'From tech and health to finance, culture and beyond — Ideostream covers everything that matters. Real articles, honest insights and fresh content written for curious minds daily.')
+@section('title', 'ArizonaOutfits — Every Topic the World Is Talking About') {{-- or $title if passed from controller --}}
+@section('meta_description', 'From tech and health to finance, culture and beyond — ArizonaOutfits covers everything that matters. Real articles, honest insights and fresh content written for curious minds daily.')
 
 @section('content')
 

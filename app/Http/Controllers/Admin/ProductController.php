@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Throwable;
 
@@ -44,6 +45,15 @@ class ProductController extends AdminController
                             ->orWhere('slug', 'like', '%' . $search . '%')
                             ->orWhere('sku', 'like', '%' . $search . '%');
                     });
+                }
+            )
+            ->when(
+                $request->filled('featured'),
+                function ($query) use ($request) {
+                    $query->where(
+                        'is_featured',
+                        $request->input('featured') === '1'
+                    );
                 }
             )
             ->when(
@@ -151,6 +161,9 @@ class ProductController extends AdminController
                 'status' =>
                 $validated['status'],
 
+                'is_featured' =>
+                $request->boolean('is_featured'),
+
                 'featured_image' =>
                 $featuredImagePath,
 
@@ -174,6 +187,10 @@ class ProductController extends AdminController
 
             $product->options()->sync(
                 $validated['product_options'] ?? []
+            );
+
+            $product->optionValues()->sync(
+                $validated['product_option_values'] ?? []
             );
 
             $this->storeGalleryImages(
@@ -330,6 +347,9 @@ class ProductController extends AdminController
                 'status' =>
                 $validated['status'],
 
+                'is_featured' =>
+                $request->boolean('is_featured'),
+
                 'featured_image' =>
                 $featuredImagePath,
 
@@ -354,21 +374,26 @@ class ProductController extends AdminController
             $product->options()->sync(
                 $validated['product_options'] ?? []
             );
-
+            $product->optionValues()->sync(
+                $validated['product_option_values'] ?? []
+            );
             $this->storeGalleryImages(
                 request: $request,
                 product: $product
             );
 
             /*
-             * The submitted variants replace the current variants.
-             *
-             * Existing images are preserved through old_image when
-             * no replacement image is uploaded.
-             */
-            $product->variants()->delete();
+|--------------------------------------------------------------------------
+| Safely synchronize product variants
+|--------------------------------------------------------------------------
+|
+| Existing variants are updated instead of deleted/recreated.
+| This preserves variant IDs used by inventory, suppliers,
+| purchase orders and historical records.
+|
+*/
 
-            $this->storeVariants(
+            $this->syncVariants(
                 request: $request,
                 product: $product,
                 variants: $validated['variants'] ?? []
@@ -436,7 +461,7 @@ class ProductController extends AdminController
             $product->categories()->detach();
             $product->tags()->detach();
             $product->options()->detach();
-
+            $product->optionValues()->detach();
             $product->images()->delete();
             $product->variants()->delete();
 
@@ -565,6 +590,11 @@ class ProductController extends AdminController
                 ]),
             ],
 
+            'is_featured' => [
+                'nullable',
+                'boolean',
+            ],
+
             'featured_image' => [
                 'nullable',
                 'image',
@@ -614,9 +644,44 @@ class ProductController extends AdminController
                 'exists:product_options,id',
             ],
 
+            'product_option_values' => [
+                'nullable',
+                'array',
+            ],
+
+            'product_option_values.*' => [
+                'integer',
+                'distinct',
+                'exists:product_option_values,id',
+            ],
+
             'variants' => [
                 'nullable',
                 'array',
+            ],
+
+            'variants.*.id' => [
+                'nullable',
+                'integer',
+
+                Rule::exists(
+                    'product_variants',
+                    'id'
+                )->where(
+                    function ($query) use ($product) {
+                        if ($product) {
+                            $query->where(
+                                'product_id',
+                                $product->id
+                            );
+                        } else {
+                            /*
+                 * New products cannot submit an existing variant ID.
+                 */
+                            $query->whereRaw('1 = 0');
+                        }
+                    }
+                ),
             ],
 
             'variants.*.sku' => [
@@ -821,6 +886,328 @@ class ProductController extends AdminController
                     ];
                 })->values()->all(),
             ]);
+        }
+    }
+
+    /**
+     * Safely synchronize variants when editing a product.
+     *
+     * Existing variants keep their database IDs.
+     * New variants are created.
+     * Removed variants are deleted only when they are not referenced
+     * by important historical/business records.
+     */
+    private function syncVariants(
+        Request $request,
+        Product $product,
+        array $variants
+    ): void {
+        /*
+    |--------------------------------------------------------------------------
+    | Load current variants
+    |--------------------------------------------------------------------------
+    */
+
+        $existingVariants = $product
+            ->variants()
+            ->get()
+            ->keyBy('id');
+
+        $submittedVariantIds = [];
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Create or update submitted variants
+    |--------------------------------------------------------------------------
+    */
+
+        foreach ($variants as $index => $variantData) {
+
+            $submittedId = isset($variantData['id'])
+                ? (int) $variantData['id']
+                : null;
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Existing variant
+        |--------------------------------------------------------------------------
+        */
+
+            if (
+                $submittedId
+                && $existingVariants->has($submittedId)
+            ) {
+                $variant = $existingVariants->get(
+                    $submittedId
+                );
+
+                $submittedVariantIds[] =
+                    $submittedId;
+            }
+
+            /*
+        |--------------------------------------------------------------------------
+        | New variant
+        |--------------------------------------------------------------------------
+        */ else {
+                $variant = $product
+                    ->variants()
+                    ->make();
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Preserve existing image
+        |--------------------------------------------------------------------------
+        |
+        | Do not trust a hidden old_image path from the browser when
+        | an existing database record already exists.
+        |
+        */
+
+            $variantImagePath =
+                $variant->exists
+                ? $variant->image
+                : null;
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | New uploaded variant image
+        |--------------------------------------------------------------------------
+        */
+
+            if (
+                $request->hasFile(
+                    'variants.' . $index . '.image'
+                )
+            ) {
+                $variantImage = $request->file(
+                    'variants.' . $index . '.image'
+                );
+
+                if (
+                    $variantImage
+                    && $variantImage->isValid()
+                ) {
+                    $newVariantImagePath =
+                        $variantImage->store(
+                            'products/variants',
+                            'public'
+                        );
+
+                    /*
+                 * Remove previous image only after the replacement
+                 * has been successfully stored.
+                 */
+
+                    if ($variantImagePath) {
+                        Storage::disk('public')
+                            ->delete(
+                                $variantImagePath
+                            );
+                    }
+
+                    $variantImagePath =
+                        $newVariantImagePath;
+                }
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Update variant values
+        |--------------------------------------------------------------------------
+        */
+
+            $variant->fill([
+                'sku' =>
+                $variantData['sku'] ?? null,
+
+                'regular_price' =>
+                $variantData['regular_price'] ?? null,
+
+                'sale_price' =>
+                $variantData['sale_price'] ?? null,
+
+                'stock' =>
+                $variantData['stock'] ?? 0,
+
+                'reorder_point' =>
+                $variantData['reorder_point'] ?? null,
+
+                'reorder_quantity' =>
+                $variantData['reorder_quantity'] ?? null,
+
+                'image' =>
+                $variantImagePath,
+
+                'options' => collect(
+                    $variantData['options'] ?? []
+                )->map(
+                    function (array $option): array {
+                        return [
+                            'option_id' =>
+                            (int) $option['option_id'],
+
+                            'option_name' =>
+                            (string) $option['option_name'],
+
+                            'value_id' =>
+                            (int) $option['value_id'],
+
+                            'value_label' =>
+                            (string) $option['value_label'],
+                        ];
+                    }
+                )->values()->all(),
+            ]);
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Save variant
+        |--------------------------------------------------------------------------
+        */
+
+            $variant->save();
+
+
+            /*
+         * New variants receive an ID only after save().
+         */
+            if (! $submittedId) {
+                $submittedVariantIds[] =
+                    $variant->id;
+            }
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Find variants removed from the edit form
+    |--------------------------------------------------------------------------
+    */
+
+        $removedVariants = $existingVariants
+            ->reject(
+                fn($variant) =>
+                in_array(
+                    $variant->id,
+                    $submittedVariantIds,
+                    true
+                )
+            );
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Safely remove variants
+    |--------------------------------------------------------------------------
+    */
+
+        foreach ($removedVariants as $variant) {
+
+            /*
+        |--------------------------------------------------------------------------
+        | Check historical/business references
+        |--------------------------------------------------------------------------
+        */
+
+            $isReferenced =
+                DB::table('inventory_histories')
+                ->where(
+                    'product_variant_id',
+                    $variant->id
+                )
+                ->exists()
+
+                ||
+
+                DB::table('purchase_order_items')
+                ->where(
+                    'product_variant_id',
+                    $variant->id
+                )
+                ->exists()
+
+                ||
+
+                DB::table('supplier_products')
+                ->where(
+                    'product_variant_id',
+                    $variant->id
+                )
+                ->exists()
+
+                ||
+
+                DB::table('purchase_order_receipt_items')
+                ->where(
+                    'product_variant_id',
+                    $variant->id
+                )
+                ->exists()
+
+                ||
+
+                DB::table('supplier_return_items')
+                ->where(
+                    'product_variant_id',
+                    $variant->id
+                )
+                ->exists()
+
+                ||
+
+                DB::table('inventory_alerts')
+                ->where(
+                    'product_variant_id',
+                    $variant->id
+                )
+                ->exists();
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Do not destroy referenced variant
+        |--------------------------------------------------------------------------
+        */
+
+            if ($isReferenced) {
+                throw ValidationException::withMessages([
+                    'variants' =>
+                    'Variant "' .
+                        ($variant->sku ?: '#' . $variant->id) .
+                        '" cannot be removed because it is already used in inventory, supplier or purchase-order history. Set its stock to 0 instead of deleting it.',
+                ]);
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Remove unused variant image
+        |--------------------------------------------------------------------------
+        */
+
+            if ($variant->image) {
+                Storage::disk('public')
+                    ->delete(
+                        $variant->image
+                    );
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Delete safe unused variant
+        |--------------------------------------------------------------------------
+        */
+
+            $variant->delete();
         }
     }
 }
