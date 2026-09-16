@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductOption;
+use App\Models\ProductOptionValue;
 use App\Models\ProductTag;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -190,7 +191,9 @@ class ProductController extends AdminController
             );
 
             $product->optionValues()->sync(
-                $validated['product_option_values'] ?? []
+                $this->collectProductOptionValueIds(
+                    $validated
+                )
             );
 
             $this->storeGalleryImages(
@@ -290,21 +293,25 @@ class ProductController extends AdminController
         );
 
         DB::beginTransaction();
-
+        $oldVariantImagesToDelete = [];
+        $newVariantImagesUploaded = [];
         try {
-            $featuredImagePath =
+            $oldFeaturedImagePath =
                 $product->featured_image;
 
+            $featuredImagePath =
+                $oldFeaturedImagePath;
+
+            $newFeaturedImagePath = null;
+
             if ($request->hasFile('featured_image')) {
+
                 $newFeaturedImagePath = $request
                     ->file('featured_image')
-                    ->store('products/featured', 'public');
-
-                if ($featuredImagePath) {
-                    Storage::disk('public')->delete(
-                        $featuredImagePath
+                    ->store(
+                        'products/featured',
+                        'public'
                     );
-                }
 
                 $featuredImagePath =
                     $newFeaturedImagePath;
@@ -375,7 +382,9 @@ class ProductController extends AdminController
                 $validated['product_options'] ?? []
             );
             $product->optionValues()->sync(
-                $validated['product_option_values'] ?? []
+                $this->collectProductOptionValueIds(
+                    $validated
+                )
             );
             $this->storeGalleryImages(
                 request: $request,
@@ -396,11 +405,60 @@ class ProductController extends AdminController
             $this->syncVariants(
                 request: $request,
                 product: $product,
-                variants: $validated['variants'] ?? []
+                variants: $validated['variants'] ?? [],
+                oldImagesToDelete: $oldVariantImagesToDelete,
+                newImagesUploaded: $newVariantImagesUploaded
             );
 
             DB::commit();
 
+            /*
+|--------------------------------------------------------------------------
+| Remove replaced featured image after successful database commit
+|--------------------------------------------------------------------------
+*/
+
+            if (
+                $newFeaturedImagePath
+                && $oldFeaturedImagePath
+                && $oldFeaturedImagePath !== $newFeaturedImagePath
+            ) {
+                Storage::disk('public')->delete(
+                    $oldFeaturedImagePath
+                );
+            }
+            /*
+|--------------------------------------------------------------------------
+| Delete obsolete variant images after successful commit
+|--------------------------------------------------------------------------
+*/
+
+            foreach (
+                array_unique($oldVariantImagesToDelete)
+                as $oldVariantImage
+            ) {
+                if ($oldVariantImage) {
+                    Storage::disk('public')->delete(
+                        $oldVariantImage
+                    );
+                }
+            }
+            /*
+|--------------------------------------------------------------------------
+| Remove newly uploaded variant images after rollback
+|--------------------------------------------------------------------------
+*/
+
+            foreach (
+                array_unique($newVariantImagesUploaded)
+                as $newVariantImage
+            ) {
+                if ($newVariantImage) {
+                    Storage::disk('public')->delete(
+                        $newVariantImage
+                    );
+                }
+            }
             return redirect()
                 ->route('admin.products.index')
                 ->with(
@@ -409,7 +467,20 @@ class ProductController extends AdminController
                 );
         } catch (Throwable $exception) {
             DB::rollBack();
+            /*
+|--------------------------------------------------------------------------
+| Remove newly uploaded image after failed database update
+|--------------------------------------------------------------------------
+*/
 
+            if (
+                isset($newFeaturedImagePath)
+                && $newFeaturedImagePath
+            ) {
+                Storage::disk('public')->delete(
+                    $newFeaturedImagePath
+                );
+            }
             report($exception);
 
             return back()
@@ -425,49 +496,184 @@ class ProductController extends AdminController
     /**
      * Delete a product.
      */
+    /**
+     * Safely delete a product.
+     */
     public function destroy(
         Product $product
     ): RedirectResponse {
+
+        /*
+    |--------------------------------------------------------------------------
+    | Protect historical customer orders
+    |--------------------------------------------------------------------------
+    */
+
+        $usedInOrders = DB::table('order_items')
+            ->where('product_id', $product->id)
+            ->exists();
+
+        if ($usedInOrders) {
+            return back()->with(
+                'error',
+                'This product cannot be deleted because it is already used in customer order history. Set the product status to inactive instead.'
+            );
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Protect inventory history
+    |--------------------------------------------------------------------------
+    */
+
+        $usedInInventory = DB::table('inventory_histories')
+            ->where('product_id', $product->id)
+            ->exists();
+
+        if ($usedInInventory) {
+            return back()->with(
+                'error',
+                'This product cannot be deleted because it has inventory history. Set the product status to inactive instead.'
+            );
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Protect supplier records
+    |--------------------------------------------------------------------------
+    */
+
+        $usedBySupplier = DB::table('supplier_products')
+            ->where('product_id', $product->id)
+            ->exists();
+
+        if ($usedBySupplier) {
+            return back()->with(
+                'error',
+                'This product cannot be deleted because it is connected to supplier records. Set the product status to inactive instead.'
+            );
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Protect purchase-order records
+    |--------------------------------------------------------------------------
+    */
+
+        $usedInPurchaseOrders = DB::table(
+            'purchase_order_items'
+        )
+            ->where('product_id', $product->id)
+            ->exists();
+
+        if ($usedInPurchaseOrders) {
+            return back()->with(
+                'error',
+                'This product cannot be deleted because it is used in purchase-order history. Set the product status to inactive instead.'
+            );
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Load files before deletion
+    |--------------------------------------------------------------------------
+    */
+
+        $product->load([
+            'images',
+            'variants',
+        ]);
+
+        $filesToDelete = [];
+
+        if ($product->featured_image) {
+            $filesToDelete[] =
+                $product->featured_image;
+        }
+
+        foreach ($product->images as $image) {
+            if (!empty($image->image)) {
+                $filesToDelete[] =
+                    $image->image;
+            }
+        }
+
+        foreach ($product->variants as $variant) {
+            if (!empty($variant->image)) {
+                $filesToDelete[] =
+                    $variant->image;
+            }
+        }
+
+
         DB::beginTransaction();
 
         try {
-            $product->load([
-                'images',
-                'variants',
-            ]);
 
-            if ($product->featured_image) {
-                Storage::disk('public')->delete(
-                    $product->featured_image
-                );
-            }
-
-            foreach ($product->images as $image) {
-                if (!empty($image->image)) {
-                    Storage::disk('public')->delete(
-                        $image->image
-                    );
-                }
-            }
-
-            foreach ($product->variants as $variant) {
-                if (!empty($variant->image)) {
-                    Storage::disk('public')->delete(
-                        $variant->image
-                    );
-                }
-            }
+            /*
+        |--------------------------------------------------------------------------
+        | Remove relationships
+        |--------------------------------------------------------------------------
+        */
 
             $product->categories()->detach();
+
             $product->tags()->detach();
+
             $product->options()->detach();
+
             $product->optionValues()->detach();
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Remove child records
+        |--------------------------------------------------------------------------
+        */
+
             $product->images()->delete();
+
             $product->variants()->delete();
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Delete product
+        |--------------------------------------------------------------------------
+        */
 
             $product->delete();
 
+
+            /*
+        |--------------------------------------------------------------------------
+        | Commit database FIRST
+        |--------------------------------------------------------------------------
+        */
+
             DB::commit();
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Delete physical files only after successful commit
+        |--------------------------------------------------------------------------
+        */
+
+            foreach (
+                array_unique($filesToDelete)
+                as $file
+            ) {
+                if ($file) {
+                    Storage::disk('public')
+                        ->delete($file);
+                }
+            }
+
 
             return redirect()
                 ->route('admin.products.index')
@@ -476,6 +682,7 @@ class ProductController extends AdminController
                     'Product deleted successfully.'
                 );
         } catch (Throwable $exception) {
+
             DB::rollBack();
 
             report($exception);
@@ -497,7 +704,7 @@ class ProductController extends AdminController
     ): array {
         $productId = $product?->id;
 
-        return $request->validate([
+        $validated = $request->validate([
             'title' => [
                 'required',
                 'string',
@@ -780,8 +987,254 @@ class ProductController extends AdminController
                 'string',
             ],
         ]);
+        $this->validateVariantIntegrity(
+            $validated['variants'] ?? [],
+            $product
+        );
+
+        return $validated;
     }
 
+    /**
+     * Perform advanced safety validation for product variants.
+     */
+    private function validateVariantIntegrity(
+        array $variants,
+        ?Product $product = null
+    ): void {
+        if (empty($variants)) {
+            return;
+        }
+
+        $errors = [];
+        $usedSkus = [];
+        $usedCombinations = [];
+
+        foreach ($variants as $index => $variantData) {
+
+            /*
+        |--------------------------------------------------------------------------
+        | Variant ID
+        |--------------------------------------------------------------------------
+        */
+
+            $variantId = !empty($variantData['id'])
+                ? (int) $variantData['id']
+                : null;
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | SKU uniqueness inside submitted form
+        |--------------------------------------------------------------------------
+        */
+
+            $sku = trim((string) ($variantData['sku'] ?? ''));
+
+            if ($sku !== '') {
+                $normalizedSku = mb_strtolower($sku);
+
+                if (isset($usedSkus[$normalizedSku])) {
+                    $errors["variants.$index.sku"] = 'Each product variant must have a unique SKU.';
+                }
+
+                $usedSkus[$normalizedSku] = true;
+
+
+                /*
+            |--------------------------------------------------------------------------
+            | SKU uniqueness in product_variants table
+            |--------------------------------------------------------------------------
+            */
+
+                $skuExists = DB::table('product_variants')
+                    ->where('sku', $sku)
+                    ->when(
+                        $variantId,
+                        fn($query) =>
+                        $query->where('id', '!=', $variantId)
+                    )
+                    ->exists();
+
+                if ($skuExists) {
+                    $errors["variants.$index.sku"] = 'This variant SKU is already being used by another variant.';
+                }
+
+
+                /*
+            |--------------------------------------------------------------------------
+            | Do not allow variant SKU to duplicate a main product SKU
+            |--------------------------------------------------------------------------
+            */
+
+                $productSkuExists = DB::table('products')
+                    ->where('sku', $sku)
+                    ->when(
+                        $product,
+                        fn($query) =>
+                        $query->where('id', '!=', $product->id)
+                    )
+                    ->exists();
+
+                if ($productSkuExists) {
+                    $errors["variants.$index.sku"] = 'This SKU is already being used by another product.';
+                }
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Variant pricing
+        |--------------------------------------------------------------------------
+        */
+
+            $regularPrice =
+                $variantData['regular_price'] ?? null;
+
+            $salePrice =
+                $variantData['sale_price'] ?? null;
+
+            if (
+                $regularPrice !== null
+                && $regularPrice !== ''
+                && $salePrice !== null
+                && $salePrice !== ''
+                && (float) $salePrice > (float) $regularPrice
+            ) {
+                $errors["variants.$index.sale_price"] = 'Variant sale price cannot be greater than its regular price.';
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Validate options
+        |--------------------------------------------------------------------------
+        */
+
+            $options = $variantData['options'] ?? [];
+
+            if (empty($options)) {
+                $errors["variants.$index.options"] = 'Each variant must contain at least one option.';
+
+                continue;
+            }
+
+            $combination = [];
+            $usedOptionIds = [];
+
+            foreach ($options as $optionIndex => $optionData) {
+
+                $optionId = isset($optionData['option_id'])
+                    ? (int) $optionData['option_id']
+                    : 0;
+
+                $valueId = isset($optionData['value_id'])
+                    ? (int) $optionData['value_id']
+                    : 0;
+
+
+                /*
+            |--------------------------------------------------------------------------
+            | Same option cannot appear twice in one variant
+            |--------------------------------------------------------------------------
+            */
+
+                if (isset($usedOptionIds[$optionId])) {
+                    $errors["variants.$index.options.$optionIndex.option_id"] = 'The same option cannot be used more than once in a variant.';
+                }
+
+                $usedOptionIds[$optionId] = true;
+
+
+                /*
+            |--------------------------------------------------------------------------
+            | Verify value belongs to submitted option
+            |--------------------------------------------------------------------------
+            */
+
+                if ($optionId > 0 && $valueId > 0) {
+                    $valueBelongsToOption =
+                        ProductOptionValue::query()
+                        ->whereKey($valueId)
+                        ->where(
+                            'product_option_id',
+                            $optionId
+                        )
+                        ->exists();
+
+                    if (!$valueBelongsToOption) {
+                        $errors["variants.$index.options.$optionIndex.value_id"] = 'The selected option value does not belong to the selected option.';
+                    }
+                }
+
+                $combination[] = [
+                    'option_id' => $optionId,
+                    'value_id' => $valueId,
+                ];
+            }
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Create deterministic combination signature
+        |--------------------------------------------------------------------------
+        |
+        | Example:
+        |
+        | Color = Black + Size = Medium
+        |
+        | must be considered identical regardless of the order in which
+        | those options were submitted.
+        |
+        */
+
+            usort(
+                $combination,
+                fn(array $a, array $b): int =>
+                $a['option_id'] <=> $b['option_id']
+            );
+
+            $signature = collect($combination)
+                ->map(
+                    fn(array $item): string =>
+                    $item['option_id']
+                        . ':'
+                        . $item['value_id']
+                )
+                ->implode('|');
+
+
+            /*
+        |--------------------------------------------------------------------------
+        | Prevent duplicate variant combinations
+        |--------------------------------------------------------------------------
+        */
+
+            if (
+                $signature !== ''
+                && isset($usedCombinations[$signature])
+            ) {
+                $errors["variants.$index.options"] = 'This variant option combination already exists.';
+            }
+
+            if ($signature !== '') {
+                $usedCombinations[$signature] = true;
+            }
+        }
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | Throw validation errors
+    |--------------------------------------------------------------------------
+    */
+
+        if (!empty($errors)) {
+            throw ValidationException::withMessages(
+                $errors
+            );
+        }
+    }
     /**
      * Store newly uploaded gallery images.
      */
@@ -900,7 +1353,9 @@ class ProductController extends AdminController
     private function syncVariants(
         Request $request,
         Product $product,
-        array $variants
+        array $variants,
+        array &$oldImagesToDelete,
+        array &$newImagesUploaded
     ): void {
         /*
     |--------------------------------------------------------------------------
@@ -1000,15 +1455,27 @@ class ProductController extends AdminController
                         );
 
                     /*
-                 * Remove previous image only after the replacement
-                 * has been successfully stored.
-                 */
+|--------------------------------------------------------------------------
+| Remember newly uploaded file
+|--------------------------------------------------------------------------
+*/
 
-                    if ($variantImagePath) {
-                        Storage::disk('public')
-                            ->delete(
-                                $variantImagePath
-                            );
+                    $newImagesUploaded[] =
+                        $newVariantImagePath;
+
+
+                    /*
+|--------------------------------------------------------------------------
+| Schedule old file for deletion after commit
+|--------------------------------------------------------------------------
+*/
+
+                    if (
+                        $variantImagePath
+                        && $variantImagePath !== $newVariantImagePath
+                    ) {
+                        $oldImagesToDelete[] =
+                            $variantImagePath;
                     }
 
                     $variantImagePath =
@@ -1118,6 +1585,15 @@ class ProductController extends AdminController
         */
 
             $isReferenced =
+                DB::table('order_items')
+                ->where(
+                    'variant_id',
+                    $variant->id
+                )
+                ->exists()
+
+                ||
+
                 DB::table('inventory_histories')
                 ->where(
                     'product_variant_id',
@@ -1182,7 +1658,7 @@ class ProductController extends AdminController
                     'variants' =>
                     'Variant "' .
                         ($variant->sku ?: '#' . $variant->id) .
-                        '" cannot be removed because it is already used in inventory, supplier or purchase-order history. Set its stock to 0 instead of deleting it.',
+                        '" cannot be removed because it is already used by an order, inventory, supplier or purchase-order record. Set its stock to 0 instead of deleting it.',
                 ]);
             }
 
@@ -1192,22 +1668,45 @@ class ProductController extends AdminController
         | Remove unused variant image
         |--------------------------------------------------------------------------
         */
-
             if ($variant->image) {
-                Storage::disk('public')
-                    ->delete(
-                        $variant->image
-                    );
+                $oldImagesToDelete[] =
+                    $variant->image;
             }
-
-
-            /*
-        |--------------------------------------------------------------------------
-        | Delete safe unused variant
-        |--------------------------------------------------------------------------
-        */
 
             $variant->delete();
         }
+    }
+    /**
+     * Collect all option value IDs used by the product and its variants.
+     */
+    private function collectProductOptionValueIds(
+        array $validated
+    ): array {
+        $valueIds = collect(
+            $validated['product_option_values'] ?? []
+        )
+            ->map(fn($id) => (int) $id);
+
+        foreach (
+            $validated['variants'] ?? []
+            as $variant
+        ) {
+            foreach (
+                $variant['options'] ?? []
+                as $option
+            ) {
+                if (!empty($option['value_id'])) {
+                    $valueIds->push(
+                        (int) $option['value_id']
+                    );
+                }
+            }
+        }
+
+        return $valueIds
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
     }
 }

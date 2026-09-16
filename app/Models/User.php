@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -18,6 +19,11 @@ class User extends Authenticatable
         'phone',
         'password',
 
+        'phone_verified_at',
+        'security_reminder_shown_at',
+        'registration_method',
+        'pending_email',
+        'pending_email_requested_at',
         'google_id',
         'facebook_id',
         'avatar',
@@ -38,7 +44,11 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
+            'security_reminder_shown_at' => 'datetime',
+
             'password' => 'hashed',
+            'pending_email_requested_at' => 'datetime',
             'is_admin' => 'boolean',
             'is_super_admin' => 'boolean',
         ];
@@ -80,15 +90,20 @@ class User extends Authenticatable
             return true;
         }
 
-        if (!(bool) $this->is_admin || $this->status !== 'active') {
+        if (
+            ! (bool) $this->is_admin
+            || $this->status !== 'active'
+        ) {
             return false;
         }
 
         if ($this->resolvedAdminPermissions === null) {
-            $this->resolvedAdminPermissions = AdminPermission::query()
+            $this->resolvedAdminPermissions =
+                AdminPermission::query()
                 ->whereHas(
                     'roles.users',
-                    fn($query) => $query->whereKey($this->id)
+                    fn($query) =>
+                    $query->whereKey($this->id)
                 )
                 ->pluck('slug')
                 ->all();
@@ -104,6 +119,121 @@ class User extends Authenticatable
     public function flushAdminPermissionCache(): void
     {
         $this->resolvedAdminPermissions = null;
+
         $this->unsetRelation('adminRoles');
+    }
+
+    /**
+     * Customer has an email address.
+     */
+    public function hasEmailLogin(): bool
+    {
+        return filled($this->email);
+    }
+
+    /**
+     * Customer has a verified email login method.
+     */
+    public function hasVerifiedEmail(): bool
+    {
+        return filled($this->email)
+            && $this->email_verified_at !== null;
+    }
+
+    /**
+     * Customer has a verified phone number.
+     */
+    public function hasVerifiedPhone(): bool
+    {
+        return filled($this->phone)
+            && $this->phone_verified_at !== null;
+    }
+
+    /**
+     * Google is connected.
+     */
+    public function hasGoogleAccount(): bool
+    {
+        return filled($this->google_id);
+    }
+
+    /**
+     * Facebook is connected.
+     */
+    public function hasFacebookAccount(): bool
+    {
+        return filled($this->facebook_id);
+    }
+
+    /**
+     * Phone-created accounts need at least one
+     * additional recovery/login method.
+     */
+    public function hasBackupLoginMethod(): bool
+    {
+        return $this->hasEmailLogin()
+            || $this->hasGoogleAccount()
+            || $this->hasFacebookAccount();
+    }
+
+    /**
+     * Verified phone exists but no backup method exists.
+     */
+    public function needsBackupLoginMethod(): bool
+    {
+        return $this->hasVerifiedPhone()
+            && ! $this->hasBackupLoginMethod();
+    }
+
+    /**
+     * Email/social customer does not yet have
+     * a verified phone number.
+     */
+    public function needsVerifiedPhone(): bool
+    {
+        return ! $this->hasVerifiedPhone()
+            && (
+                $this->hasEmailLogin()
+                || $this->hasGoogleAccount()
+                || $this->hasFacebookAccount()
+            );
+    }
+
+    /**
+     * Account still requires additional security setup.
+     */
+    public function needsSecuritySetup(): bool
+    {
+        return $this->needsBackupLoginMethod()
+            || $this->needsVerifiedPhone();
+    }
+
+    /**
+     * Security reminder should appear at most
+     * once during a calendar day.
+     */
+    public function shouldShowSecurityReminder(): bool
+    {
+        if (! $this->needsSecuritySetup()) {
+            return false;
+        }
+
+        if ($this->security_reminder_shown_at === null) {
+            return true;
+        }
+
+        return ! $this
+            ->security_reminder_shown_at
+            ->isToday();
+    }
+
+    /**
+     * Record that today's reminder was displayed.
+     */
+    public function markSecurityReminderAsShown(): void
+    {
+        $this->forceFill([
+            'security_reminder_shown_at' => now(),
+        ])->save();
     }
 }

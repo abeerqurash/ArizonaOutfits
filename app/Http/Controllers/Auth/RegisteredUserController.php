@@ -24,27 +24,62 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
-            'phone' => ['nullable', 'string', 'max:50'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                'unique:' . User::class,
+            ],
+
+            'password' => [
+                'required',
+                'confirmed',
+                Rules\Password::defaults(),
+            ],
         ]);
 
         $user = User::create([
             'name' => trim($validated['name']),
-            'email' => strtolower($validated['email']),
-            'phone' => filled($validated['phone'] ?? null)
-                ? trim($validated['phone'])
-                : null,
-            'password' => Hash::make($validated['password']),
+
+            'email' => strtolower(
+                trim($validated['email'])
+            ),
+
+            /*
+             * Phone is added and verified separately.
+             */
+            'phone' => null,
+
+            'password' => Hash::make(
+                $validated['password']
+            ),
+
+            'registration_method' => 'email',
+
             'status' => 'active',
+
             'is_admin' => false,
+
             'is_super_admin' => false,
         ]);
 
-        event(new Registered($user));
+        event(
+            new Registered($user)
+        );
+
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        $request->session()->regenerate();
+
+        return redirect()
+            ->route('dashboard');
     }
 }

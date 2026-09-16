@@ -12,16 +12,58 @@ class VerifyEmailController extends Controller
     /**
      * Mark the authenticated user's email address as verified.
      */
-    public function __invoke(EmailVerificationRequest $request): RedirectResponse
-    {
-        if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+    public function __invoke(
+        EmailVerificationRequest $request
+    ): RedirectResponse {
+        $user = $request->user();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Already Verified
+        |--------------------------------------------------------------------------
+        */
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect()
+                ->route(
+                    'customer.security'
+                )
+                ->with(
+                    'success',
+                    'Your email address is already verified.'
+                );
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            event(new Verified($request->user()));
+        /*
+        |--------------------------------------------------------------------------
+        | Verify Email
+        |--------------------------------------------------------------------------
+        */
+
+        if ($user->markEmailAsVerified()) {
+            event(
+                new Verified($user)
+            );
         }
 
-        return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+        /*
+        |--------------------------------------------------------------------------
+        | Reset Security Reminder State
+        |--------------------------------------------------------------------------
+        */
+
+        $user->forceFill([
+            'security_reminder_shown_at' =>
+                null,
+        ])->save();
+
+        return redirect()
+            ->route(
+                'customer.security'
+            )
+            ->with(
+                'success',
+                'Your email address has been verified successfully.'
+            );
     }
 }

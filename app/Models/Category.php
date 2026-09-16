@@ -11,20 +11,21 @@ class Category extends Model
         'title',
         'slug',
         'parent_id',
+        'image',
         'meta_title',
         'meta_description',
-        'expert'
+        'expert',
     ];
 
     public function posts()
-{
-    return $this->belongsToMany(
-        Post::class,
-        'category_post',
-        'category_id',
-        'post_id'
-    );
-}
+    {
+        return $this->belongsToMany(
+            Post::class,
+            'category_post',
+            'category_id',
+            'post_id'
+        );
+    }
 
     public function parent()
     {
@@ -35,5 +36,4 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
-    
 }

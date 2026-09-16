@@ -62,8 +62,9 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EcommerceSettingController as AdminEcommerceSettingController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
-
-
+use App\Http\Controllers\Customer\AccountSecurityController;
+use App\Http\Controllers\Auth\SocialAuthController;
+use App\Http\Controllers\Customer\LoginMethodController;
 /*
 |--------------------------------------------------------------------------
 | PRODUCT AND SHOP ROUTES
@@ -428,6 +429,273 @@ Route::middleware('auth')->group(function () {
         '/profile',
         [ProfileController::class, 'destroy']
     )->name('profile.destroy');
+    /*
+|--------------------------------------------------------------------------
+| Customer Login & Security
+|--------------------------------------------------------------------------
+*/
+
+    Route::get(
+        '/account/security',
+        [AccountSecurityController::class, 'index']
+    )->name('customer.security');
+
+
+    /*
+|--------------------------------------------------------------------------
+| Add Email + Password
+|--------------------------------------------------------------------------
+*/
+
+    Route::post(
+        '/account/security/email',
+        [AccountSecurityController::class, 'addEmail']
+    )
+        ->middleware('throttle:authentication')
+        ->name('customer.security.email');
+
+
+    /*
+|--------------------------------------------------------------------------
+| Add / Change Phone
+|--------------------------------------------------------------------------
+*/
+
+    Route::post(
+        '/account/security/phone',
+        [AccountSecurityController::class, 'sendPhoneCode']
+    )
+        ->middleware('throttle:5,1')
+        ->name('customer.security.phone.send');
+
+
+    Route::get(
+        '/account/security/phone/verify',
+        [AccountSecurityController::class, 'showPhoneVerification']
+    )->name('customer.security.phone.verify');
+
+
+    Route::post(
+        '/account/security/phone/verify',
+        [AccountSecurityController::class, 'verifyPhone']
+    )
+        ->middleware('throttle:10,1')
+        ->name('customer.security.phone.verify.store');
+    /*
+|--------------------------------------------------------------------------
+| Customer Account Security
+|--------------------------------------------------------------------------
+*/
+
+    Route::get(
+        '/account/security',
+        [AccountSecurityController::class, 'index']
+    )
+        ->name('customer.security');
+
+
+    Route::post(
+        '/account/security/email',
+        [AccountSecurityController::class, 'addEmail']
+    )
+        ->name('customer.security.email');
+
+
+    /*
+|--------------------------------------------------------------------------
+| Secure Email Change
+|--------------------------------------------------------------------------
+*/
+
+    Route::post(
+        '/account/security/email/change',
+        [
+            AccountSecurityController::class,
+            'requestEmailChange',
+        ]
+    )
+        ->middleware('throttle:6,1')
+        ->name(
+            'customer.security.email.change'
+        );
+
+
+    Route::get(
+        '/account/security/email/change/verify/{user}',
+        [
+            AccountSecurityController::class,
+            'verifyEmailChange',
+        ]
+    )
+        ->middleware('signed')
+        ->name(
+            'customer.security.email.change.verify'
+        );
+
+
+    Route::delete(
+        '/account/security/email/change',
+        [
+            AccountSecurityController::class,
+            'cancelEmailChange',
+        ]
+    )
+        ->name(
+            'customer.security.email.change.cancel'
+        );
+
+
+    /*
+|--------------------------------------------------------------------------
+| Phone Security
+|--------------------------------------------------------------------------
+*/
+
+    Route::post(
+        '/account/security/phone',
+        [
+            AccountSecurityController::class,
+            'sendPhoneCode',
+        ]
+    )
+        ->middleware('throttle:6,1')
+        ->name(
+            'customer.security.phone.send'
+        );
+
+
+    Route::get(
+        '/account/security/phone/verify',
+        [
+            AccountSecurityController::class,
+            'showPhoneVerification',
+        ]
+    )
+        ->name(
+            'customer.security.phone.verify'
+        );
+
+
+    Route::post(
+        '/account/security/phone/verify',
+        [
+            AccountSecurityController::class,
+            'verifyPhone',
+        ]
+    )
+        ->middleware('throttle:6,1')
+        ->name(
+            'customer.security.phone.verify.store'
+        );
+
+
+    /*
+|--------------------------------------------------------------------------
+| Social Account Disconnect
+|--------------------------------------------------------------------------
+*/
+
+    Route::delete(
+        '/account/security/social/{provider}',
+        [
+            LoginMethodController::class,
+            'disconnectSocial',
+        ]
+    )
+        ->whereIn(
+            'provider',
+            [
+                'google',
+                'facebook',
+            ]
+        )
+        ->name(
+            'customer.security.social.disconnect'
+        );
+
+
+    /*
+|--------------------------------------------------------------------------
+| Remove Phone
+|--------------------------------------------------------------------------
+*/
+
+    Route::delete(
+        '/account/security/phone',
+        [
+            LoginMethodController::class,
+            'removePhone',
+        ]
+    )
+        ->name(
+            'customer.security.phone.remove'
+        );
+    /*
+|--------------------------------------------------------------------------
+| Connect Google / Facebook To Existing Customer
+|--------------------------------------------------------------------------
+*/
+
+    Route::get(
+        '/account/security/social/{provider}/connect',
+        [SocialAuthController::class, 'connectRedirect']
+    )
+        ->whereIn(
+            'provider',
+            [
+                'google',
+                'facebook',
+            ]
+        )
+        ->name(
+            'customer.security.social.connect'
+        );
+
+
+    Route::get(
+        '/account/security/social/{provider}/callback',
+        [SocialAuthController::class, 'connectCallback']
+    )
+        ->whereIn(
+            'provider',
+            [
+                'google',
+                'facebook',
+            ]
+        )
+        ->name(
+            'customer.security.social.callback'
+        );
+
+    /*
+|--------------------------------------------------------------------------
+| Customer Login Method Management
+|--------------------------------------------------------------------------
+*/
+
+    Route::delete(
+        '/account/security/social/{provider}',
+        [LoginMethodController::class, 'disconnectSocial']
+    )
+        ->whereIn(
+            'provider',
+            [
+                'google',
+                'facebook',
+            ]
+        )
+        ->name(
+            'customer.security.social.disconnect'
+        );
+
+
+    Route::delete(
+        '/account/security/phone',
+        [LoginMethodController::class, 'removePhone']
+    )
+        ->name(
+            'customer.security.phone.remove'
+        );
 });
 
 /*
@@ -1201,11 +1469,11 @@ Route::middleware([
 
         Route::resource('pages', AdminPageController::class)->except('show');
 
-        Route::get('/navigation-menus',[AdminNavigationMenuController::class,'index'])->name('navigation-menus.index');
-        Route::post('/navigation-menus/{menu}/items',[AdminNavigationMenuController::class,'storeItem'])->name('navigation-menus.items.store');
-        Route::put('/navigation-menu-items/{item}',[AdminNavigationMenuController::class,'updateItem'])->name('navigation-menus.items.update');
-        Route::delete('/navigation-menu-items/{item}',[AdminNavigationMenuController::class,'destroyItem'])->name('navigation-menus.items.destroy');
-        Route::put('/navigation-menus/{menu}/reorder',[AdminNavigationMenuController::class,'reorder'])->name('navigation-menus.reorder');
+        Route::get('/navigation-menus', [AdminNavigationMenuController::class, 'index'])->name('navigation-menus.index');
+        Route::post('/navigation-menus/{menu}/items', [AdminNavigationMenuController::class, 'storeItem'])->name('navigation-menus.items.store');
+        Route::put('/navigation-menu-items/{item}', [AdminNavigationMenuController::class, 'updateItem'])->name('navigation-menus.items.update');
+        Route::delete('/navigation-menu-items/{item}', [AdminNavigationMenuController::class, 'destroyItem'])->name('navigation-menus.items.destroy');
+        Route::put('/navigation-menus/{menu}/reorder', [AdminNavigationMenuController::class, 'reorder'])->name('navigation-menus.reorder');
     });
 
 /*
