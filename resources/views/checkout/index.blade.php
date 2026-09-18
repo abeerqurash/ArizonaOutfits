@@ -149,7 +149,7 @@
                             Already have an account?
 
                             <a
-                                href="{{ route('login') }}"
+                                href="{{ route('login', ['redirect' => route('checkout.index', absolute: false)]) }}"
                                 class="btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
                             >
                                 Login
@@ -280,6 +280,12 @@
                                             placeholder="Phone number"
                                             autocomplete="tel"
                                             required
+                                        
+                                            inputmode="tel"
+                                            maxlength="30"
+                                            pattern="[0-9+() .-]{7,30}"
+                                            title="Enter a valid phone number using digits and, where needed, +, spaces, brackets, dots or hyphens."
+                                            oninput="this.value = this.value.replace(/[^0-9+() .-]/g, '')"
                                         >
                                     </div>
 
@@ -540,7 +546,13 @@
                                                 placeholder="Phone number"
                                                 autocomplete="shipping tel"
                                                 data-shipping-required
-                                            >
+                                            
+                                            inputmode="tel"
+                                            maxlength="30"
+                                            pattern="[0-9+() .-]{7,30}"
+                                            title="Enter a valid phone number using digits and, where needed, +, spaces, brackets, dots or hyphens."
+                                            oninput="this.value = this.value.replace(/[^0-9+() .-]/g, '')"
+                                        >
                                         </div>
 
                                         <div

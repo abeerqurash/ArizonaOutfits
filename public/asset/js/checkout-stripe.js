@@ -918,9 +918,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     getBillingAddress(),
             };
 
-            const shippingDetails =
-                getShippingDetails();
-
             const confirmationReturnUrl =
                 returnUrl ||
                 (
@@ -943,9 +940,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             billing_details:
                                 billingDetails,
                         },
-
-                        shipping:
-                            shippingDetails,
                     },
 
                     redirect:

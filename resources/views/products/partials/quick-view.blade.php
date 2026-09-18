@@ -251,9 +251,7 @@ $salePrice !== null
 
     'sale_price' => $variantSalePrice,
 
-    'stock' => (int) (
-    $variant->stock ?: 0
-    ),
+    'available' => (int) ($variant->stock ?? 0) > 0,
 
     'image' => $variantImageUrl,
 
@@ -262,6 +260,17 @@ $salePrice !== null
     }
 
     $hasVariants = count($variantsData) > 0;
+
+$productAvailable = $hasVariants
+    ? collect($variantsData)->contains(
+        fn ($variant) => !empty($variant['available'])
+    )
+    : $stock > 0;
+
+$singleVariantUnavailable =
+    $hasVariants
+    && count($variantsData) === 1
+    && empty($variantsData[0]['available']);
     @endphp
 
     <div
@@ -288,10 +297,7 @@ $salePrice !== null
                 ? round((($regularPrice - $salePrice) / $regularPrice) * 100)
                 : 0;
 
-                $inStock=($product->stock ?? 0) > 0 ||
-                $product->variants->contains(function ($variant) {
-                return $variant->stock > 0;
-                });
+                $inStock = $productAvailable;
                 @endphp
                 <div class="quick-view-main-image-wrapper">
                     @if($hasDiscount)
@@ -399,23 +405,15 @@ $salePrice !== null
             </div>
 
             <div
-                class="quick-view-stock fs-12 text-uppercase letter-space-4px {{
-                $stock > 0
-                    ? 'in-stock'
-                    : 'out-of-stock'
-            }}">
-                @if ($hasVariants)
-
-                Select product options
-
-                @elseif ($stock > 0)
-
-                {{ $stock }} available in stock
-
+                class="quick-view-stock fs-12 text-uppercase letter-space-4px {{ $productAvailable ? 'in-stock' : 'out-of-stock' }}"
+                data-stock-message
+                aria-live="polite">
+                @if (!$productAvailable)
+                    This product is currently out of stock and cannot be purchased.
+                @elseif ($hasVariants)
+                    Select product options
                 @else
-
-                Out of stock
-
+                    Available
                 @endif
             </div>
 
@@ -608,7 +606,11 @@ $salePrice !== null
                     $hasVariants
                     || (!$hasVariants && $stock < 1)
                     )>
-                    <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">@if ($hasVariants)
+                    <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">@if (!$productAvailable)
+
+                        Out of Stock
+
+                        @elseif ($hasVariants)
 
                         Select Options
 

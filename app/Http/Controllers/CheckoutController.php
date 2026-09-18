@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EcommerceSetting;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\JsonResponse;
@@ -10,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use App\Services\InventoryService;
 use Illuminate\View\View;
 use App\Services\OrderEmailService;
 use RuntimeException;
@@ -80,10 +80,16 @@ class CheckoutController extends Controller
             $tax
         );
 
+        $ecommerceSettings =
+            EcommerceSetting::current();
+
         $currency = strtoupper(
-            config(
-                'payments.currency',
-                config('shipping.currency', 'USD')
+            (string) (
+                $ecommerceSettings->currency
+                ?: config(
+                    'payments.currency',
+                    config('shipping.currency', 'USD')
+                )
             )
         );
 
@@ -98,7 +104,8 @@ class CheckoutController extends Controller
                 'total',
                 'currency',
                 'shippingMethods',
-                'selectedShippingMethod'
+                'selectedShippingMethod',
+                'ecommerceSettings'
             )
         );
     }
@@ -278,6 +285,32 @@ class CheckoutController extends Controller
                 );
         }
 
+        /*
+         * Direct bank transfer is available only to
+         * authenticated customers. Enforce this on the
+         * server even if the checkout UI is bypassed.
+         */
+        if (!auth()->check()) {
+            /*
+             * Return the customer to the checkout page after login.
+             *
+             * Do not use the current POST URL as the intended destination,
+             * because the customer must return to the GET checkout page and
+             * review/submit the bank-transfer order again after signing in.
+             */
+            $request->session()->put(
+                'url.intended',
+                route('checkout.index', absolute: false)
+            );
+
+            return redirect()
+                ->route('login')
+                ->with(
+                    'error',
+                    'Please sign in or create an account before placing a bank transfer order.'
+                );
+        }
+
         $shipToDifferentAddress =
             $request->boolean(
                 'ship_to_different_address'
@@ -324,6 +357,48 @@ class CheckoutController extends Controller
                 $shipToDifferentAddress
             );
 
+        $ecommerceSettings =
+            EcommerceSetting::current();
+
+        if (!$ecommerceSettings->bank_transfer_enabled) {
+            return back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'Bank transfer is currently unavailable.'
+                );
+        }
+
+        /*
+         * Snapshot the current bank-transfer instructions into
+         * the order. This keeps an existing pending order tied
+         * to the exact payment details that were active when the
+         * customer placed it, even if an administrator changes
+         * Store Settings later.
+         */
+        $bankTransferSnapshot = [
+            'bank_name' =>
+            $ecommerceSettings->bank_name,
+
+            'account_name' =>
+            $ecommerceSettings->bank_account_name,
+
+            'account_number' =>
+            $ecommerceSettings->bank_account_number,
+
+            'iban' =>
+            $ecommerceSettings->bank_iban,
+
+            'swift_code' =>
+            $ecommerceSettings->bank_swift_code,
+
+            'branch_name' =>
+            $ecommerceSettings->bank_branch_name,
+
+            'instructions' =>
+            $ecommerceSettings->bank_transfer_instructions,
+        ];
+
         try {
             $order = DB::transaction(
                 function () use (
@@ -336,13 +411,24 @@ class CheckoutController extends Controller
                     $total,
                     $coupon,
                     $shippingAddressDetails,
-                    $shippingMethodDetails
+                    $shippingMethodDetails,
+                    $ecommerceSettings,
+                    $bankTransferSnapshot
                 ): Order {
+                    /*
+                     * Generate the bank-transfer order reference once.
+                     *
+                     * The customer must use this exact Order ID as the
+                     * bank-transfer payment reference.
+                     */
+                    $orderNumber =
+                        $this->generateOrderNumber();
+
                     $order = Order::create([
                         'user_id' => auth()->id(),
 
                         'order_number' =>
-                        $this->generateOrderNumber(),
+                        $orderNumber,
 
                         'tracking_number' =>
                         $this->generateTrackingNumber(),
@@ -369,11 +455,14 @@ class CheckoutController extends Controller
                         'total' => $total,
 
                         'currency' => strtoupper(
-                            config(
-                                'payments.currency',
-                                config(
-                                    'shipping.currency',
-                                    'USD'
+                            (string) (
+                                $ecommerceSettings->currency
+                                ?: config(
+                                    'payments.currency',
+                                    config(
+                                        'shipping.currency',
+                                        'USD'
+                                    )
                                 )
                             )
                         ),
@@ -388,7 +477,13 @@ class CheckoutController extends Controller
                         'payment_provider' =>
                         'bank_transfer',
 
-                        'payment_reference' => null,
+                        /*
+                         * For bank transfer, the Order ID is also the
+                         * required customer payment reference.
+                         */
+                        'payment_reference' =>
+                        $orderNumber,
+
                         'payment_intent_id' => null,
 
                         /*
@@ -426,14 +521,25 @@ class CheckoutController extends Controller
                             $shippingMethodDetails['delivery_time'],
 
                             'bank_name' =>
-                            config(
-                                'payments.bank_transfer.bank_name'
-                            ),
+                            $bankTransferSnapshot['bank_name'],
 
                             'account_name' =>
-                            config(
-                                'payments.bank_transfer.account_name'
-                            ),
+                            $bankTransferSnapshot['account_name'],
+
+                            'account_number' =>
+                            $bankTransferSnapshot['account_number'],
+
+                            'iban' =>
+                            $bankTransferSnapshot['iban'],
+
+                            'swift_code' =>
+                            $bankTransferSnapshot['swift_code'],
+
+                            'branch_name' =>
+                            $bankTransferSnapshot['branch_name'],
+
+                            'instructions' =>
+                            $bankTransferSnapshot['instructions'],
                         ],
 
                         'billing_name' =>
@@ -498,10 +604,13 @@ class CheckoutController extends Controller
                         $cart
                     );
 
-                    $this->inventoryService->deductForOrder(
-                        $order
-                    );
-
+                    /*
+                     * Do not deduct inventory yet.
+                     *
+                     * A bank-transfer order is still unpaid at this
+                     * stage. Inventory will be deducted only after
+                     * an administrator verifies the payment.
+                     */
                     return $order;
                 }
             );
@@ -607,10 +716,8 @@ class CheckoutController extends Controller
         }
 
         if (
-            config(
-                'payments.bank_transfer.enabled',
-                false
-            )
+            EcommerceSetting::current()
+            ->bank_transfer_enabled
         ) {
             $availablePaymentMethods[] =
                 'bank_transfer';
@@ -1110,7 +1217,6 @@ class CheckoutController extends Controller
     }
 
     public function __construct(
-        private readonly InventoryService $inventoryService,
         private readonly OrderEmailService $orderEmailService
     ) {}
 }

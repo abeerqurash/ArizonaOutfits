@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Mail\CustomerOrderStatusUpdatedMail;
 use App\Models\Order;
 use App\Models\OrderActivity;
 use App\Models\OrderNote;
@@ -32,10 +33,13 @@ class OrderController extends AdminController
      */
     private const ORDER_STATUSES = [
         'pending',
+        'confirmed',
         'processing',
+        'packed',
         'shipped',
-        'completed',
+        'out_for_delivery',
         'delivered',
+        'completed',
         'cancelled',
         'refunded',
     ];
@@ -46,6 +50,7 @@ class OrderController extends AdminController
     private const PAYMENT_STATUSES = [
         'pending',
         'paid',
+        'partially_paid',
         'completed',
         'succeeded',
         'failed',
@@ -194,6 +199,25 @@ class OrderController extends AdminController
         Order $order,
         OrderActivityService $activityService
     ): RedirectResponse {
+        /*
+        |--------------------------------------------------------------------------
+        | Normalize the admin form field
+        |--------------------------------------------------------------------------
+        |
+        | The current admin order form submits the order status as "status",
+        | while the orders table and Order model use "order_status".
+        | Normalize it before validation so the existing UI and database agree.
+        |
+        */
+        if (
+            !$request->filled('order_status')
+            && $request->filled('status')
+        ) {
+            $request->merge([
+                'order_status' => $request->input('status'),
+            ]);
+        }
+
         $validated = $request->validate([
             'order_status' => [
                 'required',
@@ -216,7 +240,55 @@ class OrderController extends AdminController
                 'string',
                 'max:5000',
             ],
+
+            'notify_customer' => [
+                'nullable',
+                'boolean',
+            ],
         ]);
+
+        $notifyCustomer = $request->boolean('notify_customer');
+        unset($validated['notify_customer']);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Protect bank-transfer payment verification
+        |--------------------------------------------------------------------------
+        |
+        | Bank-transfer payments may become paid only through the dedicated
+        | PaymentVerificationController.
+        */
+        $isBankTransfer = $order->payment_provider === 'bank_transfer'
+            || $order->payment_method === 'bank_transfer';
+
+        if ($isBankTransfer) {
+            if ($validated['payment_status'] !== $order->payment_status) {
+                return redirect()
+                    ->route('admin.orders.show', $order)
+                    ->with(
+                        'error',
+                        'Bank-transfer payment status can only be changed from Order Payment Verification.'
+                    );
+            }
+
+            $validated['payment_status'] = $order->payment_status;
+
+            if (
+                $order->payment_status !== 'paid'
+                && in_array(
+                    $validated['order_status'],
+                    ['confirmed','processing','packed','shipped','out_for_delivery','delivered','completed'],
+                    true
+                )
+            ) {
+                return redirect()
+                    ->route('admin.orders.show', $order)
+                    ->with(
+                        'error',
+                        'This bank-transfer order is still awaiting payment verification. Verify the payment before advancing the order status.'
+                    );
+            }
+        }
 
         $validated['tracking_number'] = filled(
             $validated['tracking_number'] ?? null
@@ -283,9 +355,55 @@ class OrderController extends AdminController
             }
         });
 
+        $statusChanged = $oldOrderStatus !== $order->order_status;
+
+        if ($notifyCustomer && $statusChanged) {
+            $customerEmail = collect([
+                $order->billing_email,
+                $order->shipping_email,
+                $order->customer_email,
+                $order->user?->email,
+            ])
+                ->filter(fn ($email) => is_string($email) && trim($email) !== '')
+                ->map(fn ($email) => trim($email))
+                ->first();
+
+            if ($customerEmail) {
+                try {
+                    Mail::to($customerEmail)->send(
+                        new CustomerOrderStatusUpdatedMail(
+                            $order->fresh(),
+                            (string) $oldOrderStatus
+                        )
+                    );
+                } catch (\Throwable $exception) {
+                    report($exception);
+
+                    return redirect()
+                        ->route('admin.orders.show', $order)
+                        ->with(
+                            'warning',
+                            'Order updated successfully, but the customer status email could not be sent. Check your mail/SMTP configuration.'
+                        );
+                }
+            } else {
+                return redirect()
+                    ->route('admin.orders.show', $order)
+                    ->with(
+                        'warning',
+                        'Order updated successfully, but no customer email address is available for this order.'
+                    );
+            }
+        }
+
         return redirect()
             ->route('admin.orders.show', $order)
-            ->with('success', 'Order updated successfully.');
+            ->with(
+                'success',
+                $notifyCustomer && $statusChanged
+                    ? 'Order updated successfully and the customer status email was sent.'
+                    : 'Order updated successfully.'
+            );
     }
 
     /**
@@ -516,6 +634,30 @@ class OrderController extends AdminController
                 $field = $validated['action'];
                 $oldValue = $order->{$field};
                 $newValue = $validated['value'];
+
+                $isBankTransfer = $order->payment_provider === 'bank_transfer'
+                    || $order->payment_method === 'bank_transfer';
+
+                if (
+                    $isBankTransfer
+                    && $field === 'payment_status'
+                    && $newValue !== $oldValue
+                ) {
+                    continue;
+                }
+
+                if (
+                    $isBankTransfer
+                    && $order->payment_status !== 'paid'
+                    && $field === 'order_status'
+                    && in_array(
+                        $newValue,
+                        ['confirmed','processing','packed','shipped','out_for_delivery','delivered','completed'],
+                        true
+                    )
+                ) {
+                    continue;
+                }
 
                 if ($oldValue === $newValue) {
                     continue;

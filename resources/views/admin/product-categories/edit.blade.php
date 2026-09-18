@@ -1,54 +1,42 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
+
+@section('title', 'Edit Product Category')
+@section('page-heading', 'Edit Product Category')
 
 @section('content')
-    <div class="page-wrapper">
 
-        <div class="services">
-            <div class="service-wrapper">
-                <div class="container">
-                    <h1>Edit Product Category</h1>
-
-                    <form action="{{ route('admin.product-categories.update', $productCategory->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-
-                        <input type="text" name="title" value="{{ $productCategory->title }}" required>
-                        <br><br>
-
-                        <input type="text" name="slug" value="{{ $productCategory->slug }}" required>
-                        <br><br>
-
-                        <select name="parent_id">
-                            <option value="">No Parent Category</option>
-                            @foreach($parents as $parent)
-                                <option value="{{ $parent->id }}" {{ $productCategory->parent_id == $parent->id ? 'selected' : '' }}>
-                                    {{ $parent->title }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <br><br>
-
-                        <input type="text" name="featured_image" value="{{ $productCategory->featured_image }}"
-                            placeholder="Featured Image Path">
-                        <br><br>
-
-                        <textarea name="description">{{ $productCategory->description }}</textarea>
-                        <br><br>
-
-                        <input type="text" name="meta_title" value="{{ $productCategory->meta_title }}"
-                            placeholder="Meta Title">
-                        <br><br>
-
-                        <textarea name="meta_description">{{ $productCategory->meta_description }}</textarea>
-                        <br><br>
-
-                        <textarea name="meta_keywords">{{ $productCategory->meta_keywords }}</textarea>
-                        <br><br>
-
-                        <button type="submit">Update Category</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div class="admin-page-header">
+    <div>
+        <span class="admin-page-eyebrow">Catalog organization</span>
+        <h2>Edit Product Category</h2>
+        <p>
+            Update <strong>{{ $productCategory->title }}</strong> including hierarchy, image and SEO.
+        </p>
     </div>
+
+    <div class="admin-page-actions">
+        <a
+            href="{{ route('admin.product-categories.index') }}"
+            class="admin-button admin-button-secondary"
+        >
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Categories
+        </a>
+    </div>
+</div>
+
+<form
+    action="{{ route('admin.product-categories.update', $productCategory) }}"
+    method="POST"
+    enctype="multipart/form-data"
+    data-category-form
+>
+    @csrf
+    @method('PUT')
+
+    @include('admin.product-categories.partials.form', [
+        'productCategory' => $productCategory
+    ])
+</form>
+
 @endsection

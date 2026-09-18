@@ -516,7 +516,7 @@ function toggleMenu() {
 document.addEventListener("DOMContentLoaded", function () {
 
     const elements = document.querySelectorAll(
-        ".blog-posts .about-info-parent, .recent-projects .list-item,.blog-posts .card-parent"
+        ".blog-posts .about-info-parent, .recent-projects .list-item,.blog-posts .card-parent, .post-cards-parent .card-parent"
     );
 
     const observer = new IntersectionObserver((entries, observer) => {

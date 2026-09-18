@@ -1346,13 +1346,13 @@ $order->transaction_id
             </div>
 
             <div class="premium-form-group">
-                <label for="status">
+                <label for="order_status">
                     Order status
                 </label>
 
                 <select
-                    name="status"
-                    id="status"
+                    name="order_status"
+                    id="order_status"
                     class="premium-select">
                     @foreach ([
                     'pending' => 'Pending',
@@ -1369,7 +1369,7 @@ $order->transaction_id
                     <option
                         value="{{ $value }}"
                         @selected(
-                        old( 'status' ,
+                        old( 'order_status' ,
                         $orderStatus
                         )===$value
                         )>

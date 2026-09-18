@@ -496,24 +496,78 @@ function initOptionButtonsInside(container) {
                     return;
                 }
 
-                form.querySelectorAll(
-                    '[data-option-id="' + optionId + '"]'
-                ).forEach(function (item) {
-                    item.classList.remove("active");
-                    item.setAttribute("aria-pressed", "false");
-                });
-
-                button.classList.add("active");
-                button.setAttribute("aria-pressed", "true");
+                const isAlreadySelected =
+                    button.classList.contains("active") ||
+                    button.getAttribute("aria-pressed") === "true";
 
                 const matchingSelect = form.querySelector(
                     '.product-option-select[data-option-id="' +
                     optionId +
                     '"], ' +
+                    '.product-option-select[name="product_options[' +
+                    optionId +
+                    ']"], ' +
                     '.product-option-select[name="options[' +
                     optionId +
                     ']"]'
                 );
+
+                form.querySelectorAll(
+                    '[data-option-id="' + optionId + '"]'
+                ).forEach(function (item) {
+                    if (
+                        item.matches(
+                            ".option-value-button, " +
+                            ".quick-view-option-value"
+                        )
+                    ) {
+                        item.classList.remove("active");
+                        item.setAttribute("aria-pressed", "false");
+                    }
+                });
+
+                if (isAlreadySelected) {
+                    if (matchingSelect) {
+                        matchingSelect.value = "";
+
+                        matchingSelect.dispatchEvent(
+                            new Event("change", {
+                                bubbles: true,
+                            })
+                        );
+                    }
+
+                    const selectedLabel = form.querySelector(
+                        '[data-selected-option="' +
+                        optionId +
+                        '"]'
+                    );
+
+                    if (selectedLabel) {
+                        const optionGroup = button.closest(
+                            ".product-option-group"
+                        );
+
+                        const optionName =
+                            optionGroup
+                                ?.querySelector(
+                                    ".product-option-name, strong"
+                                )
+                                ?.textContent
+                                ?.trim() || "Option";
+
+                        selectedLabel.textContent =
+                            "Choose " + optionName;
+                    }
+
+                    clearOptionError(form, optionId);
+                    updateSelectedVariant(form);
+
+                    return;
+                }
+
+                button.classList.add("active");
+                button.setAttribute("aria-pressed", "true");
 
                 if (matchingSelect) {
                     matchingSelect.value = valueId;
@@ -736,12 +790,223 @@ function normalizeVariantOptions(variant) {
     return normalizedOptions;
 }
 
+function getVariantAvailability(variant) {
+    if (typeof variant.available === "boolean") {
+        return variant.available;
+    }
+
+    if (variant.available === 1 || variant.available === "1") {
+        return true;
+    }
+
+    if (variant.available === 0 || variant.available === "0") {
+        return false;
+    }
+
+    /*
+     * Backward compatibility for cached/older markup.
+     * New Blade files send only `available`, not the stock quantity.
+     */
+    const legacyStock = Number(
+        variant.stock ??
+        variant.quantity ??
+        variant.stock_quantity ??
+        0
+    );
+
+    return legacyStock > 0;
+}
+
+function getSelectedOptions(form) {
+    const selectedOptions = {};
+
+    form.querySelectorAll(".product-option-select").forEach(
+        function (select) {
+            const optionId =
+                select.dataset.optionId ||
+                select.name.match(/\[(.*?)\]/)?.[1];
+
+            const valueId = String(select.value || "").trim();
+
+            if (optionId && valueId) {
+                selectedOptions[String(optionId)] = valueId;
+            }
+        }
+    );
+
+    return selectedOptions;
+}
+
+function variantMatchesSelections(
+    variant,
+    selectedOptions,
+    ignoredOptionId = null
+) {
+    const variantOptions = normalizeVariantOptions(variant);
+
+    return Object.entries(selectedOptions).every(
+        function ([optionId, valueId]) {
+            if (
+                ignoredOptionId !== null &&
+                String(optionId) === String(ignoredOptionId)
+            ) {
+                return true;
+            }
+
+            return (
+                String(variantOptions[optionId] || "") ===
+                String(valueId)
+            );
+        }
+    );
+}
+
+function updateOptionAvailability(form) {
+    const variants = getProductVariants(form);
+
+    if (!variants.length) {
+        return;
+    }
+
+    const selectedOptions = getSelectedOptions(form);
+
+    form.querySelectorAll(".product-option-select").forEach(
+        function (select) {
+            const optionId =
+                select.dataset.optionId ||
+                select.name.match(/\[(.*?)\]/)?.[1];
+
+            if (!optionId) {
+                return;
+            }
+
+            Array.from(select.options).forEach(function (option) {
+                const valueId = String(option.value || "").trim();
+
+                if (!valueId) {
+                    option.disabled = false;
+                    return;
+                }
+
+                const candidateSelections = {
+                    ...selectedOptions,
+                    [String(optionId)]: valueId,
+                };
+
+                const canPurchase = variants.some(
+                    function (variant) {
+                        if (!getVariantAvailability(variant)) {
+                            return false;
+                        }
+
+                        return variantMatchesSelections(
+                            variant,
+                            candidateSelections,
+                            null
+                        );
+                    }
+                );
+
+                option.disabled = !canPurchase;
+            });
+        }
+    );
+
+    form.querySelectorAll(
+        ".option-value-button, .quick-view-option-value"
+    ).forEach(function (button) {
+        const optionId =
+            button.dataset.optionId ||
+            button.dataset.option;
+
+        const valueId =
+            button.dataset.valueId ||
+            button.dataset.value;
+
+        if (!optionId || valueId === undefined) {
+            return;
+        }
+
+        const candidateSelections = {
+            ...selectedOptions,
+            [String(optionId)]: String(valueId),
+        };
+
+        const canPurchase = variants.some(function (variant) {
+            if (!getVariantAvailability(variant)) {
+                return false;
+            }
+
+            return variantMatchesSelections(
+                variant,
+                candidateSelections,
+                null
+            );
+        });
+
+        button.disabled = !canPurchase;
+        button.classList.toggle("disabled", !canPurchase);
+        button.setAttribute(
+            "aria-disabled",
+            canPurchase ? "false" : "true"
+        );
+
+        if (!canPurchase) {
+            button.setAttribute(
+                "title",
+                "This option is currently out of stock."
+            );
+        } else {
+            button.removeAttribute("title");
+        }
+    });
+}
+
+function initializeSingleVariantState(form) {
+    const variants = getProductVariants(form);
+
+    if (variants.length !== 1) {
+        return false;
+    }
+
+    const variant = variants[0];
+
+    if (getVariantAvailability(variant)) {
+        return false;
+    }
+
+    const variantInput = form.querySelector(
+        'input[name="variant_id"], [data-selected-variant]'
+    );
+
+    if (variantInput) {
+        variantInput.value = "";
+    }
+
+    showAvailabilityMessage(
+        form,
+        "This product is currently out of stock and cannot be purchased.",
+        true
+    );
+
+    updateAddToCartButton(form, false);
+    updateOptionAvailability(form);
+
+    return true;
+}
+
 function updateSelectedVariant(form) {
     const variants = getProductVariants(form);
 
     if (!variants.length) {
         return;
     }
+
+    if (initializeSingleVariantState(form)) {
+        return;
+    }
+
+    updateOptionAvailability(form);
 
     const optionSelects = Array.from(
         form.querySelectorAll(".product-option-select")
@@ -750,12 +1015,6 @@ function updateSelectedVariant(form) {
     const variantInput = form.querySelector(
         'input[name="variant_id"], [data-selected-variant]'
     );
-
-    /*
-    |--------------------------------------------------------------------------
-    | Always clear the previous variant before checking
-    |--------------------------------------------------------------------------
-    */
 
     if (variantInput) {
         variantInput.value = "";
@@ -779,58 +1038,27 @@ function updateSelectedVariant(form) {
         selectedOptions[String(optionId)] = valueId;
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Every option group must have a selected value
-    |--------------------------------------------------------------------------
-    */
-
     if (
         !optionSelects.length ||
         !allOptionsSelected ||
         Object.keys(selectedOptions).length !== optionSelects.length
     ) {
-        const message = form.querySelector(
-            ".variant-message, [data-variant-message]"
+        showAvailabilityMessage(
+            form,
+            "Please select one value from every option.",
+            false
         );
 
-        if (message) {
-            message.textContent =
-                "Please select one value from every option.";
-
-            message.classList.remove("success");
-            message.classList.add("error");
-
-            showElement(message);
-        }
-
         updateAddToCartButton(form, false);
-
         return;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Find an exact variant match
-    |--------------------------------------------------------------------------
-    |
-    | The selected option count and every option/value pair must match.
-    |
-    */
-
     const matchedVariant = variants.find(function (variant) {
-        const variantOptions =
-            normalizeVariantOptions(variant);
+        const variantOptions = normalizeVariantOptions(variant);
+        const selectedEntries = Object.entries(selectedOptions);
+        const variantEntries = Object.entries(variantOptions);
 
-        const selectedEntries =
-            Object.entries(selectedOptions);
-
-        const variantEntries =
-            Object.entries(variantOptions);
-
-        if (
-            variantEntries.length !== selectedEntries.length
-        ) {
+        if (variantEntries.length !== selectedEntries.length) {
             return false;
         }
 
@@ -850,6 +1078,7 @@ function updateSelectedVariant(form) {
     }
 
     updateVariantDisplay(form, matchedVariant);
+    updateOptionAvailability(form);
 }
 
 function updateVariantDisplay(form, variant) {
@@ -915,14 +1144,7 @@ function updateVariantDisplay(form, variant) {
         }
     }
 
-    const stock = Number(
-        variant.stock ??
-        variant.quantity ??
-        variant.stock_quantity ??
-        0
-    );
-
-    updateStockDisplay(form, stock);
+    const isAvailable = getVariantAvailability(variant);
 
     const skuElement =
         form.querySelector("[data-product-sku], .product-sku-value") ||
@@ -932,12 +1154,18 @@ function updateVariantDisplay(form, variant) {
         skuElement.textContent = variant.sku;
     }
 
+    const productContainer = form.closest(
+        ".quick-view-product, .single-product-page, [data-product-container]"
+    );
+
     const mainImage =
+        productContainer?.querySelector(
+            ".single-product-main-image, " +
+            ".product-main-image, " +
+            ".quick-view-main-image"
+        ) ||
         document.querySelector(
             ".single-product-main-image, .product-main-image"
-        ) ||
-        form.closest(".quick-view-product")?.querySelector(
-            ".quick-view-main-image"
         );
 
     const variantImage =
@@ -949,7 +1177,18 @@ function updateVariantDisplay(form, variant) {
         mainImage.src = variantImage;
     }
 
-    updateAddToCartButton(form, stock > 0);
+    if (isAvailable) {
+        showAvailabilityMessage(form, "", false, true);
+    } else {
+        showAvailabilityMessage(
+            form,
+            "This selected option is currently out of stock. Please choose another available option.",
+            true
+        );
+    }
+
+    updateStockDisplay(form, isAvailable);
+    updateAddToCartButton(form, isAvailable);
 }
 
 function updateVariantUnavailable(form) {
@@ -961,49 +1200,95 @@ function updateVariantUnavailable(form) {
         variantInput.value = "";
     }
 
+    showAvailabilityMessage(
+        form,
+        "This option combination is currently unavailable.",
+        true
+    );
+
+    updateAddToCartButton(form, false);
+}
+
+function showAvailabilityMessage(
+    form,
+    text,
+    isError = false,
+    hideWhenEmpty = false
+) {
     const message = form.querySelector(
         ".variant-message, [data-variant-message]"
     );
 
     if (message) {
-        message.textContent = "Please select all options.";
+        message.textContent = text;
+        message.classList.toggle("error", isError);
+        message.classList.toggle("success", !isError && Boolean(text));
 
-        message.classList.remove("success");
-        message.classList.add("error");
+        if (hideWhenEmpty && !text) {
+            hideElement(message);
+        } else if (text) {
+            showElement(message);
+        }
     }
 
-    updateAddToCartButton(form, false);
+    const stockMessage =
+        form.querySelector(
+            "[data-stock-message], .quick-view-stock, .product-stock-message"
+        ) ||
+        form.closest(
+            ".quick-view-product, .single-product-page, [data-product-container]"
+        )?.querySelector(
+            "[data-stock-message], .quick-view-stock, .product-stock-message"
+        );
+
+    if (stockMessage) {
+        if (isError && text) {
+            stockMessage.textContent = text;
+            stockMessage.classList.remove("in-stock");
+            stockMessage.classList.add("out-of-stock");
+            showElement(stockMessage);
+        } else if (!text) {
+            hideElement(stockMessage);
+        }
+    }
 }
 
-function updateStockDisplay(form, stock) {
+function updateStockDisplay(form, isAvailable) {
+    const productContainer = form.closest(
+        ".quick-view-product, .single-product-page, [data-product-container]"
+    );
+
     const stockElements = [
         form.querySelector("#product-stock"),
-        form.querySelector("#live-stock-count"),
         form.querySelector("[data-product-stock]"),
-        document.querySelector("#product-stock"),
-        document.querySelector("#live-stock-count"),
+        productContainer?.querySelector("#product-stock"),
+        productContainer?.querySelector("[data-product-stock]"),
     ].filter(Boolean);
 
     stockElements.forEach(function (element) {
         element.textContent =
-            stock > 0 ? String(stock) : "0";
+            isAvailable ? "Available" : "Out of Stock";
 
-        element.classList.toggle("in-stock", stock > 0);
-        element.classList.toggle("out-of-stock", stock <= 0);
+        element.classList.toggle("in-stock", isAvailable);
+        element.classList.toggle("out-of-stock", !isAvailable);
     });
 
-    const stockMessage =
-        form.querySelector(".quick-view-stock, .product-stock-message") ||
-        document.querySelector(".product-stock-message");
+    const stockBadge =
+        productContainer?.querySelector("#product-stock-badge");
 
-    if (stockMessage) {
-        stockMessage.textContent =
-            stock > 0
-                ? stock + " available in stock"
-                : "Out of stock";
+    if (stockBadge) {
+        stockBadge.textContent =
+            isAvailable ? "In Stock" : "Out of Stock";
 
-        stockMessage.classList.toggle("in-stock", stock > 0);
-        stockMessage.classList.toggle("out-of-stock", stock <= 0);
+        stockBadge.classList.toggle(
+            "in-stock-quick-view",
+            isAvailable
+        );
+
+        stockBadge.classList.toggle(
+            "out-of-stock-quick-view",
+            !isAvailable
+        );
     }
 }
 
@@ -1029,20 +1314,15 @@ function updateAddToCartButton(form, isAvailable) {
     const allOptionsSelected =
         optionSelects.length > 0 &&
         optionSelects.every(function (select) {
-            return String(
-                select.value || ""
-            ).trim() !== "";
+            return String(select.value || "").trim() !== "";
         });
 
     const variantInput = form.querySelector(
-        'input[name="variant_id"], ' +
-        "[data-selected-variant]"
+        'input[name="variant_id"], [data-selected-variant]'
     );
 
     const hasSelectedVariant = Boolean(
-        String(
-            variantInput?.value || ""
-        ).trim()
+        String(variantInput?.value || "").trim()
     );
 
     buttons.forEach(function (button) {
@@ -1054,6 +1334,15 @@ function updateAddToCartButton(form, isAvailable) {
                     : "Add To Cart"
             );
 
+        const buttonText =
+            button.querySelector(".button-text") || button;
+
+        if (!isAvailable) {
+            button.disabled = true;
+            buttonText.textContent = "Out of Stock";
+            return;
+        }
+
         if (
             hasVariants &&
             (
@@ -1062,18 +1351,12 @@ function updateAddToCartButton(form, isAvailable) {
             )
         ) {
             button.disabled = true;
-            button.textContent = "Select Options";
-            return;
-        }
-
-        if (!isAvailable) {
-            button.disabled = true;
-            button.textContent = "Out of Stock";
+            buttonText.textContent = "Select Options";
             return;
         }
 
         button.disabled = false;
-        button.textContent = readyText;
+        buttonText.textContent = readyText;
     });
 }
 
@@ -1913,20 +2196,16 @@ function initVariantCartProtection() {
             return;
         }
 
-        const stock = Number(
-            selectedVariant.stock ||
-            selectedVariant.quantity ||
-            selectedVariant.stock_quantity ||
-            0
-        );
+        const isAvailable =
+            getVariantAvailability(selectedVariant);
 
-        if (stock < 1) {
+        if (!isAvailable) {
             event.preventDefault();
             event.stopImmediatePropagation();
 
             if (message) {
                 message.textContent =
-                    "The selected variant is out of stock.";
+                    "This selected option is currently out of stock and cannot be purchased.";
 
                 message.classList.remove("success");
                 message.classList.add("error");

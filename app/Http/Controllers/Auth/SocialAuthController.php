@@ -295,13 +295,9 @@ class SocialAuthController extends Controller
             $request->session()
                 ->regenerate();
 
-            $request->session()
-                ->forget('url.intended');
-
-            return redirect()
-                ->route(
-                    'customer.dashboard'
-                );
+            return redirect()->intended(
+                route('customer.dashboard', absolute: false)
+            );
         } catch (Throwable $exception) {
             Log::warning(
                 'Social authentication failed.',

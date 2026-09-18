@@ -186,20 +186,6 @@
                     <br><br>
 
 
-                    {{-- Expert --}}
-
-                    <label>Expert</label>
-
-                    <br>
-
-                    <textarea
-                        name="expert"
-                        placeholder="Expert"
-                    >{{ old('expert') }}</textarea>
-
-                    <br><br>
-
-
                     <button type="submit">
                         Save Category
                     </button>

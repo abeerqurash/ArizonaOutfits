@@ -159,6 +159,185 @@ $selectedSearch !== ''
 
                     </ul>
 
+                    {{-- ============================================================
+     SHOP BY CATEGORY
+============================================================ --}}
+
+                    @if ($categories->isNotEmpty())
+
+                    <section class="shop-category-section">
+
+                        <div class="shop-category-heading">
+
+                            <div>
+                                <span class="shop-category-eyebrow">
+                                    Explore Collections
+                                </span>
+
+                                <h2 class="shop-category-title">
+                                    Shop by Category
+                                </h2>
+                            </div>
+
+                            @if (!empty($selectedCategories))
+
+                            <a
+                                href="{{ route('products.index') }}"
+                                class="shop-category-view-all">
+                                View All Products
+
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+
+                            @endif
+
+                        </div>
+
+
+                        <div class="shop-category-grid">
+
+                            @foreach ($categories as $category)
+
+                            @php
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Category Image
+                            |--------------------------------------------------------------------------
+                            */
+
+                            $categoryImage = null;
+
+                            if (!empty($category->featured_image)) {
+
+                            $categoryImage = asset(
+                            'storage/' .
+                            ltrim(
+                            $category->featured_image,
+                            '/'
+                            )
+                            );
+
+                            }
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Is Category Selected?
+                            |--------------------------------------------------------------------------
+                            */
+
+                            $categorySelected = in_array(
+                            $category->slug,
+                            $selectedCategories,
+                            true
+                            );
+
+
+                            /*
+                            |--------------------------------------------------------------------------
+                            | Product Count
+                            |--------------------------------------------------------------------------
+                            |
+                            | Count active products directly attached to this category.
+                            |
+                            */
+
+                            $categoryProductCount =
+                            (int) $category->active_products_count;
+
+                            @endphp
+
+
+                            <a
+                                href="{{ route('products.index', [
+                    'categories' => [
+                        $category->slug
+                    ]
+                ]) }}"
+                                class="shop-category-card {{ $categorySelected ? 'is-active' : '' }}"
+                                aria-label="Shop {{ $category->title }}">
+
+                                <div class="shop-category-image-wrapper">
+
+                                    @if ($categoryImage)
+
+                                    <img
+                                        src="{{ $categoryImage }}"
+                                        alt="{{ $category->title }}"
+                                        class="shop-category-image"
+                                        loading="lazy"
+                                        width="600"
+                                        height="750">
+
+                                    @else
+
+                                    <div class="shop-category-image-placeholder">
+
+                                        <i class="fa-regular fa-image"></i>
+
+                                    </div>
+
+                                    @endif
+
+
+                                    <div class="shop-category-overlay"></div>
+
+
+                                    @if ($categorySelected)
+
+                                    <span class="shop-category-selected-badge">
+
+                                        <i class="fa-solid fa-check"></i>
+
+                                        Selected
+
+                                    </span>
+
+                                    @endif
+
+
+                                    <div class="shop-category-content">
+
+                                        <span class="shop-category-count">
+
+                                            {{ number_format($categoryProductCount) }}
+
+                                            {{ $categoryProductCount === 1
+                                ? 'Product'
+                                : 'Products'
+                            }}
+
+                                        </span>
+
+
+                                        <h3 class="shop-category-name">
+                                            {{ $category->title }}
+                                        </h3>
+
+
+                                        <span class="shop-category-link">
+
+                                            Shop Now
+
+                                            <i class="fa-solid fa-arrow-right"></i>
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                            @endforeach
+
+                        </div>
+
+                    </section>
+
+                    @endif
+
                     <div class="shop-layout">
 
                         <aside class="shop-sidebar">
@@ -760,8 +939,9 @@ $selectedSearch !== ''
                                 <div class="d-flex gap-10px">
                                     <button
                                         type="submit"
-                                        class="filter-btn btn-style-2 fs-12 text-color-white justify-self-start"><div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">Filter</div>
-                                        
+                                        class="filter-btn btn-style-2 fs-12 text-color-white justify-self-start">
+                                        <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">Filter</div>
+
                                     </button>
 
                                     @if (
@@ -1006,9 +1186,9 @@ $selectedSearch !== ''
             data-close-product-popup
             aria-label="Close product popup">
             <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">
-                        x
+                x
 
-                        </div>
+            </div>
         </button>
 
         <div
@@ -1022,5 +1202,385 @@ $selectedSearch !== ''
     </div>
 
 </div>
+
+<style>
+    /* ============================================================
+   SHOP BY CATEGORY
+============================================================ */
+
+    .shop-category-section {
+        margin: 30px 0 50px;
+    }
+
+
+    /* ------------------------------------------------------------
+   Heading
+------------------------------------------------------------ */
+
+    .shop-category-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 22px;
+    }
+
+
+    .shop-category-eyebrow {
+        display: block;
+        margin-bottom: 7px;
+
+        font-size: 11px;
+        font-weight: 600;
+
+        text-transform: uppercase;
+        letter-spacing: 3px;
+
+        color: #777;
+    }
+
+
+    .shop-category-title {
+        margin: 0;
+
+        font-size: clamp(26px, 3vw, 38px);
+        line-height: 1.15;
+
+        color: #111;
+    }
+
+
+    .shop-category-view-all {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        padding-bottom: 3px;
+
+        color: #111;
+
+        font-size: 11px;
+        font-weight: 600;
+
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+
+        border-bottom: 1px solid #111;
+
+        transition:
+            opacity 0.25s ease,
+            gap 0.25s ease;
+    }
+
+
+    .shop-category-view-all:hover {
+        opacity: 0.65;
+        gap: 12px;
+    }
+
+
+    /* ------------------------------------------------------------
+   Grid
+------------------------------------------------------------ */
+
+    .shop-category-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        gap: 18px;
+    }
+
+
+    /* ------------------------------------------------------------
+   Card
+------------------------------------------------------------ */
+
+    .shop-category-card {
+        position: relative;
+
+        display: block;
+
+        overflow: hidden;
+
+        color: inherit;
+        text-decoration: none;
+
+        background: #f2f2f2;
+    }
+
+
+    .shop-category-image-wrapper {
+        position: relative;
+
+        width: 100%;
+        aspect-ratio: 4 / 5;
+
+        overflow: hidden;
+
+        background: #f2f2f2;
+    }
+
+
+    /* ------------------------------------------------------------
+   Image
+------------------------------------------------------------ */
+
+    .shop-category-image {
+        display: block;
+
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        transition:
+            transform 0.6s cubic-bezier(0.22,
+                1,
+                0.36,
+                1);
+    }
+
+
+    .shop-category-card:hover .shop-category-image {
+        transform: scale(1.055);
+    }
+
+
+    /* ------------------------------------------------------------
+   Missing image
+------------------------------------------------------------ */
+
+    .shop-category-image-placeholder {
+        display: flex;
+
+        width: 100%;
+        height: 100%;
+
+        align-items: center;
+        justify-content: center;
+
+        background:
+            linear-gradient(135deg,
+                #f5f5f5,
+                #e8e8e8);
+
+        color: #999;
+
+        font-size: 40px;
+    }
+
+
+    /* ------------------------------------------------------------
+   Overlay
+------------------------------------------------------------ */
+
+    .shop-category-overlay {
+        position: absolute;
+        inset: 0;
+
+        background:
+            linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.02) 30%,
+                rgba(0, 0, 0, 0.72) 100%);
+
+        transition:
+            background 0.3s ease;
+    }
+
+
+    .shop-category-card:hover .shop-category-overlay {
+        background:
+            linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.05) 20%,
+                rgba(0, 0, 0, 0.82) 100%);
+    }
+
+
+    /* ------------------------------------------------------------
+   Content
+------------------------------------------------------------ */
+
+    .shop-category-content {
+        position: absolute;
+
+        left: 22px;
+        right: 22px;
+        bottom: 22px;
+
+        z-index: 2;
+
+        color: #fff;
+    }
+
+
+    .shop-category-count {
+        display: block;
+
+        margin-bottom: 6px;
+
+        font-size: 10px;
+        font-weight: 500;
+
+        text-transform: uppercase;
+        letter-spacing: 2px;
+
+        opacity: 0.82;
+    }
+
+
+    .shop-category-name {
+        margin: 0 0 12px;
+
+        color: #fff;
+
+        font-size: clamp(20px, 2vw, 28px);
+        line-height: 1.15;
+
+        text-transform: capitalize;
+    }
+
+
+    .shop-category-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+
+        font-size: 10px;
+        font-weight: 600;
+
+        text-transform: uppercase;
+        letter-spacing: 2px;
+
+        transition: gap 0.25s ease;
+    }
+
+
+    .shop-category-card:hover .shop-category-link {
+        gap: 13px;
+    }
+
+
+    /* ------------------------------------------------------------
+   Selected category
+------------------------------------------------------------ */
+
+    .shop-category-card.is-active {
+        outline: 2px solid #111;
+        outline-offset: 3px;
+    }
+
+
+    .shop-category-selected-badge {
+        position: absolute;
+
+        top: 15px;
+        right: 15px;
+
+        z-index: 3;
+
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        padding: 8px 11px;
+
+        background: #fff;
+        color: #111;
+
+        font-size: 9px;
+        font-weight: 700;
+
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+
+    /* ============================================================
+   RESPONSIVE
+============================================================ */
+
+    @media (max-width: 1100px) {
+
+        .shop-category-grid {
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+        }
+
+    }
+
+
+    @media (max-width: 767px) {
+
+        .shop-category-section {
+            margin-top: 20px;
+            margin-bottom: 35px;
+        }
+
+
+        .shop-category-heading {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+
+        .shop-category-grid {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+
+            gap: 10px;
+        }
+
+
+        .shop-category-content {
+            left: 14px;
+            right: 14px;
+            bottom: 15px;
+        }
+
+
+        .shop-category-name {
+            margin-bottom: 8px;
+
+            font-size: 18px;
+        }
+
+
+        .shop-category-count {
+            font-size: 8px;
+            letter-spacing: 1.4px;
+        }
+
+
+        .shop-category-link {
+            font-size: 8px;
+            letter-spacing: 1.4px;
+        }
+
+    }
+
+
+    @media (max-width: 420px) {
+
+        .shop-category-content {
+            left: 11px;
+            right: 11px;
+            bottom: 12px;
+        }
+
+
+        .shop-category-name {
+            font-size: 16px;
+        }
+
+
+        .shop-category-link {
+            gap: 5px;
+        }
+
+    }
+</style>
 
 @endsection

@@ -1000,52 +1000,82 @@ class ShopController extends Controller
     private function getActiveCategories(): Collection
     {
         return ProductCategory::query()
+
+            ->withCount([
+                'products as active_products_count' => function (
+                    $query
+                ) {
+                    $query->where(
+                        'products.status',
+                        'active'
+                    );
+                },
+            ])
+
             ->with([
                 'children' => function ($query) {
+
                     $query
+
+                        ->withCount([
+                            'products as active_products_count'
+                            => function ($productQuery) {
+
+                                $productQuery->where(
+                                    'products.status',
+                                    'active'
+                                );
+                            },
+                        ])
+
                         ->whereHas(
                             'products',
-                            function (
-                                Builder $productQuery
-                            ) {
+                            function ($productQuery) {
+
                                 $productQuery->where(
-                                    'status',
+                                    'products.status',
                                     'active'
                                 );
                             }
                         )
+
                         ->orderBy('title');
                 },
             ])
+
             ->whereNull('parent_id')
+
             ->where(
                 function (Builder $query) {
+
                     $query
+
                         ->whereHas(
                             'products',
-                            function (
-                                Builder $productQuery
-                            ) {
+                            function ($productQuery) {
+
                                 $productQuery->where(
-                                    'status',
+                                    'products.status',
                                     'active'
                                 );
                             }
                         )
+
                         ->orWhereHas(
                             'children.products',
-                            function (
-                                Builder $productQuery
-                            ) {
+                            function ($productQuery) {
+
                                 $productQuery->where(
-                                    'status',
+                                    'products.status',
                                     'active'
                                 );
                             }
                         );
                 }
             )
+
             ->orderBy('title')
+
             ->get();
     }
 

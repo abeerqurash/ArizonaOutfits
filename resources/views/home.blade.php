@@ -66,130 +66,31 @@
                 <div class="title-wrapper">
                     <div class="sub-title fs-12 letter-space-4px text-uppercase"><span>Products</span></div>
                     <div class="title">
-                        <h2 class="fs-48 text-color-dark">Popular Products</h2>
+                        <h2 class="fs-48 text-color-dark">Latest Products</h2>
                     </div>
                 </div>
                 <div class="view-all-services">
-                    <a href="/services" class="btn-style-2 fs-12 text-color-white justify-self-start">
+                    <a href="{{ route('products.index') }}" class="btn-style-2 fs-12 text-color-white justify-self-start">
                         <div class="button-text text-uppercase letter-space-3px">Shop Now</div>
                     </a>
                 </div>
             </div>
             <div class="services-grid">
-                <div class="service-parent">
-                    <div class="service-circle"></div>
-                    <div class="service-card">
-                        <div class="icon"><img src="{{ asset('asset/media/web-development.png') }}" alt=""></div>
-                        <div class="featured-card-info">
-                            <div class="card-description">
-                                <h3 class="fs-24 text-color-dark">Web Development</h3>
-                                <p class="text-color-body fs-16">Build stunning, high-performance websites tailored to your vision, combining clean code, bold design, and smart functionality that keeps your audience engaged and coming back.</p>
-                            </div>
-                            <div class="card-button">
-                                <div class="button-parent">
-                                    <a href="/web-development" class="btn-style-2 fs-12 text-color-white justify-self-start">
-                                        <div class="button-text text-uppercase letter-space-3px">Read More</div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                @forelse($latestProducts as $product)
+
+                @include('partials.product-card', [
+                'product' => $product
+                ])
+
+                @empty
+
+                <div class="w-100 text-center">
+                    <p>No products available yet.</p>
                 </div>
-                <div class="service-parent">
-                    <div class="service-circle"></div>
-                    <div class="service-card">
-                        <div class="icon"><img src="{{ asset('asset/media/wordpress-development.png') }}" alt=""></div>
-                        <div class="featured-card-info">
-                            <div class="card-description">
-                                <h3 class="fs-24 text-color-dark">Wordpress Development</h3>
-                                <p class="text-color-body fs-16">Create a fully customized WordPress experience that looks incredible, loads instantly, and gives you complete control over your content, design, and business presence online.</p>
-                            </div>
-                            <div class="card-button">
-                                <div class="button-parent">
-                                    <a href="/wordpress-development" class="btn-style-2 fs-12 text-color-white justify-self-start">
-                                        <div class="button-text text-uppercase letter-space-3px">Read More</div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="service-parent">
-                    <div class="service-circle"></div>
-                    <div class="service-card">
-                        <div class="icon"><img src="{{ asset('asset/media/technical-seo.png') }}" alt=""></div>
-                        <div class="featured-card-info">
-                            <div class="card-description">
-                                <h3 class="fs-24 text-color-dark">Technical SEO</h3>
-                                <p class="text-color-body fs-16">Strengthen your site's foundation with advanced technical SEO strategies that improve crawlability, speed, and structure, putting you miles ahead of every competitor online.</p>
-                            </div>
-                            <div class="card-button">
-                                <div class="button-parent">
-                                    <a href="/technical-seo" class="btn-style-2 fs-12 text-color-white justify-self-start">
-                                        <div class="button-text text-uppercase letter-space-3px">Read More</div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="service-parent">
-                    <div class="service-circle"></div>
-                    <div class="service-card">
-                        <div class="icon"><img src="{{ asset('asset/media/laravel.png') }}" alt=""></div>
-                        <div class="featured-card-info">
-                            <div class="card-description">
-                                <h3 class="fs-24 text-color-dark">Laravel</h3>
-                                <p class="text-color-body fs-16">Build secure, scalable web applications with Laravel's powerful framework, engineered for performance and reliability to handle your most complex business logic with ease.</p>
-                            </div>
-                            <div class="card-button">
-                                <div class="button-parent">
-                                    <a href="/laravel" class="btn-style-2 fs-12 text-color-white justify-self-start">
-                                        <div class="button-text text-uppercase letter-space-3px">Read More</div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="service-parent">
-                    <div class="service-circle"></div>
-                    <div class="service-card">
-                        <div class="icon"><img src="{{ asset('asset/media/integiration.png') }}" alt=""></div>
-                        <div class="featured-card-info">
-                            <div class="card-description">
-                                <h3 class="fs-24 text-color-dark">Automation</h3>
-                                <p class="text-color-body fs-16">Work smarter with intelligent automation that handles the heavy lifting, reduces human error, cuts operational costs, and scales effortlessly alongside your growing business needs.</p>
-                            </div>
-                            <div class="card-button">
-                                <div class="button-parent">
-                                    <a href="/automation" class="btn-style-2 fs-12 text-color-white justify-self-start">
-                                        <div class="button-text text-uppercase letter-space-3px">Read More</div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="service-parent">
-                    <div class="service-circle"></div>
-                    <div class="service-card">
-                        <div class="icon"><img src="{{ asset('asset/media/api-integration.png') }}" alt=""></div>
-                        <div class="featured-card-info">
-                            <div class="card-description">
-                                <h3 class="fs-24 text-color-dark">API Integiration</h3>
-                                <p class="text-color-body fs-16">Bridge your tools and systems with seamless API integration, unlocking powerful new capabilities, eliminating data silos, and creating a fully connected workflow built for scale.</p>
-                            </div>
-                            <div class="card-button">
-                                <div class="button-parent">
-                                    <a href="/api-integration" class="btn-style-2 fs-12 text-color-white justify-self-start">
-                                        <div class="button-text text-uppercase letter-space-3px">Read More</div>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+                @endforelse
+
             </div>
         </div>
     </div>
@@ -316,161 +217,37 @@
             </div>
         </div>
     </div>
-    <div class="recent-projects">
-        <div class="wrapper">
-            <div class="project-collection">
-                <div class="project-list">
-                    <div class="list-item item-1">
-                        <div class="project-item">
-                            <div class="porject-image">
-                                <div class="background-image image-1">
-                                    <div class="image-overlay"></div>
-                                    <div class="project-card-circle"></div>
-                                </div>
-                            </div>
-                            <div class="project-info">
-                                <div class="project-top-info">
-                                    <div class="subtitle-wrapper">
-                                        <div class="subtitle fs-12 letter-space-4px text-uppercase text-color-white">Your Vision Goes Live</div>
-                                    </div>
-                                    <h3 class="title fs-24 text-color-white text-capitalize">Web Development</h3>
-                                </div>
-                                <div class="project-link">
-                                    <div class="link-wrapper">
-                                        <a href="/services/web-development" class="moving-circle">
-                                            View
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-item item-2">
-                        <div class="project-item">
-                            <div class="porject-image">
-                                <div class="background-image image-2">
-                                    <div class="image-overlay"></div>
-                                    <div class="project-card-circle"></div>
-                                </div>
-                            </div>
-                            <div class="project-info">
-                                <div class="project-top-info">
-                                    <div class="subtitle-wrapper">
-                                        <div class="subtitle fs-12 letter-space-4px text-uppercase text-color-white">Simple Sites, Big Impact</div>
-                                    </div>
-                                    <h3 class="title fs-24 text-color-white text-capitalize">Wordpress Development</h3>
-                                </div>
-                                <div class="project-link">
-                                    <div class="link-wrapper">
-                                        <a href="/services/wordpress-development" class="moving-circle">
-                                            View
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-item item-3">
-                        <div class="project-item">
-                            <div class="porject-image">
-                                <div class="background-image image-3">
-                                    <div class="image-overlay"></div>
-                                    <div class="project-card-circle"></div>
-                                </div>
-                            </div>
-                            <div class="project-info">
-                                <div class="project-top-info">
-                                    <div class="subtitle-wrapper">
-                                        <div class="subtitle fs-12 letter-space-4px text-uppercase text-color-white">Apps Humans Love Using</div>
-                                    </div>
-                                    <h3 class="title fs-24 text-color-white text-capitalize">Laravel Development</h3>
-                                </div>
-                                <div class="project-link">
-                                    <div class="link-wrapper">
-                                        <a href="/services/laravel-development" class="moving-circle">
-                                            View
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-item item-1">
-                        <div class="project-item">
-                            <div class="porject-image">
-                                <div class="background-image image-1">
-                                    <div class="image-overlay"></div>
-                                    <div class="project-card-circle"></div>
-                                </div>
-                            </div>
-                            <div class="project-info">
-                                <div class="project-top-info">
-                                    <div class="subtitle-wrapper">
-                                        <div class="subtitle fs-12 letter-space-4px text-uppercase text-color-white">Visibility You Truly Deserve</div>
-                                    </div>
-                                    <h3 class="title fs-24 text-color-white text-capitalize">Technical SEO</h3>
-                                </div>
-                                <div class="project-link">
-                                    <div class="link-wrapper">
-                                        <a href="/services/technical-seo" class="moving-circle">
-                                            View
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-item item-2">
-                        <div class="project-item">
-                            <div class="porject-image">
-                                <div class="background-image image-2">
-                                    <div class="image-overlay"></div>
-                                    <div class="project-card-circle"></div>
-                                </div>
-                            </div>
-                            <div class="project-info">
-                                <div class="project-top-info">
-                                    <div class="subtitle-wrapper">
-                                        <div class="subtitle fs-12 letter-space-4px text-uppercase text-color-white">Free Your Time Today</div>
-                                    </div>
-                                    <h3 class="title fs-24 text-color-white text-capitalize">Automation</h3>
-                                </div>
-                                <div class="project-link">
-                                    <div class="link-wrapper">
-                                        <a href="/services/wordpress-development" class="moving-circle">
-                                            View
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-item item-3">
-                        <div class="project-item">
-                            <div class="porject-image">
-                                <div class="background-image image-3">
-                                    <div class="image-overlay"></div>
-                                    <div class="project-card-circle"></div>
-                                </div>
-                            </div>
-                            <div class="project-info">
-                                <div class="project-top-info">
-                                    <div class="subtitle-wrapper">
-                                        <div class="subtitle fs-12 letter-space-4px text-uppercase text-color-white">Bridges Between Your Systems</div>
-                                    </div>
-                                    <h3 class="title fs-24 text-color-white text-capitalize">API Integiration</h3>
-                                </div>
-                                <div class="project-link">
-                                    <div class="link-wrapper">
-                                        <a href="/services/laravel-development" class="moving-circle">
-                                            View
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <div class="services" id="services">
+        <div class="service-wrapper">
+            <div class="service-heading-button">
+                <div class="title-wrapper">
+                    <div class="sub-title fs-12 letter-space-4px text-uppercase"><span>Products</span></div>
+                    <div class="title">
+                        <h2 class="fs-48 text-color-dark">Popular Products</h2>
                     </div>
                 </div>
+                <div class="view-all-services">
+                    <a href="/services" class="btn-style-2 fs-12 text-color-white justify-self-start">
+                        <div class="button-text text-uppercase letter-space-3px">Shop Now</div>
+                    </a>
+                </div>
+            </div>
+            <div class="services-grid">
+
+                @forelse($popularProducts as $product)
+
+                @include('partials.product-card', [
+                'product' => $product
+                ])
+
+                @empty
+
+                <div class="w-100 text-center">
+                    <p>No popular products available yet.</p>
+                </div>
+
+                @endforelse
+
             </div>
         </div>
     </div>
@@ -562,7 +339,7 @@
                 </div>
                 <div class="portfolio-form">
                     <form action="{{ url('/home-form-submit') }}" method="POST" class="home-form" id="home-form-submission">
-    @csrf
+                        @csrf
                         <div class="form-radio-column">
                             <div class="radio-menu">
                                 <div class="menu-list">
@@ -732,7 +509,7 @@
                         <div class="list-heading">
                             <div class="subtitle fs-12 letter-space-4px text-uppercase text-color-dark">Popular Categories</div>
                         </div>
-                         <div class="categories-list">
+                        <div class="categories-list">
                             <div class="list-wrapper">
 
                                 @foreach($popularCategories->take(10) as $category)

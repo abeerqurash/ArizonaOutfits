@@ -203,13 +203,11 @@ $salePrice !== null
     |--------------------------------------------------------------------------
     */
 
-    $stock = (int) ($product->stock ?: 0);
+    $stock=(int) (
+    $product->stock ?: 0
+    );
 
-    $isOutOfStock = $productVariants->isNotEmpty()
-        ? !$productVariants->contains(
-            fn ($variant) => (int) ($variant->stock ?? 0) > 0
-        )
-        : $stock < 1;
+    $isOutOfStock = $stock < 1;
 
         /*
         |--------------------------------------------------------------------------
@@ -408,8 +406,14 @@ $salePrice !== null
                                     @endif
 
                                     <div
-                                        class="product-card-stock fs-12 text-uppercase letter-space-4px {{ $isOutOfStock ? 'out-of-stock' : 'in-stock' }}">
-                                        {{ $isOutOfStock ? 'Out of Stock' : 'Available' }}
+                                        class="product-card-stock fs-12 text-uppercase letter-space-4px {{ $stock > 0 ? 'in-stock' : 'out-of-stock' }}">
+
+                                        @if ($stock > 0)
+                                        {{ $stock }} available
+                                        @else
+                                        Out of stock
+                                        @endif
+
                                     </div>
 
                                 </div>

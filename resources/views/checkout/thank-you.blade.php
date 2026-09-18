@@ -33,6 +33,33 @@ $isFailed = in_array($paymentStatus, [
 'cancelled',
 'canceled',
 ], true);
+
+$paymentMetadata = $order->payment_metadata ?? [];
+
+if (is_string($paymentMetadata)) {
+    $decodedPaymentMetadata = json_decode(
+        $paymentMetadata,
+        true
+    );
+
+    $paymentMetadata =
+        json_last_error() === JSON_ERROR_NONE
+            && is_array($decodedPaymentMetadata)
+            ? $decodedPaymentMetadata
+            : [];
+}
+
+if (!is_array($paymentMetadata)) {
+    $paymentMetadata = [];
+}
+
+$bankName = $paymentMetadata['bank_name'] ?? null;
+$bankAccountName = $paymentMetadata['account_name'] ?? null;
+$bankAccountNumber = $paymentMetadata['account_number'] ?? null;
+$bankIban = $paymentMetadata['iban'] ?? null;
+$bankSwiftCode = $paymentMetadata['swift_code'] ?? null;
+$bankBranchName = $paymentMetadata['branch_name'] ?? null;
+$bankInstructions = $paymentMetadata['instructions'] ?? null;
 @endphp
 
 <div class="page-wrapper order-thank-you-page">
@@ -208,56 +235,56 @@ $isFailed = in_array($paymentStatus, [
                             </h2>
 
                             <p class="fs-15 text-color-body mb-10px">
-                                Please transfer the exact order total using your order number as the payment reference.
+                                Please transfer the exact order total using your Order ID as the payment reference.
                             </p>
 
                             <div class="bank-transfer-details">
 
-                                @if (config('payments.bank_transfer.bank_name'))
+                                @if ($bankName)
                                 <p class="fs-12 text-uppercase letter-space-2px d-flex justify-content-between mb-10px">
                                     <strong>Bank:</strong>
-                                    {{ config('payments.bank_transfer.bank_name') }}
+                                    {{ $bankName }}
                                 </p>
                                 @endif
 
-                                @if (config('payments.bank_transfer.account_name'))
+                                @if ($bankAccountName)
                                 <p class="fs-12 text-uppercase letter-space-2px d-flex justify-content-between mb-10px">
                                     <strong>Account name:</strong>
-                                    {{ config('payments.bank_transfer.account_name') }}
+                                    {{ $bankAccountName }}
                                 </p>
                                 @endif
 
-                                @if (config('payments.bank_transfer.account_number'))
+                                @if ($bankAccountNumber)
                                 <p class="fs-12 text-uppercase letter-space-2px d-flex justify-content-between mb-10px">
                                     <strong>Account number:</strong>
-                                    {{ config('payments.bank_transfer.account_number') }}
+                                    {{ $bankAccountNumber }}
                                 </p>
                                 @endif
 
-                                @if (config('payments.bank_transfer.iban'))
+                                @if ($bankIban)
                                 <p class="fs-12 text-uppercase letter-space-2px d-flex justify-content-between mb-10px">
                                     <strong>IBAN:</strong>
-                                    {{ config('payments.bank_transfer.iban') }}
+                                    {{ $bankIban }}
                                 </p>
                                 @endif
 
-                                @if (config('payments.bank_transfer.swift_code'))
+                                @if ($bankSwiftCode)
                                 <p class="fs-12 text-uppercase letter-space-2px d-flex justify-content-between mb-10px">
                                     <strong>SWIFT code:</strong>
-                                    {{ config('payments.bank_transfer.swift_code') }}
+                                    {{ $bankSwiftCode }}
                                 </p>
                                 @endif
 
-                                @if (config('payments.bank_transfer.branch_name'))
+                                @if ($bankBranchName)
                                 <p class="fs-12 text-uppercase letter-space-2px d-flex justify-content-between mb-10px">
                                     <strong>Branch:</strong>
-                                    {{ config('payments.bank_transfer.branch_name') }}
+                                    {{ $bankBranchName }}
                                 </p>
                                 @endif
 
                                 <p class="fs-12 text-uppercase letter-space-2px d-flex justify-content-between mb-10px">
                                     <strong>Payment reference:</strong>
-                                    {{ $order->order_number }}
+                                    {{ $order->payment_reference ?: $order->order_number }}
                                 </p>
 
                                 <p class="fs-12 text-uppercase letter-space-2px d-flex justify-content-between mb-10px">
@@ -267,9 +294,9 @@ $isFailed = in_array($paymentStatus, [
 
                             </div>
 
-                            @if (config('payments.bank_transfer.instructions'))
+                            @if ($bankInstructions)
                             <div class="bank-transfer-note fs-15 text-color-body mb-10px">
-                                {{ config('payments.bank_transfer.instructions') }}
+                                {!! nl2br(e($bankInstructions)) !!}
                             </div>
                             @endif
 

@@ -210,9 +210,7 @@ $variantsData[] = [
 
 'sale_price' => $variantSalePrice,
 
-'stock' => (int) (
-$variant->stock ?: 0
-),
+'available' => (int) ($variant->stock ?? 0) > 0,
 
 'image' => $variantImageUrl,
 
@@ -221,6 +219,17 @@ $variant->stock ?: 0
 }
 
 $hasVariants = count($variantsData) > 0;
+
+$productAvailable = $hasVariants
+    ? collect($variantsData)->contains(
+        fn ($variant) => !empty($variant['available'])
+    )
+    : $defaultStock > 0;
+
+$singleVariantUnavailable =
+    $hasVariants
+    && count($variantsData) === 1
+    && empty($variantsData[0]['available']);
 
 /*
 |--------------------------------------------------------------------------
@@ -647,11 +656,25 @@ $defaultSalePrice !== null
 
                                 <div
                                     id="variant-message"
-                                    class="variant-message">
-                                    Select all available options.
+                                    class="variant-message"
+                                    data-variant-message
+                                    aria-live="polite">
+                                    @if ($singleVariantUnavailable)
+                                        This product is currently out of stock and cannot be purchased.
+                                    @else
+                                        Select all available options.
+                                    @endif
                                 </div>
 
                                 @endif
+
+                                <div
+                                    class="product-stock-message {{ $productAvailable ? 'in-stock' : 'out-of-stock' }}"
+                                    data-stock-message
+                                    aria-live="polite"
+                                    {{ $productAvailable ? 'hidden' : '' }}>
+                                    This product is currently out of stock and cannot be purchased.
+                                </div>
 
                                 <div class="quantity-and-cart">
 
@@ -675,7 +698,7 @@ $defaultSalePrice !== null
                                             id="product-quantity"
                                             value="1"
                                             min="1"
-                                            max="{{ max(1, $defaultStock) }}">
+                                            >
 
                                         <button
                                             type="button"
@@ -697,7 +720,9 @@ $defaultSalePrice !== null
                                         $hasVariants
                                         || (!$hasVariants && $defaultStock < 1)
                                         )>
-                                        <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">@if ($hasVariants)
+                                        <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">@if (!$productAvailable)
+                                            Out of Stock
+                                            @elseif ($hasVariants)
                                             Select Options
                                             @elseif ($defaultStock < 1)
                                                 Out of Stock
@@ -719,7 +744,9 @@ $defaultSalePrice !== null
                                         || (!$hasVariants && $defaultStock < 1)
                                         )>
                                         <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">
-                                            @if ($hasVariants)
+                                            @if (!$productAvailable)
+                                            Out of Stock
+                                            @elseif ($hasVariants)
                                             Select Options
                                             @elseif ($defaultStock < 1)
                                                 Out of Stock
@@ -788,21 +815,16 @@ $defaultSalePrice !== null
                                 </p>
 
                                 <div class="product-stock-wrapper">
-
                                     <span class="stock-label">
-                                        <strong>Stock:</strong>
+                                        <strong>Availability:</strong>
                                     </span>
 
                                     <span
                                         id="product-stock"
-                                        class="stock-count">
-                                        {{ $defaultStock }}
+                                        class="stock-count {{ $productAvailable ? 'in-stock' : 'out-of-stock' }}"
+                                        data-product-stock>
+                                        {{ $productAvailable ? 'Available' : 'Out of Stock' }}
                                     </span>
-
-                                    <span class="stock-text">
-                                        available
-                                    </span>
-
                                 </div>
 
                                 <p>

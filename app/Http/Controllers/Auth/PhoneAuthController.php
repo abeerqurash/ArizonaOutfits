@@ -503,12 +503,9 @@ class PhoneAuthController extends Controller
 
         $request->session()->regenerate();
 
-        $request->session()->forget(
-            'url.intended'
+        return redirect()->intended(
+            route('customer.dashboard', absolute: false)
         );
-
-        return redirect()
-            ->route('customer.dashboard');
     }
 
     /*

@@ -61,6 +61,7 @@ use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\EcommerceSettingController as AdminEcommerceSettingController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\PaymentVerificationController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Customer\AccountSecurityController;
 use App\Http\Controllers\Auth\SocialAuthController;
@@ -1474,7 +1475,33 @@ Route::middleware([
         Route::put('/navigation-menu-items/{item}', [AdminNavigationMenuController::class, 'updateItem'])->name('navigation-menus.items.update');
         Route::delete('/navigation-menu-items/{item}', [AdminNavigationMenuController::class, 'destroyItem'])->name('navigation-menus.items.destroy');
         Route::put('/navigation-menus/{menu}/reorder', [AdminNavigationMenuController::class, 'reorder'])->name('navigation-menus.reorder');
-    });
+    
+    /*
+    |--------------------------------------------------------------------------
+    | ORDER PAYMENT VERIFICATION
+    |--------------------------------------------------------------------------
+    */
+    Route::get(
+        '/payment-verifications',
+        [PaymentVerificationController::class, 'index']
+    )->name('payment-verifications.index');
+
+    Route::get(
+        '/payment-verifications/{order}',
+        [PaymentVerificationController::class, 'show']
+    )->name('payment-verifications.show');
+
+    Route::post(
+        '/payment-verifications/{order}/verify-bank-transfer',
+        [PaymentVerificationController::class, 'verifyBankTransfer']
+    )->name('payment-verifications.verify-bank-transfer');
+
+    Route::post(
+        '/payment-verifications/{order}/reject-bank-transfer',
+        [PaymentVerificationController::class, 'rejectBankTransfer']
+    )->name('payment-verifications.reject-bank-transfer');
+
+});
 
 /*
 |--------------------------------------------------------------------------

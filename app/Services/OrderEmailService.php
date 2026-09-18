@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Mail\AdminNewOrderMail;
+use App\Mail\CustomerBankTransferRejectedMail;
+use App\Mail\CustomerBankTransferVerifiedMail;
 use App\Mail\CustomerOrderConfirmationMail;
 use App\Models\Order;
 use App\Models\OrderNotificationLog;
@@ -18,6 +20,12 @@ class OrderEmailService
 
     public const ADMIN_NEW_ORDER =
         'admin_new_order';
+
+    public const BANK_TRANSFER_VERIFIED =
+        'bank_transfer_verified';
+
+    public const BANK_TRANSFER_REJECTED =
+        'bank_transfer_rejected';
 
     public function sendOrderEmails(Order $order): void
     {
@@ -80,6 +88,66 @@ class OrderEmailService
             callback: function () use ($email, $order): void {
                 Mail::to($email)->queue(
                     new AdminNewOrderMail($order)
+                );
+            }
+        );
+    }
+
+    public function sendBankTransferVerified(
+        Order $order
+    ): void {
+        $email = $this->customerEmail($order);
+
+        if (!$email) {
+            Log::warning(
+                'Bank-transfer verification email was not sent '
+                . 'because the order has no customer email address.',
+                [
+                    'order_id' => $order->id,
+                    'order_number' => $order->order_number,
+                ]
+            );
+
+            return;
+        }
+
+        $this->sendOnce(
+            order: $order,
+            type: self::BANK_TRANSFER_VERIFIED,
+            recipient: $email,
+            callback: function () use ($email, $order): void {
+                Mail::to($email)->queue(
+                    new CustomerBankTransferVerifiedMail($order)
+                );
+            }
+        );
+    }
+
+    public function sendBankTransferRejected(
+        Order $order
+    ): void {
+        $email = $this->customerEmail($order);
+
+        if (!$email) {
+            Log::warning(
+                'Bank-transfer rejection email was not sent '
+                . 'because the order has no customer email address.',
+                [
+                    'order_id' => $order->id,
+                    'order_number' => $order->order_number,
+                ]
+            );
+
+            return;
+        }
+
+        $this->sendOnce(
+            order: $order,
+            type: self::BANK_TRANSFER_REJECTED,
+            recipient: $email,
+            callback: function () use ($email, $order): void {
+                Mail::to($email)->queue(
+                    new CustomerBankTransferRejectedMail($order)
                 );
             }
         );

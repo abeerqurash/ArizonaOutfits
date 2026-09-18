@@ -24,6 +24,20 @@ class EcommerceSetting extends Model
         'low_stock_threshold',
         'checkout_notice',
         'order_email_message',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Bank Transfer
+        |--------------------------------------------------------------------------
+        */
+        'bank_transfer_enabled',
+        'bank_name',
+        'bank_account_name',
+        'bank_account_number',
+        'bank_iban',
+        'bank_swift_code',
+        'bank_branch_name',
+        'bank_transfer_instructions',
     ];
 
     protected $casts = [
@@ -35,6 +49,7 @@ class EcommerceSetting extends Model
         'stock_management_enabled' => 'boolean',
         'maintenance_mode' => 'boolean',
         'low_stock_threshold' => 'integer',
+        'bank_transfer_enabled' => 'boolean',
     ];
 
     public static function current(): self

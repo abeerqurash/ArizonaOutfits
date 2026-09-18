@@ -373,7 +373,7 @@ class CartController extends Controller
         if ($quantity > $availableStock) {
             return $this->cartError(
                 $request,
-                "Only {$availableStock} item(s) are currently available."
+                'The requested quantity is not currently available.'
             );
         }
 
@@ -433,7 +433,7 @@ class CartController extends Controller
             if ($newQuantity > $availableStock) {
                 return $this->cartError(
                     $request,
-                    "Only {$availableStock} item(s) are currently available."
+                    'The requested quantity is not currently available.'
                 );
             }
 
@@ -616,7 +616,7 @@ class CartController extends Controller
             if ($quantity > $availableStock) {
                 return $this->cartError(
                     $request,
-                    "Only {$availableStock} item(s) are currently available."
+                    'The requested quantity is not currently available.'
                 );
             }
 

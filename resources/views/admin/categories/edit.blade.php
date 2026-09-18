@@ -17,21 +17,21 @@
 
                 @if ($errors->any())
 
-                    <div style="margin-bottom:20px; color:red;">
+                <div style="margin-bottom:20px; color:red;">
 
-                        <strong>Please fix the following errors:</strong>
+                    <strong>Please fix the following errors:</strong>
 
-                        <ul>
+                    <ul>
 
-                            @foreach ($errors->all() as $error)
+                        @foreach ($errors->all() as $error)
 
-                                <li>{{ $error }}</li>
+                        <li>{{ $error }}</li>
 
-                            @endforeach
+                        @endforeach
 
-                        </ul>
+                    </ul>
 
-                    </div>
+                </div>
 
                 @endif
 
@@ -39,8 +39,7 @@
                 <form
                     action="{{ route('admin.categories.update', $category->id) }}"
                     method="POST"
-                    enctype="multipart/form-data"
-                >
+                    enctype="multipart/form-data">
 
                     @csrf
 
@@ -57,8 +56,7 @@
                         type="text"
                         name="title"
                         value="{{ old('title', $category->title) }}"
-                        required
-                    >
+                        required>
 
                     <br><br>
 
@@ -73,8 +71,7 @@
                         type="text"
                         name="slug"
                         value="{{ old('slug', $category->slug) }}"
-                        required
-                    >
+                        required>
 
                     <br><br>
 
@@ -93,12 +90,11 @@
 
                         @foreach($parents as $parent)
 
-                            <option
-                                value="{{ $parent->id }}"
-                                {{ old('parent_id', $category->parent_id) == $parent->id ? 'selected' : '' }}
-                            >
-                                {{ $parent->title }}
-                            </option>
+                        <option
+                            value="{{ $parent->id }}"
+                            {{ old('parent_id', $category->parent_id) == $parent->id ? 'selected' : '' }}>
+                            {{ $parent->title }}
+                        </option>
 
                         @endforeach
 
@@ -109,44 +105,42 @@
 
                     {{-- Current Image --}}
 
-                    @if($category->image)
+                    @if($category->featured_image)
 
-                        <div style="margin-bottom:20px;">
+                    <div style="margin-bottom:20px;">
 
-                            <strong>Current Image:</strong>
+                        <strong>Current Image:</strong>
 
-                            <br><br>
+                        <br><br>
 
-                            <img
-                                src="{{ asset('storage/' . $category->image) }}"
-                                alt="{{ $category->title }}"
-                                id="current-category-image"
-                                style="
-                                    width:200px;
-                                    max-width:100%;
-                                    height:150px;
-                                    object-fit:cover;
-                                    border:1px solid #ddd;
-                                    border-radius:6px;
-                                "
-                            >
+                        <img
+                            src="{{ asset('storage/' . $category->featured_image) }}"
+                            alt="{{ $category->title }}"
+                            id="current-category-image"
+                            style="
+                width:200px;
+                max-width:100%;
+                height:150px;
+                object-fit:cover;
+                border:1px solid #ddd;
+                border-radius:6px;
+            ">
 
-                            <br><br>
+                        <br><br>
 
-                            <label>
+                        <label>
 
-                                <input
-                                    type="checkbox"
-                                    name="remove_image"
-                                    value="1"
-                                    {{ old('remove_image') ? 'checked' : '' }}
-                                >
+                            <input
+                                type="checkbox"
+                                name="remove_image"
+                                value="1"
+                                {{ old('remove_image') ? 'checked' : '' }}>
 
-                                Remove current image
+                            Remove current image
 
-                            </label>
+                        </label>
 
-                        </div>
+                    </div>
 
                     @endif
 
@@ -154,7 +148,10 @@
                     {{-- New Image --}}
 
                     <label>
-                        {{ $category->image ? 'Replace Category Image' : 'Add Category Image' }}
+                        {{ $category->featured_image
+        ? 'Replace Category Image'
+        : 'Add Category Image'
+    }}
                     </label>
 
                     <br>
@@ -163,8 +160,7 @@
                         type="file"
                         name="image"
                         id="category-image"
-                        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                    >
+                        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
 
                     <br>
 
@@ -179,8 +175,7 @@
 
                     <div
                         id="image-preview-wrapper"
-                        style="display:none; margin-bottom:20px;"
-                    >
+                        style="display:none; margin-bottom:20px;">
 
                         <strong>New Image Preview:</strong>
 
@@ -197,8 +192,7 @@
                                 object-fit:cover;
                                 border:1px solid #ddd;
                                 border-radius:6px;
-                            "
-                        >
+                            ">
 
                     </div>
 
@@ -212,8 +206,7 @@
                     <input
                         type="text"
                         name="meta_title"
-                        value="{{ old('meta_title', $category->meta_title) }}"
-                    >
+                        value="{{ old('meta_title', $category->meta_title) }}">
 
                     <br><br>
 
@@ -225,23 +218,11 @@
                     <br>
 
                     <textarea
-                        name="meta_description"
-                    >{{ old('meta_description', $category->meta_description) }}</textarea>
+                        name="meta_description">{{ old('meta_description', $category->meta_description) }}</textarea>
 
                     <br><br>
 
 
-                    {{-- Expert --}}
-
-                    <label>Expert</label>
-
-                    <br>
-
-                    <textarea
-                        name="expert"
-                    >{{ old('expert', $category->expert) }}</textarea>
-
-                    <br><br>
 
 
                     <button type="submit">
@@ -260,50 +241,50 @@
 
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    const imageInput = document.getElementById(
-        'category-image'
-    );
+        const imageInput = document.getElementById(
+            'category-image'
+        );
 
-    const previewWrapper = document.getElementById(
-        'image-preview-wrapper'
-    );
+        const previewWrapper = document.getElementById(
+            'image-preview-wrapper'
+        );
 
-    const preview = document.getElementById(
-        'image-preview'
-    );
+        const preview = document.getElementById(
+            'image-preview'
+        );
 
-    if (!imageInput || !previewWrapper || !preview) {
-        return;
-    }
-
-    imageInput.addEventListener('change', function () {
-
-        const file = this.files[0];
-
-        if (!file) {
-
-            preview.src = '';
-
-            previewWrapper.style.display = 'none';
-
+        if (!imageInput || !previewWrapper || !preview) {
             return;
         }
 
-        const reader = new FileReader();
+        imageInput.addEventListener('change', function() {
 
-        reader.onload = function (event) {
+            const file = this.files[0];
 
-            preview.src = event.target.result;
+            if (!file) {
 
-            previewWrapper.style.display = 'block';
-        };
+                preview.src = '';
 
-        reader.readAsDataURL(file);
+                previewWrapper.style.display = 'none';
+
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+
+                preview.src = event.target.result;
+
+                previewWrapper.style.display = 'block';
+            };
+
+            reader.readAsDataURL(file);
+        });
+
     });
-
-});
 </script>
 
 @endsection
