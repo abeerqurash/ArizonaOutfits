@@ -406,11 +406,11 @@ $defaultSalePrice !== null
                                 <span
                                     id="product-stock-badge"
                                     class="fs-12 text-uppercase letter-space-4px product-stock-badge {{
-            $defaultStock > 0
+            $productAvailable
                 ? 'in-stock'
                 : 'out-of-stock'
         }}">
-                                    {{ $defaultStock > 0 ? 'In Stock' : 'Out of Stock' }}
+                                    {{ $productAvailable ? 'In Stock' : 'Out of Stock' }}
                                 </span>
 
                                 @if($discountPercent)
@@ -654,6 +654,8 @@ $defaultSalePrice !== null
 
                                 @if ($hasVariants)
 
+
+
                                 <div
                                     id="variant-message"
                                     class="variant-message"
@@ -722,13 +724,9 @@ $defaultSalePrice !== null
                                         )>
                                         <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">@if (!$productAvailable)
                                             Out of Stock
-                                            @elseif ($hasVariants)
-                                            Select Options
-                                            @elseif ($defaultStock < 1)
-                                                Out of Stock
-                                                @else
-                                                Add To Cart
-                                                @endif</div>
+                                            @else
+                                            Add To Cart
+                                            @endif</div>
 
                                     </button>
 
@@ -746,13 +744,9 @@ $defaultSalePrice !== null
                                         <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">
                                             @if (!$productAvailable)
                                             Out of Stock
-                                            @elseif ($hasVariants)
-                                            Select Options
-                                            @elseif ($defaultStock < 1)
-                                                Out of Stock
-                                                @else
-                                                Buy Now
-                                                @endif
+                                            @else
+                                            Buy Now
+                                            @endif
                                                 </div>
                                     </button>
 
@@ -1710,3 +1704,4 @@ $defaultSalePrice !== null
 
 
     @endsection
+

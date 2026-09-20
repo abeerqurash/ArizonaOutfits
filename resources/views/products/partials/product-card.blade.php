@@ -424,6 +424,7 @@ $salePrice !== null
                                             type="button"
                                             class="view-now open-product-popup btn-style-2 fs-12 text-color-white justify-self-start w-100"
                                             data-popup-url="{{ $quickViewUrl }}"
+                                            data-quick-view-action="view"
                                             aria-label="Quick view {{ $product->title }}">
 
                                             <div
@@ -439,6 +440,7 @@ $salePrice !== null
                                             type="button"
                                             class="view-now open-product-popup btn-style-2 fs-12 text-color-white justify-self-start w-100"
                                             data-popup-url="{{ $quickViewUrl }}"
+                                            data-quick-view-action="add-to-cart"
                                             aria-label="Select options for {{ $product->title }}"
                                             {{ $isOutOfStock ? 'disabled' : '' }}>
 
@@ -470,6 +472,8 @@ $salePrice !== null
                                             <button
                                                 type="submit"
                                                 class="view-now btn-style-2 fs-12 text-color-white justify-self-start w-100"
+                                                data-add-to-cart
+                                                data-ready-text="Add To Cart"
                                                 aria-label="Add {{ $product->title }} to cart"
                                                 {{ $isOutOfStock ? 'disabled' : '' }}>
 
@@ -551,6 +555,7 @@ $salePrice !== null
                                             type="button"
                                             class="view-now open-product-popup btn-style-2 fs-12 text-color-white justify-self-start w-100"
                                             data-popup-url="{{ $quickViewUrl }}"
+                                            data-quick-view-action="buy-now"
                                             aria-label="Select options and buy {{ $product->title }}"
                                             {{ $isOutOfStock ? 'disabled' : '' }}>
 
@@ -587,6 +592,8 @@ $salePrice !== null
                                             <button
                                                 type="submit"
                                                 class="view-now btn-style-2 fs-12 text-color-white justify-self-start w-100"
+                                                data-buy-now
+                                                data-ready-text="Buy Now"
                                                 aria-label="Buy {{ $product->title }} now"
                                                 {{ $isOutOfStock ? 'disabled' : '' }}>
 

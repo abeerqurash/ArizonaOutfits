@@ -79,7 +79,7 @@
 
                 @forelse($latestProducts as $product)
 
-                @include('partials.product-card', [
+                @include('products.partials.product-card', [
                 'product' => $product
                 ])
 
@@ -236,7 +236,7 @@
 
                 @forelse($popularProducts as $product)
 
-                @include('partials.product-card', [
+                @include('products.partials.product-card', [
                 'product' => $product
                 ])
 
@@ -340,40 +340,176 @@
                 <div class="portfolio-form">
                     <form action="{{ url('/home-form-submit') }}" method="POST" class="home-form" id="home-form-submission">
                         @csrf
+                        <input type="hidden" name="formSource" value="home">
+
                         <div class="form-radio-column">
                             <div class="radio-menu">
                                 <div class="menu-list">
                                     <label class="menu-item menu-item-1">
-                                        <div class="raido-button radio-btn-ctr"></div>
-                                        <input type="radio" name="formType" class="radio-input contact-us-radio" id="contactUsRadio" value="Contact Us" required>
-                                        <span class="list-item-text" for="formType_1">Contact Us</span>
+                                        <div class="raido-button radio-btn-ctr {{ old('formType', 'Contact Us') === 'Contact Us' ? 'radio-checked' : '' }}"></div>
+                                        <input
+                                            type="radio"
+                                            name="formType"
+                                            class="radio-input contact-us-radio"
+                                            id="contactUsRadio"
+                                            value="Contact Us"
+                                            {{ old('formType', 'Contact Us') === 'Contact Us' ? 'checked' : '' }}
+                                            required
+                                        >
+                                        <span class="list-item-text">Contact Us</span>
                                     </label>
+
                                     <label class="menu-item menu-item-1">
-                                        <div class="raido-button radio-btn-ctr"></div>
-                                        <input type="radio" name="formType" class="radio-input prContacts-radio" id="prContacts" value="PR" required>
-                                        <span class="list-item-text" for="formType_2">PR</span>
+                                        <div class="raido-button radio-btn-ctr {{ old('formType') === 'PR' ? 'radio-checked' : '' }}"></div>
+                                        <input
+                                            type="radio"
+                                            name="formType"
+                                            class="radio-input prContacts-radio"
+                                            id="prContacts"
+                                            value="PR"
+                                            {{ old('formType') === 'PR' ? 'checked' : '' }}
+                                            required
+                                        >
+                                        <span class="list-item-text">PR</span>
                                     </label>
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-column right">
                             <div class="form">
+                                @if ($errors->any())
+                                    <div style="grid-column:1/-1;color:#fff;background:rgba(220,38,38,.18);border:1px solid rgba(255,255,255,.18);padding:12px 14px;border-radius:4px;">
+                                        @foreach ($errors->all() as $error)
+                                            <div>{{ $error }}</div>
+                                        @endforeach
+                                    </div>
+                                @endif
+
                                 <div class="field-wrapper">
-                                    <label for="firstName" class="field-lablel fs-12 letter-space-4px text-color-white text-uppercase">Name</label>
-                                    <input type="text" name="fullName" id="fullname" placeholder="Full Name" class="name-field input-field" required>
-                                    <input type="text" name="subject" id="subject" placeholder="Subject" class="name-field input-field" required>
+                                    <label for="fullname" class="field-lablel fs-12 letter-space-4px text-color-white text-uppercase">Name</label>
+
+                                    <input
+                                        type="text"
+                                        name="fullName"
+                                        id="fullname"
+                                        placeholder="Full Name"
+                                        class="name-field input-field"
+                                        value="{{ old('fullName') }}"
+                                        maxlength="255"
+                                        autocomplete="name"
+                                        required
+                                    >
+
+                                    <input
+                                        type="text"
+                                        name="subject"
+                                        id="subject"
+                                        placeholder="Subject"
+                                        class="name-field input-field"
+                                        value="{{ old('subject') }}"
+                                        maxlength="255"
+                                        required
+                                    >
                                 </div>
+
                                 <div class="field-wrapper">
                                     <label for="emailAddress" class="field-lablel-2 fs-12 letter-space-4px text-color-white text-uppercase">Email</label>
                                     <label for="phoneNumber" class="field-lablel-2 fs-12 letter-space-4px text-color-white text-uppercase">Phone Number</label>
-                                    <input type="email" name="emailAddress" id="emailAddress" placeholder="Your Email" class="email-field input-field" required>
-                                    <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="Phone Number" class="phone-field input-field" required>
-                                </div>
-                                <textarea name="messageBox" id="messageBox" placeholder="Message" class="textarea-field input-field" rows="8"></textarea>
-                                <input type="submit" class="submit-button form-btn" value="Send Now">
 
+                                    <input
+                                        type="email"
+                                        name="emailAddress"
+                                        id="emailAddress"
+                                        placeholder="Your Email"
+                                        class="email-field input-field"
+                                        value="{{ old('emailAddress') }}"
+                                        maxlength="255"
+                                        autocomplete="email"
+                                        required
+                                    >
+
+                                    <input
+                                        type="tel"
+                                        name="phoneNumber"
+                                        id="phoneNumber"
+                                        placeholder="Phone Number"
+                                        class="phone-field input-field"
+                                        value="{{ old('phoneNumber') }}"
+                                        inputmode="tel"
+                                        maxlength="30"
+                                        pattern="[0-9+() .\-]{7,30}"
+                                        title="Enter a valid phone number using numbers and standard phone characters."
+                                        autocomplete="tel"
+                                        oninput="this.value=this.value.replace(/[^0-9+() .\-]/g,'')"
+                                        required
+                                    >
+                                </div>
+
+                                <div
+                                    id="home-pr-fields"
+                                    style="{{ old('formType') === 'PR' ? 'display:grid;' : 'display:none;' }}grid-row-gap:24px;"
+                                >
+                                    <div class="field-wrapper">
+                                        <label for="prOrganization" class="field-lablel fs-12 letter-space-4px text-color-white text-uppercase">PR Details</label>
+
+                                        <input
+                                            type="text"
+                                            name="prOrganization"
+                                            id="prOrganization"
+                                            placeholder="Publication / Company / Agency"
+                                            class="input-field"
+                                            value="{{ old('prOrganization') }}"
+                                            maxlength="255"
+                                            data-pr-required
+                                        >
+
+                                        <select
+                                            name="prEnquiryType"
+                                            id="prEnquiryType"
+                                            class="input-field"
+                                            data-pr-required
+                                            style="appearance:auto;"
+                                        >
+                                            <option value="">PR Enquiry Type</option>
+                                            <option value="Press / Media Enquiry" {{ old('prEnquiryType') === 'Press / Media Enquiry' ? 'selected' : '' }}>Press / Media Enquiry</option>
+                                            <option value="Interview Request" {{ old('prEnquiryType') === 'Interview Request' ? 'selected' : '' }}>Interview Request</option>
+                                            <option value="Product Feature / Review" {{ old('prEnquiryType') === 'Product Feature / Review' ? 'selected' : '' }}>Product Feature / Review</option>
+                                            <option value="Brand Collaboration" {{ old('prEnquiryType') === 'Brand Collaboration' ? 'selected' : '' }}>Brand Collaboration</option>
+                                            <option value="Event / Appearance" {{ old('prEnquiryType') === 'Event / Appearance' ? 'selected' : '' }}>Event / Appearance</option>
+                                            <option value="Other PR Enquiry" {{ old('prEnquiryType') === 'Other PR Enquiry' ? 'selected' : '' }}>Other PR Enquiry</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="field-wrapper">
+                                        <label for="prWebsite" class="field-lablel fs-12 letter-space-4px text-color-white text-uppercase">Website / Social Profile</label>
+
+                                        <input
+                                            type="url"
+                                            name="prWebsite"
+                                            id="prWebsite"
+                                            placeholder="https://example.com"
+                                            class="input-field"
+                                            value="{{ old('prWebsite') }}"
+                                            maxlength="2048"
+                                            style="grid-column:1/-1;"
+                                        >
+                                    </div>
+                                </div>
+
+                                <textarea
+                                    name="messageBox"
+                                    id="messageBox"
+                                    placeholder="Message"
+                                    class="textarea-field input-field"
+                                    rows="8"
+                                    maxlength="5000"
+                                >{{ old('messageBox') }}</textarea>
+
+                                <input type="submit" class="submit-button form-btn" value="Send Now">
                             </div>
                         </div>
+
                         <div class="list-heading-wrapper">
                             <div class="subtitle-2 fs-12 letter-space-4px text-color-white text-uppercase">Frequancy</div>
                         </div>
@@ -536,6 +672,201 @@
         </div>
     </div>
 </div>
+
+
+
+
+<style>
+/* Homepage Contact / PR dropdown UI only */
+#home-form-submission #prEnquiryType {
+    width: 100%;
+    min-height: 43px;
+    padding: 0 38px 0 14px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 0;
+    background-color: #1f2230;
+    color: #ffffff;
+    font: 12px;
+    cursor: pointer;
+}
+
+#home-form-submission #prEnquiryType:focus {
+    outline: none;
+    border-color: #ffffff;
+}
+
+#home-form-submission #prEnquiryType option {
+    background-color: #1f2230;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+}
+
+/* Keep intl-tel-input aligned with the existing dark phone field */
+#home-form-submission .iti {
+    width: 100%;
+}
+
+#home-form-submission .iti__flag-container {
+    height: 100%;
+}
+
+#home-form-submission .iti__selected-flag {
+    background: transparent;
+}
+
+#home-form-submission .iti__selected-flag:hover,
+#home-form-submission .iti__selected-flag:focus,
+#home-form-submission .iti__selected-flag[aria-expanded="true"] {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+#home-form-submission .iti__country-list {
+    width: 335px;
+    max-width: min(335px, calc(100vw - 32px));
+    max-height: 260px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #1f2230;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+    color: #ffffff;
+    z-index: 9999;
+}
+
+#home-form-submission .iti__country {
+    padding: 8px 10px;
+    white-space: nowrap;
+}
+
+#home-form-submission .iti__country.iti__highlight {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+#home-form-submission .iti__country-name,
+#home-form-submission .iti__dial-code {
+    color: #ffffff;
+}
+
+@media (max-width: 767px) {
+    #home-form-submission .iti__country-list {
+        width: min(310px, calc(100vw - 32px));
+        max-height: 220px;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const homeForm = document.getElementById('home-form-submission');
+
+    if (!homeForm) {
+        return;
+    }
+
+    const contactRadio = homeForm.querySelector('#contactUsRadio');
+    const prRadio = homeForm.querySelector('#prContacts');
+    const prFields = homeForm.querySelector('#home-pr-fields');
+    const prRequiredFields = homeForm.querySelectorAll('[data-pr-required]');
+
+    function updatePrFields() {
+        const isPr = prRadio && prRadio.checked;
+
+        if (prFields) {
+            prFields.style.display = isPr ? 'grid' : 'none';
+        }
+
+        prRequiredFields.forEach(function (field) {
+            field.required = isPr;
+            field.disabled = !isPr;
+        });
+    }
+
+    /*
+     * main.js controls these custom radio buttons by changing .checked
+     * programmatically. A programmatic checked change does not reliably fire
+     * the native "change" event, so listen to the visible menu items too.
+     */
+    const contactMenuItem = contactRadio ? contactRadio.closest('.menu-item') : null;
+    const prMenuItem = prRadio ? prRadio.closest('.menu-item') : null;
+
+    if (contactRadio) {
+        contactRadio.addEventListener('change', updatePrFields);
+    }
+
+    if (prRadio) {
+        prRadio.addEventListener('change', updatePrFields);
+    }
+
+    if (contactMenuItem) {
+        contactMenuItem.addEventListener('click', function () {
+            window.setTimeout(updatePrFields, 0);
+        });
+    }
+
+    if (prMenuItem) {
+        prMenuItem.addEventListener('click', function () {
+            window.setTimeout(updatePrFields, 0);
+        });
+    }
+
+    /*
+     * Before submitting, run the state one final time so PR-only fields are
+     * enabled/required only for PR and Contact Us can submit normally.
+     */
+    homeForm.addEventListener('submit', function () {
+        updatePrFields();
+    });
+
+    updatePrFields();
+});
+</script>
+
+{{-- ============================================================
+     Shared product quick-view modal for Homepage product cards
+     ============================================================ --}}
+<div
+    id="product-quick-view-modal"
+    class="product-quick-view-modal"
+    aria-hidden="true">
+
+    <div
+        class="product-quick-view-backdrop"
+        data-close-product-popup></div>
+
+    <div
+        class="product-quick-view-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="quick-view-product-title">
+
+        <button
+            type="button"
+            class="product-popup-close fs-12 text-color-white justify-self-start"
+            data-close-product-popup
+            aria-label="Close product popup">
+            <div class="button-text text-uppercase letter-space-3px">
+                x
+            </div>
+        </button>
+
+        <div
+            id="product-quick-view-content"
+            class="product-quick-view-content">
+            <div class="product-popup-loader fs-16 text-uppercase letter-space-4px">
+                Loading product...
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@push('page-scripts')
+<script src="{{ asset('asset/js/product.js') }}"></script>
+@endpush
 
 
 @endsection

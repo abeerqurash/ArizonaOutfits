@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\EcommerceSetting;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -34,6 +36,19 @@ class CheckoutController extends Controller
                     'Your cart is empty.'
                 );
         }
+
+        $cartGate = $this->validateCartForCheckout($cart);
+
+        if (!$cartGate['valid']) {
+            session()->put('cart', $cartGate['cart']);
+
+            return redirect()
+                ->route('cart.index')
+                ->with('cart_warning', $cartGate['message']);
+        }
+
+        $cart = $cartGate['cart'];
+        session()->put('cart', $cart);
 
         $subtotal = $this->calculateSubtotal($cart);
 
@@ -136,6 +151,21 @@ class CheckoutController extends Controller
                 'message' => 'Your cart is empty.',
             ], 422);
         }
+
+        $cartGate = $this->validateCartForCheckout($cart);
+
+        if (!$cartGate['valid']) {
+            session()->put('cart', $cartGate['cart']);
+
+            return response()->json([
+                'success' => false,
+                'message' => $cartGate['message'],
+                'redirect_url' => route('cart.index'),
+            ], 422);
+        }
+
+        $cart = $cartGate['cart'];
+        session()->put('cart', $cart);
 
         $subtotal = $this->calculateSubtotal($cart);
 
@@ -249,6 +279,23 @@ class CheckoutController extends Controller
                     'Your cart is empty.'
                 );
         }
+
+        /*
+         * Revalidate inventory and prices even when the checkout page
+         * is bypassed or has been left open while inventory changed.
+         */
+        $cartGate = $this->validateCartForCheckout($cart);
+
+        if (!$cartGate['valid']) {
+            session()->put('cart', $cartGate['cart']);
+
+            return redirect()
+                ->route('cart.index')
+                ->with('cart_warning', $cartGate['message']);
+        }
+
+        $cart = $cartGate['cart'];
+        session()->put('cart', $cart);
 
         $validated = $this->validateCheckout(
             $request
@@ -378,25 +425,25 @@ class CheckoutController extends Controller
          */
         $bankTransferSnapshot = [
             'bank_name' =>
-            $ecommerceSettings->bank_name,
+                $ecommerceSettings->bank_name,
 
             'account_name' =>
-            $ecommerceSettings->bank_account_name,
+                $ecommerceSettings->bank_account_name,
 
             'account_number' =>
-            $ecommerceSettings->bank_account_number,
+                $ecommerceSettings->bank_account_number,
 
             'iban' =>
-            $ecommerceSettings->bank_iban,
+                $ecommerceSettings->bank_iban,
 
             'swift_code' =>
-            $ecommerceSettings->bank_swift_code,
+                $ecommerceSettings->bank_swift_code,
 
             'branch_name' =>
-            $ecommerceSettings->bank_branch_name,
+                $ecommerceSettings->bank_branch_name,
 
             'instructions' =>
-            $ecommerceSettings->bank_transfer_instructions,
+                $ecommerceSettings->bank_transfer_instructions,
         ];
 
         try {
@@ -717,7 +764,7 @@ class CheckoutController extends Controller
 
         if (
             EcommerceSetting::current()
-            ->bank_transfer_enabled
+                ->bank_transfer_enabled
         ) {
             $availablePaymentMethods[] =
                 'bank_transfer';
@@ -1067,6 +1114,169 @@ class CheckoutController extends Controller
                 $lineTotal,
             ]);
         }
+    }
+
+    /**
+     * Revalidate the complete cart before checkout.
+     *
+     * This gate is independent from the Cart page UI. A customer can type
+     * /checkout directly, keep an old checkout tab open, or submit a stale
+     * order request after inventory or pricing has changed.
+     */
+    private function validateCartForCheckout(array $cart): array
+    {
+        $refreshedCart = $cart;
+        $problems = [];
+
+        foreach ($refreshedCart as $cartKey => &$item) {
+            $productId = (int) ($item['product_id'] ?? 0);
+
+            $product = Product::query()
+                ->whereKey($productId)
+                ->where('status', 'active')
+                ->first();
+
+            if (!$product) {
+                $item['stock'] = 0;
+                $item['unavailable'] = true;
+                $item['unavailable_reason'] =
+                    'This product is no longer available.';
+
+                $problems[] =
+                    ($item['title'] ?? 'A product')
+                    . ' is no longer available.';
+
+                continue;
+            }
+
+            $variant = null;
+            $variantId = (int) ($item['variant_id'] ?? 0);
+
+            if ($variantId > 0) {
+                $variant = ProductVariant::query()
+                    ->whereKey($variantId)
+                    ->where('product_id', $product->id)
+                    ->first();
+
+                if (!$variant) {
+                    $item['stock'] = 0;
+                    $item['unavailable'] = true;
+                    $item['unavailable_reason'] =
+                        'The selected product variation is no longer available.';
+
+                    $problems[] =
+                        $product->title
+                        . ': the selected variation is no longer available.';
+
+                    continue;
+                }
+            }
+
+            $availableStock = $variant
+                ? (int) $variant->stock
+                : (int) $product->stock;
+
+            $item['stock'] = max(0, $availableStock);
+
+            if ($availableStock < 1) {
+                $item['unavailable'] = true;
+                $item['unavailable_reason'] =
+                    'This item is currently out of stock.';
+
+                $problems[] =
+                    $product->title
+                    . ' is currently out of stock.';
+
+                continue;
+            }
+
+            $quantity = max(
+                1,
+                (int) ($item['quantity'] ?? 1)
+            );
+
+            if ($quantity > $availableStock) {
+                $item['quantity'] = $availableStock;
+
+                $problems[] =
+                    $product->title
+                    . ' now has only '
+                    . $availableStock
+                    . ' available. Its cart quantity was adjusted.';
+            } else {
+                $item['quantity'] = $quantity;
+            }
+
+            unset(
+                $item['unavailable'],
+                $item['unavailable_reason']
+            );
+
+            $regularPrice = $variant
+                ? (
+                    $variant->regular_price !== null
+                        ? (float) $variant->regular_price
+                        : (float) $product->regular_price
+                )
+                : (float) $product->regular_price;
+
+            $salePrice = $variant
+                ? (
+                    $variant->sale_price !== null
+                        ? (float) $variant->sale_price
+                        : null
+                )
+                : (
+                    $product->sale_price !== null
+                        ? (float) $product->sale_price
+                        : null
+                );
+
+            $price = (
+                $salePrice !== null
+                && $salePrice < $regularPrice
+            )
+                ? $salePrice
+                : $regularPrice;
+
+            if (
+                round((float) ($item['price'] ?? 0), 2)
+                !== round($price, 2)
+            ) {
+                $problems[] =
+                    $product->title
+                    . ' has a new price. Please review your cart before checkout.';
+            }
+
+            $item['title'] = $product->title;
+            $item['slug'] = $product->slug;
+            $item['sku'] = $variant?->sku ?: $product->sku;
+            $item['image'] = (
+                $variant
+                && !empty($variant->image)
+            )
+                ? $variant->image
+                : $product->featured_image;
+            $item['regular_price'] = $regularPrice;
+            $item['sale_price'] = $salePrice;
+            $item['price'] = $price;
+        }
+
+        unset($item);
+
+        $problems = array_values(
+            array_unique(
+                array_filter($problems)
+            )
+        );
+
+        return [
+            'valid' => empty($problems),
+            'cart' => $refreshedCart,
+            'message' => empty($problems)
+                ? ''
+                : implode(' ', $problems),
+        ];
     }
 
     /**

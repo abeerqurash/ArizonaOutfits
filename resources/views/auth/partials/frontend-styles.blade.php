@@ -215,6 +215,7 @@
 
     .auth-field input[type=text],
     .auth-field input[type=email],
+    .auth-field input[type=tel],
     .auth-field input[type=password],
     .auth-field input[type=text][name=password],
     .auth-field input[type=text][name=password_confirmation] {

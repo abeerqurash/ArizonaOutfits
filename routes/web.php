@@ -297,10 +297,8 @@ Route::post(
     [HomeFormController::class, 'submit']
 )->name('home.form.submit');
 
-Route::post(
-    '/contact-form-submit',
-    [ContactFormController::class, 'submit']
-)->name('contact.form.submit');
+Route::post('/contact-form-submit', [HomeFormController::class, 'submit'])
+    ->name('contact.form.submit');
 
 Route::post(
     '/blog-form-submit',

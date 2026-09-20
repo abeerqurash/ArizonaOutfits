@@ -39,7 +39,10 @@
 
         @if (session('status'))
 
-            <div class="auth-status">
+            <div
+                class="auth-status"
+                role="status"
+            >
                 {{ session('status') }}
             </div>
 
@@ -73,9 +76,12 @@
                     autofocus
                     inputmode="numeric"
                     autocomplete="one-time-code"
+                    minlength="6"
                     maxlength="6"
                     pattern="[0-9]{6}"
                     placeholder="000000"
+                    aria-describedby="phone-code-help"
+                    oninput="this.value=this.value.replace(/\D/g, '').slice(0, 6)"
                     style="
                         text-align:center;
                         font-size:24px;
@@ -83,9 +89,25 @@
                     "
                 >
 
+                <small
+                    id="phone-code-help"
+                    style="
+                        display:block;
+                        margin-top:6px;
+                        color:#64748b;
+                        font-size:12px;
+                        line-height:1.45;
+                    "
+                >
+                    Enter exactly 6 numbers.
+                </small>
+
                 @error('code')
 
-                    <p class="auth-error">
+                    <p
+                        class="auth-error"
+                        role="alert"
+                    >
                         {{ $message }}
                     </p>
 
@@ -101,7 +123,10 @@
 
                 Verify and continue
 
-                <i class="fa-solid fa-arrow-right"></i>
+                <i
+                    class="fa-solid fa-arrow-right"
+                    aria-hidden="true"
+                ></i>
 
             </button>
 

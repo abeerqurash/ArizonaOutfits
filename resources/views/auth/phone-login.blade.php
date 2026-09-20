@@ -33,7 +33,7 @@
 
         @if (session('status'))
 
-            <div class="auth-status">
+            <div class="auth-status" role="status">
                 {{ session('status') }}
             </div>
 
@@ -61,13 +61,26 @@
                     value="{{ old('phone') }}"
                     required
                     autofocus
+                    inputmode="tel"
                     autocomplete="tel"
-                    placeholder="03123456789"
+                    maxlength="30"
+                    pattern="[0-9+() .-]{8,30}"
+                    title="Enter a valid phone number using digits and common phone symbols."
+                    placeholder="e.g. +92 312 3456789"
+                    oninput="this.value=this.value.replace(/[^0-9+() .-]/g, '')"
+                    aria-describedby="phone-help"
                 >
+
+                <small
+                    id="phone-help"
+                    style="display:block;margin-top:6px;color:#64748b;font-size:12px;line-height:1.45;"
+                >
+                    You can use an international format such as +92 312 3456789.
+                </small>
 
                 @error('phone')
 
-                    <p class="auth-error">
+                    <p class="auth-error" role="alert">
                         {{ $message }}
                     </p>
 
@@ -83,7 +96,10 @@
 
                 Send login code
 
-                <i class="fa-solid fa-arrow-right"></i>
+                <i
+                    class="fa-solid fa-arrow-right"
+                    aria-hidden="true"
+                ></i>
 
             </button>
 

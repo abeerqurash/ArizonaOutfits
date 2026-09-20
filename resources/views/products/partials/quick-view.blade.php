@@ -251,7 +251,9 @@ $salePrice !== null
 
     'sale_price' => $variantSalePrice,
 
-    'available' => (int) ($variant->stock ?? 0) > 0,
+    'stock' => (int) (
+    $variant->stock ?: 0
+    ),
 
     'image' => $variantImageUrl,
 
@@ -261,17 +263,119 @@ $salePrice !== null
 
     $hasVariants = count($variantsData) > 0;
 
-$productAvailable = $hasVariants
-    ? collect($variantsData)->contains(
-        fn ($variant) => !empty($variant['available'])
-    )
-    : $stock > 0;
+    /*
+    |--------------------------------------------------------------------------
+    | Correct aggregate availability
+    |--------------------------------------------------------------------------
+    | A variable product is available when at least one real variant has stock.
+    | Do not use only the parent product stock for variable products.
+    */
+    $productAvailable = $hasVariants
+        ? collect($variantsData)->contains(
+            fn ($variant) => (int) ($variant['stock'] ?? 0) > 0
+        )
+        : $stock > 0;
 
-$singleVariantUnavailable =
-    $hasVariants
-    && count($variantsData) === 1
-    && empty($variantsData[0]['available']);
+    $singleVariantUnavailable =
+        $hasVariants
+        && count($variantsData) === 1
+        && (int) ($variantsData[0]['stock'] ?? 0) < 1;
     @endphp
+
+
+<style>
+/*
+|--------------------------------------------------------------------------
+| Quick View — product-show aligned layout
+|--------------------------------------------------------------------------
+| Desktop/laptop: gallery remains stationary and only product information
+| scrolls. Mobile/tablet stacks naturally and the popup becomes one scroll
+| surface so no content is trapped.
+*/
+.product-quick-view-dialog {
+    overflow: hidden;
+}
+
+.product-quick-view-content {
+    height: 100%;
+}
+
+.quick-view-product {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr);
+    height: min(82vh, 760px);
+    max-height: calc(100vh - 50px);
+    overflow: hidden;
+    background: #fff;
+}
+
+.quick-view-images {
+    min-width: 0;
+    height: 100%;
+    overflow: hidden;
+    align-self: start;
+}
+
+.quick-view-main-image-wrapper {
+    overflow: hidden;
+}
+
+.quick-view-main-image {
+    display: block;
+    width: 100%;
+    height: min(58vh, 540px);
+    object-fit: cover;
+}
+
+.quick-view-gallery {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+}
+
+.quick-view-information {
+    min-width: 0;
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+}
+
+.quick-view-purchase-actions {
+    display: grid;
+    gap: 10px;
+}
+
+.quick-view-purchase-actions .add-to-cart-button,
+.quick-view-purchase-actions .buy-now-button {
+    width: 100%;
+}
+
+@media (max-width: 900px) {
+    .product-quick-view-dialog {
+        overflow-y: auto;
+    }
+
+    .quick-view-product {
+        display: block;
+        height: auto;
+        max-height: none;
+        overflow: visible;
+    }
+
+    .quick-view-images,
+    .quick-view-information {
+        height: auto;
+        overflow: visible;
+    }
+
+    .quick-view-main-image {
+        height: auto;
+        max-height: none;
+        object-fit: contain;
+    }
+}
+</style>
 
     <div
         class="quick-view-product"
@@ -296,7 +400,6 @@ $singleVariantUnavailable =
                 $discountPercentage=$hasDiscount
                 ? round((($regularPrice - $salePrice) / $regularPrice) * 100)
                 : 0;
-
                 $inStock = $productAvailable;
                 @endphp
                 <div class="quick-view-main-image-wrapper">
@@ -405,15 +508,17 @@ $singleVariantUnavailable =
             </div>
 
             <div
-                class="quick-view-stock fs-12 text-uppercase letter-space-4px {{ $productAvailable ? 'in-stock' : 'out-of-stock' }}"
+                class="quick-view-stock product-stock-message fs-12 text-uppercase letter-space-4px {{
+                    $productAvailable ? 'in-stock' : 'out-of-stock'
+                }}"
                 data-stock-message
                 aria-live="polite">
                 @if (!$productAvailable)
-                    This product is currently out of stock and cannot be purchased.
+                    Out of Stock
                 @elseif ($hasVariants)
-                    Select product options
+                    Select all available options
                 @else
-                    Available
+                    {{ $stock }} available in stock
                 @endif
             </div>
 
@@ -588,43 +693,91 @@ $singleVariantUnavailable =
                     class="variant-message"
                     data-variant-message
                     aria-live="polite">
-                    Please select one value from every option.
+                    @if ($singleVariantUnavailable)
+                        This product is currently out of stock and cannot be purchased.
+                    @else
+                        Select all available options.
+                    @endif
                 </div>
 
                 @endif
 
-                <input
-                    type="hidden"
-                    name="quantity"
-                    value="1">
+                <div class="quantity-and-cart quick-view-purchase-actions">
 
-                <button
-                    type="submit"
-                    class="quick-view-cart-button add-to-cart-button btn-style-2 fs-12 text-color-white justify-self-start"
-                    data-add-to-cart
-                    @disabled(
-                    $hasVariants
-                    || (!$hasVariants && $stock < 1)
-                    )>
-                    <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">@if (!$productAvailable)
+                    <div
+                        class="quantity-box product-quantity"
+                        data-quantity-wrapper>
+                        <button
+                            type="button"
+                            class="quantity-button quantity-minus btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                            data-quantity-minus
+                            aria-label="Decrease quantity">
+                            <div class="button-text text-uppercase letter-space-3px">−</div>
+                        </button>
 
-                        Out of Stock
+                        <input
+                            class="fs-16 text-uppercase letter-space-4px"
+                            type="number"
+                            name="quantity"
+                            value="1"
+                            min="1"
+                            inputmode="numeric"
+                            aria-label="Product quantity">
 
-                        @elseif ($hasVariants)
+                        <button
+                            type="button"
+                            class="quantity-button quantity-plus btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                            data-quantity-plus
+                            aria-label="Increase quantity">
+                            <div class="button-text text-uppercase letter-space-3px">+</div>
+                        </button>
+                    </div>
 
-                        Select Options
-
-                        @elseif ($stock < 1)
-
-                            Out of Stock
-
+                    <button
+                        type="submit"
+                        class="quick-view-cart-button add-to-cart-button btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                        data-add-to-cart
+                        data-ready-text="Add To Cart"
+                        @disabled(
+                            !$productAvailable
+                            || $hasVariants
+                            || (!$hasVariants && $stock < 1)
+                        )>
+                        <div class="button-text text-uppercase letter-space-3px">
+                            @if (!$productAvailable)
+                                Out of Stock
+                            @elseif ($hasVariants)
+                                Select Options
                             @else
+                                Add To Cart
+                            @endif
+                        </div>
+                    </button>
 
-                            Add To Cart
+                    <button
+                        type="submit"
+                        name="buy_now"
+                        value="1"
+                        class="buy-now-button btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                        data-buy-now
+                        data-ready-text="Buy Now"
+                        @disabled(
+                            !$productAvailable
+                            || $hasVariants
+                            || (!$hasVariants && $stock < 1)
+                        )>
+                        <div class="button-text text-uppercase letter-space-3px">
+                            @if (!$productAvailable)
+                                Out of Stock
+                            @elseif ($hasVariants)
+                                Select Options
+                            @else
+                                Buy Now
+                            @endif
+                        </div>
+                    </button>
 
-                            @endif</div>
-
-                </button>
+                </div>
 
                 <script
                     type="application/json"
