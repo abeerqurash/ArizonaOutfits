@@ -110,11 +110,20 @@ class AccountSecurityController extends Controller
                 $validated['password']
             ),
 
+            /*
+             * This password was deliberately created by the customer.
+             * Record that fact so future security-sensitive actions can
+             * safely distinguish it from legacy/system-generated passwords.
+             */
+            'password_set_at' => now(),
+
             'email_verified_at' => null,
 
             'security_reminder_shown_at' => null,
         ])->save();
+
         $user->sendEmailVerificationNotification();
+
         return redirect()
             ->route('customer.security')
             ->with(

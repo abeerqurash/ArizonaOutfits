@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderActivity;
 use App\Models\OrderNote;
 use App\Services\OrderActivityService;
+use App\Services\OrderShipmentService;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -123,9 +124,34 @@ class OrderController extends AdminController
                     ->with('user')
                     ->latestFirst();
             },
+
+            /*
+             * Admin-only shipment visibility.
+             *
+             * Load newest shipments first and load each shipment's courier
+             * event history newest-first. Raw provider data remains internal
+             * to the admin order page and is not added to customer views.
+             */
+            'shipments' => function ($query) {
+                $query
+                    ->latest('id')
+                    ->with([
+                        'trackingEvents' => function ($eventQuery) {
+                            $eventQuery
+                                ->orderByDesc('event_time')
+                                ->orderByDesc('received_at')
+                                ->orderByDesc('id');
+                        },
+                    ]);
+            },
         ]);
 
-        return view('admin.orders.show', compact('order'));
+        $latestShipment = $order->shipments->first();
+
+        return view(
+            'admin.orders.show',
+            compact('order', 'latestShipment')
+        );
     }
 
     /**
@@ -197,7 +223,8 @@ class OrderController extends AdminController
     public function update(
         Request $request,
         Order $order,
-        OrderActivityService $activityService
+        OrderActivityService $activityService,
+        OrderShipmentService $shipmentService
     ): RedirectResponse {
         /*
         |--------------------------------------------------------------------------
@@ -229,10 +256,16 @@ class OrderController extends AdminController
                 Rule::in(self::PAYMENT_STATUSES),
             ],
 
-            'tracking_number' => [
+            'courier' => [
                 'nullable',
                 'string',
                 'max:255',
+            ],
+
+            'courier_provider' => [
+                'nullable',
+                'string',
+                'max:100',
             ],
 
             'admin_notes' => [
@@ -277,7 +310,7 @@ class OrderController extends AdminController
                 $order->payment_status !== 'paid'
                 && in_array(
                     $validated['order_status'],
-                    ['confirmed','processing','packed','shipped','out_for_delivery','delivered','completed'],
+                    ['confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery', 'delivered', 'completed'],
                     true
                 )
             ) {
@@ -290,10 +323,69 @@ class OrderController extends AdminController
             }
         }
 
-        $validated['tracking_number'] = filled(
-            $validated['tracking_number'] ?? null
+        /*
+        |--------------------------------------------------------------------------
+        | Protect Stripe provider-controlled payment state
+        |--------------------------------------------------------------------------
+        |
+        | Stripe payment status is authoritative only after the verified webhook
+        | finalizes the payment. Admin order editing must never manufacture a
+        | local "paid" state without paid_at, inventory deduction and the normal
+        | order-notification flow.
+        */
+        $isStripe = $order->payment_provider === 'stripe'
+            || $order->payment_method === 'stripe';
+
+        if ($isStripe) {
+            if ($validated['payment_status'] !== $order->payment_status) {
+                return redirect()
+                    ->route('admin.orders.show', $order)
+                    ->with(
+                        'error',
+                        'Stripe payment status is controlled by Stripe and cannot be changed manually.'
+                    );
+            }
+
+            $validated['payment_status'] = $order->payment_status;
+
+            if (
+                $order->payment_status !== 'paid'
+                && in_array(
+                    $validated['order_status'],
+                    ['confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery', 'delivered', 'completed'],
+                    true
+                )
+            ) {
+                return redirect()
+                    ->route('admin.orders.show', $order)
+                    ->with(
+                        'error',
+                        'This Stripe order has not been confirmed as paid by the verified webhook. Wait for payment confirmation before advancing the order status.'
+                    );
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Shipment fields
+        |--------------------------------------------------------------------------
+        |
+        | tracking_number is intentionally NOT accepted from this admin form.
+        | It is ArizonaOutfits' permanent customer tracking code generated by
+        | checkout. Admin shipment editing may only change the external courier
+        | provider and the courier/rider supplied tracking number.
+        |
+        */
+        $validated['courier'] = filled(
+            $validated['courier'] ?? null
         )
-            ? trim($validated['tracking_number'])
+            ? trim($validated['courier'])
+            : null;
+
+        $validated['courier_provider'] = filled(
+            $validated['courier_provider'] ?? null
+        )
+            ? trim($validated['courier_provider'])
             : null;
 
         $validated['admin_notes'] = filled(
@@ -304,7 +396,8 @@ class OrderController extends AdminController
 
         $oldOrderStatus = $order->order_status;
         $oldPaymentStatus = $order->payment_status;
-        $oldTrackingNumber = $order->tracking_number;
+        $oldCourierTrackingNumber = $order->courier;
+        $oldCourierProvider = $order->courier_provider;
         $oldAdminNotes = $order->admin_notes;
 
         DB::transaction(function () use (
@@ -312,13 +405,41 @@ class OrderController extends AdminController
             $validated,
             $oldOrderStatus,
             $oldPaymentStatus,
-            $oldTrackingNumber,
+            $oldCourierTrackingNumber,
+            $oldCourierProvider,
             $oldAdminNotes,
-            $activityService
+            $activityService,
+            $shipmentService
         ) {
             $order->update($validated);
 
+            /*
+             * Keep the internal shipment record synchronized with the
+             * admin-managed courier fields. This never changes the permanent
+             * ArizonaOutfits customer tracking_number (TRK-...).
+             */
+            $shipment = $shipmentService->syncFromOrder($order);
+
             if ($oldOrderStatus !== $order->order_status) {
+                /*
+                 * A deliberate admin order-status change becomes authoritative
+                 * over courier information that was already known at this
+                 * moment.
+                 *
+                 * Store both:
+                 * - when the admin override happened; and
+                 * - the shipment's trusted last-event boundary at that time.
+                 *
+                 * A later shipment-sync step will use this boundary to block
+                 * old/retried courier state while still allowing genuinely
+                 * newer courier events to be evaluated normally.
+                 */
+                $order->forceFill([
+                    'manual_status_override_at' => now()->startOfSecond(),
+                    'manual_status_override_shipment_event_at' =>
+                        $shipment?->last_event_at?->copy()->startOfSecond(),
+                ])->save();
+
                 $activityService->orderStatusChanged(
                     $order,
                     $oldOrderStatus,
@@ -334,11 +455,31 @@ class OrderController extends AdminController
                 );
             }
 
-            if ($oldTrackingNumber !== $order->tracking_number) {
-                $activityService->trackingUpdated(
-                    $order,
-                    $oldTrackingNumber,
-                    $order->tracking_number
+            if ($oldCourierProvider !== $order->courier_provider) {
+                $activityService->record(
+                    order: $order,
+                    type: OrderActivity::TYPE_ORDER_UPDATED,
+                    title: 'Courier provider updated',
+                    description: filled($order->courier_provider)
+                        ? 'The courier provider was updated to ' . $order->courier_provider . '.'
+                        : 'The courier provider was removed.',
+                    fieldName: 'courier_provider',
+                    oldValue: $oldCourierProvider,
+                    newValue: $order->courier_provider
+                );
+            }
+
+            if ($oldCourierTrackingNumber !== $order->courier) {
+                $activityService->record(
+                    order: $order,
+                    type: OrderActivity::TYPE_ORDER_UPDATED,
+                    title: 'Courier tracking number updated',
+                    description: filled($order->courier)
+                        ? 'The courier tracking number was updated to ' . $order->courier . '.'
+                        : 'The courier tracking number was removed.',
+                    fieldName: 'courier',
+                    oldValue: $oldCourierTrackingNumber,
+                    newValue: $order->courier
                 );
             }
 
@@ -364,8 +505,8 @@ class OrderController extends AdminController
                 $order->customer_email,
                 $order->user?->email,
             ])
-                ->filter(fn ($email) => is_string($email) && trim($email) !== '')
-                ->map(fn ($email) => trim($email))
+                ->filter(fn($email) => is_string($email) && trim($email) !== '')
+                ->map(fn($email) => trim($email))
                 ->first();
 
             if ($customerEmail) {
@@ -638,8 +779,17 @@ class OrderController extends AdminController
                 $isBankTransfer = $order->payment_provider === 'bank_transfer'
                     || $order->payment_method === 'bank_transfer';
 
+                $isStripe = $order->payment_provider === 'stripe'
+                    || $order->payment_method === 'stripe';
+
+                /*
+                 * Provider-controlled payment states must not be changed by
+                 * the generic bulk order editor. Bank transfer is finalized
+                 * by Payment Verification; Stripe is finalized by its
+                 * verified webhook.
+                 */
                 if (
-                    $isBankTransfer
+                    ($isBankTransfer || $isStripe)
                     && $field === 'payment_status'
                     && $newValue !== $oldValue
                 ) {
@@ -647,12 +797,12 @@ class OrderController extends AdminController
                 }
 
                 if (
-                    $isBankTransfer
+                    ($isBankTransfer || $isStripe)
                     && $order->payment_status !== 'paid'
                     && $field === 'order_status'
                     && in_array(
                         $newValue,
-                        ['confirmed','processing','packed','shipped','out_for_delivery','delivered','completed'],
+                        ['confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery', 'delivered', 'completed'],
                         true
                     )
                 ) {
@@ -1302,6 +1452,104 @@ class OrderController extends AdminController
 
         return $pdf->download(
             'Shipping-Label-' . $safeOrderNumber . '.pdf'
+        );
+    }
+
+
+    /**
+     * Send a custom email to the customer for this order.
+     */
+    public function emailCustomer(
+        Request $request,
+        Order $order,
+        OrderActivityService $activityService
+    ): RedirectResponse {
+        $validated = $request->validate([
+            'subject' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'message' => [
+                'required',
+                'string',
+                'max:10000',
+            ],
+        ]);
+
+        $order->loadMissing('user');
+
+        $customerEmail = collect([
+            $order->billing_email,
+            $order->shipping_email,
+            $order->user?->email,
+        ])
+            ->filter(fn ($email) => is_string($email) && trim($email) !== '')
+            ->map(fn ($email) => trim($email))
+            ->first();
+
+        if (!$customerEmail) {
+            return back()->with(
+                'error',
+                'Customer email address is not available.'
+            );
+        }
+
+        $subject = trim($validated['subject']);
+        $messageText = trim($validated['message']);
+
+        $customerName = collect([
+            $order->billing_name,
+            $order->shipping_name,
+            $order->customer_name ?? null,
+            $order->user?->name,
+        ])
+            ->filter(fn ($name) => is_string($name) && trim($name) !== '')
+            ->map(fn ($name) => trim($name))
+            ->first()
+            ?? 'Customer';
+
+        try {
+            Mail::send(
+                'emails.orders.customer-message',
+                [
+                    'order' => $order,
+                    'subject' => $subject,
+                    'messageText' => $messageText,
+                    'customerName' => $customerName,
+                ],
+                function ($mail) use ($customerEmail, $subject) {
+                    $mail
+                        ->to($customerEmail)
+                        ->subject($subject);
+                }
+            );
+
+            $activityService->record(
+                order: $order,
+                type: OrderActivity::TYPE_EMAIL_SENT,
+                title: 'Customer email sent',
+                description: 'A custom email was sent to ' . $customerEmail . '.',
+                metadata: [
+                    'recipient_email' => $customerEmail,
+                    'subject' => $subject,
+                    'source' => 'admin_order',
+                ]
+            );
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'Customer email could not be sent. Check your mail/SMTP configuration and try again.'
+                );
+        }
+
+        return back()->with(
+            'success',
+            'Customer email sent successfully.'
         );
     }
 

@@ -1123,19 +1123,6 @@ margin-top:5px;
             </td>
         </tr>
     </table>
-
-    @if (!empty($order->admin_notes))
-    <div class="notes-box">
-        <div class="notes-title">
-            Order notes
-        </div>
-
-        <div class="notes-text">
-            {{ $order->admin_notes }}
-        </div>
-    </div>
-    @endif
-
     <table class="footer-table">
         <tr>
             <td width="73%">

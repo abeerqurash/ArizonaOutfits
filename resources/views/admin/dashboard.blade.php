@@ -213,108 +213,116 @@
     </section>
 
     @if(($activeInventoryAlerts ?? collect())->isNotEmpty())
+    @php
+        $dashboardInventoryAlerts = collect($activeInventoryAlerts);
+        $dashboardCriticalInventoryCount = $dashboardInventoryAlerts
+            ->filter(fn ($alert) => !$alert->isLowStock())
+            ->count();
+    @endphp
 
-    <div class="card shadow-sm border-0 mt-4">
+    <section class="admin-panel dashboard-inventory-panel">
 
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="admin-panel-header dashboard-inventory-header">
 
-            <h5 class="mb-0">
-                Inventory Alerts
-            </h5>
+            <div>
+                <span class="admin-panel-eyebrow">
+                    Inventory health
+                </span>
 
-            <a
-                href="{{ route('admin.inventory-alerts.index') }}"
-                class="btn btn-sm btn-primary">
+                <h3>
+                    Inventory Alerts
+                </h3>
 
-                View All
+                <p class="dashboard-inventory-description">
+                    Products that need stock attention before availability
+                    affects customer orders.
+                </p>
+            </div>
 
-            </a>
+            <div class="dashboard-inventory-header-actions">
+
+                <div class="dashboard-inventory-summary">
+                    <span>
+                        {{ number_format($dashboardInventoryAlerts->count()) }}
+                        {{ \Illuminate\Support\Str::plural('alert', $dashboardInventoryAlerts->count()) }}
+                    </span>
+
+                    @if($dashboardCriticalInventoryCount > 0)
+                        <span class="is-critical">
+                            {{ number_format($dashboardCriticalInventoryCount) }}
+                            critical
+                        </span>
+                    @endif
+                </div>
+
+                <a
+                    href="{{ route('admin.inventory-alerts.index') }}"
+                    class="dashboard-inventory-view-all">
+                    View all
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
 
         </div>
 
-        <div class="table-responsive">
+        <div class="dashboard-inventory-list">
 
-            <table class="table table-hover align-middle mb-0">
+            @foreach($dashboardInventoryAlerts as $alert)
+                @php
+                    $isLowStockAlert = $alert->isLowStock();
+                @endphp
 
-                <thead>
+                <article class="dashboard-inventory-item">
 
-                    <tr>
+                    <span
+                        class="dashboard-inventory-icon {{ $isLowStockAlert ? 'is-warning' : 'is-critical' }}">
+                        <i class="fa-solid {{ $isLowStockAlert ? 'fa-triangle-exclamation' : 'fa-circle-exclamation' }}"></i>
+                    </span>
 
-                        <th>Product</th>
+                    <div class="dashboard-inventory-product">
 
-                        <th>Type</th>
-
-                        <th>Stock</th>
-
-                        <th></th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    @foreach($activeInventoryAlerts as $alert)
-
-                    <tr>
-
-                        <td>
-
+                        <strong>
                             {{ $alert->item_name }}
+                        </strong>
 
-                        </td>
+                        <span>
+                            {{ $isLowStockAlert ? 'Stock is running low' : 'Product is currently out of stock' }}
+                        </span>
 
-                        <td>
+                    </div>
 
-                            @if($alert->isLowStock())
+                    <span
+                        class="dashboard-inventory-status {{ $isLowStockAlert ? 'is-warning' : 'is-critical' }}">
+                        {{ $isLowStockAlert ? 'Low stock' : 'Out of stock' }}
+                    </span>
 
-                            <span class="badge bg-warning text-dark">
+                    <div class="dashboard-inventory-stock">
 
-                                Low Stock
+                        <small>
+                            Stock
+                        </small>
 
-                            </span>
+                        <strong>
+                            {{ number_format((int) $alert->stock_level) }}
+                        </strong>
 
-                            @else
+                    </div>
 
-                            <span class="badge bg-danger">
+                    <a
+                        href="{{ route('admin.inventory-alerts.index') }}"
+                        class="dashboard-inventory-open"
+                        aria-label="Open inventory alert for {{ $alert->item_name }}">
+                        <span>Review</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
 
-                                Out Of Stock
-
-                            </span>
-
-                            @endif
-
-                        </td>
-
-                        <td>
-
-                            {{ $alert->stock_level }}
-
-                        </td>
-
-                        <td class="text-end">
-
-                            <a
-                                href="{{ route('admin.inventory-alerts.index') }}"
-                                class="btn btn-sm btn-outline-primary">
-
-                                Open
-
-                            </a>
-
-                        </td>
-
-                    </tr>
-
-                    @endforeach
-
-                </tbody>
-
-            </table>
+                </article>
+            @endforeach
 
         </div>
 
-    </div>
+    </section>
     @endif
     <div id="dashboardAlertsContainer">
         @include('admin.dashboard.dashboard-alerts', [
@@ -645,6 +653,333 @@
     </section>
 </div>
 <style>
+
+    /* ============================================================
+       DASHBOARD INVENTORY ALERTS
+    ============================================================ */
+
+    .dashboard-inventory-panel {
+        overflow: hidden;
+        margin: 18px 0;
+        border: 1px solid #e6eaf1;
+        border-radius: 11px;
+        background: #fff;
+        box-shadow: none;
+    }
+
+    .dashboard-inventory-header {
+        gap: 18px;
+        padding: 16px 18px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .dashboard-inventory-header h3 {
+        margin: 3px 0 0;
+        color: #172033;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .dashboard-inventory-header .admin-panel-eyebrow {
+        color: #635bff;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: .12em;
+    }
+
+    .dashboard-inventory-description {
+        max-width: 560px;
+        margin: 5px 0 0;
+        color: #8a93a4;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .dashboard-inventory-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dashboard-inventory-summary {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .dashboard-inventory-summary span {
+        display: inline-flex;
+        align-items: center;
+        min-height: 25px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        background: #f3f5f8;
+        color: #586174;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-summary span.is-critical {
+        background: #ffeded;
+        color: #c13b3b;
+    }
+
+    .dashboard-inventory-view-all,
+    .dashboard-inventory-open {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        text-decoration: none;
+        transition:
+            border-color .18s ease,
+            background .18s ease,
+            color .18s ease,
+            transform .18s ease;
+    }
+
+    .dashboard-inventory-view-all {
+        min-height: 30px;
+        padding: 5px 10px;
+        border: 1px solid #e2e6ed;
+        border-radius: 999px;
+        background: #fff;
+        color: #5d57f4;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-view-all:hover {
+        border-color: #635bff;
+        background: #635bff;
+        color: #fff;
+    }
+
+    .dashboard-inventory-list {
+        padding: 6px 18px 12px;
+    }
+
+    .dashboard-inventory-item {
+        display: grid;
+        grid-template-columns: 34px minmax(180px, 1fr) auto 70px auto;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        padding: 11px 0;
+        border-bottom: 1px solid #f0f2f6;
+    }
+
+    .dashboard-inventory-item:last-child {
+        border-bottom: 0;
+    }
+
+    .dashboard-inventory-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        font-size: 12px;
+    }
+
+    .dashboard-inventory-icon.is-warning {
+        background: #fff4df;
+        color: #d88716;
+    }
+
+    .dashboard-inventory-icon.is-critical {
+        background: #ffeded;
+        color: #c13b3b;
+    }
+
+    .dashboard-inventory-product {
+        min-width: 0;
+    }
+
+    .dashboard-inventory-product strong,
+    .dashboard-inventory-product span {
+        display: block;
+    }
+
+    .dashboard-inventory-product strong {
+        overflow: hidden;
+        color: #172033;
+        font-size: 10px;
+        font-weight: 800;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-product span {
+        margin-top: 3px;
+        color: #929aaa;
+        font-size: 8px;
+    }
+
+    .dashboard-inventory-status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 23px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-status.is-warning {
+        background: #fff4dc;
+        color: #a86a00;
+    }
+
+    .dashboard-inventory-status.is-critical {
+        background: #ffeded;
+        color: #c13b3b;
+    }
+
+    .dashboard-inventory-stock {
+        text-align: center;
+    }
+
+    .dashboard-inventory-stock small,
+    .dashboard-inventory-stock strong {
+        display: block;
+    }
+
+    .dashboard-inventory-stock small {
+        color: #929aaa;
+        font-size: 7px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .dashboard-inventory-stock strong {
+        margin-top: 2px;
+        color: #172033;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .dashboard-inventory-open {
+        min-height: 29px;
+        padding: 5px 9px;
+        border: 1px solid #e2e6ed;
+        border-radius: 999px;
+        color: #5d57f4;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-open:hover {
+        border-color: #635bff;
+        background: #635bff;
+        color: #fff;
+        transform: translateX(1px);
+    }
+
+    @media (max-width: 900px) {
+        .dashboard-inventory-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .dashboard-inventory-header-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .dashboard-inventory-item {
+            grid-template-columns: 34px minmax(0, 1fr) auto;
+        }
+
+        .dashboard-inventory-status {
+            grid-column: 2;
+            justify-self: start;
+        }
+
+        .dashboard-inventory-stock {
+            grid-column: 3;
+            grid-row: 1;
+        }
+
+        .dashboard-inventory-open {
+            grid-column: 3;
+            grid-row: 2;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .dashboard-inventory-panel {
+            border-radius: 10px;
+        }
+
+        .dashboard-inventory-header,
+        .dashboard-inventory-list {
+            padding-right: 14px;
+            padding-left: 14px;
+        }
+
+        .dashboard-inventory-header-actions {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .dashboard-inventory-summary {
+            flex-wrap: wrap;
+        }
+
+        .dashboard-inventory-view-all {
+            width: 100%;
+        }
+
+        .dashboard-inventory-item {
+            grid-template-columns: 34px minmax(0, 1fr);
+            gap: 9px 10px;
+            padding: 13px 0;
+        }
+
+        .dashboard-inventory-product {
+            grid-column: 2;
+        }
+
+        .dashboard-inventory-product strong {
+            white-space: normal;
+        }
+
+        .dashboard-inventory-status {
+            grid-column: 2;
+            grid-row: auto;
+        }
+
+        .dashboard-inventory-stock {
+            grid-column: 2;
+            grid-row: auto;
+            justify-self: start;
+            text-align: left;
+        }
+
+        .dashboard-inventory-stock small,
+        .dashboard-inventory-stock strong {
+            display: inline;
+        }
+
+        .dashboard-inventory-stock strong {
+            margin-left: 4px;
+        }
+
+        .dashboard-inventory-open {
+            grid-column: 2;
+            grid-row: auto;
+            width: max-content;
+        }
+    }
+
     .admin-sales-chart-panel {
         margin-bottom: 24px;
     }

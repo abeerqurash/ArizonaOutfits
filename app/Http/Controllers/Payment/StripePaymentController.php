@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Payment;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -68,6 +70,42 @@ class StripePaymentController extends Controller
                 'Your cart is empty.',
             ], 422);
         }
+
+        /*
+         * Revalidate inventory and prices immediately before
+         * creating the Stripe order / PaymentIntent.
+         *
+         * The checkout page may have been left open while
+         * inventory or pricing changed, and this endpoint can
+         * also be called directly. Never trust the old session
+         * cart without checking the current database state.
+         */
+        $cartGate =
+            $this->validateCartForCheckout(
+                $cart
+            );
+
+        if (!$cartGate['valid']) {
+            session()->put(
+                'cart',
+                $cartGate['cart']
+            );
+
+            return response()->json([
+                'success' => false,
+                'message' =>
+                $cartGate['message'],
+                'redirect_url' =>
+                route('cart.index'),
+            ], 422);
+        }
+
+        $cart = $cartGate['cart'];
+
+        session()->put(
+            'cart',
+            $cart
+        );
 
         try {
             $validated =
@@ -160,10 +198,31 @@ class StripePaymentController extends Controller
         }
 
         /*
-         * A previous unfinished Stripe attempt is removed
-         * before creating a fresh payment attempt.
+         * Reuse the current unfinished Stripe attempt when the
+         * checkout snapshot has not changed. This prevents a page
+         * refresh from creating another local order / PaymentIntent.
+         *
+         * If the checkout details, cart, amount or currency changed,
+         * the old unfinished attempt is cancelled and removed before
+         * a fresh one is created.
          */
-        $this->discardPreviousPendingAttempt();
+        $reusedAttempt = $this->reusePreviousPendingAttempt(
+            cart: $cart,
+            validated: $validated,
+            shippingDetails: $shippingDetails,
+            total: $total,
+            currency: $currency,
+            amount: $amount,
+            stripeSecret: $stripeSecret
+        );
+
+        if ($reusedAttempt !== null) {
+            return $reusedAttempt;
+        }
+
+        $this->discardPreviousPendingAttempt(
+            $stripeSecret
+        );
 
         try {
             $order = DB::transaction(
@@ -406,6 +465,26 @@ class StripePaymentController extends Controller
                         . $order->order_number,
                 ]);
 
+            /*
+             * The verified Stripe webhook is the only code path allowed to
+             * finalize a Stripe order as paid. A PaymentIntent can already be
+             * "succeeded" by the time this response is returned, but that must
+             * not manufacture a local paid state without paid_at, inventory
+             * deduction and order-notification processing.
+             *
+             * Refresh first because the webhook may also have completed while
+             * this request was waiting for Stripe. Never downgrade that
+             * authoritative paid state.
+             */
+            $order->refresh();
+
+            $localPaymentStatus =
+                $order->payment_status === 'paid'
+                    ? 'paid'
+                    : $this->mapStripeStatus(
+                        $paymentIntent->status
+                    );
+
             $order->update([
                 'payment_reference' =>
                 $paymentIntent->id,
@@ -414,9 +493,7 @@ class StripePaymentController extends Controller
                 $paymentIntent->id,
 
                 'payment_status' =>
-                $this->mapStripeStatus(
-                    $paymentIntent->status
-                ),
+                $localPaymentStatus,
 
                 'payment_metadata' => [
                     'provider' =>
@@ -657,18 +734,32 @@ class StripePaymentController extends Controller
                     true
                 )
             ) {
-                $order->update([
-                    'payment_status' =>
-                    'processing',
+                /*
+                 * The webhook may already have finalized this order
+                 * before the browser reaches the return URL.
+                 * Never downgrade an already-paid local order.
+                 */
+                $order->refresh();
 
-                    'payment_metadata' => [
-                        'provider' =>
-                        'stripe',
+                if ($order->payment_status !== 'paid') {
+                    $order->update([
+                        'payment_status' =>
+                        'processing',
 
-                        'stripe_status' =>
-                        $paymentIntent->status,
-                    ],
-                ]);
+                        'payment_metadata' => array_merge(
+                            is_array($order->payment_metadata)
+                                ? $order->payment_metadata
+                                : [],
+                            [
+                                'provider' =>
+                                'stripe',
+
+                                'stripe_status' =>
+                                $paymentIntent->status,
+                            ]
+                        ),
+                    ]);
+                }
 
                 session()->put(
                     'recent_order_number',
@@ -686,7 +777,9 @@ class StripePaymentController extends Controller
                     )
                     ->with(
                         'success',
-                        'Your payment is being processed.'
+                        $order->payment_status === 'paid'
+                            ? 'Your payment has been confirmed.'
+                            : 'Your payment is being processed.'
                     );
             }
 
@@ -695,6 +788,36 @@ class StripePaymentController extends Controller
                 ->last_payment_error
                 ?->message
                 ?? 'The card payment was not completed.';
+
+            /*
+             * A Stripe webhook can arrive before this browser return.
+             * If it has already confirmed the order as paid, this
+             * endpoint must never overwrite that authoritative state
+             * with a stale/failed browser-return status.
+             */
+            $order->refresh();
+
+            if ($order->payment_status === 'paid') {
+                session()->forget([
+                    'cart',
+                    'cart_coupon',
+                    'stripe_pending_order_id',
+                    'stripe_pending_order_number',
+                ]);
+
+                session()->put(
+                    'recent_order_number',
+                    $order->order_number
+                );
+
+                return redirect()->route(
+                    'checkout.thankyou',
+                    [
+                        'order_number' =>
+                        $order->order_number,
+                    ]
+                );
+            }
 
             $order->update([
                 'payment_status' =>
@@ -706,13 +829,18 @@ class StripePaymentController extends Controller
                 'payment_failure_message' =>
                 $failureMessage,
 
-                'payment_metadata' => [
-                    'provider' =>
-                    'stripe',
+                'payment_metadata' => array_merge(
+                    is_array($order->payment_metadata)
+                        ? $order->payment_metadata
+                        : [],
+                    [
+                        'provider' =>
+                        'stripe',
 
-                    'stripe_status' =>
-                    $paymentIntent->status,
-                ],
+                        'stripe_status' =>
+                        $paymentIntent->status,
+                    ]
+                ),
             ]);
 
             return redirect()
@@ -1007,41 +1135,531 @@ class StripePaymentController extends Controller
         }
     }
 
+
     /**
-     * Remove an earlier unpaid Stripe attempt.
+     * Revalidate the complete cart immediately before Stripe.
+     *
+     * This independently protects /stripe/create-intent from stale
+     * session data, direct requests, changed stock, removed variants,
+     * inactive products, and changed prices.
      */
-    private function discardPreviousPendingAttempt(): void
+    private function validateCartForCheckout(array $cart): array
     {
-        $previousOrderId =
-            session(
-                'stripe_pending_order_id'
+        $refreshedCart = $cart;
+        $problems = [];
+
+        foreach ($refreshedCart as $cartKey => &$item) {
+            $productId = (int) ($item['product_id'] ?? 0);
+
+            $product = Product::query()
+                ->whereKey($productId)
+                ->where('status', 'active')
+                ->first();
+
+            if (!$product) {
+                $item['stock'] = 0;
+                $item['unavailable'] = true;
+                $item['unavailable_reason'] =
+                    'This product is no longer available.';
+
+                $problems[] =
+                    ($item['title'] ?? 'A product')
+                    . ' is no longer available.';
+
+                continue;
+            }
+
+            $variant = null;
+            $variantId = (int) ($item['variant_id'] ?? 0);
+
+            if ($variantId > 0) {
+                $variant = ProductVariant::query()
+                    ->whereKey($variantId)
+                    ->where('product_id', $product->id)
+                    ->first();
+
+                if (!$variant) {
+                    $item['stock'] = 0;
+                    $item['unavailable'] = true;
+                    $item['unavailable_reason'] =
+                        'The selected product variation is no longer available.';
+
+                    $problems[] =
+                        $product->title
+                        . ': the selected variation is no longer available.';
+
+                    continue;
+                }
+            }
+
+            $availableStock = $variant
+                ? (int) $variant->stock
+                : (int) $product->stock;
+
+            $item['stock'] = max(0, $availableStock);
+
+            if ($availableStock < 1) {
+                $item['unavailable'] = true;
+                $item['unavailable_reason'] =
+                    'This item is currently out of stock.';
+
+                $problems[] =
+                    $product->title
+                    . ' is currently out of stock.';
+
+                continue;
+            }
+
+            $quantity = max(
+                1,
+                (int) ($item['quantity'] ?? 1)
             );
+
+            if ($quantity > $availableStock) {
+                $item['quantity'] = $availableStock;
+
+                $problems[] =
+                    $product->title
+                    . ' now has only '
+                    . $availableStock
+                    . ' available. Its cart quantity was adjusted.';
+            } else {
+                $item['quantity'] = $quantity;
+            }
+
+            unset(
+                $item['unavailable'],
+                $item['unavailable_reason']
+            );
+
+            $regularPrice = $variant
+                ? (
+                    $variant->regular_price !== null
+                        ? (float) $variant->regular_price
+                        : (float) $product->regular_price
+                )
+                : (float) $product->regular_price;
+
+            $salePrice = $variant
+                ? (
+                    $variant->sale_price !== null
+                        ? (float) $variant->sale_price
+                        : null
+                )
+                : (
+                    $product->sale_price !== null
+                        ? (float) $product->sale_price
+                        : null
+                );
+
+            $price = (
+                $salePrice !== null
+                && $salePrice < $regularPrice
+            )
+                ? $salePrice
+                : $regularPrice;
+
+            if (
+                round((float) ($item['price'] ?? 0), 2)
+                !== round($price, 2)
+            ) {
+                $problems[] =
+                    $product->title
+                    . ' has a new price. Please review your cart before checkout.';
+            }
+
+            $item['title'] = $product->title;
+            $item['slug'] = $product->slug;
+            $item['sku'] = $variant?->sku ?: $product->sku;
+            $item['image'] = (
+                $variant
+                && !empty($variant->image)
+            )
+                ? $variant->image
+                : $product->featured_image;
+            $item['regular_price'] = $regularPrice;
+            $item['sale_price'] = $salePrice;
+            $item['price'] = $price;
+        }
+
+        unset($item);
+
+        $problems = array_values(
+            array_unique(
+                array_filter($problems)
+            )
+        );
+
+        return [
+            'valid' => empty($problems),
+            'cart' => $refreshedCart,
+            'message' => empty($problems)
+                ? ''
+                : implode(' ', $problems),
+        ];
+    }
+
+    /**
+     * Reuse the current pending Stripe attempt when the complete
+     * checkout snapshot still matches.
+     *
+     * A browser refresh can initialize the Payment Element again.
+     * Returning the existing client secret keeps one local order and
+     * one PaymentIntent instead of creating duplicates.
+     */
+    private function reusePreviousPendingAttempt(
+        array $cart,
+        array $validated,
+        array $shippingDetails,
+        float $total,
+        string $currency,
+        int $amount,
+        string $stripeSecret
+    ): ?JsonResponse {
+        $previousOrderId = session(
+            'stripe_pending_order_id'
+        );
+
+        if (!$previousOrderId) {
+            return null;
+        }
+
+        $previousOrder = Order::query()
+            ->with('items')
+            ->whereKey($previousOrderId)
+            ->where('payment_provider', 'stripe')
+            ->where('payment_status', 'pending')
+            ->first();
+
+        if (
+            !$previousOrder
+            || empty($previousOrder->payment_intent_id)
+        ) {
+            return null;
+        }
+
+        if (
+            !$this->pendingOrderMatchesCheckout(
+                order: $previousOrder,
+                cart: $cart,
+                validated: $validated,
+                shippingDetails: $shippingDetails,
+                total: $total,
+                currency: $currency
+            )
+        ) {
+            return null;
+        }
+
+        try {
+            $stripe = new StripeClient(
+                $stripeSecret
+            );
+
+            $paymentIntent = $stripe
+                ->paymentIntents
+                ->retrieve(
+                    $previousOrder->payment_intent_id,
+                    []
+                );
+
+            if (
+                !in_array(
+                    $paymentIntent->status,
+                    [
+                        'requires_payment_method',
+                        'requires_confirmation',
+                        'requires_action',
+                    ],
+                    true
+                )
+            ) {
+                return null;
+            }
+
+            if (
+                (int) $paymentIntent->amount !== $amount
+                || strtolower(
+                    (string) $paymentIntent->currency
+                ) !== strtolower($currency)
+            ) {
+                return null;
+            }
+
+            session()->put(
+                'stripe_pending_order_id',
+                $previousOrder->id
+            );
+
+            session()->put(
+                'stripe_pending_order_number',
+                $previousOrder->order_number
+            );
+
+            return response()->json([
+                'success' => true,
+                'client_secret' =>
+                    $paymentIntent->client_secret,
+                'payment_intent_id' =>
+                    $paymentIntent->id,
+                'order_number' =>
+                    $previousOrder->order_number,
+                'return_url' =>
+                    route(
+                        'checkout.stripe.return'
+                    ),
+                'reused' => true,
+            ]);
+        } catch (Throwable $exception) {
+            /*
+             * Do not let a stale/unavailable previous intent block
+             * checkout. The normal cleanup path below will remove it
+             * before a fresh attempt is created.
+             */
+            report($exception);
+
+            return null;
+        }
+    }
+
+    /**
+     * Compare the pending order against the current authoritative
+     * checkout snapshot.
+     */
+    private function pendingOrderMatchesCheckout(
+        Order $order,
+        array $cart,
+        array $validated,
+        array $shippingDetails,
+        float $total,
+        string $currency
+    ): bool {
+        if (
+            round((float) $order->total, 2)
+                !== round($total, 2)
+            || strtoupper((string) $order->currency)
+                !== strtoupper($currency)
+        ) {
+            return false;
+        }
+
+        $fields = [
+            'billing_name' =>
+                $validated['billing_name'],
+            'billing_email' =>
+                $validated['billing_email'],
+            'billing_phone' =>
+                $validated['billing_phone'],
+            'billing_address' =>
+                $validated['billing_address'],
+            'billing_country' =>
+                strtoupper(
+                    $validated['billing_country']
+                ),
+            'billing_state' =>
+                $validated['billing_state'],
+            'billing_city' =>
+                $validated['billing_city'],
+            'billing_zip' =>
+                $validated['billing_zip'],
+            'shipping_name' =>
+                $shippingDetails['name'],
+            'shipping_email' =>
+                $shippingDetails['email'],
+            'shipping_phone' =>
+                $shippingDetails['phone'],
+            'shipping_address' =>
+                $shippingDetails['address'],
+            'shipping_country' =>
+                strtoupper(
+                    $shippingDetails['country']
+                ),
+            'shipping_state' =>
+                $shippingDetails['state'],
+            'shipping_city' =>
+                $shippingDetails['city'],
+            'shipping_zip' =>
+                $shippingDetails['zip'],
+            'order_notes' =>
+                $validated['order_notes']
+                    ?? null,
+        ];
+
+        foreach ($fields as $field => $value) {
+            if (
+                trim((string) $order->{$field})
+                !== trim((string) $value)
+            ) {
+                return false;
+            }
+        }
+
+        $orderItems = $order->items
+            ->map(
+                fn ($item): array => [
+                    'product_id' =>
+                        (int) ($item->product_id ?? 0),
+                    'variant_id' =>
+                        (int) ($item->variant_id ?? 0),
+                    'quantity' =>
+                        (int) $item->quantity,
+                    'price' =>
+                        round(
+                            (float) $item->price,
+                            2
+                        ),
+                ]
+            )
+            ->sortBy(
+                fn (array $item): string =>
+                    $item['product_id']
+                    . ':'
+                    . $item['variant_id']
+                    . ':'
+                    . $item['price']
+            )
+            ->values()
+            ->all();
+
+        $cartItems = collect($cart)
+            ->map(
+                fn (array $item): array => [
+                    'product_id' =>
+                        (int) (
+                            $item['product_id']
+                            ?? 0
+                        ),
+                    'variant_id' =>
+                        (int) (
+                            $item['variant_id']
+                            ?? 0
+                        ),
+                    'quantity' =>
+                        max(
+                            1,
+                            (int) (
+                                $item['quantity']
+                                ?? 1
+                            )
+                        ),
+                    'price' =>
+                        round(
+                            (float) (
+                                $item['price']
+                                ?? 0
+                            ),
+                            2
+                        ),
+                ]
+            )
+            ->sortBy(
+                fn (array $item): string =>
+                    $item['product_id']
+                    . ':'
+                    . $item['variant_id']
+                    . ':'
+                    . $item['price']
+            )
+            ->values()
+            ->all();
+
+        return $orderItems === $cartItems;
+    }
+
+    /**
+     * Remove an earlier unfinished Stripe attempt.
+     *
+     * If Stripe already has a PaymentIntent for it, cancel that
+     * intent first so an old browser tab cannot later pay an order
+     * that Laravel has removed.
+     */
+    private function discardPreviousPendingAttempt(
+        string $stripeSecret
+    ): void {
+        $previousOrderId = session(
+            'stripe_pending_order_id'
+        );
 
         if (!$previousOrderId) {
             return;
         }
 
-        $previousOrder =
-            Order::query()
-            ->whereKey(
-                $previousOrderId
-            )
-            ->where(
-                'payment_provider',
-                'stripe'
-            )
-            ->where(
-                'payment_status',
-                'pending'
-            )
+        $previousOrder = Order::query()
+            ->whereKey($previousOrderId)
+            ->where('payment_provider', 'stripe')
+            ->where('payment_status', 'pending')
             ->first();
 
-        if (
-            $previousOrder
-            && !$previousOrder
-                ->payment_intent_id
-        ) {
-            $previousOrder->delete();
+        if ($previousOrder) {
+            $canDelete = true;
+
+            if (
+                !empty(
+                    $previousOrder
+                        ->payment_intent_id
+                )
+            ) {
+                try {
+                    $stripe = new StripeClient(
+                        $stripeSecret
+                    );
+
+                    $paymentIntent = $stripe
+                        ->paymentIntents
+                        ->retrieve(
+                            $previousOrder
+                                ->payment_intent_id,
+                            []
+                        );
+
+                    if (
+                        in_array(
+                            $paymentIntent->status,
+                            [
+                                'requires_payment_method',
+                                'requires_confirmation',
+                                'requires_action',
+                            ],
+                            true
+                        )
+                    ) {
+                        $stripe
+                            ->paymentIntents
+                            ->cancel(
+                                $paymentIntent->id,
+                                []
+                            );
+                    } elseif (
+                        in_array(
+                            $paymentIntent->status,
+                            [
+                                'succeeded',
+                                'processing',
+                                'requires_capture',
+                            ],
+                            true
+                        )
+                    ) {
+                        /*
+                         * Never delete an order whose Stripe payment
+                         * has already succeeded or is processing.
+                         */
+                        $canDelete = false;
+                    }
+                } catch (Throwable $exception) {
+                    report($exception);
+
+                    /*
+                     * Keep the local order if Stripe could not confirm
+                     * that the previous intent is safe to discard.
+                     */
+                    $canDelete = false;
+                }
+            }
+
+            if ($canDelete) {
+                $previousOrder->delete();
+            }
         }
 
         session()->forget([
@@ -1245,8 +1863,13 @@ class StripePaymentController extends Controller
         string $status
     ): string {
         return match ($status) {
+            /*
+             * "succeeded" is intentionally kept as processing here.
+             * Only StripeWebhookController may promote the local order
+             * to paid after signature, amount and currency verification.
+             */
             'succeeded' =>
-            'paid',
+            'processing',
 
             'processing',
             'requires_capture' =>

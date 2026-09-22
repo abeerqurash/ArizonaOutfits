@@ -269,6 +269,18 @@
         font-size: 12px !important
     }
 
+    .security-actions {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        flex-wrap: wrap;
+        margin-top: auto
+    }
+
+    .security-actions .security-button {
+        margin-top: 0
+    }
+
     .security-message {
         margin-bottom: 16px;
         padding: 12px 14px;
@@ -345,48 +357,6 @@ $user = $user ?? auth()->user();
             </div>
         </div>
     </div>
-
-    {{-- SECURITY SETUP WARNING --}}
-
-    @if ($user->needsBackupLoginMethod())
-
-    <div
-        class="security-warning"
-        role="alert">
-
-        <h3>
-            <i class="fa-solid fa-shield-halved"></i>
-            Secure your account
-        </h3>
-
-        <p>
-            Your account currently relies on your verified phone number.
-            Add at least one backup method: a verified email,
-            Google account or Facebook account.
-        </p>
-
-    </div>
-
-    @elseif ($user->needsVerifiedPhone())
-
-    <div
-        class="security-warning"
-        role="status">
-
-        <h3>
-            <i class="fa-solid fa-mobile-screen-button"></i>
-            Add a phone number
-        </h3>
-
-        <p>
-            Add and verify your phone number to improve account
-            security and give you another way to access your account.
-        </p>
-
-    </div>
-
-    @endif
-
 
     <div class="security-grid">
 
@@ -487,7 +457,11 @@ $user = $user ?? auth()->user();
                     method="POST"
                     action="{{ route(
                         'customer.security.email.change.cancel'
-                    ) }}">
+                    ) }}"
+                    data-security-confirm-form
+                    data-confirm-title="Cancel email change?"
+                    data-confirm-message="Cancel the pending email change? Your current email address will remain active."
+                    data-confirm-button="Cancel email change">
 
                     @csrf
                     @method('DELETE')
@@ -634,6 +608,101 @@ $user = $user ?? auth()->user();
 
 
         {{-- ====================================================== --}}
+        {{-- PASSWORD --}}
+        {{-- ====================================================== --}}
+
+        <section class="security-card">
+
+            <h3>
+                <i class="fa-solid fa-key"></i>
+                Password
+            </h3>
+
+            @if ($user->hasPassword())
+
+            <div class="security-status">
+                <i class="fa-solid fa-circle-check"></i>
+                Password enabled
+            </div>
+
+            <p>
+                Your account has a password that can be used
+                with your email address to sign in.
+            </p>
+
+            <p class="security-note">
+                For security, your existing password is never displayed.
+                If you do not remember it, use the secure reset process.
+            </p>
+
+            <div class="security-actions">
+
+                <a
+                    href="{{ route('password.request') }}"
+                    class="security-button">
+
+                    <i class="fa-solid fa-rotate"></i>
+
+                    Forgot / reset password
+
+                </a>
+
+            </div>
+
+            @else
+
+            <div class="security-status">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                No password created
+            </div>
+
+            @if (filled($user->email))
+
+            <p>
+                Your account currently uses another sign-in method.
+                Create your first Arizona Outfits password securely
+                through your verified account email.
+            </p>
+
+            <p class="security-note">
+                Google, Facebook or phone access will remain connected.
+                Creating a password simply adds another secure login method.
+            </p>
+
+            <div class="security-actions">
+
+                <a
+                    href="{{ route('password.request') }}"
+                    class="security-button">
+
+                    <i class="fa-solid fa-key"></i>
+
+                    Create password
+
+                </a>
+
+            </div>
+
+            @else
+
+            <p>
+                Add an email address first so your account has a secure
+                email recovery method before creating a password.
+            </p>
+
+            <p class="security-note">
+                Use the Email section on this page to add an email and
+                create your password together.
+            </p>
+
+            @endif
+
+            @endif
+
+        </section>
+
+
+        {{-- ====================================================== --}}
         {{-- PHONE --}}
         {{-- ====================================================== --}}
 
@@ -672,7 +741,10 @@ $user = $user ?? auth()->user();
             <form
                 method="POST"
                 action="{{ route('customer.security.phone.remove') }}"
-                onsubmit="return confirm('Remove this verified phone number from your account?');">
+                data-security-confirm-form
+                data-confirm-title="Remove phone?"
+                data-confirm-message="Remove this verified phone number from your account?"
+                data-confirm-button="Remove phone">
 
                 @csrf
                 @method('DELETE')
@@ -814,7 +886,10 @@ $user = $user ?? auth()->user();
                             'customer.security.social.disconnect',
                             ['provider' => 'google']
                         ) }}"
-                        onsubmit="return confirm('Disconnect Google from your account?');">
+                        data-security-confirm-form
+                        data-confirm-title="Disconnect Google?"
+                        data-confirm-message="Disconnect Google from your account?"
+                        data-confirm-button="Disconnect Google">
 
                         @csrf
                         @method('DELETE')
@@ -903,7 +978,10 @@ $user = $user ?? auth()->user();
                             'customer.security.social.disconnect',
                             ['provider' => 'facebook']
                         ) }}"
-                        onsubmit="return confirm('Disconnect Facebook from your account?');">
+                        data-security-confirm-form
+                        data-confirm-title="Disconnect Facebook?"
+                        data-confirm-message="Disconnect Facebook from your account?"
+                        data-confirm-button="Disconnect Facebook">
 
                         @csrf
                         @method('DELETE')
@@ -952,6 +1030,288 @@ $user = $user ?? auth()->user();
 
     </div>
 
+    {{-- ====================================================== --}}
+    {{-- REUSABLE SECURITY CONFIRMATION POPUP --}}
+    {{-- ====================================================== --}}
+
+    <div
+        id="security-confirm-popup"
+        class="security-confirm-popup"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="security-confirm-title"
+        aria-describedby="security-confirm-message"
+        hidden>
+
+        <div class="security-confirm-popup__backdrop" data-security-confirm-close></div>
+
+        <div class="security-confirm-popup__dialog" role="document">
+            <button
+                type="button"
+                class="security-confirm-popup__close"
+                data-security-confirm-close
+                aria-label="Close confirmation">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+
+            <div class="security-confirm-popup__icon" aria-hidden="true">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <h3 id="security-confirm-title">Confirm action</h3>
+            <p id="security-confirm-message">Are you sure you want to continue?</p>
+
+            <div class="security-confirm-popup__actions">
+                <button type="button" class="security-confirm-cancel" data-security-confirm-close>
+                    Cancel
+                </button>
+
+                <button type="button" class="security-confirm-submit" id="security-confirm-submit">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+
 </div>
+
+<style>
+    .security-confirm-popup[hidden] {
+        display: none !important;
+    }
+
+    .security-confirm-popup {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .security-confirm-popup__backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.58);
+        backdrop-filter: blur(3px);
+    }
+
+    .security-confirm-popup__dialog {
+        position: relative;
+        z-index: 1;
+        width: min(100%, 460px);
+        padding: 34px 30px 30px;
+        border: 1px solid #e5eaf1;
+        border-radius: 16px;
+        background: #ffffff;
+        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.22);
+        text-align: center;
+    }
+
+    .security-confirm-popup__close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 36px;
+        height: 36px;
+        border: 0;
+        border-radius: 50%;
+        background: #f1f5f9;
+        color: #172033;
+        cursor: pointer;
+    }
+
+    .security-confirm-popup__icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 58px;
+        margin-bottom: 18px;
+        border-radius: 50%;
+        background: #ccfbf1;
+        color: #0f766e;
+        font-size: 23px;
+    }
+
+    .security-confirm-popup__dialog h3 {
+        margin: 0 0 10px;
+        color: #172033;
+        font-size: 22px;
+        line-height: 1.25;
+    }
+
+    .security-confirm-popup__dialog p {
+        margin: 0 auto;
+        max-width: 360px;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+    .security-confirm-popup__actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 26px;
+        flex-wrap: wrap;
+    }
+
+    .security-confirm-cancel,
+    .security-confirm-submit {
+        min-width: 140px;
+        min-height: 44px;
+        padding: 11px 22px;
+        border-radius: 100px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+
+    .security-confirm-cancel {
+        border: 1px solid #dbe3ec;
+        background: #ffffff;
+        color: #172033;
+    }
+
+    .security-confirm-submit {
+        border: 1px solid #0f766e;
+        background: #0f766e;
+        color: #ffffff;
+    }
+
+    .security-confirm-cancel:hover,
+    .security-confirm-submit:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.10);
+    }
+
+    @media (max-width: 520px) {
+        .security-confirm-popup__dialog {
+            padding: 32px 20px 24px;
+        }
+
+        .security-confirm-popup__actions {
+            flex-direction: column-reverse;
+        }
+
+        .security-confirm-cancel,
+        .security-confirm-submit {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+
+    const popup = document.getElementById('security-confirm-popup');
+    const title = document.getElementById('security-confirm-title');
+    const message = document.getElementById('security-confirm-message');
+    const submitButton = document.getElementById('security-confirm-submit');
+    const forms = document.querySelectorAll('[data-security-confirm-form]');
+
+    if (!popup || !title || !message || !submitButton || !forms.length) {
+        return;
+    }
+
+    let pendingForm = null;
+    let triggerButton = null;
+
+    const closeButtons = popup.querySelectorAll('[data-security-confirm-close]');
+    const focusableSelector = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    function openPopup(form) {
+        pendingForm = form;
+        triggerButton = document.activeElement;
+
+        title.textContent = form.dataset.confirmTitle || 'Confirm action';
+        message.textContent = form.dataset.confirmMessage || 'Are you sure you want to continue?';
+        submitButton.textContent = form.dataset.confirmButton || 'Confirm';
+
+        popup.hidden = false;
+        document.body.style.overflow = 'hidden';
+        submitButton.focus();
+    }
+
+    function closePopup() {
+        popup.hidden = true;
+        document.body.style.overflow = '';
+        pendingForm = null;
+
+        if (triggerButton && typeof triggerButton.focus === 'function') {
+            triggerButton.focus();
+        }
+
+        triggerButton = null;
+    }
+
+    forms.forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+            if (form.dataset.confirmed === 'true') {
+                return;
+            }
+
+            event.preventDefault();
+            openPopup(form);
+        });
+    });
+
+    closeButtons.forEach(function (button) {
+        button.addEventListener('click', closePopup);
+    });
+
+    submitButton.addEventListener('click', function () {
+        if (!pendingForm) {
+            return;
+        }
+
+        const form = pendingForm;
+        form.dataset.confirmed = 'true';
+        popup.hidden = true;
+        document.body.style.overflow = '';
+        form.requestSubmit();
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (popup.hidden) {
+            return;
+        }
+
+        if (event.key === 'Escape') {
+            event.preventDefault();
+            closePopup();
+            return;
+        }
+
+        if (event.key !== 'Tab') {
+            return;
+        }
+
+        const focusable = Array.from(popup.querySelectorAll(focusableSelector))
+            .filter(function (element) {
+                return element.offsetParent !== null;
+            });
+
+        if (!focusable.length) {
+            return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+});
+</script>
 
 @endsection

@@ -431,9 +431,14 @@
                                 $metadata['bank_transfer_verification']
                                 ?? [];
 
-                            $verificationLabel = 'Provider Verified';
-                            $verificationClass = 'verified';
-
+                            /*
+                             * Verification wording depends on the provider.
+                             *
+                             * Bank transfer is manually reviewed by an admin.
+                             * Stripe is provider-controlled and must only be
+                             * described as verified after its payment status
+                             * has actually reached a successful paid state.
+                             */
                             if ($provider === 'bank_transfer') {
                                 if (!empty($bankVerification['verified'])) {
                                     $verificationLabel = 'Verified';
@@ -445,6 +450,28 @@
                                     $verificationLabel = 'Pending Review';
                                     $verificationClass = 'pending';
                                 }
+                            } elseif ($provider === 'stripe') {
+                                if (in_array(
+                                    $status,
+                                    ['paid', 'completed', 'succeeded'],
+                                    true
+                                )) {
+                                    $verificationLabel = 'Provider Verified';
+                                    $verificationClass = 'verified';
+                                } elseif (in_array(
+                                    $status,
+                                    ['failed', 'declined', 'cancelled'],
+                                    true
+                                )) {
+                                    $verificationLabel = 'Provider Failed';
+                                    $verificationClass = 'rejected';
+                                } else {
+                                    $verificationLabel = 'Awaiting Stripe';
+                                    $verificationClass = 'pending';
+                                }
+                            } else {
+                                $verificationLabel = 'Provider Controlled';
+                                $verificationClass = 'pending';
                             }
 
                             $customerName =

@@ -136,6 +136,16 @@ $paymentClass = match ($paymentStatus) {
 
 default => 'status-warning',
 };
+$isCustomerInvoice = request()->routeIs('customer.orders.invoice');
+
+$invoiceBackUrl = $isCustomerInvoice
+    ? route('customer.orders.show', $order->id)
+    : route('admin.orders.show', $order);
+
+$invoiceDownloadUrl = $isCustomerInvoice
+    ? route('customer.orders.invoice.download', $order->id)
+    : route('admin.orders.invoice.download', $order);
+
 @endphp
 
 <!DOCTYPE html>
@@ -962,7 +972,7 @@ default => 'status-warning',
     <div class="invoice-toolbar">
         <div class="invoice-toolbar-left">
             <a
-                href="{{ route('admin.orders.show', $order) }}"
+                href="{{ $invoiceBackUrl }}"
                 class="toolbar-button">
                 ← Back to order
             </a>
@@ -982,7 +992,7 @@ default => 'status-warning',
             </button>
 
             <a
-                href="{{ route('admin.orders.invoice.download', $order) }}"
+                href="{{ $invoiceDownloadUrl }}"
                 class="toolbar-button toolbar-button-primary">
                 Download PDF
             </a>
@@ -1354,14 +1364,6 @@ default => 'status-warning',
                     </div>
                 </div>
             </section>
-
-            @if (!empty($order->admin_notes))
-            <section class="invoice-notes">
-                <strong>Order notes</strong>
-
-                <p>{{ $order->admin_notes }}</p>
-            </section>
-            @endif
 
             <footer class="invoice-footer">
                 <div class="invoice-footer-message">

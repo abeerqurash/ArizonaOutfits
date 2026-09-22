@@ -16,6 +16,7 @@ use App\Http\Controllers\BlogFormController;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerDashboardController;
+use App\Http\Controllers\OrderTrackingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\CartController;
@@ -382,13 +383,38 @@ Route::get(
     [CategoryController::class, 'show']
 )->name('category-show');
 
+
+/*
+|--------------------------------------------------------------------------
+| PUBLIC ORDER TRACKING
+|--------------------------------------------------------------------------
+|
+| Guests and customers can securely look up an order using the order
+| number together with the email address stored on that order.
+|
+*/
+
+Route::get(
+    '/track-order',
+    [OrderTrackingController::class, 'index']
+)->name('orders.track');
+
+Route::post(
+    '/track-order',
+    [OrderTrackingController::class, 'lookup']
+)->name('orders.track.lookup');
+
+
 /*
 |--------------------------------------------------------------------------
 | AUTHENTICATED USER ROUTES
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware([
+    'auth',
+    'customer.security.reminder',
+])->group(function () {
     Route::get(
         '/account',
         [CustomerDashboardController::class, 'index']
@@ -428,58 +454,6 @@ Route::middleware('auth')->group(function () {
         '/profile',
         [ProfileController::class, 'destroy']
     )->name('profile.destroy');
-    /*
-|--------------------------------------------------------------------------
-| Customer Login & Security
-|--------------------------------------------------------------------------
-*/
-
-    Route::get(
-        '/account/security',
-        [AccountSecurityController::class, 'index']
-    )->name('customer.security');
-
-
-    /*
-|--------------------------------------------------------------------------
-| Add Email + Password
-|--------------------------------------------------------------------------
-*/
-
-    Route::post(
-        '/account/security/email',
-        [AccountSecurityController::class, 'addEmail']
-    )
-        ->middleware('throttle:authentication')
-        ->name('customer.security.email');
-
-
-    /*
-|--------------------------------------------------------------------------
-| Add / Change Phone
-|--------------------------------------------------------------------------
-*/
-
-    Route::post(
-        '/account/security/phone',
-        [AccountSecurityController::class, 'sendPhoneCode']
-    )
-        ->middleware('throttle:5,1')
-        ->name('customer.security.phone.send');
-
-
-    Route::get(
-        '/account/security/phone/verify',
-        [AccountSecurityController::class, 'showPhoneVerification']
-    )->name('customer.security.phone.verify');
-
-
-    Route::post(
-        '/account/security/phone/verify',
-        [AccountSecurityController::class, 'verifyPhone']
-    )
-        ->middleware('throttle:10,1')
-        ->name('customer.security.phone.verify.store');
     /*
 |--------------------------------------------------------------------------
 | Customer Account Security
@@ -666,35 +640,6 @@ Route::middleware('auth')->group(function () {
             'customer.security.social.callback'
         );
 
-    /*
-|--------------------------------------------------------------------------
-| Customer Login Method Management
-|--------------------------------------------------------------------------
-*/
-
-    Route::delete(
-        '/account/security/social/{provider}',
-        [LoginMethodController::class, 'disconnectSocial']
-    )
-        ->whereIn(
-            'provider',
-            [
-                'google',
-                'facebook',
-            ]
-        )
-        ->name(
-            'customer.security.social.disconnect'
-        );
-
-
-    Route::delete(
-        '/account/security/phone',
-        [LoginMethodController::class, 'removePhone']
-    )
-        ->name(
-            'customer.security.phone.remove'
-        );
 });
 
 /*
@@ -828,6 +773,10 @@ Route::middleware([
             '/orders/{order}/email-invoice',
             [AdminOrderController::class, 'emailInvoice']
         )->name('orders.email-invoice');
+        Route::post(
+            '/orders/{order}/email-customer',
+            [AdminOrderController::class, 'emailCustomer']
+        )->name('orders.email-customer');
         Route::get(
             '/orders/{order}/invoice/download',
             [AdminOrderController::class, 'downloadInvoice']

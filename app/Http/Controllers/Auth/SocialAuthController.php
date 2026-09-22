@@ -182,11 +182,16 @@ class SocialAuthController extends Controller
                     'email' => $email,
 
                     /*
-                     * Keep this compatible with your current working social
-                     * authentication.
+                     * Social-only customers have not knowingly created
+                     * an Arizona Outfits password yet.
+                     *
+                     * They can create one later from Login & Security.
                      */
                     'password' =>
-                        Str::random(64),
+                        null,
+
+                    'password_set_at' =>
+                        null,
 
                     'registration_method' =>
                         $provider,

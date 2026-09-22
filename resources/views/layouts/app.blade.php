@@ -13,7 +13,7 @@
     <title>
         @yield(
             'title',
-            $title ?? 'IdeoStream'
+            $title ?? 'Arizona Outfits'
         )
     </title>
 

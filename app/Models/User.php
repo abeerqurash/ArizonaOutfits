@@ -18,6 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'phone',
         'password',
+        'password_set_at',
 
         'phone_verified_at',
         'security_reminder_shown_at',
@@ -46,6 +47,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'phone_verified_at' => 'datetime',
             'security_reminder_shown_at' => 'datetime',
+            'password_set_at' => 'datetime',
 
             'password' => 'hashed',
             'pending_email_requested_at' => 'datetime',
@@ -121,6 +123,19 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->resolvedAdminPermissions = null;
 
         $this->unsetRelation('adminRoles');
+    }
+
+    /**
+     * Customer has deliberately created/reset a usable password.
+     *
+     * Both values are required so legacy social accounts that received
+     * an unknown system-generated password are not treated as
+     * password-capable accounts.
+     */
+    public function hasPassword(): bool
+    {
+        return filled($this->password)
+            && $this->password_set_at !== null;
     }
 
     /**

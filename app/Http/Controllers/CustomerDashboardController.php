@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderActivity;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -18,7 +19,13 @@ class CustomerDashboardController extends Controller
         $stats = [
             'orders' => (clone $ordersQuery)->count(),
             'processing' => (clone $ordersQuery)
-                ->whereIn('order_status', ['pending', 'processing'])
+                ->whereIn('order_status', [
+                    'pending',
+                    'confirmed',
+                    'processing',
+                    'packed',
+                    'out_for_delivery',
+                ])
                 ->count(),
             'shipped' => (clone $ordersQuery)
                 ->where('order_status', 'shipped')
@@ -28,7 +35,8 @@ class CustomerDashboardController extends Controller
                 ->count(),
         ];
 
-        $recentOrders = $request->user()->orders()
+        $recentOrders = $request->user()
+            ->orders()
             ->withCount('items')
             ->latest()
             ->limit(5)
@@ -43,11 +51,12 @@ class CustomerDashboardController extends Controller
             'search' => ['nullable', 'string', 'max:100'],
             'status' => [
                 'nullable',
-                'in:pending,processing,shipped,completed,delivered,cancelled,refunded',
+                'in:pending,confirmed,processing,packed,shipped,out_for_delivery,completed,delivered,cancelled,refunded',
             ],
         ]);
 
-        $orders = $request->user()->orders()
+        $orders = $request->user()
+            ->orders()
             ->withCount('items')
             ->when(
                 filled($filters['search'] ?? null),
@@ -55,7 +64,8 @@ class CustomerDashboardController extends Controller
                     $search = trim((string) $filters['search']);
 
                     $query->where(function (Builder $query) use ($search): void {
-                        $query->where('order_number', 'like', "%{$search}%")
+                        $query
+                            ->where('order_number', 'like', "%{$search}%")
                             ->orWhere('tracking_number', 'like', "%{$search}%");
                     });
                 }
@@ -81,7 +91,25 @@ class CustomerDashboardController extends Controller
         $order->load([
             'items.product.images',
             'items.variant',
-            'activities' => fn ($query) => $query->latest(),
+
+            /*
+            |--------------------------------------------------------------------------
+            | Customer-safe order activity
+            |--------------------------------------------------------------------------
+            |
+            | Never expose internal/admin-only activity on the customer order page.
+            | Customer-visible notes are loaded separately below.
+            |
+            */
+            'activities' => fn ($query) => $query
+                ->whereIn('type', [
+                    OrderActivity::TYPE_ORDER_CREATED,
+                    OrderActivity::TYPE_ORDER_STATUS_CHANGED,
+                    OrderActivity::TYPE_PAYMENT_STATUS_CHANGED,
+                    OrderActivity::TYPE_TRACKING_UPDATED,
+                ])
+                ->latestFirst(),
+
             'notes' => fn ($query) => $query
                 ->where('is_customer_visible', true)
                 ->latest(),
@@ -93,7 +121,12 @@ class CustomerDashboardController extends Controller
     public function invoice(Request $request, int $order): View
     {
         $order = $this->customerOrder($request, $order);
-        $order->load(['user', 'items.product.images', 'items.variant']);
+
+        $order->load([
+            'user',
+            'items.product.images',
+            'items.variant',
+        ]);
 
         return view('admin.orders.invoice', compact('order'));
     }
@@ -101,10 +134,20 @@ class CustomerDashboardController extends Controller
     public function downloadInvoice(Request $request, int $order): Response
     {
         $order = $this->customerOrder($request, $order);
-        $order->load(['user', 'items.product.images', 'items.variant']);
+
+        $order->load([
+            'user',
+            'items.product.images',
+            'items.variant',
+        ]);
 
         $orderNumber = $order->order_number
-            ?: 'ORD-' . str_pad((string) $order->id, 6, '0', STR_PAD_LEFT);
+            ?: 'ORD-' . str_pad(
+                (string) $order->id,
+                6,
+                '0',
+                STR_PAD_LEFT
+            );
 
         $safeOrderNumber = preg_replace(
             '/[^A-Za-z0-9\-_]/',
@@ -112,7 +155,10 @@ class CustomerDashboardController extends Controller
             $orderNumber
         );
 
-        $pdf = Pdf::loadView('admin.orders.invoice-pdf', compact('order'))
+        $pdf = Pdf::loadView(
+            'admin.orders.invoice-pdf',
+            compact('order')
+        )
             ->setPaper('a4', 'portrait')
             ->setOptions([
                 'isRemoteEnabled' => true,
@@ -120,11 +166,18 @@ class CustomerDashboardController extends Controller
                 'defaultFont' => 'DejaVu Sans',
             ]);
 
-        return $pdf->download('Invoice-' . $safeOrderNumber . '.pdf');
+        return $pdf->download(
+            'Invoice-' . $safeOrderNumber . '.pdf'
+        );
     }
 
-    private function customerOrder(Request $request, int $order): Order
-    {
-        return $request->user()->orders()->whereKey($order)->firstOrFail();
+    private function customerOrder(
+        Request $request,
+        int $order
+    ): Order {
+        return $request->user()
+            ->orders()
+            ->whereKey($order)
+            ->firstOrFail();
     }
 }
