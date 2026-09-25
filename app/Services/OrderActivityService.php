@@ -2,16 +2,15 @@
 
 namespace App\Services;
 
+use App\Models\Admin;
 use App\Models\Order;
 use App\Models\OrderActivity;
+use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
 
 class OrderActivityService
 {
-    /**
-     * Record a general order activity.
-     */
     public function record(
         Order $order,
         string $type,
@@ -23,33 +22,31 @@ class OrderActivityService
         ?array $metadata = null,
         ?Authenticatable $user = null
     ): OrderActivity {
+        $actor = $user
+            ?? Auth::guard('admin')->user()
+            ?? Auth::guard('web')->user();
+
+        $adminId = $actor instanceof Admin
+            ? (int) $actor->getAuthIdentifier()
+            : null;
+
+        $userId = $actor instanceof User
+            ? (int) $actor->getAuthIdentifier()
+            : null;
+
         return $order->activities()->create([
-            'user_id' => $user?->getAuthIdentifier()
-                ?? Auth::id(),
-
+            'admin_id' => $adminId,
+            'user_id' => $userId,
             'type' => $type,
-
             'title' => $title,
-
             'description' => $description,
-
             'field_name' => $fieldName,
-
-            'old_value' => $this->normalizeValue(
-                $oldValue
-            ),
-
-            'new_value' => $this->normalizeValue(
-                $newValue
-            ),
-
+            'old_value' => $this->normalizeValue($oldValue),
+            'new_value' => $this->normalizeValue($newValue),
             'metadata' => $metadata,
         ]);
     }
 
-    /**
-     * Record an order-status change.
-     */
     public function orderStatusChanged(
         Order $order,
         mixed $oldStatus,
@@ -70,9 +67,6 @@ class OrderActivityService
         );
     }
 
-    /**
-     * Record a payment-status change.
-     */
     public function paymentStatusChanged(
         Order $order,
         mixed $oldStatus,
@@ -93,9 +87,6 @@ class OrderActivityService
         );
     }
 
-    /**
-     * Record a tracking-number change.
-     */
     public function trackingUpdated(
         Order $order,
         mixed $oldTrackingNumber,
@@ -114,9 +105,6 @@ class OrderActivityService
         );
     }
 
-    /**
-     * Record a new internal note.
-     */
     public function noteAdded(
         Order $order,
         string $note,
@@ -135,9 +123,6 @@ class OrderActivityService
         );
     }
 
-    /**
-     * Normalize model values for storage.
-     */
     private function normalizeValue(mixed $value): ?string
     {
         if ($value === null) {
@@ -151,17 +136,13 @@ class OrderActivityService
         if (is_array($value) || is_object($value)) {
             return json_encode(
                 $value,
-                JSON_UNESCAPED_UNICODE |
-                JSON_UNESCAPED_SLASHES
+                JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
             );
         }
 
         return trim((string) $value);
     }
 
-    /**
-     * Convert a database value to readable text.
-     */
     private function humanize(mixed $value): string
     {
         if (blank($value)) {

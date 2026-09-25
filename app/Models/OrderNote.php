@@ -11,19 +11,14 @@ class OrderNote extends Model
 {
     use HasFactory;
 
-    /**
-     * Mass-assignable attributes.
-     */
     protected $fillable = [
         'order_id',
         'user_id',
+        'admin_id',
         'note',
         'is_customer_visible',
     ];
 
-    /**
-     * Attribute casts.
-     */
     protected function casts(): array
     {
         return [
@@ -31,25 +26,27 @@ class OrderNote extends Model
         ];
     }
 
-    /**
-     * Order associated with the note.
-     */
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
 
     /**
-     * Admin or user who created the note.
+     * Current administrator author.
+     */
+    public function admin(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class);
+    }
+
+    /**
+     * Historical user author retained during the transition.
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Return notes from newest to oldest.
-     */
     public function scopeLatestFirst(Builder $query): Builder
     {
         return $query
@@ -57,34 +54,20 @@ class OrderNote extends Model
             ->orderByDesc('id');
     }
 
-    /**
-     * Return internal notes only.
-     */
     public function scopeInternal(Builder $query): Builder
     {
-        return $query->where(
-            'is_customer_visible',
-            false
-        );
+        return $query->where('is_customer_visible', false);
     }
 
-    /**
-     * Return customer-visible notes only.
-     */
-    public function scopeCustomerVisible(
-        Builder $query
-    ): Builder {
-        return $query->where(
-            'is_customer_visible',
-            true
-        );
+    public function scopeCustomerVisible(Builder $query): Builder
+    {
+        return $query->where('is_customer_visible', true);
     }
 
-    /**
-     * Human-readable author name.
-     */
     public function getAuthorNameAttribute(): string
     {
-        return $this->user?->name ?: 'System';
+        return $this->admin?->name
+            ?: $this->user?->name
+            ?: 'System';
     }
 }

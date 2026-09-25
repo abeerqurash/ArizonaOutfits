@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\PhoneVerificationCode;
 use App\Models\User;
+use App\Models\CustomerEmailIdentity;
+use App\Services\PasswordSecurityService;
+use App\Services\CustomerLoginSecurity;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +17,7 @@ use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use App\Notifications\VerifyPendingEmail;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
 use Illuminate\View\View;
 
 class AccountSecurityController extends Controller
@@ -28,12 +32,34 @@ class AccountSecurityController extends Controller
      * Display Login & Security page.
      */
     public function index(
-        Request $request
+        Request $request,
+        CustomerLoginSecurity $loginSecurity
     ): View {
+        $authenticatedUser = $request->user();
+
+        abort_unless($authenticatedUser, 401);
+
+        /*
+         * Always read the latest database state for the security page.
+         * This prevents a just-disconnected Google/Facebook account from
+         * being rendered from a stale authenticated model instance.
+         */
+        $user = User::query()
+            ->whereKey($authenticatedUser->id)
+            ->firstOrFail();
+
         return view(
             'customer.account.security',
             [
-                'user' => $request->user(),
+                'user' => $user,
+                'canDisconnectEmail' =>
+                    $loginSecurity->canDisconnectEmail($user),
+                'canRemovePhone' =>
+                    $loginSecurity->canRemovePhone($user),
+                'canDisconnectGoogle' =>
+                    $loginSecurity->canDisconnectSocial($user, 'google'),
+                'canDisconnectFacebook' =>
+                    $loginSecurity->canDisconnectSocial($user, 'facebook'),
             ]
         );
     }
@@ -47,12 +73,22 @@ class AccountSecurityController extends Controller
     ): RedirectResponse {
         $user = $request->user();
 
-        if (filled($user->email)) {
+        abort_unless($user, 401);
+
+        if ($user->hasEmailLogin() || $user->hasPendingEmailLogin()) {
             throw ValidationException::withMessages([
                 'email' =>
-                'An email address is already connected to this account.',
+                    'An email login is already connected or awaiting verification.',
             ]);
         }
+
+        $passwordRules = $user->hasPassword()
+            ? ['nullable']
+            : [
+                'required',
+                'confirmed',
+                Rules\Password::defaults(),
+            ];
 
         $validated = $request->validate([
             'email' => [
@@ -62,65 +98,64 @@ class AccountSecurityController extends Controller
                 'email',
                 'max:255',
             ],
-
-            'password' => [
-                'required',
-                'confirmed',
-                Rules\Password::defaults(),
-            ],
+            'password' => $passwordRules,
         ]);
 
         $email = strtolower(
-            trim(
-                (string) $validated['email']
-            )
+            trim((string) $validated['email'])
         );
 
-        /*
-        |--------------------------------------------------------------------------
-        | Duplicate Account Protection
-        |--------------------------------------------------------------------------
-        |
-        | We cannot simply attach an email already owned by another user.
-        |
-        | Account merging will only happen through a deliberately verified
-        | flow, not by typing somebody else's email address.
-        |
-        */
-
         $existingUser = User::query()
-            ->whereRaw(
-                'LOWER(email) = ?',
-                [$email]
-            )
+            ->whereRaw('LOWER(email) = ?', [$email])
             ->whereKeyNot($user->id)
             ->first();
 
         if ($existingUser) {
             throw ValidationException::withMessages([
                 'email' =>
-                'This email address is already connected to another account.',
+                    'This email address is already connected to another account.',
             ]);
         }
 
-        $user->forceFill([
+        $updates = [
             'email' => $email,
-
-            'password' => Hash::make(
-                $validated['password']
-            ),
-
-            /*
-             * This password was deliberately created by the customer.
-             * Record that fact so future security-sensitive actions can
-             * safely distinguish it from legacy/system-generated passwords.
-             */
-            'password_set_at' => now(),
-
             'email_verified_at' => null,
-
+            'email_login_enabled_at' => null,
+            'email_login_pending_at' => now(),
             'security_reminder_shown_at' => null,
-        ])->save();
+        ];
+
+        if (! $user->hasPassword()) {
+            $updates['password'] = Hash::make(
+                (string) $validated['password']
+            );
+            $updates['password_set_at'] = now();
+        }
+
+        $user->forceFill($updates)->save();
+
+        /*
+         * Persist the manual/custom email as its own identity.
+         * This never overwrites Google or Facebook, even when the address
+         * string is identical.
+         */
+        CustomerEmailIdentity::query()->updateOrCreate(
+            [
+                'user_id' => $user->id,
+                'source' => CustomerEmailIdentity::SOURCE_CUSTOM,
+            ],
+            [
+                'email' => $email,
+                'normalized_email' =>
+                    CustomerEmailIdentity::normalizeEmail($email),
+                'provider_user_id' => null,
+                'verified_at' => null,
+                'verification_pending_at' => now(),
+                'connected_at' => now(),
+                'disconnected_at' => null,
+                'is_login_enabled' => false,
+            ]
+        );
 
         $user->sendEmailVerificationNotification();
 
@@ -128,9 +163,178 @@ class AccountSecurityController extends Controller
             ->route('customer.security')
             ->with(
                 'success',
-                'Email and password have been added to your account.'
+                'A verification email has been sent. Email login will only become connected after you verify that address.'
             );
     }
+
+    /**
+     * Send a password-reset link to the authenticated customer's
+     * own email address without sending them through the guest-only
+     * forgot-password request page.
+     */
+    public function sendPasswordResetLink(
+        Request $request
+    ): RedirectResponse {
+        $user = $request->user();
+
+        if (! $user) {
+            abort(401);
+        }
+
+        if (
+            $user->is_admin
+            || $user->is_super_admin
+            || $user->status !== 'active'
+        ) {
+            abort(403);
+        }
+
+        if (! $user->hasPassword()) {
+            throw ValidationException::withMessages([
+                'password_recovery' =>
+                    'You do not need password recovery yet. Create your first password from Login & Security.',
+            ]);
+        }
+
+        if (! filled($user->email)) {
+            throw ValidationException::withMessages([
+                'password_recovery' =>
+                    'Add an email address to your account before using password recovery.',
+            ]);
+        }
+
+        $status = Password::broker()->sendResetLink([
+            'email' => (string) $user->email,
+        ]);
+
+        if ($status !== Password::RESET_LINK_SENT) {
+            Log::warning(
+                'Authenticated customer password recovery link failed.',
+                [
+                    'user_id' => $user->id,
+                    'status' => $status,
+                ]
+            );
+
+            throw ValidationException::withMessages([
+                'password_recovery' => __($status),
+            ]);
+        }
+
+        return redirect()
+            ->route('customer.security')
+            ->with(
+                'success',
+                'Password reset instructions have been sent to your account email address.'
+            );
+    }
+
+
+    /**
+     * Create or change the authenticated customer's password.
+     *
+     * Customers who already have a password must confirm the current
+     * password. Social/phone customers who have never created a password
+     * can create their first password without being asked for a password
+     * that does not exist.
+     */
+    public function updatePassword(
+        Request $request,
+        PasswordSecurityService $passwordSecurity
+    ): RedirectResponse {
+        $user = $request->user();
+
+        if (! $user) {
+            abort(401);
+        }
+
+        if (
+            $user->is_admin
+            || $user->is_super_admin
+            || $user->status !== 'active'
+        ) {
+            abort(403);
+        }
+
+        $rules = [
+            'password' => [
+                'required',
+                'confirmed',
+                Rules\Password::defaults(),
+            ],
+        ];
+
+        if ($user->hasPassword()) {
+            $rules['current_password'] = [
+                'required',
+                'string',
+            ];
+        }
+
+        $validated = $request->validate($rules);
+
+        if (
+            $user->hasPassword()
+            && ! Hash::check(
+                (string) $validated['current_password'],
+                (string) $user->password
+            )
+        ) {
+            throw ValidationException::withMessages([
+                'current_password' =>
+                    'The current password you entered is incorrect.',
+            ]);
+        }
+
+        $hadPassword = $user->hasPassword();
+        $newPassword = (string) $validated['password'];
+
+        if (
+            $passwordSecurity->isRecentlyUsed(
+                $user,
+                $newPassword
+            )
+        ) {
+            throw ValidationException::withMessages([
+                'password' =>
+                    'Choose a password different from your current and previous password.',
+            ]);
+        }
+
+        DB::transaction(function () use (
+            $user,
+            $newPassword,
+            $passwordSecurity
+        ) {
+            /*
+             * Only preserve a genuine customer-created current password.
+             *
+             * Legacy social accounts may still contain an inaccessible
+             * system-generated hash while password_set_at is NULL. That
+             * legacy hash must not become customer password history.
+             */
+            if ($user->hasPassword()) {
+                $passwordSecurity->rememberCurrentPassword($user);
+            }
+
+            $user->forceFill([
+                'password' => Hash::make($newPassword),
+                'password_set_at' => now(),
+                'remember_token' => \Illuminate\Support\Str::random(60),
+                'security_reminder_shown_at' => null,
+            ])->save();
+        });
+
+        return redirect()
+            ->route('customer.security')
+            ->with(
+                'success',
+                $hadPassword
+                    ? 'Your password has been changed successfully.'
+                    : 'Your password has been created successfully.'
+            );
+    }
+
 
     /**
      * Send OTP before attaching/changing a phone number.
@@ -147,6 +351,8 @@ class AccountSecurityController extends Controller
         ]);
 
         $user = $request->user();
+
+        abort_unless($user, 401);
 
         $phone = $this->normalizePhone(
             (string) $validated['phone']
@@ -173,6 +379,47 @@ class AccountSecurityController extends Controller
                 'phone' =>
                 'This phone number is already verified on your account.',
             ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Sensitive Existing Phone Change Reauthentication
+        |--------------------------------------------------------------------------
+        |
+        | Adding the first phone number is not treated as replacing an
+        | established login method. Replacing an existing verified phone is.
+        |
+        | Password-capable customers must prove the current password before
+        | an OTP can be sent to a replacement number.
+        |
+        */
+
+        if ($user->hasVerifiedPhone()) {
+            if (! $user->hasPassword()) {
+                throw ValidationException::withMessages([
+                    'phone' =>
+                        'Re-verification is required before changing this phone number. Create a password first or use a supported account re-verification method.',
+                ]);
+            }
+
+            $request->validate([
+                'current_password' => [
+                    'required',
+                    'string',
+                ],
+            ]);
+
+            if (
+                ! Hash::check(
+                    (string) $request->input('current_password'),
+                    (string) $user->password
+                )
+            ) {
+                throw ValidationException::withMessages([
+                    'current_password' =>
+                        'Your current password is incorrect.',
+                ]);
+            }
         }
 
         /*
@@ -619,12 +866,12 @@ class AccountSecurityController extends Controller
             abort(403);
         }
 
-        if (blank($user->email)) {
+        if (! $user->hasEmailLogin()) {
             return redirect()
                 ->route('customer.security')
                 ->withErrors([
                     'email' =>
-                    'Add an email address to your account first.',
+                    'Connect and verify an email login before changing it.',
                 ]);
         }
 
@@ -636,7 +883,24 @@ class AccountSecurityController extends Controller
                 'email',
                 'max:255',
             ],
+            'current_password' => [
+                'required',
+                'string',
+            ],
         ]);
+
+        if (
+            ! $user->hasPassword()
+            || ! Hash::check(
+                (string) $validated['current_password'],
+                (string) $user->password
+            )
+        ) {
+            throw ValidationException::withMessages([
+                'current_password' =>
+                    'Your current password is incorrect.',
+            ]);
+        }
 
         $email = strtolower(
             trim(

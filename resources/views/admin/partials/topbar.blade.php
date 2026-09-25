@@ -7,7 +7,7 @@
     <div class="admin-topbar-right">
         <a href="{{ route('home-page') }}" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
 
-        @if (auth()->user()?->hasAdminPermission('notifications.manage'))
+        @if (auth('admin')->user()?->hasAdminPermission('notifications.manage'))
             <div class="admin-notification-wrapper">
                 <button type="button" class="admin-topbar-action" id="adminNotificationButton" aria-label="Open notifications" aria-expanded="false">
                     <i class="fa-regular fa-bell"></i>
@@ -15,13 +15,11 @@
                         <span class="admin-notification-count">{{ $unreadAdminNotificationCount > 99 ? '99+' : $unreadAdminNotificationCount }}</span>
                     @endif
                 </button>
-
                 <div class="admin-dropdown admin-notification-dropdown" id="adminNotificationDropdown">
                     <div class="admin-dropdown-header notification-heading">
                         <div><strong>Notifications</strong><span>{{ number_format($unreadAdminNotificationCount ?? 0) }} unread update(s)</span></div>
                         <a href="{{ route('admin.notifications.index') }}">View all</a>
                     </div>
-
                     @forelse (($latestAdminNotifications ?? collect()) as $notification)
                         @php
                             $level = in_array(data_get($notification->data, 'level'), ['info','success','warning','danger'], true) ? data_get($notification->data, 'level') : 'info';
@@ -41,15 +39,16 @@
             </div>
         @endif
 
+        @php($topbarAdmin = auth('admin')->user())
         <div class="admin-profile-wrapper">
             <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
-                <span class="admin-profile-avatar">{{ strtoupper(substr(auth()->user()?->name ?? 'A', 0, 1)) }}</span>
-                <span class="admin-profile-details"><strong>{{ auth()->user()?->name ?? 'Administrator' }}</strong><small>{{ auth()->user()?->isSuperAdmin() ? 'Super Administrator' : 'Administrator' }}</small></span>
+                <span class="admin-profile-avatar">{{ strtoupper(substr($topbarAdmin?->name ?? 'A', 0, 1)) }}</span>
+                <span class="admin-profile-details"><strong>{{ $topbarAdmin?->name ?? 'Administrator' }}</strong><small>{{ $topbarAdmin?->isSuperAdmin() ? 'Super Administrator' : 'Administrator' }}</small></span>
                 <i class="fa-solid fa-chevron-down"></i>
             </button>
             <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
-                <div class="admin-profile-dropdown-header"><strong>{{ auth()->user()?->name ?? 'Administrator' }}</strong><span>{{ auth()->user()?->email }}</span></div>
-                <a href="{{ route('profile.edit') }}"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <div class="admin-profile-dropdown-header"><strong>{{ $topbarAdmin?->name ?? 'Administrator' }}</strong><span>{{ $topbarAdmin?->email }}</span></div>
+                <a href="{{ route('admin.profile.edit') }}"><i class="fa-regular fa-user"></i>Edit Profile</a>
                 <a href="{{ route('home-page') }}" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
                 <form action="{{ route('admin.logout') }}" method="POST">@csrf<button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
             </div>

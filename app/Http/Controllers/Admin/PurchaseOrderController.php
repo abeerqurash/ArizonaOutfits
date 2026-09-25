@@ -592,7 +592,10 @@ class PurchaseOrderController extends AdminController
                     $validated['internal_notes'] ?? null,
 
                     'created_by' =>
-                    Auth::id(),
+                    null,
+
+                    'admin_id' =>
+                    Auth::guard('admin')->id(),
                 ]);
 
                 foreach (
@@ -1351,7 +1354,10 @@ class PurchaseOrderController extends AdminController
                             null,
 
                             'user_id' =>
-                            Auth::id(),
+                            null,
+
+                            'admin_id' =>
+                            Auth::guard('admin')->id(),
 
                             'quantity_change' =>
                             $quantityToReceive,
@@ -1458,7 +1464,10 @@ class PurchaseOrderController extends AdminController
                             null,
 
                             'user_id' =>
-                            Auth::id(),
+                            null,
+
+                            'admin_id' =>
+                            Auth::guard('admin')->id(),
 
                             'quantity_change' =>
                             $quantityToReceive,

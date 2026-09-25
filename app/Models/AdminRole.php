@@ -26,11 +26,22 @@ class AdminRole extends Model
         );
     }
 
-    public function users(): BelongsToMany
+    public function admins(): BelongsToMany
     {
         return $this->belongsToMany(
-            User::class,
-            'admin_role_user'
+            Admin::class,
+            'admin_role_admin',
+            'admin_role_id',
+            'admin_id'
         )->withTimestamps();
+    }
+
+    /**
+     * Temporary compatibility alias for the existing admin-role Blade.
+     * It now returns administrators from admins, NOT customers from users.
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->admins();
     }
 }

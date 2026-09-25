@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class AdminRoleController extends AdminController
@@ -18,10 +17,15 @@ class AdminRoleController extends AdminController
     {
         $roles = AdminRole::query()
             ->with('permissions:id,name,slug,group_name')
-            ->withCount('users')
+            ->withCount('admins')
             ->orderByDesc('is_system')
             ->orderBy('name')
             ->get();
+
+        // Existing Blade currently reads users_count.
+        $roles->each(function (AdminRole $role): void {
+            $role->setAttribute('users_count', $role->admins_count);
+        });
 
         $permissions = AdminPermission::query()
             ->orderBy('group_name')
@@ -39,20 +43,18 @@ class AdminRoleController extends AdminController
     {
         $validated = $this->validatedData($request);
 
-        $role = DB::transaction(
-            function () use ($validated): AdminRole {
-                $role = AdminRole::create([
-                    'name' => $validated['name'],
-                    'slug' => $this->uniqueSlug($validated['name']),
-                    'description' => $validated['description'] ?? null,
-                    'is_system' => false,
-                ]);
+        $role = DB::transaction(function () use ($validated): AdminRole {
+            $role = AdminRole::create([
+                'name' => $validated['name'],
+                'slug' => $this->uniqueSlug($validated['name']),
+                'description' => $validated['description'] ?? null,
+                'is_system' => false,
+            ]);
 
-                $role->permissions()->sync($validated['permission_ids']);
+            $role->permissions()->sync($validated['permission_ids']);
 
-                return $role;
-            }
-        );
+            return $role;
+        });
 
         return redirect()
             ->route('admin.admin-roles.index')
@@ -65,18 +67,14 @@ class AdminRoleController extends AdminController
     ): RedirectResponse {
         $validated = $this->validatedData($request, $adminRole);
 
-        DB::transaction(
-            function () use ($validated, $adminRole): void {
-                $adminRole->update([
-                    'name' => $validated['name'],
-                    'description' => $validated['description'] ?? null,
-                ]);
+        DB::transaction(function () use ($validated, $adminRole): void {
+            $adminRole->update([
+                'name' => $validated['name'],
+                'description' => $validated['description'] ?? null,
+            ]);
 
-                $adminRole->permissions()->sync(
-                    $validated['permission_ids']
-                );
-            }
-        );
+            $adminRole->permissions()->sync($validated['permission_ids']);
+        });
 
         return redirect()
             ->route('admin.admin-roles.index')
@@ -91,7 +89,7 @@ class AdminRoleController extends AdminController
                 ->with('error', 'System roles cannot be deleted.');
         }
 
-        if ($adminRole->users()->exists()) {
+        if ($adminRole->admins()->exists()) {
             return redirect()
                 ->route('admin.admin-roles.index')
                 ->with(
@@ -137,7 +135,7 @@ class AdminRoleController extends AdminController
 
         while (AdminRole::query()->where('slug', $slug)->exists()) {
             $slug = $base . '-' . $counter;
-            $counter += 1;
+            $counter++;
         }
 
         return $slug;

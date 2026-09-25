@@ -11,38 +11,19 @@ class OrderActivity extends Model
 {
     use HasFactory;
 
-    /**
-     * Activity types.
-     */
     public const TYPE_ORDER_CREATED = 'order_created';
+    public const TYPE_ORDER_STATUS_CHANGED = 'order_status_changed';
+    public const TYPE_PAYMENT_STATUS_CHANGED = 'payment_status_changed';
+    public const TYPE_TRACKING_UPDATED = 'tracking_updated';
+    public const TYPE_NOTE_ADDED = 'note_added';
+    public const TYPE_ORDER_UPDATED = 'order_updated';
+    public const TYPE_EMAIL_SENT = 'email_sent';
+    public const TYPE_INVOICE_GENERATED = 'invoice_generated';
 
-    public const TYPE_ORDER_STATUS_CHANGED =
-        'order_status_changed';
-
-    public const TYPE_PAYMENT_STATUS_CHANGED =
-        'payment_status_changed';
-
-    public const TYPE_TRACKING_UPDATED =
-        'tracking_updated';
-
-    public const TYPE_NOTE_ADDED =
-        'note_added';
-
-    public const TYPE_ORDER_UPDATED =
-        'order_updated';
-
-    public const TYPE_EMAIL_SENT =
-        'email_sent';
-
-    public const TYPE_INVOICE_GENERATED =
-        'invoice_generated';
-
-    /**
-     * Mass-assignable attributes.
-     */
     protected $fillable = [
         'order_id',
         'user_id',
+        'admin_id',
         'type',
         'title',
         'description',
@@ -52,9 +33,6 @@ class OrderActivity extends Model
         'metadata',
     ];
 
-    /**
-     * Attribute casts.
-     */
     protected function casts(): array
     {
         return [
@@ -62,25 +40,27 @@ class OrderActivity extends Model
         ];
     }
 
-    /**
-     * Order associated with the activity.
-     */
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
 
     /**
-     * Admin or user who performed the action.
+     * Current administrator actor.
+     */
+    public function admin(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class);
+    }
+
+    /**
+     * Historical user actor retained during the transition.
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Return activities from newest to oldest.
-     */
     public function scopeLatestFirst(Builder $query): Builder
     {
         return $query
@@ -88,23 +68,16 @@ class OrderActivity extends Model
             ->orderByDesc('id');
     }
 
-    /**
-     * Human-readable actor name.
-     */
     public function getActorNameAttribute(): string
     {
-        return $this->user?->name ?: 'System';
+        return $this->admin?->name
+            ?: $this->user?->name
+            ?: 'System';
     }
 
-    /**
-     * Human-readable activity value.
-     */
     public function getFormattedChangeAttribute(): ?string
     {
-        if (
-            blank($this->old_value) &&
-            blank($this->new_value)
-        ) {
+        if (blank($this->old_value) && blank($this->new_value)) {
             return null;
         }
 

@@ -55,6 +55,7 @@ class InventoryHistory extends Model
         'product_variant_id',
         'order_id',
         'user_id',
+        'admin_id',
         'quantity_change',
         'stock_before',
         'stock_after',
@@ -82,6 +83,8 @@ class InventoryHistory extends Model
             'order_id' => 'integer',
 
             'user_id' => 'integer',
+
+            'admin_id' => 'integer',
 
             'quantity_change' => 'integer',
 
@@ -137,6 +140,13 @@ class InventoryHistory extends Model
     {
         return $this->belongsTo(
             User::class
+        );
+    }
+
+    public function admin(): BelongsTo
+    {
+        return $this->belongsTo(
+            Admin::class
         );
     }
 
@@ -335,7 +345,8 @@ class InventoryHistory extends Model
 
     public function getPerformedByAttribute(): string
     {
-        return $this->user?->name
+        return $this->admin?->name
+            ?? $this->user?->name
             ?? 'System';
     }
 

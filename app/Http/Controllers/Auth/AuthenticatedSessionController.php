@@ -21,10 +21,7 @@ class AuthenticatedSessionController extends Controller
             && str_starts_with($redirect, '/')
             && !str_starts_with($redirect, '//')
         ) {
-            $request->session()->put(
-                'url.intended',
-                $redirect
-            );
+            $request->session()->put('url.intended', $redirect);
         }
 
         return view('auth.login');
@@ -36,7 +33,8 @@ class AuthenticatedSessionController extends Controller
 
         if ((string) $request->user()->status !== 'active') {
             Auth::guard('web')->logout();
-            $request->session()->invalidate();
+
+            // Preserve any independently authenticated admin guard.
             $request->session()->regenerateToken();
 
             throw ValidationException::withMessages([
@@ -44,14 +42,10 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
+        // Prevent session fixation while preserving the other guard's data.
         $request->session()->regenerate();
 
-        if ($request->user()->is_admin) {
-            return redirect()->intended(
-                route('admin.dashboard', absolute: false)
-            );
-        }
-
+        // Administrators authenticate only through the dedicated admin guard.
         return redirect()->intended(
             route('dashboard', absolute: false)
         );
@@ -59,8 +53,14 @@ class AuthenticatedSessionController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
+        /*
+         * Log out ONLY the customer guard. Do not invalidate the complete
+         * Laravel session because an administrator can be authenticated
+         * simultaneously through the separate "admin" guard.
+         */
         Auth::guard('web')->logout();
-        $request->session()->invalidate();
+
+        // Rotate CSRF protection without destroying the admin authentication.
         $request->session()->regenerateToken();
 
         return redirect('/');

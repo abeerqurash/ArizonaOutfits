@@ -64,9 +64,14 @@ use App\Http\Controllers\Admin\EcommerceSettingController as AdminEcommerceSetti
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PaymentVerificationController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
+use App\Http\Controllers\Admin\Auth\AdminAuthenticatedSessionController;
 use App\Http\Controllers\Customer\AccountSecurityController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Customer\LoginMethodController;
+use App\Http\Controllers\Admin\Auth\AdminNewPasswordController;
+use App\Http\Controllers\Admin\Auth\AdminPasswordResetLinkController;
+use App\Http\Controllers\Admin\AdminProfileController;
+
 /*
 |--------------------------------------------------------------------------
 | PRODUCT AND SHOP ROUTES
@@ -467,11 +472,40 @@ Route::middleware([
         ->name('customer.security');
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Create / Change Password
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post(
+        '/account/security/password',
+        [AccountSecurityController::class, 'updatePassword']
+    )
+        ->middleware('throttle:6,1')
+        ->name('customer.security.password.update');
+
+
+    Route::post(
+        '/account/security/password/recovery',
+        [AccountSecurityController::class, 'sendPasswordResetLink']
+    )
+        ->middleware('throttle:6,1')
+        ->name('customer.security.password.recovery');
+
+
     Route::post(
         '/account/security/email',
         [AccountSecurityController::class, 'addEmail']
     )
         ->name('customer.security.email');
+
+
+    Route::delete(
+        '/account/security/email',
+        [LoginMethodController::class, 'disconnectEmail']
+    )
+        ->name('customer.security.email.disconnect');
 
 
     /*
@@ -639,7 +673,6 @@ Route::middleware([
         ->name(
             'customer.security.social.callback'
         );
-
 });
 
 /*
@@ -662,8 +695,72 @@ Route::get('/dashboard', function () {
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+| STEP 2A - SEPARATE ADMIN AUTHENTICATION TEST
+|--------------------------------------------------------------------------
+|
+| These routes authenticate only against the new "admin" guard / admins
+| provider. The existing protected admin dashboard routes below are left
+| unchanged for now so roles, permissions and audit foreign keys can be
+| migrated safely in the next step.
+|
+*/
+
+Route::middleware('guest:admin')
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get(
+            '/login',
+            [AdminAuthenticatedSessionController::class, 'create']
+        )->name('login');
+
+        Route::post(
+            '/login',
+            [AdminAuthenticatedSessionController::class, 'store']
+        )
+            ->middleware('throttle:authentication')
+            ->name('login.store');
+
+        /*
+|--------------------------------------------------------------------------
+| ADMIN PASSWORD RECOVERY
+|--------------------------------------------------------------------------
+|
+| Add these routes inside the existing guest:admin / prefix('admin') /
+| name('admin.') route group, immediately after the admin login routes.
+|
+*/
+
+        Route::get(
+            '/forgot-password',
+            [AdminPasswordResetLinkController::class, 'create']
+        )->name('password.request');
+
+        Route::post(
+            '/forgot-password',
+            [AdminPasswordResetLinkController::class, 'store']
+        )
+            ->middleware('throttle:6,1')
+            ->name('password.email');
+
+        Route::get(
+            '/reset-password/{token}',
+            [AdminNewPasswordController::class, 'create']
+        )->name('password.reset');
+
+        Route::post(
+            '/reset-password',
+            [AdminNewPasswordController::class, 'store']
+        )
+            ->middleware('throttle:6,1')
+            ->name('password.store');
+    });
+
+
 Route::middleware([
-    'auth',
+    'auth:admin',
     'admin',
     'admin.audit',
     'throttle:admin',
@@ -695,15 +792,27 @@ Route::middleware([
 
         Route::post(
             '/logout',
-            function (\Illuminate\Http\Request $request) {
-                \Illuminate\Support\Facades\Auth::logout();
-
-                $request->session()->invalidate();
-                $request->session()->regenerateToken();
-
-                return redirect()->route('login');
-            }
+            [AdminAuthenticatedSessionController::class, 'destroy']
         )->name('logout');
+
+        /*
+|--------------------------------------------------------------------------
+| ADMIN PROFILE ROUTES — STEP 3F
+|--------------------------------------------------------------------------
+| Add INSIDE the existing protected auth:admin admin route group,
+| preferably immediately after the admin logout route.
+*/
+
+        Route::get('/profile', [AdminProfileController::class, 'edit'])
+            ->name('profile.edit');
+
+        Route::patch('/profile', [AdminProfileController::class, 'update'])
+            ->name('profile.update');
+
+        Route::put('/profile/password', [AdminProfileController::class, 'updatePassword'])
+            ->middleware('throttle:6,1')
+            ->name('profile.password.update');
+
         /*
 |--------------------------------------------------------------------------
 | Orders
@@ -1422,33 +1531,32 @@ Route::middleware([
         Route::put('/navigation-menu-items/{item}', [AdminNavigationMenuController::class, 'updateItem'])->name('navigation-menus.items.update');
         Route::delete('/navigation-menu-items/{item}', [AdminNavigationMenuController::class, 'destroyItem'])->name('navigation-menus.items.destroy');
         Route::put('/navigation-menus/{menu}/reorder', [AdminNavigationMenuController::class, 'reorder'])->name('navigation-menus.reorder');
-    
-    /*
+
+        /*
     |--------------------------------------------------------------------------
     | ORDER PAYMENT VERIFICATION
     |--------------------------------------------------------------------------
     */
-    Route::get(
-        '/payment-verifications',
-        [PaymentVerificationController::class, 'index']
-    )->name('payment-verifications.index');
+        Route::get(
+            '/payment-verifications',
+            [PaymentVerificationController::class, 'index']
+        )->name('payment-verifications.index');
 
-    Route::get(
-        '/payment-verifications/{order}',
-        [PaymentVerificationController::class, 'show']
-    )->name('payment-verifications.show');
+        Route::get(
+            '/payment-verifications/{order}',
+            [PaymentVerificationController::class, 'show']
+        )->name('payment-verifications.show');
 
-    Route::post(
-        '/payment-verifications/{order}/verify-bank-transfer',
-        [PaymentVerificationController::class, 'verifyBankTransfer']
-    )->name('payment-verifications.verify-bank-transfer');
+        Route::post(
+            '/payment-verifications/{order}/verify-bank-transfer',
+            [PaymentVerificationController::class, 'verifyBankTransfer']
+        )->name('payment-verifications.verify-bank-transfer');
 
-    Route::post(
-        '/payment-verifications/{order}/reject-bank-transfer',
-        [PaymentVerificationController::class, 'rejectBankTransfer']
-    )->name('payment-verifications.reject-bank-transfer');
-
-});
+        Route::post(
+            '/payment-verifications/{order}/reject-bank-transfer',
+            [PaymentVerificationController::class, 'rejectBankTransfer']
+        )->name('payment-verifications.reject-bank-transfer');
+    });
 
 /*
 |--------------------------------------------------------------------------

@@ -115,13 +115,13 @@ class OrderController extends AdminController
 
             'notes' => function ($query) {
                 $query
-                    ->with('user')
+                    ->with(['admin', 'user'])
                     ->latestFirst();
             },
 
             'activities' => function ($query) {
                 $query
-                    ->with('user')
+                    ->with(['admin', 'user'])
                     ->latestFirst();
             },
 
@@ -581,7 +581,8 @@ class OrderController extends AdminController
             $activityService
         ) {
             $order->notes()->create([
-                'user_id' => auth()->id(),
+                'admin_id' => auth('admin')->id(),
+                'user_id' => null,
                 'note' => $noteText,
                 'is_customer_visible' => $customerVisible,
             ]);
@@ -596,13 +597,13 @@ class OrderController extends AdminController
         $order->load([
             'notes' => function ($query) {
                 $query
-                    ->with('user')
+                    ->with(['admin', 'user'])
                     ->latestFirst();
             },
 
             'activities' => function ($query) {
                 $query
-                    ->with('user')
+                    ->with(['admin', 'user'])
                     ->latestFirst();
             },
         ]);
@@ -669,13 +670,13 @@ class OrderController extends AdminController
         $order->load([
             'notes' => function ($query) {
                 $query
-                    ->with('user')
+                    ->with(['admin', 'user'])
                     ->latestFirst();
             },
 
             'activities' => function ($query) {
                 $query
-                    ->with('user')
+                    ->with(['admin', 'user'])
                     ->latestFirst();
             },
         ]);

@@ -7,14 +7,23 @@ use App\Models\User;
 class CustomerLoginSecurity
 {
     /**
-     * Number of currently usable login methods.
+     * Count login methods that can genuinely be used to get back into the
+     * account. For security lockout protection, email only counts when the address is
+     * verified AND the customer has deliberately created a usable password.
+     * A pending/unverified email must never justify removing the final
+     * verified login method.
      */
-    public function usableLoginMethodCount(
-        User $user
-    ): int {
+    public function usableLoginMethodCount(User $user): int
+    {
         $count = 0;
 
-        if ($user->hasEmailLogin()) {
+        $emailState = $user->resolvedEmailIdentityState();
+
+        if (
+            ($emailState['custom_connected'] ?? false)
+            && ($emailState['custom_verified'] ?? false)
+            && $user->hasPassword()
+        ) {
             $count++;
         }
 
@@ -33,106 +42,59 @@ class CustomerLoginSecurity
         return $count;
     }
 
-    /**
-     * Determine whether provider can safely be disconnected.
-     */
-    public function canDisconnectSocial(
-        User $user,
-        string $provider
-    ): bool {
+
+    public function canDisconnectEmail(User $user): bool
+    {
+        $emailState = $user->resolvedEmailIdentityState();
+
         if (
-            ! in_array(
-                $provider,
-                [
-                    'google',
-                    'facebook',
-                ],
-                true
-            )
+            ! ($emailState['custom_connected'] ?? false)
+            || ! ($emailState['custom_verified'] ?? false)
+            || ! $user->hasPassword()
         ) {
             return false;
         }
 
-        $connected =
-            $provider === 'google'
-                ? $user->hasGoogleAccount()
-                : $user->hasFacebookAccount();
+        return $this->usableLoginMethodCount($user) > 1;
+    }
+
+    public function canDisconnectSocial(User $user, string $provider): bool
+    {
+        if (! in_array($provider, ['google', 'facebook'], true)) {
+            return false;
+        }
+
+        $connected = $provider === 'google'
+            ? $user->hasGoogleAccount()
+            : $user->hasFacebookAccount();
 
         if (! $connected) {
             return false;
         }
 
-        /*
-         * Removing this provider must leave another
-         * usable authentication method.
-         */
-        if (
-            $this->usableLoginMethodCount($user)
-            <= 1
-        ) {
+        if ($this->usableLoginMethodCount($user) <= 1) {
             return false;
         }
 
         /*
-         * Phone-created accounts must retain a backup
-         * method besides their verified phone.
+         * Every verified login method is equal for lockout protection.
+         * If at least two usable methods exist, one of them may be removed.
+         * The customer's original registration method does not permanently
+         * lock that method to the account.
          */
-        if (
-            $user->registration_method === 'phone' &&
-            $user->hasVerifiedPhone()
-        ) {
-            $remainingBackups = 0;
-
-            if ($user->hasVerifiedEmail()) {
-                $remainingBackups++;
-            }
-
-            if (
-                $provider !== 'google' &&
-                $user->hasGoogleAccount()
-            ) {
-                $remainingBackups++;
-            }
-
-            if (
-                $provider !== 'facebook' &&
-                $user->hasFacebookAccount()
-            ) {
-                $remainingBackups++;
-            }
-
-            if ($remainingBackups < 1) {
-                return false;
-            }
-        }
-
         return true;
     }
 
-    /**
-     * Determine whether verified phone can be removed.
-     */
-    public function canRemovePhone(
-        User $user
-    ): bool {
+    public function canRemovePhone(User $user): bool
+    {
         if (! $user->hasVerifiedPhone()) {
             return false;
         }
 
         /*
-         * Phone-created accounts retain their phone as
-         * their primary method for now.
+         * Phone follows the same rule as every other usable login method:
+         * removable when another usable method remains.
          */
-        if (
-            $user->registration_method === 'phone'
-        ) {
-            return false;
-        }
-
-        /*
-         * Another usable login method must remain.
-         */
-        return $this->usableLoginMethodCount($user)
-            > 1;
+        return $this->usableLoginMethodCount($user) > 1;
     }
 }

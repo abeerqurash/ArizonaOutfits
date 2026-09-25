@@ -616,7 +616,7 @@
         background:
             rgba(239, 68, 68, 0.12);
 
-        color: #fecaca;
+        color: #ff6565;
 
         font-size: 13px;
         line-height: 1.55;

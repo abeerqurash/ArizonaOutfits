@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\CustomerEmailIdentity;
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -34,7 +37,11 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Attempt to authenticate the request's credentials.
+     * Authenticate ONLY through an active, verified custom-email identity.
+     *
+     * A value remaining in users.email is not proof that email/password login
+     * is currently connected. Google/Facebook email addresses are independent
+     * identities and must never enable local password login by themselves.
      *
      * @throws ValidationException
      */
@@ -42,13 +49,45 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $normalizedEmail = CustomerEmailIdentity::normalizeEmail(
+            (string) $this->input('email')
+        );
+
+        $user = null;
+
+        if ($normalizedEmail !== null) {
+            $identity = CustomerEmailIdentity::query()
+                ->with('user')
+                ->where('source', CustomerEmailIdentity::SOURCE_CUSTOM)
+                ->where('normalized_email', $normalizedEmail)
+                ->whereNull('disconnected_at')
+                ->whereNotNull('email_verified_at')
+                ->where('is_login_enabled', true)
+                ->first();
+
+            $candidate = $identity?->user;
+
+            if (
+                $candidate instanceof User
+                && $candidate->hasPassword()
+                && Hash::check(
+                    (string) $this->input('password'),
+                    (string) $candidate->password
+                )
+            ) {
+                $user = $candidate;
+            }
+        }
+
+        if ($user === null) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
         }
+
+        Auth::login($user, $this->boolean('remember'));
 
         RateLimiter::clear($this->throttleKey());
     }
@@ -81,6 +120,8 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(
+            Str::lower($this->string('email')).'|'.$this->ip()
+        );
     }
 }

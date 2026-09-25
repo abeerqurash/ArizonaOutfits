@@ -19,6 +19,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'phone',
         'password',
         'password_set_at',
+        'email_login_enabled_at',
+        'email_login_pending_at',
 
         'phone_verified_at',
         'security_reminder_shown_at',
@@ -48,6 +50,8 @@ class User extends Authenticatable implements MustVerifyEmail
             'phone_verified_at' => 'datetime',
             'security_reminder_shown_at' => 'datetime',
             'password_set_at' => 'datetime',
+            'email_login_enabled_at' => 'datetime',
+            'email_login_pending_at' => 'datetime',
 
             'password' => 'hashed',
             'pending_email_requested_at' => 'datetime',
@@ -64,6 +68,46 @@ class User extends Authenticatable implements MustVerifyEmail
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Historical password hashes retained for password reuse protection.
+     */
+    public function passwordHistories(): HasMany
+    {
+        return $this->hasMany(PasswordHistory::class);
+    }
+
+    /**
+     * Email identities connected to this customer.
+     *
+     * One customer can independently own a custom email, Google identity
+     * and Facebook identity. Equal email strings do not collapse providers.
+     */
+    public function emailIdentities(): HasMany
+    {
+        return $this->hasMany(CustomerEmailIdentity::class);
+    }
+
+    public function customEmailIdentity(): ?CustomerEmailIdentity
+    {
+        return $this->emailIdentities()
+            ->where('source', CustomerEmailIdentity::SOURCE_CUSTOM)
+            ->first();
+    }
+
+    public function googleEmailIdentity(): ?CustomerEmailIdentity
+    {
+        return $this->emailIdentities()
+            ->where('source', CustomerEmailIdentity::SOURCE_GOOGLE)
+            ->first();
+    }
+
+    public function facebookEmailIdentity(): ?CustomerEmailIdentity
+    {
+        return $this->emailIdentities()
+            ->where('source', CustomerEmailIdentity::SOURCE_FACEBOOK)
+            ->first();
     }
 
     public function inventoryHistories(): HasMany
@@ -139,20 +183,85 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Customer has an email address.
+     * Customer has explicitly enabled a verified local email login.
+     *
+     * A stored contact/social email must never be treated as a login method.
      */
     public function hasEmailLogin(): bool
     {
-        return filled($this->email);
+        return filled($this->email)
+            && $this->email_login_enabled_at !== null
+            && $this->email_verified_at !== null;
     }
 
     /**
-     * Customer has a verified email login method.
+     * Email login is currently waiting for ownership verification.
+     */
+    public function hasPendingEmailLogin(): bool
+    {
+        return filled($this->email)
+            && $this->email_login_pending_at !== null
+            && $this->email_login_enabled_at === null;
+    }
+
+    /**
+     * Customer has a verified, explicitly connected email login method.
      */
     public function hasVerifiedEmail(): bool
     {
-        return filled($this->email)
-            && $this->email_verified_at !== null;
+        return $this->hasEmailLogin();
+    }
+
+    /**
+     * Called by Laravel's normal email-verification flow.
+     *
+     * Verification of an explicitly pending email login activates that login
+     * method. A social/contact email that was never placed into the pending
+     * email-login state is not silently converted into an email login.
+     */
+    public function markEmailAsVerified(): bool
+    {
+        if ($this->hasVerifiedEmail()) {
+            return false;
+        }
+
+        $updates = [
+            'email_verified_at' => $this->freshTimestamp(),
+        ];
+
+        if ($this->email_login_pending_at !== null) {
+            $updates['email_login_enabled_at'] = $this->freshTimestamp();
+            $updates['email_login_pending_at'] = null;
+        }
+
+        $saved = $this->forceFill($updates)->save();
+
+        if ($saved) {
+            /*
+             * Laravel's signed email-verification flow verifies only the
+             * manual/custom ArizonaOutfits email identity. Provider OAuth
+             * identities keep their own independent verification state.
+             */
+            $normalizedEmail =
+                CustomerEmailIdentity::normalizeEmail($this->email);
+
+            if ($normalizedEmail !== null) {
+                CustomerEmailIdentity::query()
+                    ->where('user_id', $this->id)
+                    ->where('source', CustomerEmailIdentity::SOURCE_CUSTOM)
+                    ->where('normalized_email', $normalizedEmail)
+                    ->whereNull('disconnected_at')
+                    ->update([
+                        'verified_at' => $this->email_verified_at,
+                        'verification_pending_at' => null,
+                        'is_login_enabled' =>
+                            $this->email_login_enabled_at !== null,
+                        'updated_at' => now(),
+                    ]);
+            }
+        }
+
+        return $saved;
     }
 
     /**
@@ -181,12 +290,148 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Resolve the current multi-source email state for Login & Security.
+     *
+     * This is a display/security resolver only. It never merges credentials.
+     * Custom, Google and Facebook remain independent identities even when
+     * their normalized email strings are identical.
+     */
+    public function resolvedEmailIdentityState(): array
+    {
+        $identities = $this->emailIdentities()
+            ->whereNull('disconnected_at')
+            ->whereIn('source', [
+                CustomerEmailIdentity::SOURCE_CUSTOM,
+                CustomerEmailIdentity::SOURCE_GOOGLE,
+                CustomerEmailIdentity::SOURCE_FACEBOOK,
+            ])
+            ->get()
+            ->keyBy('source');
+
+        $custom = $identities->get(CustomerEmailIdentity::SOURCE_CUSTOM);
+        $google = $identities->get(CustomerEmailIdentity::SOURCE_GOOGLE);
+        $facebook = $identities->get(CustomerEmailIdentity::SOURCE_FACEBOOK);
+
+        $sources = [];
+
+        foreach ([
+            CustomerEmailIdentity::SOURCE_CUSTOM => $custom,
+            CustomerEmailIdentity::SOURCE_GOOGLE => $google,
+            CustomerEmailIdentity::SOURCE_FACEBOOK => $facebook,
+        ] as $source => $identity) {
+            if (! $identity || ! $identity->isConnected()) {
+                continue;
+            }
+
+            $sources[$source] = [
+                'source' => $source,
+                'email' => $identity->email,
+                'normalized_email' => $identity->normalized_email,
+                /*
+                 * Keep the legacy display keys during the transition, but
+                 * expose the two verification concepts explicitly.
+                 */
+                'verified' => $identity->isVerified(),
+                'verification_pending' =>
+                    $identity->isPendingVerification(),
+                'provider_verified' =>
+                    $identity->isProviderVerified(),
+                'email_verified' =>
+                    $identity->isEmailVerified(),
+                'email_verification_pending' =>
+                    $identity->isEmailVerificationPending(),
+                'login_enabled' =>
+                    (bool) $identity->is_login_enabled,
+            ];
+        }
+
+        $emails = collect($sources)
+            ->pluck('normalized_email')
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        $primaryEmail =
+            $custom?->email
+            ?? $google?->email
+            ?? $facebook?->email;
+
+        $customConnected =
+            $custom?->isConnected() ?? false;
+
+        $customVerified =
+            $custom?->isEmailVerified() ?? false;
+
+        $customPending =
+            $custom?->isEmailVerificationPending() ?? false;
+
+        return [
+            'connected' => $sources !== [],
+            'source_count' => count($sources),
+            'sources' => $sources,
+            'emails' => $emails,
+            'same_email_across_sources' =>
+                count($sources) > 1
+                && count($emails) === 1,
+            'has_multiple_email_addresses' =>
+                count($emails) > 1,
+            'primary_email' => $primaryEmail,
+
+            /*
+             * The manual/custom slot is independent from provider identities.
+             * It remains available when only Google/Facebook is connected.
+             */
+            'custom_connected' => $customConnected,
+            'custom_verified' => $customVerified,
+            'custom_verification_pending' => $customPending,
+            'custom_login_enabled' =>
+                $customConnected
+                && $customVerified
+                && (bool) $custom?->is_login_enabled
+                && $this->hasPassword(),
+
+            'google_connected' =>
+                $google?->isConnected() ?? false,
+            'google_provider_verified' =>
+                $google?->isProviderVerified() ?? false,
+            'google_email_verified' =>
+                $google?->isEmailVerified() ?? false,
+
+            'facebook_connected' =>
+                $facebook?->isConnected() ?? false,
+            'facebook_provider_verified' =>
+                $facebook?->isProviderVerified() ?? false,
+            'facebook_email_verified' =>
+                $facebook?->isEmailVerified() ?? false,
+
+            /*
+             * Only a pending custom identity can use ArizonaOutfits'
+             * email-verification resend flow. OAuth provider identities do not
+             * create a fake custom verification request.
+             */
+            'can_resend_custom_verification' => $customPending,
+
+            /*
+             * Common Disconnect Email UI can list these exact sources.
+             */
+            'disconnectable_sources' =>
+                array_keys($sources),
+        ];
+    }
+
+    public function connectedEmailIdentitySources(): array
+    {
+        return $this->resolvedEmailIdentityState()['disconnectable_sources'];
+    }
+
+    /**
      * Phone-created accounts need at least one
      * additional recovery/login method.
      */
     public function hasBackupLoginMethod(): bool
     {
-        return $this->hasEmailLogin()
+        return ($this->hasEmailLogin() && $this->hasPassword())
             || $this->hasGoogleAccount()
             || $this->hasFacebookAccount();
     }

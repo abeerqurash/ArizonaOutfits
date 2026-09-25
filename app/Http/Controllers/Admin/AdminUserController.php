@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Admin;
 use App\Models\AdminRole;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -18,14 +19,13 @@ class AdminUserController extends AdminController
     {
         $search = trim($request->string('search')->value());
 
-        $query = User::query()
-            ->where('is_admin', true)
+        $query = Admin::query()
             ->with('adminRoles:id,name,slug')
             ->withCount('adminRoles');
 
         if ($search !== '') {
             $query->where(
-                fn ($searchQuery) => $searchQuery
+                fn ($q) => $q
                     ->where('name', 'like', '%' . $search . '%')
                     ->orWhere('email', 'like', '%' . $search . '%')
                     ->orWhere('phone', 'like', '%' . $search . '%')
@@ -39,24 +39,38 @@ class AdminUserController extends AdminController
             ->withQueryString();
 
         $roles = AdminRole::query()
-            ->withCount('users')
+            ->withCount('admins')
             ->orderBy('name')
             ->get();
 
+        // Existing Blade currently reads users_count.
+        $roles->each(function (AdminRole $role): void {
+            $role->setAttribute('users_count', $role->admins_count);
+        });
+
+        /*
+         * Compatibility with the current "promote existing user" UI.
+         * Promotion now COPIES identity into admins and never modifies the
+         * customer record. Only customers with an email + password can be
+         * promoted through the existing form.
+         */
         $availableUsers = User::query()
-            ->where('is_admin', false)
+            ->whereNotNull('email')
+            ->whereNotNull('password')
+            ->whereNotIn(
+                DB::raw('LOWER(email)'),
+                Admin::query()
+                    ->selectRaw('LOWER(email)')
+                    ->whereNotNull('email')
+            )
             ->orderBy('name')
             ->limit(200)
             ->get(['id', 'name', 'email', 'status']);
 
         $stats = [
-            'total' => User::query()->where('is_admin', true)->count(),
-            'active' => User::query()
-                ->where('is_admin', true)
-                ->where('status', 'active')
-                ->count(),
-            'super_admins' => User::query()
-                ->where('is_admin', true)
+            'total' => Admin::query()->count(),
+            'active' => Admin::query()->where('status', 'active')->count(),
+            'super_admins' => Admin::query()
                 ->where('is_super_admin', true)
                 ->count(),
             'roles' => $roles->count(),
@@ -95,7 +109,7 @@ class AdminUserController extends AdminController
                 'required_if:mode,create',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email'),
+                Rule::unique('admins', 'email'),
             ],
             'phone' => ['nullable', 'string', 'max:50'],
             'password' => [
@@ -116,76 +130,73 @@ class AdminUserController extends AdminController
         ]);
 
         $isSuperAdmin = $request->boolean('is_super_admin');
-        $roleIds = collect($validated['role_ids'] ?? [])
-            ->map(fn ($id): int => (int) $id)
-            ->unique()
-            ->values()
-            ->all();
+        $roleIds = $this->roleIds($validated, $isSuperAdmin);
 
-        if (!$isSuperAdmin && $roleIds === []) {
-            throw ValidationException::withMessages([
-                'role_ids' =>
-                    'Choose at least one role or enable Super Administrator.',
-            ]);
-        }
+        $admin = DB::transaction(function () use (
+            $validated,
+            $isSuperAdmin,
+            $roleIds
+        ): Admin {
+            if ($validated['mode'] === 'promote') {
+                $user = User::query()
+                    ->lockForUpdate()
+                    ->findOrFail((int) $validated['existing_user_id']);
 
-        $admin = DB::transaction(
-            function () use (
-                $validated,
-                $isSuperAdmin,
-                $roleIds
-            ): User {
-                if ($validated['mode'] === 'promote') {
-                    $user = User::query()
-                        ->lockForUpdate()
-                        ->findOrFail((int) $validated['existing_user_id']);
-
-                    if ($user->is_admin) {
-                        throw ValidationException::withMessages([
-                            'existing_user_id' =>
-                                'This user is already an administrator.',
-                        ]);
-                    }
-                } else {
-                    $user = User::create([
-                        'name' => $validated['name'],
-                        'email' => $validated['email'],
-                        'phone' => $validated['phone'] ?? null,
-                        'password' => $validated['password'],
-                        'status' => $validated['status'],
-                        'is_admin' => true,
-                        'is_super_admin' => $isSuperAdmin,
+                if (blank($user->email) || blank($user->password)) {
+                    throw ValidationException::withMessages([
+                        'existing_user_id' =>
+                            'This customer does not have both an email and password and cannot be copied into administrator authentication.',
                     ]);
                 }
 
-                $user->forceFill([
+                if (
+                    Admin::query()
+                        ->whereRaw('LOWER(email) = ?', [mb_strtolower($user->email)])
+                        ->exists()
+                ) {
+                    throw ValidationException::withMessages([
+                        'existing_user_id' =>
+                            'An administrator with this email already exists.',
+                    ]);
+                }
+
+                $admin = new Admin();
+                $admin->forceFill([
+                    'name' => $user->name,
+                    'email' => mb_strtolower($user->email),
+                    'phone' => $user->phone,
+                    'email_verified_at' => $user->email_verified_at,
+                    // Preserve the existing hash exactly. Do not re-hash it.
+                    'password' => $user->getRawOriginal('password'),
                     'status' => $validated['status'],
-                    'is_admin' => true,
                     'is_super_admin' => $isSuperAdmin,
-                ])->save();
-
-                $user->adminRoles()->sync($roleIds);
-
-                return $user;
+                    'legacy_user_id' => $user->id,
+                ]);
+                $admin->saveQuietly();
+            } else {
+                $admin = Admin::create([
+                    'name' => $validated['name'],
+                    'email' => mb_strtolower($validated['email']),
+                    'phone' => $validated['phone'] ?? null,
+                    'password' => $validated['password'],
+                    'status' => $validated['status'],
+                    'is_super_admin' => $isSuperAdmin,
+                    'legacy_user_id' => null,
+                ]);
             }
-        );
+
+            $admin->adminRoles()->sync($roleIds);
+
+            return $admin;
+        });
 
         return redirect()
             ->route('admin.admin-users.index')
-            ->with(
-                'success',
-                $admin->name . ' now has administrator access.'
-            );
+            ->with('success', $admin->name . ' now has administrator access.');
     }
 
-    public function edit(User $adminUser): View|RedirectResponse
+    public function edit(Admin $adminUser): View
     {
-        if (!$adminUser->is_admin) {
-            return redirect()
-                ->route('admin.admin-users.index')
-                ->with('error', 'That user is not an administrator.');
-        }
-
         $adminUser->load('adminRoles:id,name,slug,description');
         $roles = AdminRole::query()->orderBy('name')->get();
 
@@ -197,19 +208,15 @@ class AdminUserController extends AdminController
 
     public function update(
         Request $request,
-        User $adminUser
+        Admin $adminUser
     ): RedirectResponse {
-        if (!$adminUser->is_admin) {
-            abort(404);
-        }
-
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email')->ignore($adminUser->id),
+                Rule::unique('admins', 'email')->ignore($adminUser->id),
             ],
             'phone' => ['nullable', 'string', 'max:50'],
             'password' => [
@@ -229,21 +236,11 @@ class AdminUserController extends AdminController
         ]);
 
         $isSuperAdmin = $request->boolean('is_super_admin');
-        $roleIds = collect($validated['role_ids'] ?? [])
-            ->map(fn ($id): int => (int) $id)
-            ->unique()
-            ->values()
-            ->all();
-
-        if (!$isSuperAdmin && $roleIds === []) {
-            throw ValidationException::withMessages([
-                'role_ids' =>
-                    'Choose at least one role or enable Super Administrator.',
-            ]);
-        }
+        $roleIds = $this->roleIds($validated, $isSuperAdmin);
+        $signedInAdminId = Auth::guard('admin')->id();
 
         if (
-            (int) $adminUser->id === (int) Auth::id()
+            (int) $adminUser->id === (int) $signedInAdminId
             && (
                 $validated['status'] !== 'active'
                 || !$isSuperAdmin
@@ -261,43 +258,37 @@ class AdminUserController extends AdminController
             $validated['status']
         );
 
-        DB::transaction(
-            function () use (
-                $validated,
-                $adminUser,
-                $isSuperAdmin,
-                $roleIds
-            ): void {
-                $data = [
-                    'name' => $validated['name'],
-                    'email' => $validated['email'],
-                    'phone' => $validated['phone'] ?? null,
-                    'status' => $validated['status'],
-                    'is_admin' => true,
-                    'is_super_admin' => $isSuperAdmin,
-                ];
+        DB::transaction(function () use (
+            $validated,
+            $adminUser,
+            $isSuperAdmin,
+            $roleIds
+        ): void {
+            $data = [
+                'name' => $validated['name'],
+                'email' => mb_strtolower($validated['email']),
+                'phone' => $validated['phone'] ?? null,
+                'status' => $validated['status'],
+                'is_super_admin' => $isSuperAdmin,
+            ];
 
-                if (filled($validated['password'] ?? null)) {
-                    $data['password'] = $validated['password'];
-                }
-
-                $adminUser->update($data);
-                $adminUser->adminRoles()->sync($roleIds);
+            if (filled($validated['password'] ?? null)) {
+                $data['password'] = $validated['password'];
             }
-        );
+
+            $adminUser->update($data);
+            $adminUser->adminRoles()->sync($roleIds);
+            $adminUser->flushAdminPermissionCache();
+        });
 
         return redirect()
             ->route('admin.admin-users.index')
             ->with('success', $adminUser->name . ' was updated.');
     }
 
-    public function destroy(User $adminUser): RedirectResponse
+    public function destroy(Admin $adminUser): RedirectResponse
     {
-        if (!$adminUser->is_admin) {
-            abort(404);
-        }
-
-        if ((int) $adminUser->id === (int) Auth::id()) {
+        if ((int) $adminUser->id === (int) Auth::guard('admin')->id()) {
             return redirect()
                 ->route('admin.admin-users.index')
                 ->with(
@@ -312,25 +303,46 @@ class AdminUserController extends AdminController
             $adminUser->status
         );
 
+        $name = $adminUser->name;
+
         DB::transaction(function () use ($adminUser): void {
             $adminUser->adminRoles()->detach();
-            $adminUser->forceFill([
-                'is_admin' => false,
-                'is_super_admin' => false,
-            ])->save();
+
+            /*
+             * Administrator authentication is now independent from customers.
+             * Deleting this Admin record does not delete or modify a User row.
+             */
+            $adminUser->delete();
         });
 
         return redirect()
             ->route('admin.admin-users.index')
             ->with(
                 'success',
-                'Administrator access was revoked from '
-                    . $adminUser->name . '.'
+                'Administrator access was revoked from ' . $name . '.'
             );
     }
 
+    private function roleIds(array $validated, bool $isSuperAdmin): array
+    {
+        $roleIds = collect($validated['role_ids'] ?? [])
+            ->map(fn ($id): int => (int) $id)
+            ->unique()
+            ->values()
+            ->all();
+
+        if (!$isSuperAdmin && $roleIds === []) {
+            throw ValidationException::withMessages([
+                'role_ids' =>
+                    'Choose at least one role or enable Super Administrator.',
+            ]);
+        }
+
+        return $roleIds;
+    }
+
     private function protectLastSuperAdministrator(
-        User $adminUser,
+        Admin $adminUser,
         bool $willBeSuperAdmin,
         string $newStatus
     ): void {
@@ -341,8 +353,7 @@ class AdminUserController extends AdminController
             return;
         }
 
-        $otherActiveSuperAdmins = User::query()
-            ->where('is_admin', true)
+        $otherActiveSuperAdmins = Admin::query()
             ->where('is_super_admin', true)
             ->where('status', 'active')
             ->where('id', '!=', $adminUser->id)

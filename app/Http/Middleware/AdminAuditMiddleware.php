@@ -4,42 +4,46 @@ namespace App\Http\Middleware;
 
 use App\Models\AdminAuditLog;
 use Closure;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 class AdminAuditMiddleware
 {
-    private const MUTATING_METHODS = [
-        'POST',
-        'PUT',
-        'PATCH',
-        'DELETE',
+    private const SENSITIVE_KEYS = [
+        'password',
+        'password_confirmation',
+        'current_password',
+        'token',
+        'access_token',
+        'refresh_token',
+        'secret',
+        'authorization',
+        'card',
+        'card_number',
+        'cvv',
+        'cvc',
+        'account_number',
+        'iban',
+        'swift',
     ];
 
     public function handle(Request $request, Closure $next): Response
     {
-        if (!in_array($request->method(), self::MUTATING_METHODS, true)) {
+        if (!in_array(strtoupper($request->method()), ['POST', 'PUT', 'PATCH', 'DELETE'], true)) {
             return $next($request);
         }
 
-        $user = $request->user();
         $startedAt = microtime(true);
+        $admin = Auth::guard('admin')->user();
 
         try {
             $response = $next($request);
 
             $this->writeLog(
                 $request,
-                $user?->id,
+                $admin?->id,
                 $response->getStatusCode(),
                 $response->getStatusCode() >= 400 ? 'failed' : 'success',
                 $startedAt
@@ -47,140 +51,84 @@ class AdminAuditMiddleware
 
             return $response;
         } catch (Throwable $exception) {
-            $statusCode = $this->exceptionStatusCode($exception);
-
             $this->writeLog(
                 $request,
-                $user?->id,
-                $statusCode,
+                $admin?->id,
+                500,
                 'failed',
-                $startedAt,
-                $exception->getMessage()
+                $startedAt
             );
 
             throw $exception;
         }
     }
 
-    private function exceptionStatusCode(Throwable $exception): int
-    {
-        return match (true) {
-            $exception instanceof ValidationException => 422,
-            $exception instanceof AuthorizationException => 403,
-            $exception instanceof ModelNotFoundException => 404,
-            $exception instanceof HttpExceptionInterface =>
-                $exception->getStatusCode(),
-            default => 500,
-        };
-    }
-
     private function writeLog(
         Request $request,
-        ?int $userId,
+        ?int $adminId,
         int $statusCode,
         string $outcome,
-        float $startedAt,
-        ?string $exceptionMessage = null
+        float $startedAt
     ): void {
         try {
+            $route = $request->route();
+            $routeName = $route?->getName();
+            $action = $this->actionName($routeName, $request);
             [$auditableType, $auditableId] = $this->auditable($request);
-            $routeName = $request->route()?->getName();
-            $description = $this->description(
-                $request,
-                $routeName,
-                $outcome,
-                $exceptionMessage
-            );
 
             AdminAuditLog::create([
-                'user_id' => $userId,
-                'action' => $this->action($request, $routeName),
+                // New separated administrator ownership.
+                'admin_id' => $adminId,
+
+                // Intentionally NULL for new records. user_id remains only as
+                // a legacy historical bridge until final cleanup.
+                'user_id' => null,
+
+                'action' => $action,
                 'route_name' => $routeName,
-                'method' => $request->method(),
-                'url' => $request->url(),
+                'method' => strtoupper($request->method()),
+                'url' => $request->fullUrl(),
                 'auditable_type' => $auditableType,
                 'auditable_id' => $auditableId,
-                'description' => $description,
+                'description' => $this->description($action, $outcome),
                 'request_data' => [
-                    'input' => $this->sanitize($request->all()),
+                    'input' => $this->sanitize($request->except([
+                        '_token',
+                        '_method',
+                    ])),
                     'duration_ms' => round(
                         (microtime(true) - $startedAt) * 1000,
                         2
                     ),
                 ],
                 'ip_address' => $request->ip(),
-                'user_agent' => Str::limit(
-                    (string) $request->userAgent(),
-                    1000,
-                    ''
-                ),
+                'user_agent' => $request->userAgent(),
                 'status_code' => $statusCode,
                 'outcome' => $outcome,
                 'created_at' => now(),
             ]);
         } catch (Throwable) {
-            /* Audit logging must never break the administrator's action. */
+            // Audit logging must never break the administrator action itself.
         }
     }
 
-    private function sanitize(array $data, string $prefix = ''): array
+    private function actionName(?string $routeName, Request $request): string
     {
-        $sanitized = [];
-
-        foreach ($data as $key => $value) {
-            $path = $prefix === '' ? (string) $key : $prefix . '.' . $key;
-
-            if ($this->isSensitive($path)) {
-                $sanitized[$key] = '[REDACTED]';
-                continue;
-            }
-
-            if ($value instanceof UploadedFile) {
-                $sanitized[$key] = [
-                    'file_name' => $value->getClientOriginalName(),
-                    'mime_type' => $value->getClientMimeType(),
-                    'size' => $value->getSize(),
-                ];
-                continue;
-            }
-
-            if (is_array($value)) {
-                $sanitized[$key] = $this->sanitize($value, $path);
-                continue;
-            }
-
-            if (is_string($value)) {
-                $sanitized[$key] = Str::limit($value, 1000, '…');
-                continue;
-            }
-
-            $sanitized[$key] = $value;
+        if (filled($routeName)) {
+            return str_starts_with($routeName, 'admin.')
+                ? substr($routeName, 6)
+                : $routeName;
         }
 
-        return Arr::except($sanitized, ['_token', '_method']);
-    }
-
-    private function isSensitive(string $key): bool
-    {
-        return Str::contains(Str::lower($key), [
-            'password',
-            'token',
-            'secret',
-            'authorization',
-            'card_number',
-            'card-number',
-            'cvv',
-            'cvc',
-            'account_number',
-            'iban',
-            'swift_code',
-        ]);
+        return strtolower($request->method()) . ':' . trim($request->path(), '/');
     }
 
     private function auditable(Request $request): array
     {
-        foreach ($request->route()?->parameters() ?? [] as $parameter) {
-            if ($parameter instanceof Model) {
+        $parameters = $request->route()?->parameters() ?? [];
+
+        foreach (array_reverse($parameters, true) as $parameter) {
+            if ($parameter instanceof \Illuminate\Database\Eloquent\Model) {
                 return [
                     $parameter::class,
                     (string) $parameter->getKey(),
@@ -188,38 +136,60 @@ class AdminAuditMiddleware
             }
         }
 
+        foreach (array_reverse($parameters, true) as $value) {
+            if (is_scalar($value) && (string) $value !== '') {
+                return [null, (string) $value];
+            }
+        }
+
         return [null, null];
     }
 
-    private function action(Request $request, ?string $routeName): string
+    private function description(string $action, string $outcome): string
     {
-        if ($routeName) {
-            return Str::after($routeName, 'admin.');
-        }
+        $label = str_replace(['.', '-', '_'], ' ', $action);
+        $label = ucwords(trim($label));
 
-        return Str::lower($request->method()) . ':' . $request->path();
+        return $label . ' — ' . ucfirst($outcome);
     }
 
-    private function description(
-        Request $request,
-        ?string $routeName,
-        string $outcome,
-        ?string $exceptionMessage
-    ): string {
-        $action = $routeName
-            ? Str::headline(Str::after($routeName, 'admin.'))
-            : Str::headline($request->method() . ' ' . $request->path());
+    private function sanitize(mixed $value, ?string $key = null): mixed
+    {
+        if (
+            $key !== null
+            && $this->isSensitiveKey($key)
+        ) {
+            return '[REDACTED]';
+        }
 
-        $description = $action . ' — ' . Str::headline($outcome);
+        if (!is_array($value)) {
+            return is_string($value)
+                ? mb_substr($value, 0, 2000)
+                : $value;
+        }
 
-        if ($exceptionMessage) {
-            $description .= ': ' . Str::limit(
-                $exceptionMessage,
-                300,
-                '…'
+        $sanitized = [];
+
+        foreach ($value as $childKey => $childValue) {
+            $sanitized[$childKey] = $this->sanitize(
+                $childValue,
+                (string) $childKey
             );
         }
 
-        return Str::limit($description, 500, '…');
+        return $sanitized;
+    }
+
+    private function isSensitiveKey(string $key): bool
+    {
+        $normalized = strtolower($key);
+
+        foreach (self::SENSITIVE_KEYS as $sensitiveKey) {
+            if (str_contains($normalized, $sensitiveKey)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

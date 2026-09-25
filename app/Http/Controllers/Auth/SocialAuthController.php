@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\CustomerEmailIdentity;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -117,17 +118,52 @@ class SocialAuthController extends Controller
 
             /*
             |--------------------------------------------------------------------------
-            | Otherwise Find Existing Customer By Email
+            | Do Not Auto-Link A Disconnected Provider By Email
             |--------------------------------------------------------------------------
+            |
+            | A normal social login is allowed only when this exact provider ID is
+            | already connected to an Arizona Outfits account. Matching an existing
+            | customer by email and silently writing google_id/facebook_id back would
+            | undo an intentional disconnect from Login & Security.
+            |
+            | Email matching is therefore used only to stop us from creating a second
+            | account with an email that already belongs to Arizona Outfits. The
+            | customer must sign in with an existing method and explicitly reconnect
+            | the provider from Login & Security.
+            |
             */
 
             if (! $user) {
-                $user = User::query()
+                $emailOwner = User::query()
                     ->whereRaw(
                         'LOWER(email) = ?',
                         [$email]
                     )
                     ->first();
+
+                if ($emailOwner) {
+                    if (
+                        $emailOwner->is_admin ||
+                        $emailOwner->is_super_admin
+                    ) {
+                        return $this->backToLogin(
+                            'Admin accounts cannot use customer social login. Please use the normal admin login method.'
+                        );
+                    }
+
+                    if ($emailOwner->status !== 'active') {
+                        return $this->backToLogin(
+                            'Your account has been disabled. Please contact support.'
+                        );
+                    }
+
+                    return $this->backToLogin(
+                        ucfirst($provider) .
+                        ' is not connected to this Arizona Outfits account. Sign in with one of your existing login methods, then connect ' .
+                        ucfirst($provider) .
+                        ' from Login & Security.'
+                    );
+                }
             }
 
             /*
@@ -215,6 +251,13 @@ class SocialAuthController extends Controller
                 event(
                     new Registered($user)
                 );
+
+                $this->syncProviderEmailIdentity(
+                    $user,
+                    $provider,
+                    $providerId,
+                    $email
+                );
             } else {
                 /*
                 |--------------------------------------------------------------------------
@@ -225,43 +268,16 @@ class SocialAuthController extends Controller
                 $updates = [];
 
                 /*
-                 * If this provider is not yet connected to the matched
-                 * customer, verify ownership before connecting it.
+                 * Normal login must never attach a provider implicitly.
+                 * The user reached this branch through an exact provider-ID match.
                  */
                 if (
-                    blank(
-                        $user->{$providerColumn}
-                    )
-                ) {
-                    $providerOwner =
-                        User::query()
-                            ->where(
-                                $providerColumn,
-                                $providerId
-                            )
-                            ->whereKeyNot(
-                                $user->id
-                            )
-                            ->first();
-
-                    if ($providerOwner) {
-                        return $this->backToLogin(
-                            'This ' .
-                            ucfirst($provider) .
-                            ' account is already connected to another customer.'
-                        );
-                    }
-
-                    $updates[$providerColumn] =
-                        $providerId;
-                } elseif (
-                    (string) $user->{$providerColumn}
-                    !== $providerId
+                    blank($user->{$providerColumn}) ||
+                    (string) $user->{$providerColumn} !== $providerId
                 ) {
                     return $this->backToLogin(
-                        'This email is already connected to a different ' .
                         ucfirst($provider) .
-                        ' account.'
+                        ' is not connected to this Arizona Outfits account. Please use another login method and reconnect it from Login & Security.'
                     );
                 }
 
@@ -278,6 +294,13 @@ class SocialAuthController extends Controller
                         $updates
                     )->save();
                 }
+
+                $this->syncProviderEmailIdentity(
+                    $user,
+                    $provider,
+                    $providerId,
+                    $email
+                );
             }
 
             /*
@@ -757,6 +780,27 @@ class SocialAuthController extends Controller
 
             /*
             |--------------------------------------------------------------------------
+            | Persist Provider Email Identity
+            |--------------------------------------------------------------------------
+            |
+            | The OAuth provider has authenticated this provider account.
+            | Store its email independently from the custom email identity.
+            | Equal custom/Google/Facebook email strings are allowed because
+            | provider connection ownership remains independent.
+            |
+            */
+
+            $this->syncProviderEmailIdentity(
+                $user,
+                $provider,
+                $providerId,
+                $providerEmail !== ''
+                    ? $providerEmail
+                    : null
+            );
+
+            /*
+            |--------------------------------------------------------------------------
             | Finish Linking Session
             |--------------------------------------------------------------------------
             */
@@ -818,6 +862,46 @@ class SocialAuthController extends Controller
                         ' could not be connected. Please try again.',
                 ]);
         }
+    }
+
+    /**
+     * Create or refresh the independent email identity for Google/Facebook.
+     *
+     * OAuth provider verification is provider verification. It does not
+     * silently enable the local custom email/password login method.
+     */
+    private function syncProviderEmailIdentity(
+        User $user,
+        string $provider,
+        string $providerId,
+        ?string $email
+    ): void {
+        $normalizedEmail =
+            CustomerEmailIdentity::normalizeEmail($email);
+
+        $identity =
+            CustomerEmailIdentity::query()
+                ->firstOrNew([
+                    'user_id' => $user->id,
+                    'source' => $provider,
+                ]);
+
+        $identity->forceFill([
+            'email' => $normalizedEmail,
+            'normalized_email' => $normalizedEmail,
+            'provider_user_id' => $providerId,
+
+            /*
+             * A successful OAuth callback proves control of this provider
+             * identity. This is separate from ArizonaOutfits custom-email
+             * verification.
+             */
+            'verified_at' => now(),
+            'verification_pending_at' => null,
+            'connected_at' => $identity->connected_at ?? now(),
+            'disconnected_at' => null,
+            'is_login_enabled' => false,
+        ])->save();
     }
 
     /*

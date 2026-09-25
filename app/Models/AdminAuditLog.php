@@ -11,20 +11,9 @@ class AdminAuditLog extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'user_id',
-        'action',
-        'route_name',
-        'method',
-        'url',
-        'auditable_type',
-        'auditable_id',
-        'description',
-        'request_data',
-        'ip_address',
-        'user_agent',
-        'status_code',
-        'outcome',
-        'created_at',
+        'user_id', 'admin_id', 'action', 'route_name', 'method', 'url',
+        'auditable_type', 'auditable_id', 'description', 'request_data',
+        'ip_address', 'user_agent', 'status_code', 'outcome', 'created_at',
     ];
 
     protected $casts = [
@@ -32,6 +21,11 @@ class AdminAuditLog extends Model
         'status_code' => 'integer',
         'created_at' => 'datetime',
     ];
+
+    public function admin(): BelongsTo
+    {
+        return $this->belongsTo(Admin::class);
+    }
 
     public function user(): BelongsTo
     {
@@ -50,6 +44,6 @@ class AdminAuditLog extends Model
 
     public function getActorNameAttribute(): string
     {
-        return $this->user?->name ?: 'Unknown administrator';
+        return $this->admin?->name ?: $this->user?->name ?: 'Unknown administrator';
     }
 }

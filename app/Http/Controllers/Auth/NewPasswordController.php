@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\PasswordSecurityService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
@@ -29,33 +31,77 @@ class NewPasswordController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
-    {
+    public function store(
+        Request $request,
+        PasswordSecurityService $passwordSecurity
+    ): RedirectResponse {
         $request->validate([
             'token' => ['required'],
             'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
+        /*
+        |--------------------------------------------------------------------------
+        | Reset Password
+        |--------------------------------------------------------------------------
+        |
+        | Laravel validates the reset token and resolves the correct user.
+        | Once that has succeeded, we enforce Arizona Outfits' password reuse
+        | rule before changing anything:
+        |
+        | - current password: blocked
+        | - immediately previous password: blocked
+        | - older passwords: allowed
+        |
+        */
         $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user) use ($request) {
-                $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'password_set_at' => now(),
-                    'remember_token' => Str::random(60),
-                ])->save();
+            $request->only(
+                'email',
+                'password',
+                'password_confirmation',
+                'token'
+            ),
+            function (User $user) use (
+                $request,
+                $passwordSecurity
+            ) {
+                $newPassword = (string) $request->password;
+
+                if (
+                    $passwordSecurity->isRecentlyUsed(
+                        $user,
+                        $newPassword
+                    )
+                ) {
+                    throw ValidationException::withMessages([
+                        'password' =>
+                            'Choose a password different from your current and previous password.',
+                    ]);
+                }
+
+                DB::transaction(function () use (
+                    $user,
+                    $newPassword,
+                    $passwordSecurity
+                ) {
+                    /*
+                     * Preserve the current hash as the one immediately
+                     * previous password before replacing it.
+                     */
+                    $passwordSecurity->rememberCurrentPassword($user);
+
+                    $user->forceFill([
+                        'password' => Hash::make($newPassword),
+                        'password_set_at' => now(),
+                        'remember_token' => Str::random(60),
+                    ])->save();
+                });
 
                 event(new PasswordReset($user));
             }
         );
 
-        // If the password was successfully reset, we will redirect the user back to
-        // the application's home authenticated view. If there is an error we can
-        // redirect them back to where they came from with their error message.
         return $status == Password::PASSWORD_RESET
                     ? redirect()->route('login')->with('status', __($status))
                     : back()->withInput($request->only('email'))
