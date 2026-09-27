@@ -1,811 +1,233 @@
 @php
     $orderNumber = $order->order_number
-        ?: 'ORD-' . str_pad(
-            (string) $order->id,
-            6,
-            '0',
-            STR_PAD_LEFT
-        );
+        ?: 'ORD-' . str_pad((string) $order->id, 6, '0', STR_PAD_LEFT);
 
-    $recipientName = $order->shipping_name
+    $trackingNumber = $order->tracking_number ?: $orderNumber;
+
+    $customerName = $order->shipping_name
         ?: $order->billing_name
         ?: $order->user?->name
-        ?: 'Guest customer';
+        ?: 'Guest Customer';
 
-    $recipientEmail = $order->shipping_email
-        ?: $order->billing_email
-        ?: $order->user?->email
-        ?: null;
+    $customerPhone = $order->shipping_phone ?: $order->billing_phone ?: null;
+    $customerEmail = $order->shipping_email ?: $order->billing_email ?: $order->user?->email ?: null;
 
-    $recipientPhone = $order->shipping_phone
-        ?: $order->billing_phone
-        ?: null;
-
-    $addressLineOne = $order->shipping_address
+    $address1 = $order->shipping_address
         ?? $order->shipping_address_line_1
         ?? $order->shipping_address1
+        ?? $order->billing_address
+        ?? $order->billing_address_line_1
+        ?? $order->billing_address1
         ?? null;
 
-    $addressLineTwo = $order->shipping_address_line_2
+    $address2 = $order->shipping_address_line_2
         ?? $order->shipping_address2
+        ?? $order->billing_address_line_2
+        ?? $order->billing_address2
         ?? null;
 
-    $shippingCity = $order->shipping_city ?? null;
-    $shippingState = $order->shipping_state ?? null;
-
-    $shippingPostcode = $order->shipping_postcode
+    $city = $order->shipping_city ?: $order->billing_city ?: null;
+    $state = $order->shipping_state ?: $order->billing_state ?: null;
+    $postcode = $order->shipping_postcode
         ?? $order->shipping_zip
+        ?? $order->billing_postcode
+        ?? $order->billing_zip
         ?? null;
+    $country = $order->shipping_country ?: $order->billing_country ?: null;
 
-    $shippingCountry = $order->shipping_country ?? null;
-
-    $cityStateLine = trim(
-        collect([
-            $shippingCity,
-            $shippingState,
-        ])->filter()->implode(', ')
-    );
-
-    $postcodeCountryLine = trim(
-        collect([
-            $shippingPostcode,
-            $shippingCountry,
-        ])->filter()->implode(' ')
-    );
-
-    $trackingNumber = $order->tracking_number
-        ?? $order->shipment_tracking_number
-        ?? null;
-
-    $barcodeValue = $trackingNumber ?: $orderNumber;
-
-    $courier = $order->courier
+    $courierProvider = $order->courier_provider
         ?? $order->shipping_carrier
         ?? $order->carrier
-        ?? 'Courier not assigned';
-
-    $service = $order->shipping_service
-        ?? $order->delivery_method
-        ?? $order->shipping_method
-        ?? 'Standard delivery';
-
-    $packageWeight = $order->package_weight
-        ?? $order->shipping_weight
-        ?? $order->weight
         ?? null;
 
+    $courierTracking = $order->courier ?: null;
+
+    $shippingMethod = $order->shipping_method_name
+        ?? $order->shipping_method
+        ?? 'Standard Shipping';
+
+    $orderStatus = ucwords(str_replace(['_', '-'], ' ', $order->order_status ?? $order->status ?? 'pending'));
+
+    $totalQuantity = (int) $order->items->sum('quantity');
+    $packageWeight = $order->package_weight ?? $order->weight ?? null;
     $weightUnit = $order->weight_unit ?? 'kg';
 
-    $packageNumber = $order->package_number ?? 1;
-    $totalPackages = $order->total_packages ?? 1;
-
-    $totalQuantity = $order->items->sum(function ($item) {
-        return (int) ($item->quantity ?? 0);
-    });
-
-    $orderStatus = ucwords(
-        str_replace(
-            ['_', '-'],
-            ' ',
-            $order->order_status
-                ?? $order->status
-                ?? 'pending'
-        )
-    );
-
-    $barcodePattern = preg_replace(
-        '/[^A-Za-z0-9]/',
-        '',
-        strtoupper($barcodeValue)
-    );
-
-    $barcodePattern = $barcodePattern ?: 'ORDER';
-
-    $qrData = implode('|', [
-        'ORDER:' . $orderNumber,
-        'TRACKING:' . ($trackingNumber ?: 'NOT-ASSIGNED'),
-        'CUSTOMER:' . $recipientName,
-    ]);
+    $senderName = 'Arizona Outfits';
+    $senderLine1 = 'Main fulfilment warehouse';
+    $senderEmail = 'support@arizonaoutfits.com';
 @endphp
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Shipping Label {{ $orderNumber }}
-    </title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shipping Label {{ $orderNumber }}</title>
     <style>
-        :root {
-            --black: #111111;
-            --white: #ffffff;
-            --border: #d1d5db;
-            --muted: #6b7280;
-            --background: #f3f4f6;
-            --accent: #111827;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
+        * { box-sizing: border-box; }
         body {
             margin: 0;
-            color: var(--black);
-            background: var(--background);
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.35;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        button,
-        a {
-            font: inherit;
-        }
-
-        .page {
-            padding: 28px 16px 50px;
-        }
-
-        .toolbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 14px;
-            width: 100%;
-            max-width: 760px;
-            margin: 0 auto 18px;
-        }
-
-        .toolbar-group {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .toolbar-button {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 42px;
-            padding: 10px 16px;
+            background: #f3f4f6;
             color: #111827;
-            background: #ffffff;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
+            font-family: Arial, Helvetica, sans-serif;
         }
-
-        .toolbar-button:hover {
-            background: #f9fafb;
-        }
-
-        .toolbar-button-primary {
-            color: #ffffff;
-            background: #111827;
-            border-color: #111827;
-        }
-
-        .toolbar-button-primary:hover {
-            background: #1f2937;
-        }
-
-        .label-sheet {
-            width: 100%;
-            max-width: 760px;
-            margin: 0 auto;
-            padding: 30px;
-            background: #ffffff;
-            border: 1px solid #d1d5db;
-            border-radius: 12px;
-            box-shadow: 0 14px 45px rgba(17, 24, 39, 0.1);
-        }
-
-        .shipping-label {
-            width: 100%;
-            max-width: 432px;
-            min-height: 648px;
-            margin: 0 auto;
-            color: #000000;
-            background: #ffffff;
-            border: 3px solid #000000;
-        }
-
-        .label-section {
-            padding: 12px 14px;
-            border-bottom: 2px solid #000000;
-        }
-
-        .label-section:last-child {
-            border-bottom: 0;
-        }
-
-        .label-header {
+        .toolbar {
+            width: min(100% - 32px, 760px);
+            margin: 24px auto 18px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 14px;
-        }
-
-        .company-name {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .company-subtitle {
-            margin-top: 3px;
-            color: #444444;
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .service-box {
-            min-width: 105px;
-            padding: 7px;
-            border: 2px solid #000000;
-            text-align: center;
-        }
-
-        .service-label {
-            display: block;
-            font-size: 8px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .service-value {
-            display: block;
-            margin-top: 3px;
-            font-size: 12px;
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-
-        .address-title {
-            margin-bottom: 7px;
-            font-size: 9px;
-            font-weight: 900;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .sender-name {
-            margin-bottom: 2px;
-            font-size: 12px;
-            font-weight: 900;
-        }
-
-        .sender-address {
-            font-size: 10px;
-            line-height: 1.45;
-        }
-
-        .recipient-section {
-            min-height: 168px;
-            padding: 15px 18px;
-        }
-
-        .recipient-name {
-            margin-bottom: 5px;
-            font-size: 24px;
-            font-weight: 900;
-            line-height: 1.15;
-            text-transform: uppercase;
-        }
-
-        .recipient-address {
-            font-size: 17px;
-            font-weight: 800;
-            line-height: 1.35;
-            text-transform: uppercase;
-        }
-
-        .recipient-contact {
-            margin-top: 9px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: none;
-        }
-
-        .tracking-heading {
-            margin-bottom: 6px;
-            font-size: 9px;
-            font-weight: 900;
-            letter-spacing: 1px;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .tracking-number {
-            margin-bottom: 9px;
-            font-size: 17px;
-            font-weight: 900;
-            letter-spacing: 1px;
-            text-align: center;
-            overflow-wrap: anywhere;
-        }
-
-        .barcode {
-            height: 70px;
-            margin: 0 4px;
-            background:
-                repeating-linear-gradient(
-                    90deg,
-                    #000000 0,
-                    #000000 2px,
-                    transparent 2px,
-                    transparent 4px,
-                    #000000 4px,
-                    #000000 5px,
-                    transparent 5px,
-                    transparent 8px,
-                    #000000 8px,
-                    #000000 11px,
-                    transparent 11px,
-                    transparent 13px
-                );
-        }
-
-        .barcode-caption {
-            margin-top: 5px;
-            font-family: monospace;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-align: center;
-        }
-
-        .shipment-grid {
-            display: grid;
-            grid-template-columns: 1fr 115px;
-            min-height: 125px;
-        }
-
-        .shipment-info {
-            padding: 12px 14px;
-            border-right: 2px solid #000000;
-        }
-
-        .shipment-row {
-            display: grid;
-            grid-template-columns: 90px 1fr;
-            gap: 8px;
-            margin-bottom: 6px;
-            font-size: 10px;
-        }
-
-        .shipment-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .shipment-label {
-            font-weight: 900;
-            text-transform: uppercase;
-        }
-
-        .shipment-value {
-            font-weight: 700;
-            overflow-wrap: anywhere;
-        }
-
-        .qr-box {
-            display: flex;
-            flex-direction: column;
             justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
             align-items: center;
-            padding: 8px;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            background: #fff;
+            color: #111827;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
         }
-
-        .qr-code {
-            display: grid;
-            grid-template-columns: repeat(11, 1fr);
-            grid-template-rows: repeat(11, 1fr);
-            width: 88px;
-            height: 88px;
-            padding: 5px;
-            background: #ffffff;
-            border: 2px solid #000000;
+        .btn-primary { background: #111827; border-color: #111827; color: #fff; }
+        .sheet-wrap { padding: 0 16px 32px; overflow-x: auto; }
+        .label {
+            width: 4in;
+            min-height: 6in;
+            margin: 0 auto;
+            background: #fff;
+            border: 2px solid #111;
+            box-shadow: 0 14px 40px rgba(15,23,42,.12);
+            overflow: hidden;
         }
-
-        .qr-code span {
-            background: transparent;
+        .row { display: flex; width: 100%; }
+        .header {
+            min-height: .78in;
+            padding: 14px 15px;
+            border-bottom: 2px solid #111;
+            align-items: center;
+            justify-content: space-between;
         }
-
-        .qr-code span:nth-child(2n),
-        .qr-code span:nth-child(3n),
-        .qr-code span:nth-child(7n),
-        .qr-code span:nth-child(11n) {
-            background: #000000;
-        }
-
-        .qr-caption {
-            margin-top: 5px;
+        .brand { font-size: 20px; line-height: .92; font-weight: 900; letter-spacing: .5px; }
+        .brand small { display: block; margin-top: 7px; font-size: 7px; line-height: 1.2; font-weight: 600; letter-spacing: 0; }
+        .service {
+            width: 96px;
+            padding: 9px 6px;
+            border: 2px solid #111;
+            text-align: center;
             font-size: 7px;
             font-weight: 900;
-            text-align: center;
             text-transform: uppercase;
         }
-
-        .footer-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .order-reference {
-            font-size: 13px;
-            font-weight: 900;
-        }
-
-        .package-reference {
-            font-size: 11px;
-            font-weight: 800;
-            text-align: right;
-        }
-
-        .preview-note {
-            max-width: 760px;
-            margin: 16px auto 0;
-            color: #6b7280;
-            font-size: 12px;
-            text-align: center;
-        }
-
-        @media (max-width: 620px) {
-            .toolbar {
-                align-items: stretch;
-                flex-direction: column;
-            }
-
-            .toolbar-group {
-                width: 100%;
-            }
-
-            .toolbar-button {
-                flex: 1;
-            }
-
-            .label-sheet {
-                padding: 12px;
-            }
-
-            .shipping-label {
-                max-width: 100%;
-            }
-
-            .recipient-name {
-                font-size: 20px;
-            }
-
-            .recipient-address {
-                font-size: 14px;
-            }
-        }
-
+        .service strong { display: block; margin-top: 4px; font-size: 11px; }
+        .section { padding: 12px 14px; border-bottom: 2px solid #111; }
+        .eyebrow { margin-bottom: 7px; font-size: 7px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
+        .from { min-height: .72in; }
+        .from strong { font-size: 11px; }
+        .muted { margin-top: 4px; font-size: 8px; line-height: 1.45; }
+        .ship { min-height: 1.45in; }
+        .recipient { font-size: 18px; line-height: 1.1; font-weight: 900; text-transform: uppercase; }
+        .address { margin-top: 9px; font-size: 13px; line-height: 1.38; font-weight: 800; text-transform: uppercase; }
+        .contact { margin-top: 9px; font-size: 8px; line-height: 1.4; }
+        .tracking { min-height: 1.12in; text-align: center; }
+        .tracking-number { margin: 4px 0 8px; font-size: 14px; font-weight: 900; letter-spacing: 1px; }
+        .barcode { display: block; width: 100%; height: 52px; object-fit: fill; }
+        .barcode-text { margin-top: 5px; font: 700 8px monospace; letter-spacing: 1.2px; }
+        .details { min-height: 1.15in; padding: 0; display: table; width: 100%; table-layout: fixed; border-bottom: 2px solid #111; }
+        .detail-list { display: table-cell; width: 68%; vertical-align: middle; padding: 10px 12px; border-right: 2px solid #111; }
+        .detail { display: table; width: 100%; margin: 0 0 5px; table-layout: fixed; font-size: 8px; }
+        .detail:last-child { margin-bottom: 0; }
+        .detail b, .detail span { display: table-cell; vertical-align: top; }
+        .detail b { width: 88px; text-transform: uppercase; }
+        .detail span { font-weight: 700; overflow-wrap: anywhere; }
+        .qr-cell { display: table-cell; width: 32%; vertical-align: middle; text-align: center; padding: 8px; }
+        .qr { display: block; width: 84px; height: 84px; margin: 0 auto; }
+        .scan { margin-top: 4px; font-size: 7px; font-weight: 900; text-transform: uppercase; }
+        .footer { min-height: .48in; padding: 10px 13px; display: flex; align-items: center; justify-content: space-between; font-size: 9px; font-weight: 900; }
+        .footer span:last-child { text-align: right; }
+        .hint { margin: 14px auto 0; width: min(100% - 32px, 520px); text-align: center; color: #6b7280; font-size: 11px; }
         @media print {
-            @page {
-                size: 4in 6in;
-                margin: 0;
-            }
-
-            body {
-                background: #ffffff;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .page {
-                padding: 0;
-            }
-
-            .toolbar,
-            .preview-note {
-                display: none !important;
-            }
-
-            .label-sheet {
-                width: 4in;
-                max-width: 4in;
-                margin: 0;
-                padding: 0;
-                border: 0;
-                border-radius: 0;
-                box-shadow: none;
-            }
-
-            .shipping-label {
-                width: 4in;
-                max-width: 4in;
-                height: 6in;
-                min-height: 6in;
-                margin: 0;
-                border-width: 2px;
-                border-radius: 0;
-                overflow: hidden;
-            }
-
-            .label-section {
-                padding: 8px 10px;
-            }
-
-            .recipient-section {
-                min-height: 148px;
-                padding: 11px 14px;
-            }
-
-            .recipient-name {
-                font-size: 20px;
-            }
-
-            .recipient-address {
-                font-size: 14px;
-            }
-
-            .barcode {
-                height: 55px;
-            }
-
-            .shipment-grid {
-                min-height: 105px;
-            }
-
-            .qr-code {
-                width: 75px;
-                height: 75px;
-            }
+            @page { size: 4in 6in; margin: 0; }
+            body { background: #fff; }
+            .toolbar, .hint { display: none !important; }
+            .sheet-wrap { padding: 0; overflow: visible; }
+            .label { margin: 0; box-shadow: none; }
+        }
+        @media (max-width: 460px) {
+            .sheet-wrap { padding-left: 8px; padding-right: 8px; }
+            .label { transform-origin: top center; }
         }
     </style>
 </head>
-
 <body>
-    <main class="page">
-        <div class="toolbar">
-            <div class="toolbar-group">
-                <a
-                    href="{{ route('admin.orders.show', $order) }}"
-                    class="toolbar-button"
-                >
-                    ← Back to order
-                </a>
-            </div>
+    <div class="toolbar">
+        <a class="btn" href="{{ route('admin.orders.show', $order) }}">← Back to order</a>
+        <button class="btn" type="button" onclick="window.print()">Print 4 × 6 label</button>
+        <a class="btn btn-primary" href="{{ route('admin.orders.shipping-label.download', $order) }}">Download PDF</a>
+    </div>
 
-            <div class="toolbar-group">
-                <button
-                    type="button"
-                    class="toolbar-button"
-                    onclick="window.print()"
-                >
-                    Print 4 × 6 label
-                </button>
+    <div class="sheet-wrap">
+        <article class="label">
+            <header class="row header">
+                <div class="brand">ARIZONA<br>OUTFITS<small>Premium clothing & lifestyle products</small></div>
+                <div class="service">Service<strong>{{ $shippingMethod }}</strong></div>
+            </header>
 
-                <a
-                    href="{{ route('admin.orders.shipping-label.download', $order) }}"
-                    class="toolbar-button toolbar-button-primary"
-                >
-                    Download PDF
-                </a>
-            </div>
-        </div>
+            <section class="section from">
+                <div class="eyebrow">From</div>
+                <strong>{{ $senderName }}</strong>
+                <div class="muted">{{ $senderLine1 }}<br>{{ $senderEmail }}</div>
+            </section>
 
-        <section class="label-sheet">
-            <article class="shipping-label">
-                <header class="label-section label-header">
-                    <div>
-                        <div class="company-name">
-                            Arizona Outfits
-                        </div>
+            <section class="section ship">
+                <div class="eyebrow">Ship to</div>
+                <div class="recipient">{{ $customerName }}</div>
+                <div class="address">
+                    @if($address1){{ $address1 }}<br>@endif
+                    @if($address2){{ $address2 }}<br>@endif
+                    @if($city || $state){{ $city }}{{ $city && $state ? ', ' : '' }}{{ $state }}<br>@endif
+                    @if($postcode || $country){{ $postcode }}{{ $postcode && $country ? ' · ' : '' }}{{ $country }}@endif
+                </div>
+                @if($customerPhone || $customerEmail)
+                <div class="contact">
+                    @if($customerPhone)Phone: {{ $customerPhone }}@endif
+                    @if($customerPhone && $customerEmail) &nbsp;·&nbsp; @endif
+                    @if($customerEmail)Email: {{ $customerEmail }}@endif
+                </div>
+                @endif
+            </section>
 
-                        <div class="company-subtitle">
-                            Premium clothing and lifestyle products
-                        </div>
-                    </div>
+            <section class="section tracking">
+                <div class="eyebrow">Arizona tracking</div>
+                <div class="tracking-number">{{ $trackingNumber }}</div>
+                <img class="barcode" src="data:image/png;base64,{{ $barcodeBase64 }}" alt="Arizona tracking barcode">
+                <div class="barcode-text">{{ $trackingNumber }}</div>
+            </section>
 
-                    <div class="service-box">
-                        <span class="service-label">
-                            Service
-                        </span>
+            <section class="details">
+                <div class="detail-list">
+                    <div class="detail"><b>Courier provider</b><span>{{ $courierProvider ?: 'Not assigned' }}</span></div>
+                    <div class="detail"><b>Courier tracking</b><span>{{ $courierTracking ?: 'Not assigned' }}</span></div>
+                    <div class="detail"><b>Order</b><span>{{ $orderNumber }}</span></div>
+                    <div class="detail"><b>Status</b><span>{{ $orderStatus }}</span></div>
+                    <div class="detail"><b>Weight</b><span>{{ $packageWeight !== null ? number_format((float)$packageWeight, 2).' '.$weightUnit : 'Not specified' }}</span></div>
+                    <div class="detail"><b>Contents</b><span>{{ $totalQuantity }} unit(s)</span></div>
+                </div>
+                <div class="qr-cell">
+                    <img class="qr" src="data:image/png;base64,{{ $qrBase64 }}" alt="Order QR code">
+                    <div class="scan">Scan order</div>
+                </div>
+            </section>
 
-                        <span class="service-value">
-                            {{ $service }}
-                        </span>
-                    </div>
-                </header>
-
-                <section class="label-section">
-                    <div class="address-title">
-                        From
-                    </div>
-
-                    <div class="sender-name">
-                        Arizona Outfits
-                    </div>
-
-                    <div class="sender-address">
-                        Main fulfilment warehouse<br>
-                        Warehouse address<br>
-                        City, State, Postal Code<br>
-                        Pakistan<br>
-                        support@arizonaoutfits.com
-                    </div>
-                </section>
-
-                <section class="label-section recipient-section">
-                    <div class="address-title">
-                        Ship to
-                    </div>
-
-                    <div class="recipient-name">
-                        {{ $recipientName }}
-                    </div>
-
-                    <div class="recipient-address">
-                        @if ($addressLineOne)
-                            <div>{{ $addressLineOne }}</div>
-                        @endif
-
-                        @if ($addressLineTwo)
-                            <div>{{ $addressLineTwo }}</div>
-                        @endif
-
-                        @if ($cityStateLine)
-                            <div>{{ $cityStateLine }}</div>
-                        @endif
-
-                        @if ($postcodeCountryLine)
-                            <div>{{ $postcodeCountryLine }}</div>
-                        @endif
-
-                        @if (
-                            !$addressLineOne
-                            && !$addressLineTwo
-                            && !$cityStateLine
-                            && !$postcodeCountryLine
-                        )
-                            <div>Shipping address not provided</div>
-                        @endif
-                    </div>
-
-                    @if ($recipientPhone || $recipientEmail)
-                        <div class="recipient-contact">
-                            @if ($recipientPhone)
-                                Phone: {{ $recipientPhone }}
-                            @endif
-
-                            @if ($recipientPhone && $recipientEmail)
-                                <br>
-                            @endif
-
-                            @if ($recipientEmail)
-                                Email: {{ $recipientEmail }}
-                            @endif
-                        </div>
-                    @endif
-                </section>
-
-                <section class="label-section">
-                    <div class="tracking-heading">
-                        Tracking number
-                    </div>
-
-                    <div class="tracking-number">
-                        {{ $trackingNumber ?: 'NOT ASSIGNED' }}
-                    </div>
-
-                    <div class="barcode"></div>
-
-                    <div class="barcode-caption">
-                        {{ $barcodePattern }}
-                    </div>
-                </section>
-
-                <section class="shipment-grid">
-                    <div class="shipment-info">
-                        <div class="shipment-row">
-                            <span class="shipment-label">
-                                Courier
-                            </span>
-
-                            <span class="shipment-value">
-                                {{ $courier }}
-                            </span>
-                        </div>
-
-                        <div class="shipment-row">
-                            <span class="shipment-label">
-                                Order
-                            </span>
-
-                            <span class="shipment-value">
-                                {{ $orderNumber }}
-                            </span>
-                        </div>
-
-                        <div class="shipment-row">
-                            <span class="shipment-label">
-                                Status
-                            </span>
-
-                            <span class="shipment-value">
-                                {{ $orderStatus }}
-                            </span>
-                        </div>
-
-                        <div class="shipment-row">
-                            <span class="shipment-label">
-                                Weight
-                            </span>
-
-                            <span class="shipment-value">
-                                @if ($packageWeight !== null)
-                                    {{ number_format((float) $packageWeight, 2) }}
-                                    {{ $weightUnit }}
-                                @else
-                                    Not specified
-                                @endif
-                            </span>
-                        </div>
-
-                        <div class="shipment-row">
-                            <span class="shipment-label">
-                                Contents
-                            </span>
-
-                            <span class="shipment-value">
-                                {{ $totalQuantity }} unit(s)
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="qr-box">
-                        <div
-                            class="qr-code"
-                            title="{{ $qrData }}"
-                        >
-                            @for ($i = 1; $i <= 121; $i++)
-                                <span></span>
-                            @endfor
-                        </div>
-
-                        <div class="qr-caption">
-                            Scan order
-                        </div>
-                    </div>
-                </section>
-
-                <footer class="label-section footer-row">
-                    <div class="order-reference">
-                        {{ $orderNumber }}
-                    </div>
-
-                    <div class="package-reference">
-                        Package {{ $packageNumber }}
-                        of {{ $totalPackages }}
-                    </div>
-                </footer>
-            </article>
-        </section>
-
-        <div class="preview-note">
-            This preview is formatted for a 4 × 6-inch thermal printer.
-            The visual barcode and QR pattern will be replaced with actual
-            scannable codes in the barcode integration step.
-        </div>
-    </main>
+            <footer class="footer">
+                <span>{{ $orderNumber }}</span>
+                <span>Package 1 of 1</span>
+            </footer>
+        </article>
+    </div>
+    <div class="hint">4 × 6 thermal-label preview. Barcode and QR use the same generated data as the PDF.</div>
 </body>
 </html>

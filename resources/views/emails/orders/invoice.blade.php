@@ -1,95 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Invoice {{ $invoiceNumber }}</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Invoice {{ $invoiceNumber }}</title>
 </head>
-<body style="margin:0;padding:0;background:#f3f4f6;font-family:Arial,sans-serif;color:#111827;">
-
-<table width="100%" cellpadding="0" cellspacing="0" style="padding:30px 15px;background:#f3f4f6;">
-    <tr>
-        <td align="center">
-
-            <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;">
-
-                <tr>
-                    <td style="padding:24px;background:#111827;color:#ffffff;">
-                        <div style="font-size:22px;font-weight:bold;">
-                            Arizona Outfits
-                        </div>
-
-                        <div style="margin-top:6px;font-size:13px;color:#d1d5db;">
-                            Invoice for your order
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="padding:28px;">
-
-                        <p style="margin:0 0 16px;font-size:16px;">
-                            Hello
-                            {{ $order->billing_name
-                                ?: $order->shipping_name
-                                ?: $order->user?->name
-                                ?: 'Customer' }},
-                        </p>
-
-                        <p style="margin:0 0 16px;font-size:14px;line-height:1.7;color:#4b5563;">
-                            Thank you for your order. Your invoice is attached to this email as a PDF.
-                        </p>
-
-                        <table width="100%" cellpadding="0" cellspacing="0" style="margin:22px 0;border:1px solid #e5e7eb;">
-                            <tr>
-                                <td style="padding:12px;color:#6b7280;font-size:13px;">
-                                    Order number
-                                </td>
-
-                                <td align="right" style="padding:12px;font-size:13px;font-weight:bold;">
-                                    {{ $orderNumber }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td style="padding:12px;border-top:1px solid #e5e7eb;color:#6b7280;font-size:13px;">
-                                    Invoice number
-                                </td>
-
-                                <td align="right" style="padding:12px;border-top:1px solid #e5e7eb;font-size:13px;font-weight:bold;">
-                                    {{ $invoiceNumber }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td style="padding:12px;border-top:1px solid #e5e7eb;color:#6b7280;font-size:13px;">
-                                    Total
-                                </td>
-
-                                <td align="right" style="padding:12px;border-top:1px solid #e5e7eb;font-size:13px;font-weight:bold;">
-                                    {{ strtoupper($order->currency ?: 'PKR') }}
-                                    {{ number_format((float) $order->total, 2) }}
-                                </td>
-                            </tr>
-                        </table>
-
-                        <p style="margin:0;font-size:13px;line-height:1.7;color:#6b7280;">
-                            Please keep the attached invoice for your records.
-                        </p>
-
-                    </td>
-                </tr>
-
-                <tr>
-                    <td style="padding:18px 28px;background:#f9fafb;color:#9ca3af;font-size:12px;text-align:center;">
-                        Arizona Outfits
-                    </td>
-                </tr>
-
-            </table>
-
-        </td>
-    </tr>
+<body style="margin:0;padding:0;background:#f4f6fb;font-family:Arial,Helvetica,sans-serif;color:#172033;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f4f6fb;padding:32px 12px;"><tr><td align="center">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:680px;background:#fff;border:1px solid #e6e9f2;border-radius:16px;overflow:hidden;">
+<tr><td style="padding:25px 30px;background:#111827;color:#fff;">
+<div style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#a5b4fc;">Arizona Outfits</div>
+<div style="margin-top:7px;font-size:24px;font-weight:800;">Your invoice is ready</div>
+<div style="margin-top:7px;font-size:13px;color:#cbd5e1;">A PDF copy of your Arizona Outfits invoice is attached.</div>
+</td></tr><tr><td style="padding:30px;">
+<p style="margin:0 0 18px;line-height:1.7;">Hello <strong>{{ $order->billing_name ?: $order->shipping_name ?: $order->user?->name ?: 'Customer' }}</strong>,</p>
+<p style="margin:0 0 22px;line-height:1.7;color:#596273;">Thank you for your order. Your invoice is attached as a PDF for your records.</p>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="border-collapse:collapse;background:#f8fafc;border-radius:10px;">
+<tr><td style="padding:13px 15px;color:#64748b;">Order number</td><td align="right" style="padding:13px 15px;font-weight:700;">{{ $orderNumber }}</td></tr>
+<tr><td style="padding:13px 15px;border-top:1px solid #e5e7eb;color:#64748b;">Invoice number</td><td align="right" style="padding:13px 15px;border-top:1px solid #e5e7eb;font-weight:700;">{{ $invoiceNumber }}</td></tr>
+<tr><td style="padding:15px;border-top:1px solid #dfe3eb;font-size:17px;font-weight:800;">Invoice total</td><td align="right" style="padding:15px;border-top:1px solid #dfe3eb;font-size:19px;font-weight:800;color:#4f46e5;">{{ strtoupper((string)($order->currency ?: 'USD')) }} {{ number_format((float)$order->total,2) }}</td></tr>
 </table>
-
-</body>
-</html>
+<div style="margin-top:22px;padding:15px 17px;background:#eef2ff;border-radius:9px;color:#4338ca;font-size:13px;line-height:1.6;">Your detailed invoice is included with this email as a PDF attachment.</div>
+</td></tr>
+<tr><td style="padding:18px 30px;background:#f8fafc;border-top:1px solid #eef0f5;text-align:center;font-size:12px;line-height:1.6;color:#7c8597;">
+&copy; {{ date('Y') }} Arizona Outfits. Transactional order communication.
+</td></tr></table></td></tr></table></body></html>
