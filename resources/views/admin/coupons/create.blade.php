@@ -1,52 +1,8 @@
-@extends('layouts.app')
-
+@extends('admin.layouts.app')
+@section('title','Create Coupon')
+@section('page-heading','Create Coupon')
 @section('content')
-    <div class="page-wrapper">
-
-        <div class="services">
-            <div class="service-wrapper">
-                <div class="container">
-                    <h1>Create Coupon</h1>
-
-                    <form action="{{ route('admin.coupons.store') }}" method="POST">
-                        @csrf
-
-                        <input type="text" name="code" placeholder="Coupon Code" required>
-                        <br><br>
-
-                        <select name="type" required>
-                            <option value="fixed">Fixed Amount</option>
-                            <option value="percentage">Percentage</option>
-                        </select>
-                        <br><br>
-
-                        <input type="number" step="0.01" name="value" placeholder="Value" required>
-                        <br><br>
-
-                        <input type="number" step="0.01" name="minimum_order_amount" placeholder="Minimum Order Amount">
-                        <br><br>
-
-                        <input type="number" name="usage_limit" placeholder="Usage Limit">
-                        <br><br>
-
-                        <label>Start Date</label>
-                        <input type="date" name="start_date">
-                        <br><br>
-
-                        <label>End Date</label>
-                        <input type="date" name="end_date">
-                        <br><br>
-
-                        <label>
-                            <input type="checkbox" name="status" value="1" checked>
-                            Active
-                        </label>
-                        <br><br>
-
-                        <button type="submit">Save Coupon</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="admin-page-header coupon-page-head"><div><span class="admin-page-eyebrow">Promotions</span><h2>Create Coupon</h2><p>Build a discount with precise validity, usage and catalog targeting rules.</p></div><div class="admin-page-actions"><a href="{{ route('admin.coupons.index') }}" class="admin-button admin-button-secondary"><i class="fa-solid fa-arrow-left"></i> Back to Coupons</a></div></div>
+<form action="{{ route('admin.coupons.store') }}" method="POST" novalidate>@csrf @include('admin.coupons.partials.form',['coupon'=>null])</form>
 @endsection
+@push('page-styles')<style>.coupon-page-head{margin-bottom:18px}.coupon-page-head h2{margin:4px 0;color:#0f172a;font-size:24px;font-weight:800}.coupon-page-head p{color:#7b8497;font-size:12px}</style>@endpush

@@ -1,58 +1,63 @@
-@extends('layouts.app')
-
+@extends('admin.layouts.app')
+@section('title','Coupons')
+@section('page-heading','Coupons')
 @section('content')
-    <div class="page-wrapper">
+@php
+ $feedbackType=session('error')?'error':(session('warning')?'warning':(session('success')?'success':null));
+ $feedback=session('error')?:session('warning')?:session('success');
+@endphp
+<div class="admin-page-header coupon-index-head"><div><span class="admin-page-eyebrow">Promotions</span><h2>Coupons</h2><p>Manage discount codes, validity windows, usage and catalog targeting.</p></div><div class="admin-page-actions"><a href="{{ route('admin.coupons.create') }}" class="admin-button admin-button-primary"><i class="fa-solid fa-plus"></i> Create Coupon</a></div></div>
+<div class="coupon-stats">
+ <div class="admin-stat-card"><span class="admin-stat-icon"><i class="fa-solid fa-ticket"></i></span><div><small>Total Coupons</small><strong>{{ number_format($totalCoupons) }}</strong></div></div>
+ <div class="admin-stat-card"><span class="admin-stat-icon"><i class="fa-solid fa-circle-check"></i></span><div><small>Active Now</small><strong>{{ number_format($activeCoupons) }}</strong></div></div>
+ <div class="admin-stat-card"><span class="admin-stat-icon"><i class="fa-regular fa-clock"></i></span><div><small>Scheduled</small><strong>{{ number_format($scheduledCoupons) }}</strong></div></div>
+ <div class="admin-stat-card"><span class="admin-stat-icon"><i class="fa-solid fa-bag-shopping"></i></span><div><small>Redemptions</small><strong>{{ number_format($totalRedemptions) }}</strong></div></div>
+</div>
+<section class="admin-panel coupon-filter"><form method="GET" class="coupon-filter-form">
+ <div class="coupon-search"><i class="fa-solid fa-magnifying-glass"></i><input type="search" name="search" value="{{ request('search') }}" placeholder="Search code or campaign..."></div>
+ <div class="coupon-filter-select"><select name="status"><option value="">All Statuses</option><option value="active" @selected(request('status')==='active')>Active</option><option value="scheduled" @selected(request('status')==='scheduled')>Scheduled</option><option value="expired" @selected(request('status')==='expired')>Expired</option><option value="exhausted" @selected(request('status')==='exhausted')>Usage Limit Reached</option><option value="inactive" @selected(request('status')==='inactive')>Inactive</option></select></div>
+ <div class="coupon-filter-select"><select name="type"><option value="">All Types</option><option value="fixed" @selected(request('type')==='fixed')>Fixed Amount</option><option value="percentage" @selected(request('type')==='percentage')>Percentage</option></select></div>
+ <button class="admin-button admin-button-primary"><i class="fa-solid fa-filter"></i> Filter</button>
+ @if(request()->hasAny(['search','status','type']))<a href="{{ route('admin.coupons.index') }}" class="admin-button admin-button-secondary">Reset</a>@endif
+</form></section>
+<section class="admin-panel coupon-list">
+ <div class="coupon-list-head"><div><span class="admin-page-eyebrow">Coupon directory</span><h3>All Coupons</h3></div><span>{{ number_format($coupons->total()) }} results</span></div>
+ @if($coupons->count())
+ <div class="coupon-table-wrap"><table class="coupon-table"><thead><tr><th>Coupon</th><th>Discount</th><th>Target</th><th>Validity</th><th>Usage</th><th>Status</th><th class="right">Actions</th></tr></thead><tbody>
+ @foreach($coupons as $coupon)
+ <tr>
+  <td><div class="coupon-code-cell"><span><i class="fa-solid fa-ticket"></i></span><div><strong>{{ $coupon->code }}</strong><small>{{ $coupon->event_name ?: 'General promotion' }}</small></div></div></td>
+  <td><strong>{{ $coupon->type==='percentage' ? rtrim(rtrim(number_format((float)$coupon->value,2), '0'),'.').'%' : '$'.number_format((float)$coupon->value,2) }}</strong>@if($coupon->maximum_discount)<small class="block">Max ${{ number_format((float)$coupon->maximum_discount,2) }}</small>@endif</td>
+  <td><span class="coupon-target-pill">{{ ucfirst($coupon->target_type ?: 'all') }}</span></td>
+  <td><small class="block">{{ $coupon->start_date?->format('M d, Y H:i') ?: 'Immediately' }}</small><small class="block muted">to {{ $coupon->end_date?->format('M d, Y H:i') ?: 'No expiry' }}</small></td>
+  <td>{{ number_format((int)$coupon->used_count) }} / {{ $coupon->usage_limit ? number_format((int)$coupon->usage_limit) : '∞' }}@if($coupon->per_user_usage_limit)<small class="block muted">{{ $coupon->per_user_usage_limit }} per user</small>@endif</td>
+  <td><span class="coupon-status is-{{ $coupon->runtime_status }}">{{ $coupon->runtime_status_label }}</span></td>
+  <td><div class="coupon-actions"><a href="{{ route('admin.coupons.edit',$coupon) }}" title="Edit"><i class="fa-solid fa-pen"></i></a><button type="button" data-delete-coupon data-url="{{ route('admin.coupons.destroy',$coupon) }}" data-code="{{ $coupon->code }}"><i class="fa-solid fa-trash"></i></button></div></td>
+ </tr>
+ @endforeach
+ </tbody></table></div>
+ @if($coupons->hasPages())<div class="coupon-pagination">{{ $coupons->links() }}</div>@endif
+ @else<div class="coupon-empty"><i class="fa-solid fa-ticket"></i><h3>No coupons found</h3><p>Create a coupon or change the current filters.</p></div>@endif
+</section>
 
-        <div class="services">
-            <div class="service-wrapper">
-                <div class="container">
-                    <h1>Coupons</h1>
-
-                    <a href="{{ route('admin.coupons.create') }}">Add Coupon</a>
-
-                    @if(session('success'))
-                        <p>{{ session('success') }}</p>
-                    @endif
-
-                    <table border="1" cellpadding="10">
-                        <tr>
-                            <th>Code</th>
-                            <th>Type</th>
-                            <th>Value</th>
-                            <th>Min Order</th>
-                            <th>Usage</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-
-                        @foreach($coupons as $coupon)
-                            <tr>
-                                <td>{{ $coupon->code }}</td>
-                                <td>{{ $coupon->type }}</td>
-                                <td>{{ $coupon->value }}</td>
-                                <td>{{ $coupon->minimum_order_amount ?? '-' }}</td>
-                                <td>{{ $coupon->used_count }} / {{ $coupon->usage_limit ?? '∞' }}</td>
-                                <td>{{ $coupon->status ? 'Active' : 'Inactive' }}</td>
-                                <td>
-                                    <a href="{{ route('admin.coupons.edit', $coupon->id) }}">Edit</a>
-
-                                    <form action="{{ route('admin.coupons.destroy', $coupon->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button onclick="return confirm('Delete this coupon?')">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </table>
-
-                    {{ $coupons->links() }}
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="coupon-popup" id="couponDeletePopup" hidden><div class="coupon-popup-bg" data-delete-close></div><div class="coupon-popup-box"><button class="coupon-popup-x" type="button" data-delete-close><i class="fa-solid fa-xmark"></i></button><div class="coupon-popup-icon warning"><i class="fa-solid fa-trash"></i></div><span class="admin-page-eyebrow">Delete coupon</span><h3 id="couponDeleteTitle">Delete coupon?</h3><p>This action cannot be undone.</p><div class="coupon-popup-actions"><button type="button" class="admin-button admin-button-secondary" data-delete-close>Cancel</button><form method="POST" id="couponDeleteForm">@csrf @method('DELETE')<button class="admin-button coupon-danger">Delete Coupon</button></form></div></div></div>
+@if($feedbackType)<div class="coupon-popup" id="couponFeedbackPopup"><div class="coupon-popup-bg" data-feedback-close></div><div class="coupon-popup-box"><button class="coupon-popup-x" type="button" data-feedback-close><i class="fa-solid fa-xmark"></i></button><div class="coupon-popup-icon {{ $feedbackType==='success'?'success':'warning' }}"><i class="fa-solid {{ $feedbackType==='success'?'fa-circle-check':'fa-triangle-exclamation' }}"></i></div><span class="admin-page-eyebrow">Coupons</span><h3>{{ $feedbackType==='success'?'Completed successfully':'Attention required' }}</h3><p>{{ $feedback }}</p><div class="coupon-popup-actions"><button class="admin-button admin-button-primary" type="button" data-feedback-close>OK</button></div></div></div>@endif
 @endsection
+@push('page-styles')
+<style>
+.coupon-index-head{margin-bottom:18px}.coupon-index-head h2{margin:4px 0;color:#0f172a;font-size:24px;font-weight:800}.coupon-index-head p{color:#7b8497;font-size:12px}.coupon-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}.coupon-stats .admin-stat-card{display:flex;align-items:center;gap:12px;min-height:100px;padding:16px;border:1px solid #e6eaf1;border-radius:11px;background:#fff;box-shadow:none}.coupon-stats .admin-stat-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:#eeedff;color:#635bff}.coupon-stats small{display:block;color:#7b8497;font-size:8px;font-weight:800;text-transform:uppercase}.coupon-stats strong{display:block;margin-top:4px;color:#172033;font-size:20px}.coupon-filter,.coupon-list{border:1px solid #e6eaf1!important;border-radius:11px!important;background:#fff!important;box-shadow:none!important}.coupon-filter{padding:14px;margin-bottom:16px}.coupon-filter-form{display:flex;gap:8px;align-items:center}.coupon-search{position:relative;flex:1}.coupon-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#98a2b3;font-size:10px}.coupon-search input{width:100%;min-height:40px;padding:0 10px 0 33px;border:1px solid #e0e5ed;border-radius:7px;font-size:11px}.coupon-filter-select{width:175px}.coupon-filter-select select{width:100%;min-height:40px}.coupon-list{overflow:hidden}.coupon-list-head{display:flex;justify-content:space-between;align-items:center;padding:17px 18px;border-bottom:1px solid #edf0f4}.coupon-list-head h3{margin:3px 0 0;color:#172033;font-size:14px}.coupon-list-head>span{padding:5px 8px;border-radius:999px;background:#f3f4f7;color:#667085;font-size:9px}.coupon-table-wrap{overflow:auto}.coupon-table{width:100%;border-collapse:collapse}.coupon-table th{padding:10px 13px;background:#fafbfc;border-bottom:1px solid #edf0f4;color:#7b8497;font-size:8px;font-weight:800;letter-spacing:.06em;text-align:left;text-transform:uppercase}.coupon-table td{padding:12px 13px;border-bottom:1px solid #f0f2f5;color:#596273;font-size:10px;vertical-align:middle}.coupon-code-cell{display:flex;align-items:center;gap:9px}.coupon-code-cell>span{display:flex;align-items:center;justify-content:center;width:31px;height:31px;border-radius:7px;background:#f3f2ff;color:#635bff}.coupon-code-cell strong{display:block;color:#172033;font-size:11px}.coupon-code-cell small,.block{display:block;margin-top:2px;font-size:8px}.muted{color:#98a2b3}.coupon-target-pill{display:inline-flex;padding:5px 7px;border-radius:999px;background:#f2f4f7;color:#667085;font-size:8px;font-weight:800}.coupon-status{display:inline-flex;padding:5px 7px;border-radius:999px;font-size:8px;font-weight:800}.coupon-status.is-active{background:#eaf8f1;color:#13875b}.coupon-status.is-scheduled{background:#eef4ff;color:#3b63c5}.coupon-status.is-expired,.coupon-status.is-exhausted{background:#fff4df;color:#b66a08}.coupon-status.is-inactive{background:#f2f4f7;color:#667085}.right{text-align:right!important}.coupon-actions{display:flex;justify-content:flex-end;gap:6px}.coupon-actions a,.coupon-actions button{display:flex;align-items:center;justify-content:center;width:31px;height:31px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#667085;cursor:pointer}.coupon-actions a:hover{border-color:#c9c6ff;color:#635bff}.coupon-actions button:hover{border-color:#fecaca;background:#fff5f5;color:#d14343}.coupon-pagination{padding:14px 18px;border-top:1px solid #edf0f4}.coupon-empty{padding:50px;text-align:center;color:#98a2b3}.coupon-empty>i{font-size:22px;color:#635bff}.coupon-empty h3{color:#172033;font-size:14px}
+.coupon-popup[hidden]{display:none!important}.coupon-popup{position:fixed;inset:0;z-index:14000;display:flex;align-items:center;justify-content:center;padding:20px}.coupon-popup-bg{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}.coupon-popup-box{position:relative;z-index:2;width:100%;max-width:430px;padding:30px;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.24);text-align:center}.coupon-popup-x{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;border-radius:7px;background:#f3f5f8;color:#687386}.coupon-popup-icon{display:flex;align-items:center;justify-content:center;width:58px;height:58px;margin:0 auto 15px;border-radius:50%;font-size:20px}.coupon-popup-icon.success{background:#eaf8f1;color:#13875b}.coupon-popup-icon.warning{background:#fff4df;color:#d88716}.coupon-popup-box h3{margin:5px 0 8px;color:#172033;font-size:18px}.coupon-popup-box p{color:#687386;font-size:11px}.coupon-popup-actions{display:flex;justify-content:center;gap:8px;margin-top:20px}.coupon-danger{border-color:#d14343!important;background:#d14343!important;color:#fff!important}
+.az-coupon-filter{position:relative}.az-coupon-filter-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}.az-coupon-filter-btn{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:40px;padding:0 10px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#344054;font-size:10px;font-weight:600;cursor:pointer}.az-coupon-filter.open .az-coupon-filter-btn{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.1)}.az-coupon-filter-menu{position:absolute;z-index:13000;top:calc(100% + 6px);display:none;width:100%;padding:5px;border:1px solid #e0e5ed;border-radius:9px;background:#fff;box-shadow:0 14px 38px rgba(15,23,42,.16)}.az-coupon-filter.open .az-coupon-filter-menu{display:block}.az-coupon-filter-option{display:flex;justify-content:space-between;width:100%;padding:8px;border:0;border-radius:6px;background:transparent;color:#344054;font-size:10px;text-align:left;cursor:pointer}.az-coupon-filter-option:hover,.az-coupon-filter-option.selected{background:#eeedff;color:#5149d8}.az-coupon-filter-option.selected:after{content:"\2713"}
+@media(max-width:900px){.coupon-stats{grid-template-columns:repeat(2,1fr)}.coupon-filter-form{flex-wrap:wrap}.coupon-search{flex-basis:100%}}@media(max-width:520px){.coupon-stats{grid-template-columns:1fr}.coupon-filter-select{width:100%}}
+</style>
+@endpush
+@push('page-scripts')
+<script>
+'use strict';
+document.addEventListener('DOMContentLoaded',function(){
+ document.querySelectorAll('.coupon-filter-select select').forEach(function(s){const w=document.createElement('div');w.className='az-coupon-filter';const b=document.createElement('button');b.type='button';b.className='az-coupon-filter-btn';const v=document.createElement('span'),i=document.createElement('i');i.className='fa-solid fa-chevron-down';b.append(v,i);const m=document.createElement('div');m.className='az-coupon-filter-menu';s.parentNode.insertBefore(w,s);w.append(s,b,m);s.classList.add('az-coupon-filter-native');function render(){m.innerHTML='';Array.from(s.options).forEach(o=>{const x=document.createElement('button');x.type='button';x.className='az-coupon-filter-option'+(o.value===s.value?' selected':'');x.textContent=o.textContent;x.onclick=()=>{s.value=o.value;render();w.classList.remove('open')};m.append(x)});v.textContent=s.options[s.selectedIndex]?.textContent||'Select'}b.onclick=()=>w.classList.toggle('open');document.addEventListener('click',e=>{if(!w.contains(e.target))w.classList.remove('open')});render()});
+ const pop=document.getElementById('couponDeletePopup'),form=document.getElementById('couponDeleteForm'),title=document.getElementById('couponDeleteTitle');document.querySelectorAll('[data-delete-coupon]').forEach(b=>b.onclick=()=>{form.action=b.dataset.url;title.textContent='Delete “'+b.dataset.code+'”?';pop.hidden=false;document.body.style.overflow='hidden'});function closeDelete(){if(pop){pop.hidden=true;document.body.style.overflow=''}}document.querySelectorAll('[data-delete-close]').forEach(x=>x.onclick=closeDelete);
+ const fb=document.getElementById('couponFeedbackPopup');if(fb){document.body.style.overflow='hidden';fb.querySelectorAll('[data-feedback-close]').forEach(x=>x.onclick=()=>{fb.remove();document.body.style.overflow=''})}
+});
+</script>
+@endpush

@@ -1,56 +1,8 @@
-@extends('layouts.app')
-
+@extends('admin.layouts.app')
+@section('title','Edit Coupon')
+@section('page-heading','Edit Coupon')
 @section('content')
-    <div class="page-wrapper">
-
-        <div class="services">
-            <div class="service-wrapper">
-                <div class="container">
-                    <h1>Edit Coupon</h1>
-
-                    <form action="{{ route('admin.coupons.update', $coupon->id) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-
-                        <input type="text" name="code" value="{{ $coupon->code }}" required>
-                        <br><br>
-
-                        <select name="type" required>
-                            <option value="fixed" {{ $coupon->type === 'fixed' ? 'selected' : '' }}>Fixed Amount</option>
-                            <option value="percentage" {{ $coupon->type === 'percentage' ? 'selected' : '' }}>Percentage
-                            </option>
-                        </select>
-                        <br><br>
-
-                        <input type="number" step="0.01" name="value" value="{{ $coupon->value }}" required>
-                        <br><br>
-
-                        <input type="number" step="0.01" name="minimum_order_amount"
-                            value="{{ $coupon->minimum_order_amount }}" placeholder="Minimum Order Amount">
-                        <br><br>
-
-                        <input type="number" name="usage_limit" value="{{ $coupon->usage_limit }}"
-                            placeholder="Usage Limit">
-                        <br><br>
-
-                        <label>Start Date</label>
-                        <input type="date" name="start_date" value="{{ $coupon->start_date }}">
-                        <br><br>
-
-                        <label>End Date</label>
-                        <input type="date" name="end_date" value="{{ $coupon->end_date }}">
-                        <br><br>
-
-                        <label>
-                            <input type="checkbox" name="status" value="1" {{ $coupon->status ? 'checked' : '' }}>
-                            Active
-                        </label>
-                        <br><br>
-
-                        <button type="submit">Update Coupon</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="admin-page-header coupon-page-head"><div><span class="admin-page-eyebrow">Promotions</span><h2>Edit Coupon</h2><p>Update discount, timing, usage limits or catalog eligibility.</p></div><div class="admin-page-actions"><a href="{{ route('admin.coupons.index') }}" class="admin-button admin-button-secondary"><i class="fa-solid fa-arrow-left"></i> Back to Coupons</a></div></div>
+<form action="{{ route('admin.coupons.update',$coupon) }}" method="POST" novalidate>@csrf @method('PUT') @include('admin.coupons.partials.form',['coupon'=>$coupon])</form>
 @endsection
+@push('page-styles')<style>.coupon-page-head{margin-bottom:18px}.coupon-page-head h2{margin:4px 0;color:#0f172a;font-size:24px;font-weight:800}.coupon-page-head p{color:#7b8497;font-size:12px}</style>@endpush
