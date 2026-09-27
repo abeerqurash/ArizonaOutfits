@@ -345,10 +345,11 @@ class CheckoutController extends Controller
              * because the customer must return to the GET checkout page and
              * review/submit the bank-transfer order again after signing in.
              */
-            $request->session()->put(
-                'url.intended',
+             $request->session()->put(
+                'customer.url.intended',
                 route('checkout.index', absolute: false)
             );
+
 
             return redirect()
                 ->route('login')

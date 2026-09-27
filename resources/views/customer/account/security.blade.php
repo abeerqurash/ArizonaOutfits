@@ -525,33 +525,6 @@
         }
     }
 
-
-    .security-email-source-popup[hidden] { display: none !important; }
-    .security-email-source-popup {
-        position: fixed; inset: 0; z-index: 9998;
-        display: grid; place-items: center; padding: 20px;
-    }
-    .security-email-source-popup__backdrop {
-        position: absolute; inset: 0; background: rgba(15, 23, 42, 0.58);
-    }
-    .security-email-source-popup__dialog {
-        position: relative; z-index: 1; width: min(100%, 460px);
-        padding: 28px; border-radius: 14px; background: #fff;
-        box-shadow: 0 24px 70px rgba(15, 23, 42, 0.24); text-align: center;
-    }
-    .security-email-source-popup__dialog h3 { margin: 0 0 8px; color: #172033; }
-    .security-email-source-popup__dialog > p {
-        margin: 0 0 20px; color: #64748b; font-size: 13px; line-height: 1.6;
-    }
-    .security-email-source-popup__close {
-        position: absolute; top: 12px; right: 12px; width: 34px; height: 34px;
-        display: grid; place-items: center; border: 1px solid #e5eaf1;
-        border-radius: 9px; background: #fff; color: #475569; cursor: pointer;
-    }
-    .security-email-source-popup__options { display: grid; gap: 10px; }
-    .security-email-source-popup__options form,
-    .security-email-source-popup__options .security-button { width: 100%; }
-
 </style>
 @endpush
 
@@ -560,7 +533,6 @@
 
 @php
 $user = $user ?? auth()->user();
-$canDisconnectEmail = $canDisconnectEmail ?? false;
 $canRemovePhone = $canRemovePhone ?? false;
 $canDisconnectGoogle = $canDisconnectGoogle ?? false;
 $canDisconnectFacebook = $canDisconnectFacebook ?? false;
@@ -577,6 +549,38 @@ $canDisconnectFacebook = $canDisconnectFacebook ?? false;
 */
 $googleConnected = filled($user->google_id);
 $facebookConnected = filled($user->facebook_id);
+
+$securityPopupType = null;
+$securityPopupTitle = null;
+$securityPopupMessage = null;
+
+if ($errors->any()) {
+    $securityPopupType = 'error';
+    $securityPopupTitle = 'Unable to continue';
+    $securityPopupMessage = $errors->first();
+} elseif (session('error')) {
+    $securityPopupType = 'error';
+    $securityPopupTitle = 'Unable to continue';
+    $securityPopupMessage = session('error');
+} elseif (session('social_error')) {
+    $securityPopupType = 'error';
+    $securityPopupTitle = 'Unable to continue';
+    $securityPopupMessage = session('social_error');
+} elseif (session('warning')) {
+    $securityPopupType = 'warning';
+    $securityPopupTitle = 'Please check';
+    $securityPopupMessage = session('warning');
+} elseif (session('success')) {
+    $securityPopupType = 'success';
+    $securityPopupTitle = 'Success';
+    $securityPopupMessage = session('success');
+} elseif (session('status')) {
+    $securityPopupType = 'success';
+    $securityPopupTitle = 'Success';
+    $securityPopupMessage = session('status') === 'verification-link-sent'
+        ? 'A fresh verification link has been sent to your email address.'
+        : session('status');
+}
 @endphp
 
 
@@ -857,24 +861,13 @@ $facebookConnected = filled($user->facebook_id);
                     </form>
                 @endif
 
-                @php
-                    $hasDisconnectableEmailSource =
-                        ($emailState['custom_connected'] && $canDisconnectEmail)
-                        || ($emailState['google_connected'] && $canDisconnectGoogle)
-                        || ($emailState['facebook_connected'] && $canDisconnectFacebook);
-                @endphp
-
-                @if ($hasDisconnectableEmailSource)
-                    <button type="button" class="security-button" data-email-source-popup-open>
-                        <i class="fa-solid fa-link-slash"></i>
-                        Disconnect email
-                    </button>
-                @else
-                    <div class="security-method-locked">
-                        <strong><i class="fa-solid fa-lock"></i> Email source protected</strong>
-                        <span>At least one usable login method must remain connected.</span>
-                    </div>
-                @endif
+                <button
+                    type="button"
+                    class="security-button"
+                    data-email-disconnect-open>
+                    <i class="fa-solid fa-link-slash"></i>
+                    Disconnect email
+                </button>
 
             @else
 
@@ -1009,10 +1002,6 @@ $facebookConnected = filled($user->facebook_id);
                             <i class="fa-regular fa-eye" aria-hidden="true"></i>
                         </button>
                     </div>
-
-                    @error('current_password')
-                    <small>{{ $message }}</small>
-                    @enderror
                 </label>
                 @endif
 
@@ -1037,10 +1026,6 @@ $facebookConnected = filled($user->facebook_id);
                             <i class="fa-regular fa-eye" aria-hidden="true"></i>
                         </button>
                     </div>
-
-                    @error('password')
-                    <small>{{ $message }}</small>
-                    @enderror
 
                     <div
                         class="security-password-strength"
@@ -1156,10 +1141,6 @@ $facebookConnected = filled($user->facebook_id);
                         Forgot password?
                     </button>
                 </form>
-
-                @error('password_recovery')
-                <small class="security-field-error">{{ $message }}</small>
-                @enderror
             </div>
             @endif
 
@@ -1200,7 +1181,7 @@ $facebookConnected = filled($user->facebook_id);
             </p>
 
 
-            @if ($canRemovePhone)
+            @if ($user->registration_method !== 'phone' && $canRemovePhone)
 
             <form
                 method="POST"
@@ -1275,15 +1256,7 @@ $facebookConnected = filled($user->facebook_id);
                         title="Enter a valid phone number using digits and common phone symbols."
                         placeholder="e.g. +92 312 3456789"
                         oninput="this.value=this.value.replace(/[^0-9+() .-]/g, '')">
-
-                    @error('phone')
-                    <small>{{ $message }}</small>
-                    @enderror
                 </label>
-
-                @error('current_password')
-                <small class="security-field-error">{{ $message }}</small>
-                @enderror
 
                 <button type="submit" class="security-button">
                     <i class="fa-solid fa-mobile-screen-button"></i>
@@ -1347,10 +1320,6 @@ $facebookConnected = filled($user->facebook_id);
                         title="Enter a valid phone number using digits and common phone symbols."
                         placeholder="e.g. +92 312 3456789"
                         oninput="this.value=this.value.replace(/[^0-9+() .-]/g, '')">
-
-                    @error('phone')
-                    <small>{{ $message }}</small>
-                    @enderror
                 </label>
 
                 <button
@@ -1588,79 +1557,6 @@ $facebookConnected = filled($user->facebook_id);
     {{-- ====================================================== --}}
     {{-- REUSABLE SECURITY CONFIRMATION POPUP --}}
     {{-- ====================================================== --}}
-
-    <div
-        id="email-source-popup"
-        class="security-email-source-popup"
-        hidden
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="email-source-popup-title">
-
-        <div class="security-email-source-popup__backdrop" data-email-source-popup-close></div>
-
-        <div class="security-email-source-popup__dialog">
-            <button type="button" class="security-email-source-popup__close" data-email-source-popup-close aria-label="Close">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <h3 id="email-source-popup-title">Disconnect email source</h3>
-            <p>Choose the connected source you want to disconnect. Other login methods and email sources will remain unchanged.</p>
-
-            <div class="security-email-source-popup__options">
-                @if ($emailState['custom_connected'] && $canDisconnectEmail)
-                    <form method="POST"
-                          action="{{ route('customer.security.email.disconnect') }}"
-                          data-security-confirm-form
-                          data-email-source-disconnect-form
-                          data-confirm-title="Disconnect Custom Email?"
-                          data-confirm-message="Disconnect your custom email login? Other connected login methods will remain available."
-                          data-confirm-button="Disconnect Custom Email"
-                          data-require-password="{{ $user->hasPassword() ? 'true' : 'false' }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="security-button">
-                            <i class="fa-solid fa-envelope"></i> Custom Email
-                        </button>
-                    </form>
-                @endif
-
-                @if ($emailState['google_connected'] && $canDisconnectGoogle)
-                    <form method="POST"
-                          action="{{ route('customer.security.social.disconnect', ['provider' => 'google']) }}"
-                          data-security-confirm-form
-                          data-email-source-disconnect-form
-                          data-confirm-title="Disconnect Google?"
-                          data-confirm-message="Disconnect Google from your account? Other connected login methods will remain available."
-                          data-confirm-button="Disconnect Google"
-                          data-require-password="{{ $user->hasPassword() ? 'true' : 'false' }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="security-button">
-                            <i class="fa-brands fa-google"></i> Google
-                        </button>
-                    </form>
-                @endif
-
-                @if ($emailState['facebook_connected'] && $canDisconnectFacebook)
-                    <form method="POST"
-                          action="{{ route('customer.security.social.disconnect', ['provider' => 'facebook']) }}"
-                          data-security-confirm-form
-                          data-email-source-disconnect-form
-                          data-confirm-title="Disconnect Facebook?"
-                          data-confirm-message="Disconnect Facebook from your account? Other connected login methods will remain available."
-                          data-confirm-button="Disconnect Facebook"
-                          data-require-password="{{ $user->hasPassword() ? 'true' : 'false' }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="security-button">
-                            <i class="fa-brands fa-facebook-f"></i> Facebook
-                        </button>
-                    </form>
-                @endif
-            </div>
-        </div>
-    </div>
 
     <div
         id="security-confirm-popup"
@@ -2259,49 +2155,217 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
     'use strict';
 
-    const openButton = document.querySelector('[data-email-source-popup-open]');
-    const popup = document.getElementById('email-source-popup');
+    const disconnectButton = document.querySelector('[data-email-disconnect-open]');
+    const popup = document.getElementById('security-confirm-popup');
+    const title = document.getElementById('security-confirm-title');
+    const message = document.getElementById('security-confirm-message');
+    const submitButton = document.getElementById('security-confirm-submit');
 
-    if (!openButton || !popup) {
+    if (!disconnectButton || !popup || !title || !message || !submitButton) {
         return;
     }
 
-    const closeButtons = popup.querySelectorAll('[data-email-source-popup-close]');
-    const disconnectForms = popup.querySelectorAll('[data-email-source-disconnect-form]');
-
-    function openPopup() {
+    disconnectButton.addEventListener('click', function () {
+        title.textContent = 'Disconnect email source';
+        message.textContent =
+            'Your connected email sources are now identified independently. Source selection and secure disconnect are enabled in the next security step.';
+        submitButton.textContent = 'Close';
+        submitButton.dataset.closeOnly = 'true';
         popup.hidden = false;
         document.body.style.overflow = 'hidden';
-        const firstButton = popup.querySelector('.security-email-source-popup__options button');
-        if (firstButton) firstButton.focus();
-    }
-
-    function closePopup() {
-        popup.hidden = true;
-        document.body.style.overflow = '';
-        openButton.focus();
-    }
-
-    openButton.addEventListener('click', openPopup);
-    closeButtons.forEach(function (button) {
-        button.addEventListener('click', closePopup);
-    });
-
-    disconnectForms.forEach(function (form) {
-        form.addEventListener('submit', function () {
-            popup.hidden = true;
-            document.body.style.overflow = '';
-        });
-    });
-
-    document.addEventListener('keydown', function (event) {
-        if (!popup.hidden && event.key === 'Escape') {
-            event.preventDefault();
-            closePopup();
-        }
+        submitButton.focus();
     });
 });
 
 </script>
+
+
+@if ($securityPopupMessage)
+<div
+    class="security-feedback-popup-backdrop"
+    data-security-feedback-popup
+    role="presentation"
+>
+    <div
+        class="security-feedback-popup"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="security-feedback-popup-title"
+        aria-describedby="security-feedback-popup-message"
+    >
+        <button
+            type="button"
+            class="security-feedback-popup-close"
+            data-security-feedback-popup-close
+            aria-label="Close message"
+        >
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+
+        <div
+            class="security-feedback-popup-icon is-{{ $securityPopupType }}"
+            aria-hidden="true"
+        >
+            @if ($securityPopupType === 'success')
+                <i class="fa-solid fa-circle-check"></i>
+            @elseif ($securityPopupType === 'warning')
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            @else
+                <i class="fa-solid fa-circle-exclamation"></i>
+            @endif
+        </div>
+
+        <h2 id="security-feedback-popup-title">
+            {{ $securityPopupTitle }}
+        </h2>
+
+        <p id="security-feedback-popup-message">
+            {{ $securityPopupMessage }}
+        </p>
+
+        <button
+            type="button"
+            class="security-feedback-popup-button"
+            data-security-feedback-popup-close
+        >
+            OK
+        </button>
+    </div>
+</div>
+@endif
+
+@push('page-styles')
+<style>
+    .security-feedback-popup-backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(15, 23, 42, .58);
+        backdrop-filter: blur(3px);
+    }
+
+    .security-feedback-popup {
+        position: relative;
+        width: min(100%, 430px);
+        padding: 30px 28px 26px;
+        border: 1px solid rgba(148, 163, 184, .24);
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 24px 70px rgba(15, 23, 42, .24);
+        text-align: center;
+    }
+
+    .security-feedback-popup-close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 34px;
+        height: 34px;
+        border: 0;
+        border-radius: 50%;
+        background: #f1f5f9;
+        color: #475569;
+        cursor: pointer;
+    }
+
+    .security-feedback-popup-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 58px;
+        height: 58px;
+        margin-bottom: 16px;
+        border-radius: 50%;
+        font-size: 25px;
+    }
+
+    .security-feedback-popup-icon.is-error {
+        background: #fef2f2;
+        color: #dc2626;
+    }
+
+    .security-feedback-popup-icon.is-warning {
+        background: #fffbeb;
+        color: #d97706;
+    }
+
+    .security-feedback-popup-icon.is-success {
+        background: #f0fdf4;
+        color: #16a34a;
+    }
+
+    .security-feedback-popup h2 {
+        margin: 0 0 10px;
+        color: #0f172a;
+        font-size: 22px;
+        line-height: 1.25;
+    }
+
+    .security-feedback-popup p {
+        margin: 0;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.65;
+        overflow-wrap: anywhere;
+    }
+
+    .security-feedback-popup-button {
+        min-width: 110px;
+        margin-top: 22px;
+        padding: 11px 22px;
+        border: 0;
+        border-radius: 10px;
+        background: #111827;
+        color: #fff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    @media (max-width: 575px) {
+        .security-feedback-popup {
+            padding: 28px 20px 22px;
+            border-radius: 15px;
+        }
+    }
+</style>
+@endpush
+
+@push('page-scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const popup = document.querySelector('[data-security-feedback-popup]');
+
+    if (!popup) {
+        return;
+    }
+
+    const closePopup = function () {
+        popup.remove();
+    };
+
+    popup.querySelectorAll('[data-security-feedback-popup-close]')
+        .forEach(function (button) {
+            button.addEventListener('click', closePopup);
+        });
+
+    popup.addEventListener('click', function (event) {
+        if (event.target === popup) {
+            closePopup();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && document.body.contains(popup)) {
+            closePopup();
+        }
+    });
+});
+</script>
+@endpush
 
 @endsection

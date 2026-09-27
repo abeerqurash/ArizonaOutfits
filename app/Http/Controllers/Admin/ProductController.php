@@ -171,11 +171,41 @@ class ProductController extends AdminController
                 'title',
             ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Catalog-wide statistics
+        |--------------------------------------------------------------------------
+        |
+        | These values intentionally use the complete catalog rather than only
+        | the current pagination page.
+        |
+        */
+
+        $statistics = [
+            'total' => Product::query()->count(),
+
+            'active' => Product::query()
+                ->where('status', 'active')
+                ->count(),
+
+            'featured' => Product::query()
+                ->where('is_featured', true)
+                ->count(),
+
+            'low_stock' => Product::query()
+                ->whereRaw(
+                    'stock <= COALESCE(reorder_point, ?)',
+                    [5]
+                )
+                ->count(),
+        ];
+
         return view(
             'admin.products.index',
             compact(
                 'products',
-                'categories'
+                'categories',
+                'statistics'
             )
         );
     }

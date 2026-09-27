@@ -6,6 +6,7 @@ use App\Mail\AdminNewOrderMail;
 use App\Mail\CustomerBankTransferRejectedMail;
 use App\Mail\CustomerBankTransferVerifiedMail;
 use App\Mail\CustomerOrderConfirmationMail;
+use App\Mail\CustomerOrderStatusUpdatedMail;
 use App\Models\Order;
 use App\Models\OrderNotificationLog;
 use Illuminate\Database\QueryException;
@@ -93,6 +94,43 @@ class OrderEmailService
         );
     }
 
+    /**
+     * Queue one customer status-transition email through the same durable
+     * notification log used by the rest of the order email system.
+     *
+     * The transition is part of the notification type, so a legitimate later
+     * status email is not suppressed by an earlier status update.
+     */
+    public function sendCustomerStatusUpdated(
+        Order $order,
+        string $previousStatus
+    ): bool {
+        $email = $this->customerEmail($order);
+
+        if (!$email) {
+            Log::warning(
+                'Customer order-status email was not sent because the order has no customer email address.',
+                ['order_id' => $order->id, 'order_number' => $order->order_number]
+            );
+            return false;
+        }
+
+        $old = $this->notificationStatus($previousStatus);
+        $new = $this->notificationStatus((string) $order->order_status);
+        $type = 'customer_status_' . $old . '_to_' . $new;
+
+        return $this->sendOnce(
+            order: $order,
+            type: $type,
+            recipient: $email,
+            callback: function () use ($email, $order, $previousStatus): void {
+                Mail::to($email)->queue(
+                    new CustomerOrderStatusUpdatedMail($order, $previousStatus)
+                );
+            }
+        );
+    }
+
     public function sendBankTransferRejected(Order $order): void
     {
         $email = $this->customerEmail($order);
@@ -120,7 +158,7 @@ class OrderEmailService
         string $type,
         string $recipient,
         callable $callback
-    ): void {
+    ): bool {
         $recipient = strtolower(trim($recipient));
 
         if (!filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
@@ -132,7 +170,7 @@ class OrderEmailService
                     'recipient' => $recipient,
                 ]
             );
-            return;
+            return false;
         }
 
         try {
@@ -219,6 +257,8 @@ class OrderEmailService
                     report($exception);
                 }
             }, 3);
+
+            return true;
         } catch (Throwable $exception) {
             Log::error(
                 'Order notification idempotency transaction failed.',
@@ -232,7 +272,16 @@ class OrderEmailService
             );
 
             report($exception);
+            return false;
         }
+    }
+
+    private function notificationStatus(string $status): string
+    {
+        $status = strtolower(trim($status));
+        $status = preg_replace('/[^a-z0-9]+/', '_', $status) ?: 'unknown';
+
+        return trim($status, '_') ?: 'unknown';
     }
 
     private function customerEmail(Order $order): ?string

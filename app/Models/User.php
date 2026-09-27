@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use App\Notifications\CustomerResetPassword;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
@@ -35,7 +35,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'is_admin',
         'is_super_admin',
     ];
-
+/**
+ * Send the customer password reset notification.
+ */
+public function sendPasswordResetNotification($token): void
+{
+    $this->notify(new CustomerResetPassword($token));
+}
     protected $hidden = [
         'password',
         'remember_token',
@@ -252,6 +258,11 @@ class User extends Authenticatable implements MustVerifyEmail
                     ->where('normalized_email', $normalizedEmail)
                     ->whereNull('disconnected_at')
                     ->update([
+                        'provider_verified_at' => null,
+                        'email_verified_at' => $this->email_verified_at,
+                        'email_verification_pending_at' => null,
+
+                        // Temporary legacy compatibility.
                         'verified_at' => $this->email_verified_at,
                         'verification_pending_at' => null,
                         'is_login_enabled' =>
@@ -496,4 +507,6 @@ class User extends Authenticatable implements MustVerifyEmail
             'security_reminder_shown_at' => now(),
         ])->save();
     }
+
+    
 }

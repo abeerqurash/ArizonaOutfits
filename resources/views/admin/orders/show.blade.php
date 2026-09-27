@@ -1377,6 +1377,10 @@ $latestShipment?->trackingEvents
                         old( 'order_status' ,
                         $orderStatus
                         )===$value
+                        )
+                        @disabled(
+                            in_array($value, ['cancelled', 'refunded'], true)
+                            && $orderStatus !== $value
                         )>
                         {{ $label }}
                     </option>
@@ -1739,6 +1743,125 @@ $latestShipment?->trackingEvents
                     <strong>{{ $money($balance) }}</strong>
                 </div>
             </div>
+        </section>
+
+        {{-- Order lifecycle --}}
+        <section class="premium-panel danger-zone-panel">
+            <div>
+                <span class="panel-eyebrow danger-eyebrow">
+                    Order lifecycle
+                </span>
+
+                <h2>Cancel / Refund</h2>
+
+                <p>
+                    Cancellation is only for unpaid orders. Paid orders must use
+                    the refund workflow so payment and inventory stay synchronized.
+                </p>
+            </div>
+
+            @php
+                $isPaidOrder = in_array(
+                    (string) $paymentStatus,
+                    ['paid', 'completed', 'succeeded'],
+                    true
+                );
+
+                $isClosedOrder = in_array(
+                    (string) $orderStatus,
+                    ['cancelled', 'refunded'],
+                    true
+                );
+
+                $isStripeOrder =
+                    $order->payment_provider === 'stripe'
+                    || $order->payment_method === 'stripe';
+
+                $isBankTransferOrder =
+                    $order->payment_provider === 'bank_transfer'
+                    || $order->payment_method === 'bank_transfer';
+            @endphp
+
+            @if (!$isClosedOrder && !$isPaidOrder)
+                <form
+                    action="{{ route('admin.orders.cancel', $order) }}"
+                    method="POST"
+                    class="order-lifecycle-form">
+                    @csrf
+
+                    <div class="premium-form-group">
+                        <label for="cancel_admin_notes">
+                            Cancellation note
+                        </label>
+
+                        <textarea
+                            name="admin_notes"
+                            id="cancel_admin_notes"
+                            class="premium-input"
+                            rows="3"
+                            maxlength="5000"
+                            placeholder="Optional internal reason for cancellation"></textarea>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="premium-button premium-button-danger full-width-button"
+                        onclick="return confirm('Cancel this unpaid order?');">
+                        Cancel unpaid order
+                    </button>
+                </form>
+            @elseif (!$isClosedOrder && $isPaidOrder && ($isStripeOrder || $isBankTransferOrder))
+                <form
+                    action="{{ route('admin.orders.refund', $order) }}"
+                    method="POST"
+                    class="order-lifecycle-form">
+                    @csrf
+
+                    @if ($isBankTransferOrder)
+                        <div class="premium-form-group">
+                            <label for="refund_reference">
+                                Bank refund reference
+                            </label>
+
+                            <input
+                                type="text"
+                                name="refund_reference"
+                                id="refund_reference"
+                                class="premium-input"
+                                maxlength="255"
+                                required
+                                placeholder="Bank transaction/reference number">
+                        </div>
+                    @endif
+
+                    <div class="premium-form-group">
+                        <label for="refund_admin_notes">
+                            Refund note
+                        </label>
+
+                        <textarea
+                            name="admin_notes"
+                            id="refund_admin_notes"
+                            class="premium-input"
+                            rows="3"
+                            maxlength="5000"
+                            placeholder="Optional internal refund note"></textarea>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="premium-button premium-button-danger full-width-button"
+                        onclick="return confirm('Issue a FULL refund for this paid order? This action cannot be undone from this screen.');">
+                        {{ $isStripeOrder ? 'Issue full Stripe refund' : 'Confirm bank-transfer refund' }}
+                    </button>
+                </form>
+            @else
+                <div class="sidebar-empty-message">
+                    <p>
+                        This order is already {{ ucwords(str_replace('_', ' ', $orderStatus)) }}.
+                    </p>
+                </div>
+            @endif
         </section>
 
         {{-- Danger zone --}}

@@ -1,74 +1,84 @@
-@extends('layouts.app')
+@extends('customer.layouts.app')
 
 @section('title', 'Verify Phone Number')
-
-@include('auth.partials.frontend-styles')
+@section('page-heading', 'Login & Security')
 
 @section('content')
 
-<section class="auth-page">
+@php
+    $phoneVerificationHasError = $errors->any();
 
-    @include(
-        'auth.partials.visual-copy',
-        [
-            'heading' => 'Verify your phone.',
-            'message' => 'Enter the 6-digit security code sent to your phone number.'
-        ]
-    )
+    $phoneVerificationMessage = $phoneVerificationHasError
+        ? $errors->first()
+        : session('status');
+@endphp
 
-    <div class="auth-card">
+<div
+    class="security-phone-verification"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="security-phone-verification-title"
+>
+    <div
+        class="security-phone-verification__backdrop"
+        aria-hidden="true"
+    ></div>
 
-        <span>
+    <div class="security-phone-verification__dialog">
+
+        <a
+            href="{{ route('customer.security') }}"
+            class="security-phone-verification__close"
+            aria-label="Return to Login & Security"
+            title="Back to Login & Security"
+        >
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </a>
+
+        <span class="security-phone-verification__eyebrow">
             Phone verification
         </span>
 
-        <h1>
+        <h1 id="security-phone-verification-title">
             Enter verification code
         </h1>
 
-        <p>
-            We sent a verification code to:
+        <p class="security-phone-verification__copy">
+            We sent a 6-digit security code to:
         </p>
 
-        <p>
-            <strong>
-                {{ $phone }}
-            </strong>
+        <p class="security-phone-verification__number">
+            {{ $phone }}
         </p>
 
-
-        @if (session('status'))
-
+        @if ($phoneVerificationMessage)
             <div
-                class="auth-status"
-                role="status"
+                class="security-phone-verification__message {{ $phoneVerificationHasError ? 'is-error' : 'is-success' }}"
+                role="{{ $phoneVerificationHasError ? 'alert' : 'status' }}"
             >
-                {{ session('status') }}
+                <i
+                    class="fa-solid {{ $phoneVerificationHasError ? 'fa-circle-exclamation' : 'fa-circle-check' }}"
+                    aria-hidden="true"
+                ></i>
+
+                <span>{{ $phoneVerificationMessage }}</span>
             </div>
-
         @endif
-
 
         <form
             method="POST"
-            action="{{
-                $mode === 'register'
-                    ? route('phone.register.verify.store')
-                    : route('phone.login.verify.store')
-            }}"
+            action="{{ route('customer.security.phone.verify.store') }}"
+            class="security-phone-verification__form"
         >
-
             @csrf
 
-
-            <div class="auth-field">
-
-                <label for="code">
+            <div class="security-phone-verification__field">
+                <label for="security-phone-code">
                     6-digit code
                 </label>
 
                 <input
-                    id="code"
+                    id="security-phone-code"
                     type="text"
                     name="code"
                     value="{{ old('code') }}"
@@ -80,81 +90,279 @@
                     maxlength="6"
                     pattern="[0-9]{6}"
                     placeholder="000000"
-                    aria-describedby="phone-code-help"
+                    aria-describedby="security-phone-code-help"
                     oninput="this.value=this.value.replace(/\D/g, '').slice(0, 6)"
-                    style="
-                        text-align:center;
-                        font-size:24px;
-                        letter-spacing:8px;
-                    "
                 >
 
-                <small
-                    id="phone-code-help"
-                    style="
-                        display:block;
-                        margin-top:6px;
-                        color:#64748b;
-                        font-size:12px;
-                        line-height:1.45;
-                    "
-                >
+                <small id="security-phone-code-help">
                     Enter exactly 6 numbers.
                 </small>
-
-                @error('code')
-
-                    <p
-                        class="auth-error"
-                        role="alert"
-                    >
-                        {{ $message }}
-                    </p>
-
-                @enderror
-
             </div>
-
 
             <button
                 type="submit"
-                class="auth-submit auth-submit-wide"
+                class="security-phone-verification__submit"
             >
-
-                Verify and continue
+                <span>Verify and connect</span>
 
                 <i
                     class="fa-solid fa-arrow-right"
                     aria-hidden="true"
                 ></i>
-
             </button>
-
         </form>
 
+        <div class="security-phone-verification__footer">
+            <span>Didn't receive the code?</span>
 
-        <p class="auth-switch">
-
-            Didn't receive the code?
-
-            @if ($mode === 'register')
-
-                <a href="{{ route('phone.register') }}">
-                    Request another
-                </a>
-
-            @else
-
-                <a href="{{ route('phone.login') }}">
-                    Request another
-                </a>
-
-            @endif
-
-        </p>
+            <a href="{{ route('customer.security') }}">
+                Request another
+            </a>
+        </div>
 
     </div>
+</div>
 
-</section>
+@push('page-styles')
+<style>
+    .security-phone-verification {
+        position: fixed;
+        inset: 0;
+        z-index: 99998;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+    }
+
+    .security-phone-verification__backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 23, 42, .58);
+        backdrop-filter: blur(4px);
+    }
+
+    .security-phone-verification__dialog {
+        position: relative;
+        z-index: 1;
+        width: min(100%, 490px);
+        max-height: calc(100vh - 40px);
+        box-sizing: border-box;
+        overflow-y: auto;
+        padding: 36px 38px 32px;
+        border: 1px solid rgba(148, 163, 184, .25);
+        border-radius: 22px;
+        background: #fff;
+        box-shadow: 0 28px 80px rgba(15, 23, 42, .28);
+    }
+
+    .security-phone-verification__close {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border: 1px solid #e2e8f0;
+        border-radius: 9px;
+        background: #fff;
+        color: #64748b;
+        text-decoration: none;
+        transition:
+            background .15s ease,
+            border-color .15s ease,
+            color .15s ease;
+    }
+
+    .security-phone-verification__close:hover,
+    .security-phone-verification__close:focus-visible {
+        border-color: #99f6e4;
+        background: #f0fdfa;
+        color: #0f766e;
+        outline: none;
+    }
+
+    .security-phone-verification__eyebrow {
+        display: block;
+        margin: 0 46px 10px 0;
+        color: #0f766e;
+        font-size: 11px;
+        font-weight: 850;
+        letter-spacing: .16em;
+        text-transform: uppercase;
+    }
+
+    .security-phone-verification__dialog h1 {
+        margin: 0 0 10px;
+        color: #172033;
+        font-size: clamp(28px, 4vw, 38px);
+        line-height: 1.12;
+        letter-spacing: -.03em;
+    }
+
+    .security-phone-verification__copy {
+        margin: 0;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .security-phone-verification__number {
+        margin: 12px 0 22px;
+        color: #334155;
+        font-size: 14px;
+        font-weight: 800;
+        overflow-wrap: anywhere;
+    }
+
+    .security-phone-verification__message {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        margin: 0 0 18px;
+        padding: 12px 13px;
+        border: 1px solid;
+        border-radius: 9px;
+        font-size: 13px;
+        line-height: 1.45;
+    }
+
+    .security-phone-verification__message i {
+        flex: 0 0 auto;
+        margin-top: 2px;
+    }
+
+    .security-phone-verification__message.is-success {
+        border-color: #86efac;
+        background: #f0fdf4;
+        color: #047857;
+    }
+
+    .security-phone-verification__message.is-error {
+        border-color: #fecaca;
+        background: #fef2f2;
+        color: #b91c1c;
+    }
+
+    .security-phone-verification__form {
+        display: grid;
+        gap: 18px;
+    }
+
+    .security-phone-verification__field label {
+        display: block;
+        margin-bottom: 7px;
+        color: #334155;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .security-phone-verification__field input {
+        width: 100%;
+        height: 54px;
+        box-sizing: border-box;
+        padding: 0 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        outline: none;
+        background: #fff;
+        color: #172033;
+        text-align: center;
+        font: inherit;
+        font-size: 24px;
+        letter-spacing: 8px;
+        transition:
+            border-color .18s ease,
+            box-shadow .18s ease;
+    }
+
+    .security-phone-verification__field input:focus {
+        border-color: #0f766e;
+        box-shadow: 0 0 0 3px rgba(15, 118, 110, .12);
+    }
+
+    .security-phone-verification__field small {
+        display: block;
+        margin-top: 6px;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .security-phone-verification__submit {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        min-height: 46px;
+        padding: 11px 18px;
+        border: 0;
+        border-radius: 10px;
+        background: #1e293b;
+        color: #fff;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        transition:
+            background .15s ease,
+            transform .15s ease;
+    }
+
+    .security-phone-verification__submit:hover {
+        background: #0f172a;
+    }
+
+    .security-phone-verification__submit:active {
+        transform: translateY(1px);
+    }
+
+    .security-phone-verification__submit:focus-visible {
+        outline: 3px solid rgba(15, 118, 110, .2);
+        outline-offset: 2px;
+    }
+
+    .security-phone-verification__footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 22px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .security-phone-verification__footer a {
+        color: #0f766e;
+        font-weight: 800;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 575px) {
+        .security-phone-verification {
+            padding: 14px;
+        }
+
+        .security-phone-verification__dialog {
+            max-height: calc(100vh - 28px);
+            padding: 28px 20px 24px;
+            border-radius: 17px;
+        }
+
+        .security-phone-verification__dialog h1 {
+            font-size: 29px;
+        }
+
+        .security-phone-verification__field input {
+            font-size: 22px;
+            letter-spacing: 6px;
+        }
+    }
+</style>
+@endpush
 
 @endsection

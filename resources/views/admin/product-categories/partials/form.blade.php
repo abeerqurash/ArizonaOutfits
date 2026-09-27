@@ -1007,3 +1007,74 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 @endpush
+
+
+<style>
+/* Arizona Category UI enhancements */
+.category-field-error{display:none!important}
+.az-cat-select{position:relative;width:100%}
+.az-cat-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.az-cat-button{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:40px;padding:0 11px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#344054;font-size:11px;font-weight:600;text-align:left;cursor:pointer}
+.az-cat-select.open .az-cat-button,.az-cat-button:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.10);outline:none}
+.az-cat-menu{position:absolute;z-index:12500;top:calc(100% + 6px);left:0;display:none;width:100%;max-height:240px;overflow:auto;padding:5px;border:1px solid #e0e5ed;border-radius:9px;background:#fff;box-shadow:0 14px 38px rgba(15,23,42,.16)}
+.az-cat-select.open .az-cat-menu{display:block}
+.az-cat-option{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:34px;padding:7px 9px;border:0;border-radius:6px;background:transparent;color:#344054;font-size:11px;font-weight:600;text-align:left;cursor:pointer}
+.az-cat-option:hover,.az-cat-option.selected{background:#eeedff;color:#5149d8}
+.az-cat-option.selected::after{content:"\2713";color:#635bff;font-weight:900}
+.cat-keyword-editor{display:flex;flex-wrap:wrap;align-items:center;gap:7px;min-height:44px;padding:6px 8px;border:1px solid #e0e5ed;border-radius:7px;background:#fff}
+.cat-keyword-editor:focus-within{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.10)}
+.cat-keyword-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 8px;border:1px solid #dddfff;border-radius:6px;background:#f3f2ff;color:#5149d8;font-size:10px;font-weight:700}
+.cat-keyword-tag button{border:0;background:transparent;color:#7770e7;cursor:pointer}
+.cat-keyword-input{flex:1 1 160px;min-width:140px!important;min-height:30px!important;padding:3px!important;border:0!important;box-shadow:none!important}
+.cat-error-popup{position:fixed;inset:0;z-index:13000;display:flex;align-items:center;justify-content:center;padding:20px}
+.cat-error-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}
+.cat-error-dialog{position:relative;z-index:2;width:100%;max-width:460px;padding:30px;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.24);text-align:center}
+.cat-error-dialog ul{margin:14px 0;padding:12px 16px;border:1px solid #fecaca;border-radius:9px;background:#fff7f7;color:#b42318;font-size:10px;text-align:left}
+</style>
+
+@if($errors->any())
+<div class="cat-error-popup" id="catErrorPopup" role="dialog" aria-modal="true">
+ <div class="cat-error-backdrop" data-cat-error-close></div>
+ <div class="cat-error-dialog">
+  <span class="admin-page-eyebrow">Category management</span>
+  <h3>Please correct the category details</h3>
+  <ul>@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>
+  <button type="button" class="admin-button admin-button-primary" data-cat-error-close>Review Fields</button>
+ </div>
+</div>
+@endif
+
+<script>
+'use strict';
+document.addEventListener('DOMContentLoaded',function(){
+ const title=document.getElementById('title'),slug=document.getElementById('slug');
+ if(title&&slug){
+   let manual=slug.value.trim()!=='';
+   const make=v=>v.toLowerCase().trim().replace(/['’]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+   slug.addEventListener('input',()=>manual=slug.value.trim()!=='');
+   title.addEventListener('input',()=>{if(!manual)slug.value=make(title.value)});
+ }
+ const select=document.getElementById('parent_id');
+ if(select&&!select.multiple){
+  const w=document.createElement('div');w.className='az-cat-select';
+  const b=document.createElement('button');b.type='button';b.className='az-cat-button';
+  const v=document.createElement('span'),i=document.createElement('i');i.className='fa-solid fa-chevron-down';b.append(v,i);
+  const m=document.createElement('div');m.className='az-cat-menu';
+  select.parentNode.insertBefore(w,select);w.append(select,b,m);select.classList.add('az-cat-native');
+  function render(){m.innerHTML='';Array.from(select.options).forEach(o=>{const x=document.createElement('button');x.type='button';x.className='az-cat-option'+(String(o.value)===String(select.value)?' selected':'');x.textContent=o.textContent.trim();x.disabled=o.disabled;x.onclick=()=>{select.value=o.value;select.dispatchEvent(new Event('change',{bubbles:true}));render();w.classList.remove('open');b.focus()};m.append(x)});const o=select.options[select.selectedIndex];v.textContent=o?o.textContent.trim():'Select'}
+  b.onclick=()=>w.classList.toggle('open');document.addEventListener('click',e=>{if(!w.contains(e.target))w.classList.remove('open')});document.addEventListener('keydown',e=>{if(e.key==='Escape')w.classList.remove('open')});render();
+ }
+ const old=document.querySelector('[name="meta_keywords"]');
+ if(old){
+  const initial=old.value||'', hidden=document.createElement('input');hidden.type='hidden';hidden.name='meta_keywords';
+  old.removeAttribute('name');old.hidden=true;
+  const ed=document.createElement('div');ed.className='cat-keyword-editor';const tags=document.createElement('div');tags.style.display='contents';const inp=document.createElement('input');inp.type='text';inp.className='cat-keyword-input';inp.placeholder='Type keyword and press Enter';
+  old.parentNode.insertBefore(ed,old);ed.append(tags,inp,hidden);let words=[];
+  const norm=x=>String(x||'').replace(/\s+/g,' ').trim().replace(/^,+|,+$/g,'').trim();
+  function add(x){x=norm(x);if(x&&!words.some(y=>y.toLowerCase()===x.toLowerCase()))words.push(x)}
+  function draw(){tags.innerHTML='';words.forEach((x,n)=>{const tag=document.createElement('span');tag.className='cat-keyword-tag';const s=document.createElement('span');s.textContent=x;const rm=document.createElement('button');rm.type='button';rm.innerHTML='&times;';rm.onclick=()=>{words.splice(n,1);draw()};tag.append(s,rm);tags.append(tag)});hidden.value=words.join(', ')}
+  initial.split(',').forEach(add);draw();function commit(){inp.value.split(',').forEach(add);inp.value='';draw()}inp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===','){e.preventDefault();commit()}});inp.addEventListener('blur',commit);const f=ed.closest('form');if(f)f.addEventListener('submit',commit);
+ }
+ const pop=document.getElementById('catErrorPopup');if(pop){document.body.style.overflow='hidden';pop.querySelectorAll('[data-cat-error-close]').forEach(x=>x.onclick=()=>{pop.remove();document.body.style.overflow=''})}
+});
+</script>

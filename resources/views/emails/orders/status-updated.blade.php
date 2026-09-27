@@ -79,6 +79,51 @@
                                     </td>
                                 </tr>
 
+                                @php
+                                    $refundMeta = is_array($order->payment_metadata ?? null)
+                                        ? ($order->payment_metadata['refund'] ?? [])
+                                        : [];
+                                    $bankRefundReference = is_array($refundMeta)
+                                        ? ($refundMeta['bank_refund_reference'] ?? null)
+                                        : null;
+                                    $refundedAt = is_array($refundMeta)
+                                        ? ($refundMeta['refunded_at'] ?? null)
+                                        : null;
+                                @endphp
+
+                                @if ((string) $order->order_status === 'refunded')
+                                    <tr>
+                                        <td style="padding:12px 14px;border:1px solid #e5e5e5;background:#fafafa;font-size:14px;font-weight:700;">
+                                            Refund Method
+                                        </td>
+                                        <td style="padding:12px 14px;border:1px solid #e5e5e5;font-size:14px;">
+                                            {{ ($order->payment_provider === 'bank_transfer' || $order->payment_method === 'bank_transfer') ? 'Bank Transfer' : 'Card / Stripe' }}
+                                        </td>
+                                    </tr>
+
+                                    @if (!empty($bankRefundReference))
+                                        <tr>
+                                            <td style="padding:12px 14px;border:1px solid #e5e5e5;background:#fafafa;font-size:14px;font-weight:700;">
+                                                Refund Reference
+                                            </td>
+                                            <td style="padding:12px 14px;border:1px solid #e5e5e5;font-size:14px;font-weight:700;">
+                                                {{ $bankRefundReference }}
+                                            </td>
+                                        </tr>
+                                    @endif
+
+                                    @if (!empty($refundedAt))
+                                        <tr>
+                                            <td style="padding:12px 14px;border:1px solid #e5e5e5;background:#fafafa;font-size:14px;font-weight:700;">
+                                                Refunded On
+                                            </td>
+                                            <td style="padding:12px 14px;border:1px solid #e5e5e5;font-size:14px;">
+                                                {{ \Carbon\Carbon::parse($refundedAt)->format('d M Y, h:i A') }}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                @endif
+
                                 <tr>
                                     <td style="padding:12px 14px;border:1px solid #e5e5e5;background:#fafafa;font-size:14px;font-weight:700;">
                                         Order Total

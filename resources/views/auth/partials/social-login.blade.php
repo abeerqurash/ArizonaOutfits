@@ -1,13 +1,5 @@
 <div class="auth-social-section">
 
-    {{-- Social authentication error --}}
-    @if (session('social_error'))
-        <div class="auth-social-error" role="alert">
-            {{ session('social_error') }}
-        </div>
-    @endif
-
-
     {{-- Google --}}
     <a
         href="{{ route('social.redirect', ['provider' => 'google']) }}"

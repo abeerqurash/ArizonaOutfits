@@ -716,6 +716,10 @@ a {
     box-shadow: var(--admin-shadow);
 }
 
+.admin-panel.product-filter-panel {
+    overflow: initial;
+}
+
 .admin-panel-header {
     display: flex;
     min-height: 76px;

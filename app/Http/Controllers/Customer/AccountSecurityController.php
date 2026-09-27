@@ -52,6 +52,8 @@ class AccountSecurityController extends Controller
             'customer.account.security',
             [
                 'user' => $user,
+                'emailIdentityState' =>
+                    $user->resolvedEmailIdentityState(),
                 'canDisconnectEmail' =>
                     $loginSecurity->canDisconnectEmail($user),
                 'canRemovePhone' =>
@@ -149,6 +151,11 @@ class AccountSecurityController extends Controller
                 'normalized_email' =>
                     CustomerEmailIdentity::normalizeEmail($email),
                 'provider_user_id' => null,
+                'provider_verified_at' => null,
+                'email_verified_at' => null,
+                'email_verification_pending_at' => now(),
+
+                // Temporary legacy compatibility.
                 'verified_at' => null,
                 'verification_pending_at' => now(),
                 'connected_at' => now(),

@@ -503,9 +503,25 @@ class PhoneAuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(
-            route('customer.dashboard', absolute: false)
+        $intended = $request->session()->pull(
+            'customer.url.intended'
         );
+
+        if ($this->isSafeCustomerDestination($intended)) {
+            return redirect()->to($intended);
+        }
+
+        $legacyIntended = $request->session()->get(
+            'url.intended'
+        );
+
+        if ($this->isSafeCustomerDestination($legacyIntended)) {
+            $request->session()->forget('url.intended');
+
+            return redirect()->to($legacyIntended);
+        }
+
+        return redirect()->route('customer.dashboard');
     }
 
     /*
@@ -525,6 +541,55 @@ class PhoneAuthController extends Controller
     | +923123456789
     |
     */
+    private function isSafeCustomerDestination(mixed $destination): bool
+    {
+        if (!is_string($destination) || trim($destination) === '') {
+            return false;
+        }
+
+        $destination = trim($destination);
+
+        if (str_starts_with($destination, '//')) {
+            return false;
+        }
+
+        $path = parse_url($destination, PHP_URL_PATH);
+
+        if (!is_string($path) || $path === '') {
+            return false;
+        }
+
+        if (!str_starts_with($destination, '/')) {
+            $scheme = parse_url($destination, PHP_URL_SCHEME);
+            $host = parse_url($destination, PHP_URL_HOST);
+
+            if (
+                !is_string($scheme) ||
+                !in_array(strtolower($scheme), ['http', 'https'], true) ||
+                !is_string($host) ||
+                strcasecmp($host, request()->getHost()) !== 0
+            ) {
+                return false;
+            }
+        }
+
+        $adminLoginPath = parse_url(route('admin.login'), PHP_URL_PATH);
+
+        if (!is_string($adminLoginPath) || $adminLoginPath === '') {
+            return false;
+        }
+
+        $adminBasePath = preg_replace('#/login/?$#', '', $adminLoginPath);
+
+        if (!is_string($adminBasePath) || $adminBasePath === '') {
+            return false;
+        }
+
+        $adminBasePath = rtrim($adminBasePath, '/');
+
+        return $path !== $adminBasePath
+            && !str_starts_with($path, $adminBasePath . '/');
+    }
 
     private function normalizePhone(
         string $phone

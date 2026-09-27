@@ -1353,7 +1353,7 @@
     }
 
     .supplier-status-card span {
-        display: block;
+        display: flex;
         margin-bottom: 3px;
         color: var(--supplier-muted);
         font-size: 9px;

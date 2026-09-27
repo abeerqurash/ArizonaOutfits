@@ -5,8 +5,94 @@
 
 @section('content')
 
+{{-- ============================================================
+     ADMIN FEEDBACK POPUP
+============================================================ --}}
+
 @php
-    $totalProducts = $products->total();
+    $productFeedbackType = null;
+    $productFeedbackTitle = null;
+    $productFeedbackMessage = null;
+    $productFeedbackErrors = [];
+
+    if (session('error')) {
+        $productFeedbackType = 'error';
+        $productFeedbackTitle = 'Action could not be completed';
+        $productFeedbackMessage = session('error');
+    } elseif ($errors->any()) {
+        $productFeedbackType = 'error';
+        $productFeedbackTitle = 'Please check the request';
+        $productFeedbackErrors = $errors->all();
+    } elseif (session('warning')) {
+        $productFeedbackType = 'warning';
+        $productFeedbackTitle = 'Attention required';
+        $productFeedbackMessage = session('warning');
+    } elseif (session('success')) {
+        $productFeedbackType = 'success';
+        $productFeedbackTitle = 'Completed successfully';
+        $productFeedbackMessage = session('success');
+    }
+@endphp
+
+@if($productFeedbackType)
+<div
+    class="product-feedback-popup is-{{ $productFeedbackType }}"
+    id="productFeedbackPopup"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="productFeedbackTitle"
+>
+    <div class="product-feedback-backdrop" data-product-feedback-close></div>
+
+    <div class="product-feedback-dialog">
+        <button
+            type="button"
+            class="product-feedback-close"
+            data-product-feedback-close
+            aria-label="Close message"
+        >
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="product-feedback-icon">
+            @if($productFeedbackType === 'success')
+                <i class="fa-solid fa-circle-check"></i>
+            @elseif($productFeedbackType === 'warning')
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            @else
+                <i class="fa-solid fa-circle-exclamation"></i>
+            @endif
+        </div>
+
+        <span class="admin-page-eyebrow">Product management</span>
+        <h3 id="productFeedbackTitle">{{ $productFeedbackTitle }}</h3>
+
+        @if($productFeedbackMessage)
+            <p>{{ $productFeedbackMessage }}</p>
+        @endif
+
+        @if(!empty($productFeedbackErrors))
+            <ul class="product-feedback-errors">
+                @foreach($productFeedbackErrors as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+
+        <button
+            type="button"
+            class="admin-button admin-button-primary product-feedback-ok"
+            data-product-feedback-close
+        >
+            OK
+        </button>
+    </div>
+</div>
+@endif
+
+
+@php
+    $totalProducts = $statistics['total'] ?? $products->total();
 
     $currentSearch = request('search', '');
     $currentStatus = request('status', '');
@@ -99,6 +185,22 @@
         </a>
 
         <a
+            href="{{ route('admin.product-tags.index') }}"
+            class="admin-button admin-button-secondary"
+        >
+            <i class="fa-solid fa-tags"></i>
+            Tags
+        </a>
+
+        <a
+            href="{{ route('admin.coupons.index') }}"
+            class="admin-button admin-button-secondary"
+        >
+            <i class="fa-solid fa-ticket"></i>
+            Coupons
+        </a>
+
+        <a
             href="{{ route('admin.products.create') }}"
             class="admin-button admin-button-primary"
         >
@@ -151,7 +253,7 @@
             </div>
 
             <span class="product-stat-caption">
-                Current page
+                Catalog
             </span>
 
         </div>
@@ -161,13 +263,7 @@
         </div>
 
         <div class="admin-stat-value">
-            {{
-                number_format(
-                    $products->getCollection()
-                        ->where('status', 'active')
-                        ->count()
-                )
-            }}
+            {{ number_format($statistics['active'] ?? 0) }}
         </div>
 
     </div>
@@ -182,7 +278,7 @@
             </div>
 
             <span class="product-stat-caption">
-                Current page
+                Catalog
             </span>
 
         </div>
@@ -192,13 +288,7 @@
         </div>
 
         <div class="admin-stat-value">
-            {{
-                number_format(
-                    $products->getCollection()
-                        ->where('is_featured', true)
-                        ->count()
-                )
-            }}
+            {{ number_format($statistics['featured'] ?? 0) }}
         </div>
 
     </div>
@@ -213,7 +303,7 @@
             </div>
 
             <span class="product-stat-caption">
-                Current page
+                Catalog
             </span>
 
         </div>
@@ -223,22 +313,7 @@
         </div>
 
         <div class="admin-stat-value">
-            {{
-                number_format(
-                    $products->getCollection()
-                        ->filter(function ($product) {
-                            $stock = (int) $product->stock;
-
-                            $reorderPoint =
-                                $product->reorder_point !== null
-                                    ? (int) $product->reorder_point
-                                    : 5;
-
-                            return $stock <= $reorderPoint;
-                        })
-                        ->count()
-                )
-            }}
+            {{ number_format($statistics['low_stock'] ?? 0) }}
         </div>
 
     </div>
@@ -2408,6 +2483,68 @@
 
     }
 
+
+/* ============================================================
+   ARIZONA ADMIN DASHBOARD VISUAL SYSTEM — PRODUCTS
+============================================================ */
+.admin-page-header{margin-bottom:18px}
+.admin-page-header .admin-page-eyebrow,
+.product-filter-panel .admin-panel-eyebrow,
+.product-list-panel .admin-panel-eyebrow{color:#635bff;font-size:9px;font-weight:800;letter-spacing:.12em}
+.admin-page-header h2{margin:4px 0;color:#0f172a;font-size:24px;font-weight:800;letter-spacing:-.025em}
+.admin-page-header p{color:#7b8497;font-size:12px}
+.admin-page-header .admin-button{min-height:38px;border-radius:7px;font-size:10px}
+.admin-page-header .admin-button-primary,
+.product-filter-submit .admin-button-primary{border-color:#635bff;background:#635bff;color:#fff}
+
+.product-statistics-grid{gap:14px;margin-bottom:18px}
+.product-statistics-grid .admin-stat-card{min-height:116px;padding:17px;border:1px solid #e6eaf1;border-radius:11px;background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.02)}
+.product-statistics-grid .admin-stat-label{color:#687386;font-size:10px;font-weight:600}
+.product-statistics-grid .admin-stat-value{display:block;margin-top:13px;color:#111827;font-size:24px;font-weight:800;line-height:1}
+.product-statistics-grid .admin-stat-icon{width:34px;height:34px;border:0;border-radius:9px;background:#eef0ff;color:#635bff;font-size:13px}
+.product-statistics-grid .admin-stat-card:nth-child(2) .admin-stat-icon{background:#eaf8f1;color:#13875b}
+.product-statistics-grid .admin-stat-card:nth-child(3) .admin-stat-icon{background:#fff4df;color:#d88716}
+.product-statistics-grid .admin-stat-card:nth-child(4) .admin-stat-icon{background:#fff0f0;color:#d14343}
+.product-stat-caption{font-size:9px;color:#8a93a4}
+
+.product-filter-panel,.product-list-panel{margin-bottom:18px;border:1px solid #e6eaf1;border-radius:11px;background:#fff;box-shadow:none}
+.product-filter-panel .admin-panel-header,.product-list-panel .admin-panel-header{padding:16px 18px;border-bottom:1px solid #edf0f5}
+.product-filter-panel .admin-panel-header h3,.product-list-panel .admin-panel-header h3{margin:3px 0 0;color:#172033;font-size:14px;font-weight:800}
+.product-filter-form{padding:15px 18px 18px;gap:12px}
+.product-filter-field label{margin-bottom:6px;color:#687386;font-size:9px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.product-filter-field input,.product-filter-field select{height:40px;border-color:#e0e5ed;border-radius:7px;color:#344054;font-size:11px}
+.product-filter-submit .admin-button{min-height:40px;border-radius:7px;font-size:10px}
+.product-results-summary{color:#8a93a4;font-size:10px}
+.product-table thead{background:#fbfcfe}
+.product-table th{padding:11px 13px;border-bottom:1px solid #edf0f5;color:#7c8596;font-size:8px;font-weight:800;letter-spacing:.07em;text-transform:uppercase}
+.product-table td{padding:12px 13px;border-bottom:1px solid #f0f2f6;color:#3f4858;font-size:10px}
+.product-table-image{width:48px;height:56px;border-radius:8px}
+.product-name{color:#172033;font-size:11px;font-weight:800}
+.product-table-meta{font-size:9px}
+.product-price strong,.product-inventory>strong{font-size:11px}
+.product-category-chip,.product-category-more,.product-variant-count,.product-status{min-height:23px;padding:4px 7px;font-size:9px}
+.product-action-button{width:30px;height:30px;border-radius:7px;font-size:10px}
+.product-pagination{padding:14px 18px}
+.product-page-button{min-width:30px;height:30px;border-radius:7px;font-size:10px}
+.product-page-current{border-color:#635bff;background:#635bff}
+.product-empty-state{padding:55px 20px}
+.product-empty-icon{background:#eef0ff;color:#635bff}
+
+/* Feedback popup */
+.product-feedback-popup{position:fixed;inset:0;z-index:10050;display:flex;align-items:center;justify-content:center;padding:20px}
+.product-feedback-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}
+.product-feedback-dialog{position:relative;z-index:2;width:100%;max-width:430px;padding:30px;border:1px solid #e6eaf1;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.24);text-align:center}
+.product-feedback-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border:0;border-radius:7px;background:#f3f5f8;color:#687386;cursor:pointer}
+.product-feedback-icon{display:flex;align-items:center;justify-content:center;width:58px;height:58px;margin:0 auto 15px;border-radius:50%;font-size:21px}
+.product-feedback-popup.is-success .product-feedback-icon{background:#eaf8f1;color:#13875b}
+.product-feedback-popup.is-error .product-feedback-icon{background:#fff0f0;color:#d14343}
+.product-feedback-popup.is-warning .product-feedback-icon{background:#fff4df;color:#d88716}
+.product-feedback-dialog h3{margin:5px 0 8px;color:#172033;font-size:18px;font-weight:800}
+.product-feedback-dialog p{margin:0;color:#687386;font-size:11px;line-height:1.65}
+.product-feedback-errors{margin:14px 0 0;padding:12px 16px;border:1px solid #fecaca;border-radius:9px;background:#fff7f7;color:#b42318;font-size:10px;line-height:1.6;list-style-position:inside;text-align:left}
+.product-feedback-ok{min-width:100px;margin-top:20px;justify-content:center;border-color:#635bff!important;background:#635bff!important}
+body.product-feedback-open{overflow:hidden}
+
 </style>
 
 @endpush
@@ -2581,6 +2718,274 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
+</script>
+
+
+<script>
+'use strict';
+document.addEventListener('DOMContentLoaded', function () {
+    const feedback = document.getElementById('productFeedbackPopup');
+    if (!feedback) return;
+
+    document.body.classList.add('product-feedback-open');
+
+    function closeFeedback() {
+        feedback.remove();
+        document.body.classList.remove('product-feedback-open');
+    }
+
+    feedback.querySelectorAll('[data-product-feedback-close]').forEach(function (button) {
+        button.addEventListener('click', closeFeedback);
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && document.body.contains(feedback)) {
+            closeFeedback();
+        }
+    });
+});
+</script>
+
+
+<style>
+/* ============================================================
+   ARIZONA ADMIN — PRODUCT DROPDOWN UI
+   Applies to Index, Create and Edit
+============================================================ */
+.product-admin-select,
+.product-filter-field select,
+.product-form-panel select,
+.product-form-modal select {
+    width:100%;
+    min-height:40px;
+    padding:0 38px 0 11px!important;
+    border:1px solid #e0e5ed!important;
+    border-radius:7px!important;
+    background-color:#fff!important;
+    background-image:
+        linear-gradient(45deg,transparent 50%,#7b8497 50%),
+        linear-gradient(135deg,#7b8497 50%,transparent 50%)!important;
+    background-position:
+        calc(100% - 16px) 50%,
+        calc(100% - 11px) 50%!important;
+    background-size:5px 5px,5px 5px!important;
+    background-repeat:no-repeat!important;
+    color:#344054!important;
+    font-size:11px!important;
+    font-weight:600!important;
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    -moz-appearance:none!important;
+    cursor:pointer;
+    transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease
+}
+.product-admin-select:hover,
+.product-filter-field select:hover,
+.product-form-panel select:hover,
+.product-form-modal select:hover {
+    border-color:#c9ced8!important;
+    background-color:#fbfcff!important
+}
+.product-admin-select:focus,
+.product-filter-field select:focus,
+.product-form-panel select:focus,
+.product-form-modal select:focus {
+    border-color:#635bff!important;
+    background-color:#fff!important;
+    box-shadow:0 0 0 3px rgba(99,91,255,.10)!important;
+    outline:none!important
+}
+.product-admin-select:disabled,
+.product-filter-field select:disabled,
+.product-form-panel select:disabled,
+.product-form-modal select:disabled {
+    background-color:#f5f6f8!important;
+    color:#98a2b3!important;
+    cursor:not-allowed;
+    opacity:1
+}
+.product-admin-select option,
+.product-filter-field select option,
+.product-form-panel select option,
+.product-form-modal select option {
+    background:#fff!important;
+    color:#344054!important;
+    font-size:11px!important
+}
+
+/* Multiple-value dropdown/list controls */
+.product-form-panel select[multiple] {
+    min-height:132px!important;
+    padding:6px!important;
+    background-image:none!important;
+    overflow:auto
+}
+.product-form-panel select[multiple] option {
+    margin:2px 0;
+    padding:8px 9px;
+    border-radius:6px;
+    cursor:pointer
+}
+.product-form-panel select[multiple] option:checked {
+    background:#eeedff linear-gradient(0deg,#eeedff,#eeedff)!important;
+    color:#5149d8!important;
+    font-weight:700!important
+}
+</style>
+
+
+<style>
+/* ============================================================
+   ARIZONA PRODUCT INDEX — CUSTOM FILTER SELECT OPTIONS UI V1
+============================================================ */
+.az-index-select{position:relative;width:100%}
+.az-index-select-native{position:absolute!important;width:1px!important;height:1px!important;margin:-1px!important;padding:0!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important;opacity:0!important;pointer-events:none!important}
+.az-index-select-button{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:40px;padding:0 11px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#344054;font-size:11px;font-weight:600;text-align:left;cursor:pointer;transition:.18s ease}
+.az-index-select-button:hover{border-color:#c9ced8;background:#fbfcff}
+.az-index-select.is-open .az-index-select-button,.az-index-select-button:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.10);outline:none}
+.az-index-select-chevron{color:#7b8497;font-size:9px;transition:transform .18s ease}
+.az-index-select.is-open .az-index-select-chevron{transform:rotate(180deg)}
+.az-index-select-menu{position:absolute;z-index:12000;top:calc(100% + 6px);left:0;display:none;width:100%;max-height:240px;overflow:auto;padding:5px;border:1px solid #e0e5ed;border-radius:9px;background:#fff;box-shadow:0 14px 38px rgba(15,23,42,.16)}
+.az-index-select.is-open .az-index-select-menu{display:block}
+.az-index-select-option{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:34px;padding:7px 9px;border:0;border-radius:6px;background:transparent;color:#344054;font-size:11px;font-weight:600;text-align:left;cursor:pointer}
+.az-index-select-option:hover,.az-index-select-option.is-focused{background:#f5f4ff;color:#5149d8}
+.az-index-select-option.is-selected{background:#eeedff;color:#5149d8;font-weight:800}
+.az-index-select-option.is-selected::after{content:"\2713";color:#635bff;font-size:11px;font-weight:900}
+</style>
+
+<script>
+'use strict';
+document.addEventListener('DOMContentLoaded', function () {
+    const selector = '.product-filter-field select:not([multiple])';
+
+    function closeAll(except) {
+        document.querySelectorAll('.az-index-select.is-open').forEach(function (wrapper) {
+            if (wrapper !== except) {
+                wrapper.classList.remove('is-open');
+                const b = wrapper.querySelector('.az-index-select-button');
+                if (b) b.setAttribute('aria-expanded','false');
+            }
+        });
+    }
+
+    document.querySelectorAll(selector).forEach(function (select) {
+        if (select.dataset.azIndexSelectReady === '1') return;
+        select.dataset.azIndexSelectReady = '1';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'az-index-select';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'az-index-select-button';
+        button.setAttribute('aria-haspopup','listbox');
+        button.setAttribute('aria-expanded','false');
+
+        const value = document.createElement('span');
+        const icon = document.createElement('i');
+        icon.className = 'fa-solid fa-chevron-down az-index-select-chevron';
+        button.append(value, icon);
+
+        const menu = document.createElement('div');
+        menu.className = 'az-index-select-menu';
+        menu.setAttribute('role','listbox');
+
+        select.parentNode.insertBefore(wrapper, select);
+        wrapper.append(select, button, menu);
+        select.classList.add('az-index-select-native');
+
+        let focusIndex = -1;
+
+        function render() {
+            menu.innerHTML = '';
+            Array.from(select.options).forEach(function (option) {
+                const item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'az-index-select-option';
+                item.dataset.value = option.value;
+                item.textContent = option.textContent.trim();
+                item.disabled = option.disabled;
+                item.setAttribute('role','option');
+
+                if (option.value === select.value) {
+                    item.classList.add('is-selected');
+                    item.setAttribute('aria-selected','true');
+                } else {
+                    item.setAttribute('aria-selected','false');
+                }
+
+                item.addEventListener('click', function () {
+                    select.value = option.value;
+                    select.dispatchEvent(new Event('change',{bubbles:true}));
+                    render();
+                    closeAll();
+                    button.focus();
+                });
+                menu.appendChild(item);
+            });
+
+            const selected = select.options[select.selectedIndex];
+            value.textContent = selected ? selected.textContent.trim() : 'Select';
+        }
+
+        function options() {
+            return Array.from(menu.querySelectorAll('.az-index-select-option:not(:disabled)'));
+        }
+
+        function paintFocus() {
+            const items = options();
+            items.forEach(x => x.classList.remove('is-focused'));
+            if (items[focusIndex]) {
+                items[focusIndex].classList.add('is-focused');
+                items[focusIndex].scrollIntoView({block:'nearest'});
+            }
+        }
+
+        function open() {
+            closeAll(wrapper);
+            wrapper.classList.add('is-open');
+            button.setAttribute('aria-expanded','true');
+            const items = options();
+            focusIndex = items.findIndex(x => x.dataset.value === String(select.value));
+            if (focusIndex < 0 && items.length) focusIndex = 0;
+            paintFocus();
+        }
+
+        button.addEventListener('click', function () {
+            if (wrapper.classList.contains('is-open')) {
+                closeAll();
+            } else {
+                open();
+            }
+        });
+
+        button.addEventListener('keydown', function (e) {
+            const items = options();
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (!wrapper.classList.contains('is-open')) { open(); return; }
+                if (!items.length) return;
+                focusIndex += e.key === 'ArrowDown' ? 1 : -1;
+                if (focusIndex >= items.length) focusIndex = 0;
+                if (focusIndex < 0) focusIndex = items.length - 1;
+                paintFocus();
+            } else if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                if (!wrapper.classList.contains('is-open')) { open(); return; }
+                if (items[focusIndex]) items[focusIndex].click();
+            } else if (e.key === 'Escape') {
+                closeAll();
+            }
+        });
+
+        select.addEventListener('change', render);
+        render();
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.az-index-select')) closeAll();
+    });
+});
 </script>
 
 @endpush

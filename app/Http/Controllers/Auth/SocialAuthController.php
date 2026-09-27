@@ -896,6 +896,11 @@ class SocialAuthController extends Controller
              * identity. This is separate from ArizonaOutfits custom-email
              * verification.
              */
+            'provider_verified_at' => now(),
+            'email_verified_at' => null,
+            'email_verification_pending_at' => null,
+
+            // Temporary legacy compatibility.
             'verified_at' => now(),
             'verification_pending_at' => null,
             'connected_at' => $identity->connected_at ?? now(),
@@ -992,8 +997,7 @@ class SocialAuthController extends Controller
                 $redirectUrl
             )
             ->setScopes([
-                'public_profile',
-            ])
+                'public_profile',])
             ->redirect();
     }
 

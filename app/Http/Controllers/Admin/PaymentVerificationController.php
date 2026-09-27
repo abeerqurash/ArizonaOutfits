@@ -171,7 +171,7 @@ class PaymentVerificationController extends Controller
                     $metadata['bank_transfer_verification'] = [
                         'verified' => true,
                         'verified_at' => now()->toIso8601String(),
-                        'verified_by' => auth()->id(),
+                        'verified_by' => auth('admin')->id(),
                         'payment_reference' =>
                             $validated['payment_reference'],
                     ];
@@ -309,7 +309,7 @@ class PaymentVerificationController extends Controller
                     $metadata['bank_transfer_verification'] = [
                         'verified' => false,
                         'rejected_at' => now()->toIso8601String(),
-                        'reviewed_by' => auth()->id(),
+                        'reviewed_by' => auth('admin')->id(),
                         'notes' => $validated['admin_notes'],
                     ];
 

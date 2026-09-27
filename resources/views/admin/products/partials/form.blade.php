@@ -1,10 +1,61 @@
+
+{{-- ============================================================
+     PRODUCT FORM FEEDBACK POPUP
+============================================================ --}}
+@php
+    $productFormFeedbackType = null;
+    $productFormFeedbackTitle = null;
+    $productFormFeedbackMessage = null;
+    $productFormFeedbackErrors = [];
+
+    if (session('error')) {
+        $productFormFeedbackType = 'error';
+        $productFormFeedbackTitle = 'Product could not be saved';
+        $productFormFeedbackMessage = session('error');
+    } elseif ($errors->any()) {
+        $productFormFeedbackType = 'error';
+        $productFormFeedbackTitle = 'Please correct the product details';
+        $productFormFeedbackErrors = $errors->all();
+    } elseif (session('warning')) {
+        $productFormFeedbackType = 'warning';
+        $productFormFeedbackTitle = 'Attention required';
+        $productFormFeedbackMessage = session('warning');
+    }
+@endphp
+
+@if($productFormFeedbackType)
+<div class="product-form-feedback is-{{ $productFormFeedbackType }}" id="productFormFeedback" role="dialog" aria-modal="true">
+    <div class="product-form-feedback-backdrop" data-product-form-feedback-close></div>
+    <div class="product-form-feedback-dialog">
+        <button type="button" class="product-form-feedback-close" data-product-form-feedback-close aria-label="Close message">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="product-form-feedback-icon">
+            @if($productFormFeedbackType === 'warning')
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            @else
+                <i class="fa-solid fa-circle-exclamation"></i>
+            @endif
+        </div>
+        <span class="admin-page-eyebrow">Product management</span>
+        <h3>{{ $productFormFeedbackTitle }}</h3>
+        @if($productFormFeedbackMessage)
+            <p>{{ $productFormFeedbackMessage }}</p>
+        @endif
+        @if(!empty($productFormFeedbackErrors))
+            <ul class="product-form-feedback-errors">
+                @foreach($productFormFeedbackErrors as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        @endif
+        <button type="button" class="admin-button admin-button-primary product-form-feedback-ok" data-product-form-feedback-close>Review Fields</button>
+    </div>
+</div>
+@endif
+
 @php
 $editing = isset($product) && $product;
-
-// Defensive normalization so this partial works with both create/edit wrappers.
-$productOptions = $productOptions ?? $options ?? collect();
-$categories = $categories ?? collect();
-$tags = $tags ?? collect();
 
 $selectedCategories = collect(
 old(
@@ -44,56 +95,40 @@ $editing
 
 /*
 |--------------------------------------------------------------------------
-| Existing / previously submitted variants
+| Existing variants
 |--------------------------------------------------------------------------
 */
 
-$oldVariants = old('variants');
+$initialVariants = $editing
+? $product->variants
+    ->map(function ($variant) {
+        return [
+            'id' => $variant->id,
+            'sku' => $variant->sku,
+            'regular_price' => $variant->regular_price,
+            'sale_price' => $variant->sale_price,
+            'stock' => $variant->stock,
+            'reorder_point' => $variant->reorder_point,
+            'reorder_quantity' => $variant->reorder_quantity,
+            'image' => $variant->image,
+            'remove_image' => false,
+            'options' => is_array($variant->options)
+                ? $variant->options
+                : [],
+        ];
+    })
+    ->values()
+    ->all()
+: [];
 
-if (is_array($oldVariants)) {
-    $initialVariants = collect($oldVariants)
-        ->map(function ($variant) {
-            return [
-                'id' => $variant['id'] ?? null,
-                'sku' => $variant['sku'] ?? '',
-                'regular_price' => $variant['regular_price'] ?? '',
-                'sale_price' => $variant['sale_price'] ?? '',
-                'stock' => $variant['stock'] ?? 0,
-                'reorder_point' => $variant['reorder_point'] ?? '',
-                'reorder_quantity' => $variant['reorder_quantity'] ?? '',
-                'image' => $variant['old_image'] ?? null,
-                'remove_image' => (bool) ($variant['remove_image'] ?? false),
-                'options' => is_array($variant['options'] ?? null)
-                    ? $variant['options']
-                    : [],
-            ];
-        })
-        ->values()
-        ->all();
-} elseif ($editing) {
-    $initialVariants = $product->variants
-        ->map(function ($variant) {
-            return [
-                'id' => $variant->id,
-                'sku' => $variant->sku,
-                'regular_price' => $variant->regular_price,
-                'sale_price' => $variant->sale_price,
-                'stock' => $variant->stock,
-                'reorder_point' => $variant->reorder_point,
-                'reorder_quantity' => $variant->reorder_quantity,
-                'image' => $variant->image,
-                'remove_image' => false,
-                'options' => is_array($variant->options)
-                    ? $variant->options
-                    : [],
-            ];
-        })
-        ->values()
-        ->all();
-} else {
-    $initialVariants = [];
-}
+$initialVariants = old(
+    'variants',
+    $initialVariants
+);
 
+$initialVariants = is_array($initialVariants)
+    ? $initialVariants
+    : [];
 
 /*
 |--------------------------------------------------------------------------
@@ -202,6 +237,7 @@ return asset('storage/' . $path);
 
                         <label for="slug">
                             URL Slug
+                            <span class="required">*</span>
                         </label>
 
                         <div class="product-input-prefix">
@@ -219,7 +255,7 @@ return asset('storage/' . $path);
                         </div>
 
                         <span class="product-field-help">
-                            Optional. Generated automatically from the title and made unique on the server.
+                            Generated automatically from the title until you edit it manually.
                         </span>
 
                         @error('slug')
@@ -1493,17 +1529,46 @@ return asset('storage/' . $path);
                 </div>
 
 
-                <div class="product-field">
+                <div class="product-field product-keywords-field">
 
-                    <label for="meta_keywords">
+                    <label for="metaKeywordInput">
                         Meta Keywords
                     </label>
 
-                    <textarea
+                    <div
+                        class="product-keyword-editor"
+                        id="metaKeywordEditor"
+                        data-keyword-editor
+                    >
+                        <div
+                            class="product-keyword-tags"
+                            id="metaKeywordTags"
+                            aria-live="polite"
+                        ></div>
+
+                        <input
+                            type="text"
+                            id="metaKeywordInput"
+                            class="product-keyword-input"
+                            autocomplete="off"
+                            placeholder="Type a keyword and press Enter"
+                            aria-describedby="metaKeywordHelp"
+                        >
+                    </div>
+
+                    <input
+                        type="hidden"
                         id="meta_keywords"
                         name="meta_keywords"
-                        rows="3"
-                        placeholder="leather jacket, mens jacket, black jacket">{{ old('meta_keywords', $editing ? $product->meta_keywords : '') }}</textarea>
+                        value="{{ old('meta_keywords', $editing ? $product->meta_keywords : '') }}"
+                    >
+
+                    <div
+                        class="product-field-help"
+                        id="metaKeywordHelp"
+                    >
+                        Press Enter or comma after each keyword. Click × to remove a keyword.
+                    </div>
 
                 </div>
 
@@ -1769,6 +1834,10 @@ return asset('storage/' . $path);
     .product-form-panel {
         overflow: hidden;
     }
+
+    section.admin-panel.product-form-panel.product-sticky-panel {
+    overflow: inherit;
+}
 
     .product-form-body {
         padding: 20px;
@@ -2491,108 +2560,28 @@ return asset('storage/' . $path);
         font-size: 11px;
     }
 
-    /* ============================================================
-       VARIANT IMAGE MANAGEMENT
-    ============================================================ */
-
     .product-variant-image-input {
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-    }
-
-    .product-variant-image-preview {
         position: relative;
-        width: 100%;
-        height: 76px;
+    }
+
+    .product-variant-image-input input[type="file"] {
+        padding: 7px;
+        font-size: 9px;
+    }
+
+    .product-variant-current-image {
+        width: 42px;
+        height: 42px;
+        margin-top: 6px;
         overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px solid rgba(15, 23, 42, .10);
-        border-radius: 9px;
-        background: #f8fafc;
-    }
-
-    .product-variant-image-preview img {
-        width: 100%;
-        height: 100%;
-        display: block;
-        object-fit: cover;
-    }
-
-    .product-variant-image-empty {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        padding: 8px;
-        color: #94a3b8;
-        font-size: 8px;
-        font-weight: 650;
-        text-align: center;
-    }
-
-    .product-variant-image-empty i {
-        font-size: 16px;
-    }
-
-    .product-variant-image-empty.is-removing {
-        background: #fff7f7;
-        color: #dc2626;
-    }
-
-    .product-variant-image-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-    }
-
-    .product-variant-image-action {
-        min-height: 29px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        padding: 5px 8px;
-        border: 1px solid rgba(15, 23, 42, .11);
         border-radius: 7px;
-        background: #fff;
-        color: #374151;
-        font: inherit;
-        font-size: 8px;
-        font-weight: 750;
-        line-height: 1;
-        cursor: pointer;
-        transition: .18s ease;
+        background: #f3f4f6;
     }
 
-    .product-variant-image-action:hover {
-        border-color: #7c6cff;
-        color: #5b4df6;
-        background: #f8f7ff;
-    }
-
-    .product-variant-image-action.is-danger {
-        border-color: #fecaca;
-        color: #dc2626;
-    }
-
-    .product-variant-image-action.is-danger:hover {
-        border-color: #dc2626;
-        background: #fef2f2;
-    }
-
-    .product-variant-image-action.is-undo {
-        border-color: #cbd5e1;
-        color: #475569;
-    }
-
-    .product-variant-image-action[hidden] {
-        display: none !important;
+    .product-variant-current-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
 
@@ -4364,10 +4353,6 @@ return asset('storage/' . $path);
                         image: row.dataset
                             .existingImage || null,
 
-                        remove_image: row.querySelector(
-                            '[data-variant-remove-image]'
-                        )?.value === '1',
-
                         options: options
                     });
 
@@ -4470,37 +4455,17 @@ return asset('storage/' . $path);
                         )
                         .join('');
 
-                    const signature =
-                        optionSignature(options);
-
-                    const hasExistingImage =
-                        Boolean(variant.image);
-
-                    const removingImage =
-                        Boolean(variant.remove_image);
-
-                    const previewMarkup =
-                        hasExistingImage && !removingImage
-                            ? `
+                    const currentImage =
+                        variant.image ?
+                        `
+                            <div class="product-variant-current-image">
                                 <img
                                     src="${escapeHtml(normaliseImageUrl(variant.image))}"
-                                    alt="${escapeHtml(title || 'Variant image')}"
-                                    data-variant-preview-image
+                                    alt="${escapeHtml(title)}"
                                 >
-                            `
-                            : removingImage
-                                ? `
-                                    <div class="product-variant-image-empty is-removing">
-                                        <i class="fa-solid fa-trash"></i>
-                                        <span>Will be removed</span>
-                                    </div>
-                                `
-                                : `
-                                    <div class="product-variant-image-empty">
-                                        <i class="fa-regular fa-image"></i>
-                                        <span>No image</span>
-                                    </div>
-                                `;
+                            </div>
+                        ` :
+                        '';
 
                     row.innerHTML = `
 
@@ -4520,19 +4485,6 @@ return asset('storage/' . $path);
                     `}
 
                     ${optionInputs}
-
-                    <input
-                        type="hidden"
-                        name="variants[${index}][old_image]"
-                        value="${escapeHtml(variant.image || '')}"
-                    >
-
-                    <input
-                        type="hidden"
-                        name="variants[${index}][remove_image]"
-                        value="${variant.remove_image ? '1' : '0'}"
-                        data-variant-remove-image
-                    >
 
                     <div class="product-variant-heading">
 
@@ -4653,68 +4605,15 @@ return asset('storage/' . $path);
 
                             <label>Image</label>
 
-                            <div
-                                class="product-variant-image-input"
-                                data-variant-media
-                                data-variant-signature="${escapeHtml(signature)}"
-                            >
+                            <div class="product-variant-image-input">
 
-                                <div
-                                    class="product-variant-image-preview"
-                                    data-variant-image-preview
+                                <input
+                                    type="file"
+                                    name="variants[${index}][image]"
+                                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
                                 >
-                                    ${previewMarkup}
-                                </div>
 
-                                <div class="product-variant-image-actions">
-
-                                    <label class="product-variant-image-action">
-                                        <i class="fa-solid fa-image"></i>
-
-                                        <span data-variant-image-choose-text>
-                                            ${hasExistingImage && !removingImage ? 'Replace' : 'Choose'}
-                                        </span>
-
-                                        <input
-                                            type="file"
-                                            name="variants[${index}][image]"
-                                            accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                                            data-variant-image-picker
-                                            hidden
-                                        >
-                                    </label>
-
-                                    <button
-                                        type="button"
-                                        class="product-variant-image-action is-danger"
-                                        data-remove-variant-image
-                                        ${(!hasExistingImage || removingImage) ? 'hidden' : ''}
-                                    >
-                                        <i class="fa-solid fa-trash"></i>
-                                        Remove
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="product-variant-image-action is-undo"
-                                        data-undo-variant-image
-                                        ${removingImage ? '' : 'hidden'}
-                                    >
-                                        <i class="fa-solid fa-rotate-left"></i>
-                                        Undo
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="product-variant-image-action is-danger"
-                                        data-clear-new-variant-image
-                                        hidden
-                                    >
-                                        <i class="fa-solid fa-xmark"></i>
-                                        Clear
-                                    </button>
-
-                                </div>
+                                ${currentImage}
 
                             </div>
 
@@ -4731,27 +4630,6 @@ return asset('storage/' . $path);
             );
 
             bindVariantRemoveButtons();
-        }
-
-
-        function buildVariantSku(options) {
-
-            const base = slugify(
-                document.getElementById('sku')?.value ||
-                document.getElementById('title')?.value ||
-                'product'
-            )
-                .replace(/-/g, '')
-                .toUpperCase()
-                .slice(0, 18) || 'PRODUCT';
-
-            const suffix = options
-                .map(option => slugify(option.value_label || option.value_id))
-                .filter(Boolean)
-                .map(value => value.replace(/-/g, '').toUpperCase().slice(0, 8))
-                .join('-');
-
-            return suffix ? `${base}-${suffix}` : base;
         }
 
 
@@ -4822,14 +4700,13 @@ return asset('storage/' . $path);
 
                         return {
                             id: null,
-                            sku: buildVariantSku(options),
+                            sku: '',
                             regular_price: regularPrice?.value || '',
                             sale_price: salePrice?.value || '',
-                            stock: document.getElementById('stock')?.value || 0,
-                            reorder_point: document.getElementById('reorder_point')?.value || '',
-                            reorder_quantity: document.getElementById('reorder_quantity')?.value || '',
+                            stock: 0,
+                            reorder_point: '',
+                            reorder_quantity: '',
                             image: null,
-                            remove_image: false,
                             options: options
                         };
 
@@ -4854,450 +4731,7 @@ return asset('storage/' . $path);
             );
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Variant image file state
-        |--------------------------------------------------------------------------
-        |
-        | File inputs normally lose selected files when variant rows are rendered
-        | again. Store selected File objects by variant signature so Generate
-        | Variants can safely re-render matching rows without losing the upload.
-        |--------------------------------------------------------------------------
-        */
-
-        const variantImageFiles =
-            new Map();
-
-
-        function restoreVariantImageFile(
-            input,
-            signature
-        ) {
-
-            const file =
-                variantImageFiles.get(
-                    signature
-                );
-
-            if (
-                !file ||
-                !input
-            ) {
-                return;
-            }
-
-            try {
-
-                const transfer =
-                    new DataTransfer();
-
-                transfer.items.add(
-                    file
-                );
-
-                input.files =
-                    transfer.files;
-
-            } catch (error) {
-                /*
-                 * Modern Chrome / Edge support DataTransfer assignment.
-                 * If another browser blocks it, the visual preview remains,
-                 * but the admin will need to choose the file again.
-                 */
-            }
-        }
-
-
-        function setVariantImagePreview(
-            preview,
-            file
-        ) {
-
-            if (
-                !preview ||
-                !file
-            ) {
-                return;
-            }
-
-            const objectUrl =
-                URL.createObjectURL(
-                    file
-                );
-
-            preview.innerHTML = `
-                <img
-                    src="${objectUrl}"
-                    alt="${escapeHtml(file.name)}"
-                    data-variant-preview-image
-                >
-            `;
-
-            const image =
-                preview.querySelector(
-                    '[data-variant-preview-image]'
-                );
-
-            image?.addEventListener(
-                'load',
-                function() {
-                    URL.revokeObjectURL(
-                        objectUrl
-                    );
-                },
-                {
-                    once: true
-                }
-            );
-        }
-
-
-        function bindVariantImageControls() {
-
-            variantsContainer
-                .querySelectorAll(
-                    '[data-variant-media]'
-                )
-                .forEach(
-                    function(media) {
-
-                        const row =
-                            media.closest(
-                                '[data-variant-row]'
-                            );
-
-                        const signature =
-                            media.dataset
-                                .variantSignature || '';
-
-                        const picker =
-                            media.querySelector(
-                                '[data-variant-image-picker]'
-                            );
-
-                        const preview =
-                            media.querySelector(
-                                '[data-variant-image-preview]'
-                            );
-
-                        const removeFlag =
-                            row?.querySelector(
-                                '[data-variant-remove-image]'
-                            );
-
-                        const removeButton =
-                            media.querySelector(
-                                '[data-remove-variant-image]'
-                            );
-
-                        const undoButton =
-                            media.querySelector(
-                                '[data-undo-variant-image]'
-                            );
-
-                        const clearButton =
-                            media.querySelector(
-                                '[data-clear-new-variant-image]'
-                            );
-
-                        const chooseText =
-                            media.querySelector(
-                                '[data-variant-image-choose-text]'
-                            );
-
-                        const existingImage =
-                            row?.dataset
-                                .existingImage || '';
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | Restore newly selected file after regeneration
-                        |--------------------------------------------------------------------------
-                        */
-
-                        const rememberedFile =
-                            variantImageFiles.get(
-                                signature
-                            );
-
-                        if (
-                            rememberedFile &&
-                            picker
-                        ) {
-
-                            restoreVariantImageFile(
-                                picker,
-                                signature
-                            );
-
-                            setVariantImagePreview(
-                                preview,
-                                rememberedFile
-                            );
-
-                            if (removeFlag) {
-                                removeFlag.value =
-                                    '0';
-                            }
-
-                            if (chooseText) {
-                                chooseText.textContent =
-                                    'Replace';
-                            }
-
-                            if (removeButton) {
-                                removeButton.hidden =
-                                    true;
-                            }
-
-                            if (undoButton) {
-                                undoButton.hidden =
-                                    true;
-                            }
-
-                            if (clearButton) {
-                                clearButton.hidden =
-                                    false;
-                            }
-                        }
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | Choose / Replace
-                        |--------------------------------------------------------------------------
-                        */
-
-                        picker?.addEventListener(
-                            'change',
-                            function() {
-
-                                const file =
-                                    this.files?.[0];
-
-                                if (!file) {
-                                    return;
-                                }
-
-                                variantImageFiles.set(
-                                    signature,
-                                    file
-                                );
-
-                                if (removeFlag) {
-                                    removeFlag.value =
-                                        '0';
-                                }
-
-                                setVariantImagePreview(
-                                    preview,
-                                    file
-                                );
-
-                                if (chooseText) {
-                                    chooseText.textContent =
-                                        'Replace';
-                                }
-
-                                if (removeButton) {
-                                    removeButton.hidden =
-                                        true;
-                                }
-
-                                if (undoButton) {
-                                    undoButton.hidden =
-                                        true;
-                                }
-
-                                if (clearButton) {
-                                    clearButton.hidden =
-                                        false;
-                                }
-                            }
-                        );
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | Remove existing database image
-                        |--------------------------------------------------------------------------
-                        */
-
-                        removeButton?.addEventListener(
-                            'click',
-                            function() {
-
-                                variantImageFiles.delete(
-                                    signature
-                                );
-
-                                if (picker) {
-                                    picker.value = '';
-                                }
-
-                                if (removeFlag) {
-                                    removeFlag.value =
-                                        '1';
-                                }
-
-                                if (preview) {
-                                    preview.innerHTML = `
-                                        <div class="product-variant-image-empty is-removing">
-                                            <i class="fa-solid fa-trash"></i>
-                                            <span>Will be removed</span>
-                                        </div>
-                                    `;
-                                }
-
-                                removeButton.hidden =
-                                    true;
-
-                                if (undoButton) {
-                                    undoButton.hidden =
-                                        false;
-                                }
-
-                                if (clearButton) {
-                                    clearButton.hidden =
-                                        true;
-                                }
-
-                                if (chooseText) {
-                                    chooseText.textContent =
-                                        'Choose';
-                                }
-                            }
-                        );
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | Undo existing image removal
-                        |--------------------------------------------------------------------------
-                        */
-
-                        undoButton?.addEventListener(
-                            'click',
-                            function() {
-
-                                if (removeFlag) {
-                                    removeFlag.value =
-                                        '0';
-                                }
-
-                                if (
-                                    preview &&
-                                    existingImage
-                                ) {
-
-                                    preview.innerHTML = `
-                                        <img
-                                            src="${escapeHtml(normaliseImageUrl(existingImage))}"
-                                            alt="Variant image"
-                                            data-variant-preview-image
-                                        >
-                                    `;
-                                }
-
-                                undoButton.hidden =
-                                    true;
-
-                                if (removeButton) {
-                                    removeButton.hidden =
-                                        !existingImage;
-                                }
-
-                                if (clearButton) {
-                                    clearButton.hidden =
-                                        true;
-                                }
-
-                                if (chooseText) {
-                                    chooseText.textContent =
-                                        existingImage
-                                            ? 'Replace'
-                                            : 'Choose';
-                                }
-                            }
-                        );
-
-
-                        /*
-                        |--------------------------------------------------------------------------
-                        | Clear newly selected image
-                        |--------------------------------------------------------------------------
-                        */
-
-                        clearButton?.addEventListener(
-                            'click',
-                            function() {
-
-                                variantImageFiles.delete(
-                                    signature
-                                );
-
-                                if (picker) {
-                                    picker.value = '';
-                                }
-
-                                if (removeFlag) {
-                                    removeFlag.value =
-                                        '0';
-                                }
-
-                                if (
-                                    preview &&
-                                    existingImage
-                                ) {
-
-                                    preview.innerHTML = `
-                                        <img
-                                            src="${escapeHtml(normaliseImageUrl(existingImage))}"
-                                            alt="Variant image"
-                                            data-variant-preview-image
-                                        >
-                                    `;
-
-                                } else if (preview) {
-
-                                    preview.innerHTML = `
-                                        <div class="product-variant-image-empty">
-                                            <i class="fa-regular fa-image"></i>
-                                            <span>No image</span>
-                                        </div>
-                                    `;
-                                }
-
-                                clearButton.hidden =
-                                    true;
-
-                                if (removeButton) {
-                                    removeButton.hidden =
-                                        !existingImage;
-                                }
-
-                                if (undoButton) {
-                                    undoButton.hidden =
-                                        true;
-                                }
-
-                                if (chooseText) {
-                                    chooseText.textContent =
-                                        existingImage
-                                            ? 'Replace'
-                                            : 'Choose';
-                                }
-                            }
-                        );
-
-                    }
-                );
-        }
-
-
         function bindVariantRemoveButtons() {
-
-            bindVariantImageControls();
 
             variantsContainer
                 .querySelectorAll(
@@ -5309,36 +4743,11 @@ return asset('storage/' . $path);
                         'click',
                         function() {
 
-                            const row =
-                                button.closest(
+                            button
+                                .closest(
                                     '[data-variant-row]'
-                                );
-
-                            if (row) {
-
-                                let options = [];
-
-                                try {
-                                    options =
-                                        JSON.parse(
-                                            row.dataset.options ||
-                                            '[]'
-                                        );
-                                } catch (error) {
-                                    options = [];
-                                }
-
-                                const signature =
-                                    optionSignature(
-                                        options
-                                    );
-
-                                variantImageFiles.delete(
-                                    signature
-                                );
-
-                                row.remove();
-                            }
+                                )
+                                ?.remove();
 
                             captureCurrentVariants();
 
@@ -5629,7 +5038,7 @@ return asset('storage/' . $path);
                         }
 
                         const option =
-                            data.option ?? data.product_option ?? data;
+                            data.option || data;
 
                         appendOptionCard(
                             option
@@ -5850,7 +5259,7 @@ return asset('storage/' . $path);
                         }
 
                         const optionValue =
-                            data.value ?? data.option_value ?? data;
+                            data.value || data;
 
                         appendOptionValue(
                             optionId,
@@ -6008,3 +5417,878 @@ return asset('storage/' . $path);
 </script>
 
 @endpush
+
+<style>
+/* ============================================================
+   ARIZONA ADMIN DASHBOARD VISUAL SYSTEM — PRODUCT FORM
+============================================================ */
+.product-form-layout{gap:18px}
+.product-form-panel{margin-bottom:18px;border:1px solid #e6eaf1!important;border-radius:11px!important;background:#fff!important;box-shadow:none!important}
+.product-form-panel .admin-panel-header{padding:15px 17px!important;border-bottom:1px solid #edf0f5!important}
+.product-form-panel .admin-panel-eyebrow{color:#635bff!important;font-size:9px!important;font-weight:800!important;letter-spacing:.12em!important}
+.product-form-panel .admin-panel-header h3{margin:3px 0 0!important;color:#172033!important;font-size:14px!important;font-weight:800!important}
+.product-form-body{padding:16px 17px!important}
+.product-field label{margin-bottom:6px!important;color:#687386!important;font-size:9px!important;font-weight:800!important;letter-spacing:.045em!important;text-transform:uppercase}
+.product-field input[type="text"],.product-field input[type="number"],.product-field input[type="url"],.product-field input[type="email"],.product-field input[type="file"],.product-field select,.product-field textarea,.product-input-prefix{border-color:#e0e5ed!important;border-radius:7px!important;color:#344054!important;font-size:11px!important}
+.product-field input[type="text"],.product-field input[type="number"],.product-field input[type="url"],.product-field input[type="email"],.product-field select{min-height:40px!important}
+.product-field textarea{line-height:1.6}
+.product-field input:focus,.product-field select:focus,.product-field textarea:focus{border-color:#635bff!important;box-shadow:0 0 0 3px rgba(99,91,255,.10)!important}
+.product-field-help,.product-character-count{color:#8a93a4!important;font-size:9px!important}
+.product-field-error{display:none!important}
+.product-form-actions{position:sticky;bottom:12px;z-index:20;display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:18px;padding:12px 14px;border:1px solid #e6eaf1;border-radius:11px;background:rgba(255,255,255,.96);box-shadow:0 8px 28px rgba(15,23,42,.08);backdrop-filter:blur(8px)}
+.product-form-actions .admin-button{min-height:38px;border-radius:7px;font-size:10px}
+.product-save-button{border-color:#635bff!important;background:#635bff!important;color:#fff!important}
+.product-form-modal-dialog{border:1px solid #e6eaf1!important;border-radius:14px!important;box-shadow:0 24px 80px rgba(15,23,42,.24)!important}
+.product-form-modal-dialog .admin-panel-eyebrow{color:#635bff!important}
+
+/* validation / server feedback popup */
+.product-form-feedback{position:fixed;inset:0;z-index:11000;display:flex;align-items:center;justify-content:center;padding:20px}
+.product-form-feedback-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}
+.product-form-feedback-dialog{position:relative;z-index:2;width:100%;max-width:460px;max-height:calc(100vh - 40px);overflow:auto;padding:30px;border:1px solid #e6eaf1;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.24);text-align:center}
+.product-form-feedback-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border:0;border-radius:7px;background:#f3f5f8;color:#687386;cursor:pointer}
+.product-form-feedback-icon{display:flex;align-items:center;justify-content:center;width:58px;height:58px;margin:0 auto 15px;border-radius:50%;background:#fff0f0;color:#d14343;font-size:21px}
+.product-form-feedback.is-warning .product-form-feedback-icon{background:#fff4df;color:#d88716}
+.product-form-feedback-dialog .admin-page-eyebrow{color:#635bff;font-size:9px;font-weight:800;letter-spacing:.12em}
+.product-form-feedback-dialog h3{margin:5px 0 8px;color:#172033;font-size:18px;font-weight:800}
+.product-form-feedback-dialog p{margin:0;color:#687386;font-size:11px;line-height:1.65}
+.product-form-feedback-errors{margin:14px 0 0;padding:12px 16px;border:1px solid #fecaca;border-radius:9px;background:#fff7f7;color:#b42318;font-size:10px;line-height:1.6;list-style-position:inside;text-align:left}
+.product-form-feedback-ok{min-width:130px;margin-top:20px;justify-content:center;border-color:#635bff!important;background:#635bff!important}
+body.product-form-feedback-open{overflow:hidden}
+@media(max-width:760px){.product-form-layout{grid-template-columns:1fr!important}.product-form-actions{bottom:8px;flex-wrap:wrap}.product-form-actions .admin-button{flex:1 1 140px;justify-content:center}}
+</style>
+
+<script>
+'use strict';
+document.addEventListener('DOMContentLoaded', function () {
+    const feedback = document.getElementById('productFormFeedback');
+    if (!feedback) return;
+
+    document.body.classList.add('product-form-feedback-open');
+
+    function closeFeedback() {
+        feedback.remove();
+        document.body.classList.remove('product-form-feedback-open');
+
+        const invalid = document.querySelector('.is-invalid, [aria-invalid="true"]');
+        if (invalid) invalid.focus();
+    }
+
+    feedback.querySelectorAll('[data-product-form-feedback-close]').forEach(function (button) {
+        button.addEventListener('click', closeFeedback);
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && document.body.contains(feedback)) {
+            closeFeedback();
+        }
+    });
+});
+</script>
+
+
+<style>
+/* Meta keyword tag editor */
+.product-keyword-editor{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:7px;
+    min-height:44px;
+    padding:6px 8px;
+    border:1px solid #e0e5ed;
+    border-radius:7px;
+    background:#fff;
+    transition:border-color .18s ease,box-shadow .18s ease;
+    cursor:text
+}
+.product-keyword-editor:focus-within{
+    border-color:#635bff;
+    box-shadow:0 0 0 3px rgba(99,91,255,.10)
+}
+.product-keyword-tags{
+    display:contents
+}
+.product-keyword-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    max-width:100%;
+    min-height:27px;
+    padding:4px 7px 4px 9px;
+    border:1px solid #dddfff;
+    border-radius:6px;
+    background:#f3f2ff;
+    color:#5149d8;
+    font-size:10px;
+    font-weight:700;
+    line-height:1.2
+}
+.product-keyword-tag-text{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+.product-keyword-remove{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:17px;
+    height:17px;
+    padding:0;
+    border:0;
+    border-radius:4px;
+    background:transparent;
+    color:#7770e7;
+    font-size:12px;
+    line-height:1;
+    cursor:pointer
+}
+.product-keyword-remove:hover,
+.product-keyword-remove:focus{
+    background:#e4e2ff;
+    color:#332bb8;
+    outline:none
+}
+.product-keyword-input{
+    flex:1 1 170px;
+    min-width:150px;
+    min-height:30px!important;
+    padding:3px 4px!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:#344054!important;
+    font-size:11px!important
+}
+.product-keyword-input:focus{
+    border:0!important;
+    box-shadow:none!important;
+    outline:none!important
+}
+</style>
+
+
+<script>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', function () {
+    const editor = document.querySelector('[data-keyword-editor]');
+    const input = document.getElementById('metaKeywordInput');
+    const tagsContainer = document.getElementById('metaKeywordTags');
+    const hiddenInput = document.getElementById('meta_keywords');
+
+    if (!editor || !input || !tagsContainer || !hiddenInput) {
+        return;
+    }
+
+    let keywords = [];
+
+    function normalizeKeyword(value) {
+        return String(value || '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .replace(/^,+|,+$/g, '')
+            .trim();
+    }
+
+    function syncHiddenInput() {
+        hiddenInput.value = keywords.join(', ');
+    }
+
+    function renderKeywords() {
+        tagsContainer.innerHTML = '';
+
+        keywords.forEach(function (keyword, index) {
+            const tag = document.createElement('span');
+            tag.className = 'product-keyword-tag';
+
+            const text = document.createElement('span');
+            text.className = 'product-keyword-tag-text';
+            text.textContent = keyword;
+
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'product-keyword-remove';
+            remove.setAttribute('aria-label', 'Remove ' + keyword);
+            remove.innerHTML = '&times;';
+
+            remove.addEventListener('click', function () {
+                keywords.splice(index, 1);
+                renderKeywords();
+                input.focus();
+            });
+
+            tag.appendChild(text);
+            tag.appendChild(remove);
+            tagsContainer.appendChild(tag);
+        });
+
+        syncHiddenInput();
+    }
+
+    function addKeyword(value) {
+        const keyword = normalizeKeyword(value);
+
+        if (!keyword) {
+            return;
+        }
+
+        const exists = keywords.some(function (existing) {
+            return existing.toLowerCase() === keyword.toLowerCase();
+        });
+
+        if (!exists) {
+            keywords.push(keyword);
+        }
+
+        input.value = '';
+        renderKeywords();
+    }
+
+    function addInputKeywords() {
+        input.value
+            .split(',')
+            .forEach(addKeyword);
+
+        input.value = '';
+    }
+
+    hiddenInput.value
+        .split(',')
+        .map(normalizeKeyword)
+        .filter(Boolean)
+        .forEach(function (keyword) {
+            const exists = keywords.some(function (existing) {
+                return existing.toLowerCase() === keyword.toLowerCase();
+            });
+
+            if (!exists) {
+                keywords.push(keyword);
+            }
+        });
+
+    renderKeywords();
+
+    input.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ',') {
+            event.preventDefault();
+            addInputKeywords();
+            return;
+        }
+
+        if (
+            event.key === 'Backspace' &&
+            input.value === '' &&
+            keywords.length
+        ) {
+            keywords.pop();
+            renderKeywords();
+        }
+    });
+
+    input.addEventListener('blur', function () {
+        addInputKeywords();
+    });
+
+    input.addEventListener('paste', function () {
+        window.setTimeout(function () {
+            if (input.value.includes(',')) {
+                addInputKeywords();
+            }
+        }, 0);
+    });
+
+    editor.addEventListener('click', function (event) {
+        if (!event.target.closest('.product-keyword-remove')) {
+            input.focus();
+        }
+    });
+
+    const form = editor.closest('form');
+
+    if (form) {
+        form.addEventListener('submit', function () {
+            addInputKeywords();
+            syncHiddenInput();
+        });
+    }
+});
+</script>
+
+
+<style>
+/* ============================================================
+   ARIZONA ADMIN — STYLED SELECT / DROPDOWN SYSTEM
+============================================================ */
+.product-field select,
+.product-variant-field select,
+.product-option-row select,
+.product-form-modal select {
+    width:100%;
+    min-height:40px;
+    padding:0 38px 0 11px!important;
+    border:1px solid #e0e5ed!important;
+    border-radius:7px!important;
+    background-color:#fff!important;
+    background-image:
+        linear-gradient(45deg, transparent 50%, #7b8497 50%),
+        linear-gradient(135deg, #7b8497 50%, transparent 50%)!important;
+    background-position:
+        calc(100% - 16px) 50%,
+        calc(100% - 11px) 50%!important;
+    background-size:5px 5px,5px 5px!important;
+    background-repeat:no-repeat!important;
+    color:#344054!important;
+    font-size:11px!important;
+    font-weight:600;
+    line-height:1.2;
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    cursor:pointer;
+    transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease
+}
+.product-field select:hover,
+.product-variant-field select:hover,
+.product-option-row select:hover,
+.product-form-modal select:hover {
+    border-color:#c9ced8!important;
+    background-color:#fbfcff!important
+}
+.product-field select:focus,
+.product-variant-field select:focus,
+.product-option-row select:focus,
+.product-form-modal select:focus {
+    border-color:#635bff!important;
+    background-color:#fff!important;
+    box-shadow:0 0 0 3px rgba(99,91,255,.10)!important;
+    outline:none!important
+}
+.product-field select:disabled,
+.product-variant-field select:disabled,
+.product-option-row select:disabled,
+.product-form-modal select:disabled {
+    background-color:#f5f6f8!important;
+    color:#98a2b3!important;
+    cursor:not-allowed;
+    opacity:1
+}
+.product-field select option,
+.product-variant-field select option,
+.product-option-row select option,
+.product-form-modal select option {
+    background:#fff;
+    color:#344054;
+    font-size:11px
+}
+
+/* Multi-selects use a dashboard selection surface instead of an arrow. */
+.product-field select[multiple] {
+    min-height:130px!important;
+    padding:6px!important;
+    background-image:none!important;
+    overflow:auto
+}
+.product-field select[multiple] option {
+    margin:2px 0;
+    padding:8px 9px;
+    border-radius:6px;
+    cursor:pointer
+}
+.product-field select[multiple] option:checked {
+    background:#eeedff linear-gradient(0deg,#eeedff,#eeedff)!important;
+    color:#5149d8!important;
+    font-weight:700
+}
+</style>
+
+
+<style>
+/* ============================================================
+   ARIZONA ADMIN — PRODUCT DROPDOWN UI
+   Applies to Index, Create and Edit
+============================================================ */
+.product-admin-select,
+.product-filter-field select,
+.product-form-panel select,
+.product-form-modal select {
+    width:100%;
+    min-height:40px;
+    padding:0 38px 0 11px!important;
+    border:1px solid #e0e5ed!important;
+    border-radius:7px!important;
+    background-color:#fff!important;
+    background-image:
+        linear-gradient(45deg,transparent 50%,#7b8497 50%),
+        linear-gradient(135deg,#7b8497 50%,transparent 50%)!important;
+    background-position:
+        calc(100% - 16px) 50%,
+        calc(100% - 11px) 50%!important;
+    background-size:5px 5px,5px 5px!important;
+    background-repeat:no-repeat!important;
+    color:#344054!important;
+    font-size:11px!important;
+    font-weight:600!important;
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    -moz-appearance:none!important;
+    cursor:pointer;
+    transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease
+}
+.product-admin-select:hover,
+.product-filter-field select:hover,
+.product-form-panel select:hover,
+.product-form-modal select:hover {
+    border-color:#c9ced8!important;
+    background-color:#fbfcff!important
+}
+.product-admin-select:focus,
+.product-filter-field select:focus,
+.product-form-panel select:focus,
+.product-form-modal select:focus {
+    border-color:#635bff!important;
+    background-color:#fff!important;
+    box-shadow:0 0 0 3px rgba(99,91,255,.10)!important;
+    outline:none!important
+}
+.product-admin-select:disabled,
+.product-filter-field select:disabled,
+.product-form-panel select:disabled,
+.product-form-modal select:disabled {
+    background-color:#f5f6f8!important;
+    color:#98a2b3!important;
+    cursor:not-allowed;
+    opacity:1
+}
+.product-admin-select option,
+.product-filter-field select option,
+.product-form-panel select option,
+.product-form-modal select option {
+    background:#fff!important;
+    color:#344054!important;
+    font-size:11px!important
+}
+
+/* Multiple-value dropdown/list controls */
+.product-form-panel select[multiple] {
+    min-height:132px!important;
+    padding:6px!important;
+    background-image:none!important;
+    overflow:auto
+}
+.product-form-panel select[multiple] option {
+    margin:2px 0;
+    padding:8px 9px;
+    border-radius:6px;
+    cursor:pointer
+}
+.product-form-panel select[multiple] option:checked {
+    background:#eeedff linear-gradient(0deg,#eeedff,#eeedff)!important;
+    color:#5149d8!important;
+    font-weight:700!important
+}
+</style>
+
+
+<style>
+/* ============================================================
+   ARIZONA PRODUCT — CUSTOM SELECT OPTIONS UI V1
+   Keeps native SELECT for Laravel, replaces opened native menu visually.
+============================================================ */
+.az-product-select{
+    position:relative;
+    width:100%;
+}
+.az-product-select-native{
+    position:absolute!important;
+    width:1px!important;
+    height:1px!important;
+    margin:-1px!important;
+    padding:0!important;
+    overflow:hidden!important;
+    clip:rect(0,0,0,0)!important;
+    white-space:nowrap!important;
+    border:0!important;
+    opacity:0!important;
+    pointer-events:none!important;
+}
+.az-product-select-button{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    width:100%;
+    min-height:40px;
+    padding:0 11px;
+    border:1px solid #e0e5ed;
+    border-radius:7px;
+    background:#fff;
+    color:#344054;
+    font:600 11px/1.2 inherit;
+    text-align:left;
+    cursor:pointer;
+    transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease
+}
+.az-product-select-button:hover{
+    border-color:#c9ced8;
+    background:#fbfcff
+}
+.az-product-select.is-open .az-product-select-button,
+.az-product-select-button:focus{
+    border-color:#635bff;
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(99,91,255,.10);
+    outline:none
+}
+.az-product-select-button:disabled{
+    background:#f5f6f8;
+    color:#98a2b3;
+    cursor:not-allowed
+}
+.az-product-select-value{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+.az-product-select-chevron{
+    flex:0 0 auto;
+    color:#7b8497;
+    font-size:9px;
+    transition:transform .18s ease
+}
+.az-product-select.is-open .az-product-select-chevron{
+    transform:rotate(180deg)
+}
+.az-product-select-menu{
+    position:absolute;
+    z-index:12000;
+    top:calc(100% + 6px);
+    left:0;
+    display:none;
+    width:100%;
+    max-height:240px;
+    overflow:auto;
+    padding:5px;
+    border:1px solid #e0e5ed;
+    border-radius:9px;
+    background:#fff;
+    box-shadow:0 14px 38px rgba(15,23,42,.16)
+}
+.az-product-select.is-open .az-product-select-menu{
+    display:block
+}
+.az-product-select-option{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    width:100%;
+    min-height:34px;
+    margin:0;
+    padding:7px 9px;
+    border:0;
+    border-radius:6px;
+    background:transparent;
+    color:#344054;
+    font:600 11px/1.25 inherit;
+    text-align:left;
+    cursor:pointer
+}
+.az-product-select-option:hover,
+.az-product-select-option.is-focused{
+    background:#f5f4ff;
+    color:#5149d8
+}
+.az-product-select-option.is-selected{
+    background:#eeedff;
+    color:#5149d8;
+    font-weight:800
+}
+.az-product-select-option.is-selected::after{
+    content:"\2713";
+    flex:0 0 auto;
+    color:#635bff;
+    font-size:11px;
+    font-weight:900
+}
+.az-product-select-option:disabled{
+    color:#a4acb9;
+    background:transparent;
+    cursor:not-allowed
+}
+</style>
+
+<script>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', function () {
+    const SELECTOR = [
+        '.product-form-panel select:not([multiple])',
+        '.product-form-modal select:not([multiple])',
+        '.product-variant-field select:not([multiple])',
+        '.product-option-row select:not([multiple])'
+    ].join(',');
+
+    function closeAll(except) {
+        document.querySelectorAll('.az-product-select.is-open').forEach(function (wrapper) {
+            if (wrapper !== except) {
+                wrapper.classList.remove('is-open');
+
+                const button = wrapper.querySelector('.az-product-select-button');
+                if (button) {
+                    button.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+    }
+
+    function enhanceSelect(select) {
+        if (
+            !select ||
+            select.multiple ||
+            select.dataset.azProductSelectReady === '1' ||
+            select.closest('.az-product-select')
+        ) {
+            return;
+        }
+
+        select.dataset.azProductSelectReady = '1';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'az-product-select';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'az-product-select-button';
+        button.setAttribute('aria-haspopup', 'listbox');
+        button.setAttribute('aria-expanded', 'false');
+
+        const value = document.createElement('span');
+        value.className = 'az-product-select-value';
+
+        const chevron = document.createElement('i');
+        chevron.className = 'fa-solid fa-chevron-down az-product-select-chevron';
+        chevron.setAttribute('aria-hidden', 'true');
+
+        button.appendChild(value);
+        button.appendChild(chevron);
+
+        const menu = document.createElement('div');
+        menu.className = 'az-product-select-menu';
+        menu.setAttribute('role', 'listbox');
+
+        select.parentNode.insertBefore(wrapper, select);
+        wrapper.appendChild(select);
+        wrapper.appendChild(button);
+        wrapper.appendChild(menu);
+
+        select.classList.add('az-product-select-native');
+
+        let focusedIndex = -1;
+
+        function selectableOptions() {
+            return Array.from(menu.querySelectorAll('.az-product-select-option:not(:disabled)'));
+        }
+
+        function sync() {
+            const selected = select.options[select.selectedIndex];
+
+            value.textContent = selected
+                ? selected.textContent.trim()
+                : 'Select an option';
+
+            button.disabled = select.disabled;
+
+            menu.querySelectorAll('.az-product-select-option').forEach(function (optionButton) {
+                const isSelected = optionButton.dataset.value === String(select.value);
+                optionButton.classList.toggle('is-selected', isSelected);
+                optionButton.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+            });
+        }
+
+        function buildOptions() {
+            menu.innerHTML = '';
+
+            Array.from(select.options).forEach(function (option) {
+                const optionButton = document.createElement('button');
+                optionButton.type = 'button';
+                optionButton.className = 'az-product-select-option';
+                optionButton.dataset.value = option.value;
+                optionButton.textContent = option.textContent.trim();
+                optionButton.disabled = option.disabled;
+                optionButton.setAttribute('role', 'option');
+
+                optionButton.addEventListener('click', function () {
+                    if (optionButton.disabled) {
+                        return;
+                    }
+
+                    select.value = option.value;
+                    select.dispatchEvent(new Event('change', { bubbles:true }));
+
+                    wrapper.classList.remove('is-open');
+                    button.setAttribute('aria-expanded', 'false');
+                    focusedIndex = -1;
+                    sync();
+                    button.focus();
+                });
+
+                menu.appendChild(optionButton);
+            });
+
+            sync();
+        }
+
+        function openMenu() {
+            if (button.disabled) {
+                return;
+            }
+
+            closeAll(wrapper);
+            wrapper.classList.add('is-open');
+            button.setAttribute('aria-expanded', 'true');
+
+            const options = selectableOptions();
+            focusedIndex = options.findIndex(function (item) {
+                return item.dataset.value === String(select.value);
+            });
+
+            if (focusedIndex < 0 && options.length) {
+                focusedIndex = 0;
+            }
+
+            focusOption(options);
+        }
+
+        function closeMenu() {
+            wrapper.classList.remove('is-open');
+            button.setAttribute('aria-expanded', 'false');
+            focusedIndex = -1;
+        }
+
+        function focusOption(options) {
+            options.forEach(function (item) {
+                item.classList.remove('is-focused');
+            });
+
+            if (focusedIndex >= 0 && options[focusedIndex]) {
+                options[focusedIndex].classList.add('is-focused');
+                options[focusedIndex].scrollIntoView({ block:'nearest' });
+            }
+        }
+
+        button.addEventListener('click', function () {
+            if (wrapper.classList.contains('is-open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        button.addEventListener('keydown', function (event) {
+            const options = selectableOptions();
+
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                event.preventDefault();
+
+                if (!wrapper.classList.contains('is-open')) {
+                    openMenu();
+                    return;
+                }
+
+                if (!options.length) {
+                    return;
+                }
+
+                focusedIndex += event.key === 'ArrowDown' ? 1 : -1;
+
+                if (focusedIndex >= options.length) {
+                    focusedIndex = 0;
+                }
+
+                if (focusedIndex < 0) {
+                    focusedIndex = options.length - 1;
+                }
+
+                focusOption(options);
+                return;
+            }
+
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+
+                if (!wrapper.classList.contains('is-open')) {
+                    openMenu();
+                    return;
+                }
+
+                if (options[focusedIndex]) {
+                    options[focusedIndex].click();
+                }
+
+                return;
+            }
+
+            if (event.key === 'Escape') {
+                closeMenu();
+            }
+        });
+
+        select.addEventListener('change', sync);
+
+        /* Keep dynamically modified option lists in sync. */
+        const observer = new MutationObserver(function () {
+            buildOptions();
+        });
+
+        observer.observe(select, {
+            childList:true,
+            subtree:true,
+            attributes:true,
+            attributeFilter:['disabled','selected']
+        });
+
+        buildOptions();
+    }
+
+    document.querySelectorAll(SELECTOR).forEach(enhanceSelect);
+
+    /* Product options/variants can add SELECT elements dynamically. */
+    const dynamicObserver = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            mutation.addedNodes.forEach(function (node) {
+                if (!(node instanceof Element)) {
+                    return;
+                }
+
+                if (node.matches && node.matches(SELECTOR)) {
+                    enhanceSelect(node);
+                }
+
+                if (node.querySelectorAll) {
+                    node.querySelectorAll(SELECTOR).forEach(enhanceSelect);
+                }
+            });
+        });
+    });
+
+    dynamicObserver.observe(document.body, {
+        childList:true,
+        subtree:true
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('.az-product-select')) {
+            closeAll();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeAll();
+        }
+    });
+});
+</script>

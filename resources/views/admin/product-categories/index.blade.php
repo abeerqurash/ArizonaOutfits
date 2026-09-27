@@ -751,4 +751,47 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 </script>
+
+<style>
+.category-statistics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.category-statistics-grid .admin-stat-card{min-height:112px;padding:17px;border:1px solid #e6eaf1;border-radius:11px;background:#fff;box-shadow:none}
+.category-statistics-grid .admin-stat-icon{width:34px;height:34px;border-radius:9px;background:#eef0ff;color:#635bff}
+.cat-index-select{position:relative;min-width:180px}
+.cat-index-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.cat-index-button{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:40px;padding:0 11px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#344054;font-size:11px;font-weight:600;cursor:pointer}
+.cat-index-select.open .cat-index-button,.cat-index-button:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.10);outline:none}
+.cat-index-menu{position:absolute;z-index:12500;top:calc(100% + 6px);left:0;display:none;width:100%;max-height:240px;overflow:auto;padding:5px;border:1px solid #e0e5ed;border-radius:9px;background:#fff;box-shadow:0 14px 38px rgba(15,23,42,.16)}
+.cat-index-select.open .cat-index-menu{display:block}
+.cat-index-option{display:flex;justify-content:space-between;width:100%;padding:8px 9px;border:0;border-radius:6px;background:transparent;color:#344054;font-size:11px;font-weight:600;text-align:left;cursor:pointer}
+.cat-index-option:hover,.cat-index-option.selected{background:#eeedff;color:#5149d8}
+.cat-index-option.selected::after{content:"\2713";color:#635bff}
+.cat-feedback{position:fixed;inset:0;z-index:13000;display:flex;align-items:center;justify-content:center;padding:20px}
+.cat-feedback-bg{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}
+.cat-feedback-box{position:relative;z-index:2;width:100%;max-width:430px;padding:30px;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.24);text-align:center}
+@media(max-width:900px){.category-statistics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.category-statistics-grid{grid-template-columns:1fr}}
+</style>
+@if(session('success') || session('error') || session('warning'))
+<div class="cat-feedback" id="catFeedback">
+ <div class="cat-feedback-bg" data-cat-feedback-close></div>
+ <div class="cat-feedback-box">
+  <span class="admin-page-eyebrow">Category management</span>
+  <h3>{{ session('error') ? 'Action could not be completed' : (session('warning') ? 'Attention required' : 'Completed successfully') }}</h3>
+  <p>{{ session('error') ?: session('warning') ?: session('success') }}</p>
+  <button type="button" class="admin-button admin-button-primary" data-cat-feedback-close>OK</button>
+ </div>
+</div>
+@endif
+<script>
+'use strict';
+document.addEventListener('DOMContentLoaded',function(){
+ document.querySelectorAll('.category-filter-form select:not([multiple])').forEach(function(select){
+  const w=document.createElement('div');w.className='cat-index-select';const b=document.createElement('button');b.type='button';b.className='cat-index-button';const v=document.createElement('span'),i=document.createElement('i');i.className='fa-solid fa-chevron-down';b.append(v,i);const m=document.createElement('div');m.className='cat-index-menu';select.parentNode.insertBefore(w,select);w.append(select,b,m);select.classList.add('cat-index-native');
+  function render(){m.innerHTML='';Array.from(select.options).forEach(o=>{const x=document.createElement('button');x.type='button';x.className='cat-index-option'+(String(o.value)===String(select.value)?' selected':'');x.textContent=o.textContent.trim();x.onclick=()=>{select.value=o.value;select.dispatchEvent(new Event('change',{bubbles:true}));render();w.classList.remove('open')};m.append(x)});const o=select.options[select.selectedIndex];v.textContent=o?o.textContent.trim():'Select'}
+  b.onclick=()=>w.classList.toggle('open');document.addEventListener('click',e=>{if(!w.contains(e.target))w.classList.remove('open')});render();
+ });
+ const p=document.getElementById('catFeedback');if(p){document.body.style.overflow='hidden';p.querySelectorAll('[data-cat-feedback-close]').forEach(x=>x.onclick=()=>{p.remove();document.body.style.overflow=''})}
+});
+</script>
+
 @endpush

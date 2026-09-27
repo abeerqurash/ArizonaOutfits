@@ -218,7 +218,7 @@
                     </option>
 
                     <option value="delete">
-                        Delete selected orders
+                        Archive selected orders
                     </option>
                 </optgroup>
             </select>

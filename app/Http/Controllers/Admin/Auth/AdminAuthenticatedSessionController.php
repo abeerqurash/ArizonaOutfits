@@ -74,37 +74,79 @@ class AdminAuthenticatedSessionController extends Controller
             $request->boolean('remember')
         );
 
-        /*
-         * Regenerate the session ID after authentication to prevent
-         * session fixation. Laravel preserves the existing session data,
-         * including a simultaneously authenticated customer guard.
-         */
         $request->session()->regenerate();
 
-        return redirect()->intended(
-            route('admin.dashboard', absolute: false)
-        );
+        $intended = $request->session()->get('url.intended');
+
+        if ($this->isSafeAdminDestination($intended)) {
+            $request->session()->forget('url.intended');
+
+            return redirect()->to($intended);
+        }
+
+        return redirect()->route('admin.dashboard');
     }
 
     public function destroy(Request $request): RedirectResponse
     {
-        /*
-         * Log out ONLY the administrator guard.
-         *
-         * Do not invalidate the entire Laravel session here. The customer
-         * "web" guard and the administrator "admin" guard can intentionally
-         * coexist in the same browser session. Invalidating the whole
-         * session would also destroy the customer's authentication state.
-         */
         Auth::guard('admin')->logout();
-
-        /*
-         * Rotate the CSRF token after the admin logout without destroying
-         * unrelated session data such as the customer guard.
-         */
         $request->session()->regenerateToken();
 
         return redirect()->route('admin.login');
+    }
+
+    private function isSafeAdminDestination(mixed $destination): bool
+    {
+        if (!is_string($destination) || trim($destination) === '') {
+            return false;
+        }
+
+        $destination = trim($destination);
+
+        if (str_starts_with($destination, '//')) {
+            return false;
+        }
+
+        $path = parse_url($destination, PHP_URL_PATH);
+
+        if (!is_string($path) || $path === '') {
+            return false;
+        }
+
+        if (!str_starts_with($destination, '/')) {
+            $scheme = parse_url($destination, PHP_URL_SCHEME);
+            $host = parse_url($destination, PHP_URL_HOST);
+
+            if (
+                !is_string($scheme) ||
+                !in_array(strtolower($scheme), ['http', 'https'], true) ||
+                !is_string($host) ||
+                strcasecmp($host, request()->getHost()) !== 0
+            ) {
+                return false;
+            }
+        }
+
+        $adminLoginPath = parse_url(route('admin.login'), PHP_URL_PATH);
+
+        if (!is_string($adminLoginPath) || $adminLoginPath === '') {
+            return false;
+        }
+
+        $adminBasePath = preg_replace(
+            '#/login/?$#',
+            '',
+            $adminLoginPath
+        );
+
+        if (!is_string($adminBasePath) || $adminBasePath === '') {
+            return false;
+        }
+
+        $adminBasePath = rtrim($adminBasePath, '/');
+
+        return $path === $adminBasePath
+            || str_starts_with($path, $adminBasePath . '/');
     }
 
     private function throttleKey(string $email, Request $request): string
