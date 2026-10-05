@@ -1,0 +1,25 @@
+checks.json: 78 checks, 0 failures
+customer-checks.json: 51 checks, 0 failures
+customer-content-regression-checks.json: 65 checks, 0 failures
+integration-checks.json: 57 checks, 0 failures
+inventory-extra-regression-checks.json: 26 checks, 0 failures
+inventory-purchasing-regression-checks.json: 89 checks, 0 failures
+extra-checks.json: 4 checks, 0 failures
+
+Total behavioral checks: 370; failures: 0.
+Live application source integrity: 429 files checked, 0 changed.
+
+Checks run against the exact replacement PHP/classes/views with an isolated
+SQLite fixture database. External mail, payments and SMS were not sent.
+See the individual JSON evidence files in this folder.
+The inherited customer runner says "installed source" in its console footer;
+this package run explicitly loads _staged replacement classes before root files.
+
+Coverage: admin settings/CMS/menu/analytics/team/roles/notifications/audit/backup
+failure handling/email templates; customers/reviews/blog; inventory/purchasing;
+customer account/order privacy; checkout/settings/stock/coupon synchronization.
+No claim of a fresh complete browser CRUD test for every earlier product/tag/
+coupon menu. Real Stripe, OAuth providers, SMS and production DB restoration
+remain separate deployment/acceptance checks.
+Syntax verification: 38 PHP files (including the fixture auth route include) passed; 16 Blade files compiled and passed PHP syntax.
+Admin route verification: 44 endpoints and 44 named-route references passed.

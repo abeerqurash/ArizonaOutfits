@@ -1,0 +1,359 @@
+[
+  {
+    "file": "01_SafeContentUrl.php.txt",
+    "destination": "app/Services/SafeContentUrl.php",
+    "new": true,
+    "sha256": "fc4e497758198382de975e23bd666b8273612865cd3dce4b89f6e01fabc65464",
+    "original_sha256": null
+  },
+  {
+    "file": "02_HtmlContentSanitizer.php.txt",
+    "destination": "app/Services/HtmlContentSanitizer.php",
+    "new": true,
+    "sha256": "a6346bf10c634bebb2b62d716424182e262cea7d6c23844e16e5ea8742387e5f",
+    "original_sha256": null
+  },
+  {
+    "file": "03_CmsContentSanitizer.php.txt",
+    "destination": "app/Services/CmsContentSanitizer.php",
+    "new": false,
+    "sha256": "547a54b9fb98cc7a56d8c8dcabab1f806356b68b9daff0778be6c5b017bc83de",
+    "original_sha256": "95f53300fae1bb8ef5319d7f6f696ead30873e79b92aa561a9ca70c54e0e209a"
+  },
+  {
+    "file": "04_EmailTemplateService.php.txt",
+    "destination": "app/Services/EmailTemplateService.php",
+    "new": false,
+    "sha256": "90f81568952d21ff66a83bc3fdcf89662abd0d63327ad81a5ade3d1c83ed0241",
+    "original_sha256": "cb59a3f9a647a12a52420b67a9732523cf95d89beff878f2194607fe8af810e1"
+  },
+  {
+    "file": "05_AdminMiddleware.php.txt",
+    "destination": "app/Http/Middleware/AdminMiddleware.php",
+    "new": false,
+    "sha256": "fb0ed85daea34ad77b165f8e6515edf692587c51b4c52c6581aafe47ffa95528",
+    "original_sha256": "31ad3a2184121cc098f838223b62cbc199a9d5a6c867f72782aca53d145b01c7"
+  },
+  {
+    "file": "06_administration-links.blade.php.txt",
+    "destination": "resources/views/admin/partials/administration-links.blade.php",
+    "new": false,
+    "sha256": "79ee826f86bc5e4692fe2186da20411cbdb3a4999614d7010c7465cbef5b4ba7",
+    "original_sha256": "af8f3577c6e8f8858ad8668d8219a07be34ad52ed272a6c12192549ae23a63fe"
+  },
+  {
+    "file": "07_sidebar.blade.php.txt",
+    "destination": "resources/views/admin/partials/sidebar.blade.php",
+    "new": false,
+    "sha256": "6353767d0689d79428da227118e7697729ed9682b8c8b0bfb93af924968edb9c",
+    "original_sha256": "edb01e1de510c9ee950e2fe50676345c9995ccea61611f4fac478d202a69b514"
+  },
+  {
+    "file": "08_web.php.txt",
+    "destination": "routes/web.php",
+    "new": false,
+    "sha256": "56a0b255ba50cdb3709d73d23012633bac4a253b234f82ef2f23f5b0a60c94b3",
+    "original_sha256": "44f564c778d51e4a44508a849c9a1f39d976df0eb82f117c21c51873f9ee8577"
+  },
+  {
+    "file": "09_AdminPageController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminPageController.php",
+    "new": false,
+    "sha256": "c4223e48eff619f6680f81b98221cecc2ac34a075c0c24d63d1201e2ec1404af",
+    "original_sha256": "be2c208d24d9c7a849e1e93542900851149204c8e1328d0106f6d06bc9c70daa"
+  },
+  {
+    "file": "10_NavigationMenuItem.php.txt",
+    "destination": "app/Models/NavigationMenuItem.php",
+    "new": false,
+    "sha256": "4702ebf6ba588e5273fcb950e28c340d60e31e5889b4d079af49b468647a1dbe",
+    "original_sha256": "f4bbd6b0e9002c96857dcc1228727992418ff88cea40b9163ae1ec266b9912ad"
+  },
+  {
+    "file": "11_AdminNavigationMenuController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminNavigationMenuController.php",
+    "new": false,
+    "sha256": "b46430fe5ac2d2342e7c34b0480886f74636badd1db94ddbfc1d1b7d5336f0a3",
+    "original_sha256": "bfd5f24a79907a87428efe7709c2c672c375273ce76c6a6665c2ad83699e812a"
+  },
+  {
+    "file": "12_AdminNotificationController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminNotificationController.php",
+    "new": false,
+    "sha256": "90c399e3555d4a83a3526d34ca27808a71177ff7b64cf195795f24f69867d3e8",
+    "original_sha256": "50d387b7805b76ee134e723bf78ceeaa7b8c51b7633b41d6244463a020cf96fe"
+  },
+  {
+    "file": "13_AdminEmailTemplateController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminEmailTemplateController.php",
+    "new": false,
+    "sha256": "e1205ecf3c111eaec5ac2bfbb23ceccb642c73150d05c9b02173a2ac10a68c4c",
+    "original_sha256": "9ce67d3bc96ed8bc180a02edf4d5d516bc168e623fbfeafffbeecadf9e88ff8f"
+  },
+  {
+    "file": "14_edit.blade.php.txt",
+    "destination": "resources/views/admin/email-templates/edit.blade.php",
+    "new": false,
+    "sha256": "3e5cc92792b20d026f30311e96222212c9d22e423462a59d8bfebbbb3cd3ac65",
+    "original_sha256": "8b63e824dfe4f004c4153faba5ce134454f907dc362a5233f33ebe961ffa83ad"
+  },
+  {
+    "file": "15_AdminAuditMiddleware.php.txt",
+    "destination": "app/Http/Middleware/AdminAuditMiddleware.php",
+    "new": false,
+    "sha256": "7c8eaaa4ad5e3ab74191533026741bc7f46ec9fa7da000a577b29017fb0407f2",
+    "original_sha256": "615c8c4f0d9a85a75fccc5445cb25a9fe4ff0cd2222e1ff1c18cb91ee9980dfd"
+  },
+  {
+    "file": "16_AdminBackupService.php.txt",
+    "destination": "app/Services/AdminBackupService.php",
+    "new": false,
+    "sha256": "bb515b2f76cb0d58d1a4852f237f6f247f7dea57f197f5b2f9c5a74eca168e98",
+    "original_sha256": "392b13c51f60f2b7bc8d996367b9869765a24bc73033c926af902f6c58b65ad9"
+  },
+  {
+    "file": "17_AdminBackupController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminBackupController.php",
+    "new": false,
+    "sha256": "745b31a296a06c8ba1e6084b5c6d430e163201b5b316861a49283c3bc6b34199",
+    "original_sha256": "58df705933d6c5fcc372299811cbfe42c6f444309fb430d9071e690a3aaf46ca"
+  },
+  {
+    "file": "18_AdminAnalyticsController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminAnalyticsController.php",
+    "new": false,
+    "sha256": "0711c7029261de36aa425e76e3abfe5eb90c62358b01dd25b889dc0570bba378",
+    "original_sha256": "48ea76032fded4c7c667e4e76717d35dec58a2ea3f443c2692aa94963a3e07b0"
+  },
+  {
+    "file": "19_index.blade.php.txt",
+    "destination": "resources/views/admin/analytics/index.blade.php",
+    "new": false,
+    "sha256": "0d0ffc023562c6f719d65416edf0c9bc236d761d5ce3c7c4bea9467583e02c39",
+    "original_sha256": "6b1614db50f82202ed7f4482bc110f869bb523d0584c82ef29a0b8bd495e59c2"
+  },
+  {
+    "file": "20_AdminAccessPolicy.php.txt",
+    "destination": "app/Services/AdminAccessPolicy.php",
+    "new": true,
+    "sha256": "15c933f89be55160e43c106422ed05b62d56cdeb88587b9b5b5aaef27bcc382f",
+    "original_sha256": null
+  },
+  {
+    "file": "21_AdminRoleController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminRoleController.php",
+    "new": false,
+    "sha256": "d255916e0c7cdd9730f645ef57954be109ec9fd501d046cd6804cbd564a13b7e",
+    "original_sha256": "31c00ffe954f798f7be89c05ed34e8387f11082b7a8e557a6cf48f74f97d0a7b"
+  },
+  {
+    "file": "22_AdminUserController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminUserController.php",
+    "new": false,
+    "sha256": "f7d6583d5e284eda4a69280ca5107a8f27039e409eb9b5f08d158e443a8189ab",
+    "original_sha256": "23547f34d631913b95672ef24bdcd15b37b176ef9a750172780c35540e75296b"
+  },
+  {
+    "file": "23_StoreSettingsService.php.txt",
+    "destination": "app/Services/StoreSettingsService.php",
+    "new": true,
+    "sha256": "38c293b86c3afddc2aeb20d9eb922be48780c4d862c28de78f9b3dc5cf834dbd",
+    "original_sha256": null
+  },
+  {
+    "file": "24_StorePolicyMiddleware.php.txt",
+    "destination": "app/Http/Middleware/StorePolicyMiddleware.php",
+    "new": true,
+    "sha256": "a3ea17f838dee25e39ffcf5a0f2afe634a30412303e6a4c82279a1a3f6fc1b96",
+    "original_sha256": null
+  },
+  {
+    "file": "25_store-maintenance.blade.php.txt",
+    "destination": "resources/views/errors/store-maintenance.blade.php",
+    "new": true,
+    "sha256": "8dbe734a4b75f00c1d0d717207a433414265605b1e71ab588215f9ac54d3d44a",
+    "original_sha256": null
+  },
+  {
+    "file": "26_app.php.txt",
+    "destination": "bootstrap/app.php",
+    "new": false,
+    "sha256": "1a4c4b8a3821b948dc03721f60e746a83a0a8c20ac09ab20944d7941f8600cef",
+    "original_sha256": "0fac81f1d2db6e0bd00c42641c3266505c4ae51723cba38d5b958ef29afec37a"
+  },
+  {
+    "file": "27_InventoryCatalogService.php.txt",
+    "destination": "app/Services/InventoryCatalogService.php",
+    "new": false,
+    "sha256": "1dd8b769bef56740446b8a187012ed62c4087a16092f8e9909b36994f316905d",
+    "original_sha256": "ca4c168da4f2f665987e541490eab325d4062b4651654fe4aaca53a20ad6c909"
+  },
+  {
+    "file": "28_EcommerceSettingController.php.txt",
+    "destination": "app/Http/Controllers/Admin/EcommerceSettingController.php",
+    "new": false,
+    "sha256": "0d3371e67f77113956326a7c75101b5e52f267d357d352f9f840d0b19fcb7d54",
+    "original_sha256": "7176e6ae4f76935e896dba92063fbda207230ed5836c02f41e1a518b42a4ae1f"
+  },
+  {
+    "file": "29_edit.blade.php.txt",
+    "destination": "resources/views/admin/settings/edit.blade.php",
+    "new": false,
+    "sha256": "460e32bd26d450a7e0abd5cf592a7444b2e0e832a70ed3502ea38af3c7ff31d3",
+    "original_sha256": "15fb59b7453d160d196cd20bbe819f7740deea6490ad4e3ac385d0f31d7f890a"
+  },
+  {
+    "file": "30_Order.php.txt",
+    "destination": "app/Models/Order.php",
+    "new": false,
+    "sha256": "d0c5f11df84342da5b00436ffeb1d620db0c31e4c9880cf6fc525a3ca9ac25c6",
+    "original_sha256": "1fc54a8c34453c69eada3ce648e6d8ed44fda1b9f24e69fcfdc099f9913c03d5"
+  },
+  {
+    "file": "31_InventoryService.php.txt",
+    "destination": "app/Services/InventoryService.php",
+    "new": false,
+    "sha256": "c5ac7ed585266c18b4cd94b474127d51f0e4d8ce33ad9cae4ab332fe97e380cd",
+    "original_sha256": "5f9c8a78bab811f676fb28899f236189fe6b26bda9d4dd012afa02cca7b541e7"
+  },
+  {
+    "file": "32_CheckoutController.php.txt",
+    "destination": "app/Http/Controllers/CheckoutController.php",
+    "new": false,
+    "sha256": "03205823c1b57bf30f96a03203229a2e458593c7f990b10a1af418f6d6537af3",
+    "original_sha256": "7b5d8ea6f6cbdfd4a71742bdfe05429211c8318bf0bad892147f15069587e273"
+  },
+  {
+    "file": "33_StripePaymentController.php.txt",
+    "destination": "app/Http/Controllers/Payment/StripePaymentController.php",
+    "new": false,
+    "sha256": "3504e52fb5c2518e6af705bb4a4ca5cd26594cca76ac6b35ed46b3678aeb254d",
+    "original_sha256": "336a8fdc297e1ca666e013c45cc1da38904f06af6592a443c1dded4446a7f5cf"
+  },
+  {
+    "file": "34_CartController.php.txt",
+    "destination": "app/Http/Controllers/CartController.php",
+    "new": false,
+    "sha256": "4550a61a9fb80a68f158ed6e0c4c7ca2d6bad2dc05dc6ec42674ed13626c359b",
+    "original_sha256": "79828da60f133ace4963e2536d3a0a18d2933edca4689fe91b844389c4bf6151"
+  },
+  {
+    "file": "35_PurchaseOrderReceipt.php.txt",
+    "destination": "app/Models/PurchaseOrderReceipt.php",
+    "new": false,
+    "sha256": "7234e321090994d7a3b8c1462834d35bb4291e470ae8fa7fd8e133f5abbe9120",
+    "original_sha256": "1329a760f7c2831ed21b46749bc84b0ee543b40496afa1f6e2fb483140d9830e"
+  },
+  {
+    "file": "36_index.blade.php.txt",
+    "destination": "resources/views/checkout/index.blade.php",
+    "new": false,
+    "sha256": "46e89b68429c437aa7f34263f067da34eb0070dc729f2a1c616254bb914c2131",
+    "original_sha256": "c5e36f30861ae4102a4693f9cb3ff71d4cdafe1e725ce52e337b842a4bc02e7b"
+  },
+  {
+    "file": "37_checkout-stripe.js.txt",
+    "destination": "public/asset/js/checkout-stripe.js",
+    "new": false,
+    "sha256": "07ef629efdd32a586606be60d9d4334b73fd1dfcf319e871a4b7b61f5af33cb5",
+    "original_sha256": "f53d1547add6c0ca6b0386f50853626e32832fe2161dd9345d53dc29f3b08478"
+  },
+  {
+    "file": "38_show.blade.php.txt",
+    "destination": "resources/views/products/show.blade.php",
+    "new": false,
+    "sha256": "1dd16d28dafd143b2892edd42ea66da67a08e7fdcac955a9f95504126e2b5d2b",
+    "original_sha256": "e94b03f574c6c54228cb391498ff712b60fa808e1c60f1a27a2780532d6308d5"
+  },
+  {
+    "file": "39_product-card.blade.php.txt",
+    "destination": "resources/views/products/partials/product-card.blade.php",
+    "new": false,
+    "sha256": "6094256fa5f989ed39349807a358288b356372244870653eeaf694938f84a185",
+    "original_sha256": "dde39a6e7b25e721a368b7c789973e0a2c93d4a7fe61bd2dbc440ba1b35cb01a"
+  },
+  {
+    "file": "40_quick-view.blade.php.txt",
+    "destination": "resources/views/products/partials/quick-view.blade.php",
+    "new": false,
+    "sha256": "7f1771c0fa16e2b0413f9526a399e41e970e3c7fb284bc71fdb5d6f6c5f431b9",
+    "original_sha256": "f5847eb9fd9c59468f1805b4e0e37d9c858536242d7a1fd02f7b8896244710b4"
+  },
+  {
+    "file": "41_index.blade.php.txt",
+    "destination": "resources/views/cart/index.blade.php",
+    "new": false,
+    "sha256": "2fac021706917f0f740c3375f85e428d5c8fa21038a7e95f7c6a8e0cf71732f4",
+    "original_sha256": "b6ab31cf37c6f07c7e2cf067344d788bbdac477aa479f4d77b80270dacc8b32d"
+  },
+  {
+    "file": "42_app.blade.php.txt",
+    "destination": "resources/views/layouts/app.blade.php",
+    "new": false,
+    "sha256": "033f0b4d2330dc8f97965e7ddb64efd2922ea72c84c70680e0df87a18a764aa8",
+    "original_sha256": "2363880964258d60ab194faab564447a788302ae491a8ef5d95852ffc9d24995"
+  },
+  {
+    "file": "43_thank-you.blade.php.txt",
+    "destination": "resources/views/checkout/thank-you.blade.php",
+    "new": false,
+    "sha256": "df299ab6909d8a8e95246888305acdf37367612df1ae9a2fb79b0fe364e2916a",
+    "original_sha256": "4da55458a6fd353388dd0bd96e312851b3ea8097fca799d8e6ec7688861f3732"
+  },
+  {
+    "file": "44_ShopController.php.txt",
+    "destination": "app/Http/Controllers/ShopController.php",
+    "new": false,
+    "sha256": "170023e2781919035fc9261ed771581f1f52a662b06cd48bd8114854cb1a8f36",
+    "original_sha256": "55ab28782dcb63603227079baf941dc439ec546005109d170ace1c7c67e5389f"
+  },
+  {
+    "file": "45_CustomerOrderConfirmationMail.php.txt",
+    "destination": "app/Mail/CustomerOrderConfirmationMail.php",
+    "new": false,
+    "sha256": "a33ee5a1e9ed253dad5ece15307c0c2aa1e25d777cc1a6865274798d14c596fd",
+    "original_sha256": "f2ae3f238f3f742561201c5c9dde6ac4f870cc4d88ff446c5dc9f11e0d31cec8"
+  },
+  {
+    "file": "46_AdminNewOrderMail.php.txt",
+    "destination": "app/Mail/AdminNewOrderMail.php",
+    "new": false,
+    "sha256": "af82afe22e8f7951821ff5185d2b923e02e828ae9479a892344534fdf73bdfa4",
+    "original_sha256": "a272ac03bb8afde758017ef981ba3486c691378c5de3a19f2e3fce2f26be8bf2"
+  },
+  {
+    "file": "47_customer-confirmation.blade.php.txt",
+    "destination": "resources/views/emails/orders/customer-confirmation.blade.php",
+    "new": false,
+    "sha256": "d0ab87e1b9edd68185e367254cb225c7f24f7fb1ee5c577fe90afc2c18508899",
+    "original_sha256": "d636eadc7ae9ffe2afe951d1e71849bd109cbe872af2d1239dc584b997448ba8"
+  },
+  {
+    "file": "48_admin-new-order.blade.php.txt",
+    "destination": "resources/views/emails/orders/admin-new-order.blade.php",
+    "new": false,
+    "sha256": "53b9ce907b9be5c9d2af6e9668fbf69615a91398c4615397cfa6ea25c537d312",
+    "original_sha256": "ed1524b0d570d090b7c30059b02e2e14be328da877d4bcd7aece460ddebd770f"
+  },
+  {
+    "file": "49_dynamic-template.blade.php.txt",
+    "destination": "resources/views/emails/orders/dynamic-template.blade.php",
+    "new": false,
+    "sha256": "e6002ca1ccf413e39d5cd95ca0c3f3c5b27c8b174f9f00507db601776a89f56c",
+    "original_sha256": "fc666003bda0599e5c95ff4de64ec03ff9b345327b02764c7def6d8f25c66ec0"
+  },
+  {
+    "file": "50_AdminAuditLogController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminAuditLogController.php",
+    "new": false,
+    "sha256": "dce30473a1de5970fd701e45bf817c7bd4eebfbb4d29aea8e72424f0735f26bf",
+    "original_sha256": "d4e242f7b160987064d2b0f89894bc4d50238f61218eb26e7767c62af21bc082"
+  },
+  {
+    "file": "51_OrderController.php.txt",
+    "destination": "app/Http/Controllers/Admin/OrderController.php",
+    "new": false,
+    "sha256": "6ecf8a1895c72a1809fe6e18509212aff2bc240c5db6431b4ecf97939d2df0bd",
+    "original_sha256": "2a81be94f4d0f622e4dfeea61614f2f6319aa881c340ca9a9930161bb09074e1"
+  }
+]

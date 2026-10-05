@@ -1,0 +1,22 @@
+[
+  {
+    "file": "01_AdminBellService.php.txt",
+    "destination": "app/Services/AdminBellService.php",
+    "sha256": "61e38fcf233911120a5211b3eb92f6a6caa85ac9d2a4f5f6bdb25cb2eef7c46a"
+  },
+  {
+    "file": "02_AdminBellObserver.php.txt",
+    "destination": "app/Observers/AdminBellObserver.php",
+    "sha256": "d39b93bc9759b07a5687c6a9208cdbf96e3116c01a6200a96f851106de092245"
+  },
+  {
+    "file": "03_AppServiceProvider.php.txt",
+    "destination": "app/Providers/AppServiceProvider.php",
+    "sha256": "0f1cb360ca6c7db7670c3f95f82b5903f61721771eb2b288dd1ec3fba43df671"
+  },
+  {
+    "file": "04_AdminBackupController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminBackupController.php",
+    "sha256": "696881b8f8ffe68d50d4a5bdd5560c774a159666d9f9331a1897eb7047a0c926"
+  }
+]

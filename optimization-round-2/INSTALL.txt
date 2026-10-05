@@ -1,0 +1,28 @@
+Arizona Outfits — optimization round 2
+
+1. Back up the project and database. Read FILES.md and replace/create each listed file at its exact destination. Use the entire contents of each text file; remove the number prefix and .txt when creating the destination file.
+Keep the exact destination extension. JavaScript remains .js, styles remain .css, and views remain .blade.php. Do not convert every text file to PHP.
+
+2. IMPORTANT: public\asset\js\card-carousel.js is the exact filename. Your current file has a stray backtick at the end. Create the correctly named file from this set; do not add a backtick.
+3. Open a terminal in C:\xampp\htdocs\ArizonaOutfits and run:
+   C:\xampp\php\php.exe artisan optimize:clear
+   C:\xampp\php\php.exe -d memory_limit=512M artisan media:optimize --dry-run
+   C:\xampp\php\php.exe -d memory_limit=512M artisan media:optimize
+   C:\xampp\php\php.exe artisan view:cache
+4. Ctrl+F5 to refresh. Run Lighthouse in a clean Chrome profile or incognito window with extensions disabled. Test Mobile and Desktop separately. Keep the laptop plugged in and close other CPU-heavy tasks; scores vary between runs.
+5. Test the menu open/close at 880px and below. Dashboard-managed header items appear before Product Categories, four per row. Test the arrow buttons above the right edge of mobile card collections. Two cards appear at 880px, one at 600px.
+6. Check the Contact phone dropdown and submit a normal contact form. Check customer overview/orders/profile/security on desktop, 880px, 600px and a phone width. Order tables may scroll inside their own containers rather than overflow the page.
+
+This set uses a complete inline storefront stylesheet to avoid render-blocking stylesheet requests and the earlier partial-CSS layout shift. Keep public/asset/css/style.css for compatibility with other templates. Later changes to that source CSS should also be reflected in resources/views/partials/storefront-styles.blade.php; the latter is the stylesheet used by layouts.app after this update.
+
+The image optimizer preserves originals and generates WebP copies. Run it again after adding new images. The phone widget on home initializes when its form approaches the viewport; its dropdown and validation library then load normally.
+
+The scores in RESULTS.md were measured in an isolated preview with gzip and caching. Apache hosting uses the previous public/.htaccess rules. If you use php artisan serve, static compression/cache headers may differ because that server ignores .htaccess. This can change scores without changing the page code. Enable production PHP caching on hosting and recheck the real HTTPS domain with PageSpeed Insights.
+
+Do not upload optimization-round-2 or complete-project-audit as application directories. They contain reports, test tools and synthetic test pages. Deploy only the replacements at their listed destinations. No database migration, database reset or APP_KEY change is needed for this set.
+
+The old /projects, /services and /abeerkhan routes do not have templates in the current project. The controller guards in this set return 404 instead of crashing. Adding the missing original templates later will make those routes render again.
+
+The blog newsletter animation now pauses outside the viewport, and the scrolling strip only animates while its position is settling. Normal visible motion is preserved; reduced-motion preferences disable it.
+
+For the final Home/article scores, also follow XAMPP-PHP-SETTINGS.txt to enable PHP OPcache. It is a guide to editing the existing php.ini, not a complete replacement file. Your real php.ini was not modified during the audit.

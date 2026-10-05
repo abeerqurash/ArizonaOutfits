@@ -1,0 +1,10 @@
+import puppeteer from '../complete-project-audit/lighthouse-tools/node_modules/puppeteer-core/lib/puppeteer/puppeteer-core.js';
+import fs from 'node:fs';
+const browser=await puppeteer.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true});
+const page=await browser.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.setViewport({width:1200,height:900});await page.goto('http://127.0.0.1:8123/',{waitUntil:'networkidle2'});
+await page.$eval('.news-letter',e=>e.scrollIntoView({block:'center'}));await new Promise(r=>setTimeout(r,300));
+const before=await page.$eval('.background-newsletter',e=>e.style.transform);await page.evaluate(()=>scrollBy(0,70));await new Promise(r=>setTimeout(r,150));
+const after=await page.$eval('.background-newsletter',e=>e.style.transform);await page.evaluate(()=>scrollTo(0,0));await new Promise(r=>setTimeout(r,300));
+const stopped=await page.$eval('.background-newsletter',e=>e.style.transform);await new Promise(r=>setTimeout(r,300));const stable=await page.$eval('.background-newsletter',e=>e.style.transform);
+const result={visibleMotion:before!==after,offscreenPaused:stopped===stable,errors};fs.writeFileSync('optimization-round-3/motion-check.json',JSON.stringify(result,null,2));console.log(JSON.stringify(result));await browser.close();

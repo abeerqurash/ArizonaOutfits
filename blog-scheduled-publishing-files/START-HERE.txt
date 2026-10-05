@@ -1,0 +1,127 @@
+SCHEDULED ARTICLE PUBLISHING - XAMPP
+
+This step adds automatic publishing for articles saved as Scheduled.
+Replace ONE existing file. Your live files and articles have not been
+changed automatically.
+
+1. BACK UP THE EXISTING FILE
+C:\xampp\htdocs\ArizonaOutfits\routes\console.php
+
+2. REPLACE ITS COMPLETE CONTENTS
+Open console.txt from this delivery folder and copy ALL its contents.
+Paste over ALL contents of this existing file and save:
+C:\xampp\htdocs\ArizonaOutfits\routes\console.php
+Keep the filename console.php, not console.php.txt.
+Do not paste this into routes\web.php.
+Do not replace any controller, view, model, or provider for this step.
+
+3. CHECK THE FILE AND PREVIEW
+Open PowerShell and run these commands one at a time:
+
+Set-Location 'C:\xampp\htdocs\ArizonaOutfits'
+C:\xampp\php\php.exe -l routes\console.php
+C:\xampp\php\php.exe artisan posts:publish-scheduled --dry-run
+
+The syntax check should report No syntax errors detected.
+The dry run prints the current application date/time and lists articles
+that are due. It does NOT change any articles.
+If none are due, 0 ready is correct.
+If a due article lacks its Blade body, it is skipped with its ID and
+expected template name. Fix that template before retrying.
+A missing template gives exit code 1 so the issue is not silently ignored.
+If you have due scheduled articles, the next real scheduler run will
+publish those that have a valid article template.
+
+4. PAKISTAN TIMEZONE UPDATE
+Install app.txt from the pakistan-timezone-files folder into config\app.php
+and follow that folder's START-HERE.txt before starting the scheduler.
+After that update, the application uses Asia/Karachi.
+Enter NEW Scheduled Date values using Pakistan time directly.
+The dry-run command prints the application time; schedule the test about
+2-3 minutes after that printed time.
+Review any older UTC schedules using the timezone guide before restarting.
+
+5. SET UP ONE TEST ARTICLE IN ADMIN
+Use an existing test article whose public page already works.
+Remember its current status/publication date so you can restore them later
+if you want. Existing content, categories, slug, and images can stay as saved.
+Set Status to Scheduled.
+Set Scheduled Date to 2-3 minutes after the printed application time.
+Save the article.
+Before its due time, it should not appear in the public blog listing.
+You do not need more published articles to perform this test.
+
+6. START THE LOCAL SCHEDULER
+In PowerShell run:
+
+Set-Location 'C:\xampp\htdocs\ArizonaOutfits'
+C:\xampp\php\php.exe artisan schedule:work
+
+Keep this PowerShell window open, along with Apache and MySQL in XAMPP.
+The scheduled publishing command runs every minute.
+Wait until the test article's due time, then allow the next minute's run.
+Refresh admin and the public blog page with Ctrl+F5.
+Expected:
+- Admin status becomes Published.
+- Publication date equals the intended scheduled date.
+- Scheduled Date is cleared.
+- The article appears on public lists and its page opens.
+- Search/category filters still find it.
+Use Ctrl+C when you want to stop the local scheduler.
+Closing the terminal or shutting down the computer stops automatic runs.
+The local scheduler also runs your existing queue-maintenance schedules.
+
+7. OPTIONAL MANUAL RUN
+To publish due scheduled articles immediately, without keeping the
+scheduler open, run:
+C:\xampp\php\php.exe artisan posts:publish-scheduled
+
+This is a REAL run and changes every eligible due scheduled article.
+Use --dry-run first if you want to preview the affected articles.
+Future scheduled articles remain scheduled.
+Repeated runs do not republish articles already marked Published.
+If the scheduler was off, the next run catches up on overdue articles
+and retains their original scheduled publication dates.
+
+8. IF SOMETHING DOES NOT WORK
+Command does not exist:
+Check that console.txt was copied into routes\console.php and saved.
+
+Skipped article / missing template:
+The public body must exist under resources\views\blogs\posts.
+The command uses the Template field, or the slug if Template is blank,
+exactly as the public article controller does.
+It leaves the article scheduled until its template exists.
+
+Still scheduled after its due time:
+Check the UTC time printed by --dry-run, keep MySQL running, and check
+that schedule:work is still open. Try the optional manual command and
+share its output if it fails.
+
+No syntax errors but a database/cache error:
+Share the complete error text. No migration is required by this step.
+The scheduler overlap lock uses your existing Laravel cache setup.
+
+HOSTINGER LATER
+An always-open XAMPP terminal is only for local work.
+Production needs Laravel schedule:run every minute through the hosting
+cron feature, using the actual private application path.
+Do not add a second cron if the Laravel scheduler already runs there.
+We will verify the actual deployment path during the hosting phase.
+
+VALIDATION BEFORE DELIVERY
+PHP syntax passed.
+24 isolated checks passed against a disposable in-memory database.
+Checks covered dry-run immutability, due/future boundaries, missing
+article templates, publication dates, repeated-run safety, unchanged
+non-scheduled articles, 205-post batching, and scheduler registration.
+The original routes\console.php hash remained unchanged.
+Row-lock behavior is implemented; multi-process MariaDB concurrency was
+not tested by the in-memory checks.
+No article content, media, category, redirect, or revision is edited by
+the publisher. Only status, publication/scheduled dates, and updated_at
+are changed. Existing revision history remains intact.
+Existing email-test and queue-maintenance commands are retained.
+
+Reply PASS after installing and confirming one scheduled test article
+publishes automatically, or share the command output/error.

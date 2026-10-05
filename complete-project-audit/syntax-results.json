@@ -1,0 +1,1727 @@
+[
+  {
+    "path": "app\\Exports\\PurchaseOrderExport.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Exports\\ReorderDashboardExport.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Exports\\StockValuationExport.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\jobs\\SendSupplierPurchaseOrderEmail.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Mail\\AdminNewOrderMail.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Mail\\CustomerBankTransferRejectedMail.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Mail\\CustomerBankTransferVerifiedMail.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Mail\\CustomerOrderConfirmationMail.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Mail\\CustomerOrderStatusUpdatedMail.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Mail\\InventoryAlertMail.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Mail\\purchase-order-email.blade.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Mail\\SupplierPurchaseOrderMail.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Admin.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\AdminAuditLog.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\AdminBackup.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\AdminPermission.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\AdminRole.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Category.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Coupon.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\CouponRedemption.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Currency.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\CustomerEmailIdentity.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\EcommerceSetting.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\EmailTemplate.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Favorite.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\FormSubmission.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\InventoryAlert.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\InventoryHistory.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\NavigationMenu.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\NavigationMenuItem.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Order.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\OrderActivity.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\OrderItem.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\OrderNote.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\OrderNotificationLog.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\OrderShipment.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Page.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\PasswordHistory.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\PhoneVerificationCode.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Post.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\PostRedirect.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\PostRevision.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Product.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\ProductCategory.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\ProductImage.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\ProductOption.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\ProductOptionValue.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\ProductTag.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\ProductVariant.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\PurchaseOrder.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\PurchaseOrderItem.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\PurchaseOrderReceipt.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\PurchaseOrderReceiptItem.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Review.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Setting.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\ShipmentTrackingEvent.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\Supplier.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\SupplierContact.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\SupplierDocument.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\SupplierProduct.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\SupplierPurchaseOrderDelivery.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\SupplierRating.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\SupplierReturn.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\SupplierReturnItem.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Models\\User.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Notifications\\AdminSystemNotification.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Notifications\\CustomerResetPassword.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Notifications\\VerifyPendingEmail.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Observers\\AdminBellObserver.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Providers\\AppServiceProvider.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\AdminAccessPolicy.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\AdminBackupService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\AdminBellService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\CmsContentSanitizer.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\CouponRedemptionService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\CouponService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\CustomerLoginSecurity.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\CustomerSpendService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\EmailTemplateService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\HtmlContentSanitizer.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\InventoryAdjustmentService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\InventoryAlertService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\InventoryCatalogService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\InventoryHistoryService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\InventoryService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\NavigationMenuService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\OrderActivityService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\OrderDocumentService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\OrderEmailService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\OrderShipmentService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\OrderShipmentStatusTransitionService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\PasswordSecurityService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\PublicMediaService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\PurchasingCurrencyService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\SafeContentUrl.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\ShipmentOrderStatusSyncService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\ShipmentStatusMapper.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\ShipmentTrackingEventService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Services\\StoreSettingsService.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\AbeerKhanController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\AboutController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\BlogController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\BlogFormController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\CartController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\CategoryController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\CheckoutController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\CmsPageController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\ContactController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\ContactFormController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Controller.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\CustomerDashboardController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\FavoriteController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\HomeController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\HomeFormController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\OrderTrackingController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\PageController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\privacyPolicyController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\ProfileController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\ProjectsController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\ReviewController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\ServicesController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\ShopController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\termsAndCondtionsController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Middleware\\AdminAuditMiddleware.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Middleware\\AdminMiddleware.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Middleware\\CustomerAccountStatus.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Middleware\\CustomerSecurityReminder.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Middleware\\SecurityHeadersMiddleware.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Middleware\\StorePolicyMiddleware.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Requests\\InventoryAdjustmentRequest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Requests\\ProfileUpdateRequest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminAnalyticsController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminAuditLogController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminBackupController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminEmailTemplateController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminNavigationMenuController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminNotificationController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminPageController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminProfileController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminRoleController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\AdminUserController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\CategoryController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\CouponController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\CustomerController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\DashboardController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\EcommerceSettingController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\InventoryAdjustmentController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\InventoryAlertController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\InventoryHistoryController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\InventoryReportController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\OrderController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\OrderRefundController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\PaymentVerificationController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\PostController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\ProductCategoryController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\ProductController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\ProductOptionController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\ProductTagController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\PurchaseOrderController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\PurchaseOrderDraftController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\PurchaseOrderReceivingController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\ReorderDashboardController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\ReviewController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\StockValuationController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\SupplierContactController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\SupplierController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\SupplierDocumentController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\SupplierProductController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\SupplierPurchaseOrderDeliveryController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\SupplierRatingController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\AuthenticatedSessionController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\ConfirmablePasswordController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\EmailVerificationNotificationController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\EmailVerificationPromptController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\NewPasswordController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\PasswordController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\PasswordResetLinkController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\PhoneAuthController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\RegisteredUserController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\SocialAuthController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Auth\\VerifyEmailController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Customer\\AccountSecurityController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Customer\\LoginMethodController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Payment\\PayPalPaymentController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Payment\\StripePaymentController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Webhooks\\CourierWebhookController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Webhooks\\PayPalWebhookController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Webhooks\\StripeWebhookController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\Auth\\AdminAuthenticatedSessionController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\Auth\\AdminNewPasswordController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Controllers\\Admin\\Auth\\AdminPasswordResetLinkController.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\Http\\Requests\\Auth\\LoginRequest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\View\\Components\\AppLayout.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "app\\View\\Components\\GuestLayout.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "bootstrap\\app.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "bootstrap\\providers.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\app.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\auth.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\cache.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\database.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\dompdf.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\filesystems.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\inventory.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\logging.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\mail.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\payments.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\queue.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\services.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\session.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "config\\shipping.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\factories\\UserFactory.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\0001_01_01_000000_create_users_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\0001_01_01_000001_create_cache_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\0001_01_01_000002_create_jobs_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_02_23_233358_create_pages_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_03_07_131000_create_categories_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_03_07_131100_create_posts_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_03_07_131207_create_category_post_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_03_12_222555_create_contact_forms_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_201557_create_products_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_201558_create_product_categories_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202845_create_product_category_product_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202848_create_product_images_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202850_create_product_tags_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202851_create_product_product_tag_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202852_create_product_options_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202853_create_product_option_values_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202853_create_product_variants_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202856_create_coupons_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202900_create_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202903_create_order_items_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202905_create_favorites_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202907_create_reviews_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202908_create_currencies_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_06_15_202908_create_settings_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_18_062732_create_product_option_product_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_18_235859_create_product_option_value_product_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_21_223155_change_status_column_in_reviews_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_21_231354_remove_guest_support_from_favorites_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_22_000001_prepare_ecommerce_admin_tables.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_22_000002_update_products_table_for_new_product_system.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_24_030335_add_state_zip_and_notes_to_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_24_030928_add_variant_id_to_order_items_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_24_170739_add_checkout_address_fields_to_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_24_170810_add_variant_id_to_order_items_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_25_053143_add_payment_fields_to_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_25_060044_add_checkout_fields_to_orders_and_order_items_tables.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_26_221347_create_order_activities_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_26_221440_create_order_notes_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_28_160644_add_shipping_method_fields_to_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_28_165334_normalize_existing_product_variant_options.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_28_184958_add_inventory_deducted_at_to_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_28_200222_create_order_notification_logs_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_28_205829_create_inventory_alerts_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_29_174714_create_inventory_histories_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_29_210908_add_low_stock_threshold_to_products_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_07_30_155750_add_cost_price_to_products_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_01_022413_add_reorder_settings_to_products_and_product_variants_tables.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_01_032443_create_purchase_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_01_032609_create_purchase_order_items_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_04_181151_create_suppliers_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_04_181152_create_supplier_contacts_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_04_181153_create_supplier_documents_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_04_181153_create_supplier_ratings_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_04_181154_add_supplier_id_to_purchase_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_07_000003_create_supplier_purchase_order_deliveries_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_07_000004_create_supplier_products_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_07_000005_create_receipts_and_supplier_returns_tables.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_07_000006_create_admin_roles_and_permissions_tables.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_09_000007_create_admin_audit_logs_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_09_000008_create_notifications_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_09_000009_create_admin_backups_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_09_000010_create_email_templates_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_09_000011_add_admin_performance_indexes.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_09_000012_upgrade_pages_table_for_cms.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_09_000013_add_custom_blade_support_to_pages.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_08_09_000014_create_navigation_menus_tables.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_15_000001_add_social_auth_columns_to_users_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_15_000002_add_is_featured_to_products_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_15_231913_add_image_to_categories_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_16_000001_add_multi_login_security_fields_to_users_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_16_000002_create_phone_verification_codes_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_16_000003_make_users_email_nullable.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_16_000004_add_pending_email_to_users_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_18_220000_add_bank_transfer_settings_to_ecommerce_settings_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_20_223600_add_courier_to_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_22_213500_add_courier_provider_to_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_22_220000_create_order_shipments_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_22_221000_create_shipment_tracking_events_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_23_000001_add_password_set_at_to_users_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_23_000002_create_password_histories_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_23_140000_add_unique_courier_identity_to_order_shipments_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_23_230000_add_manual_status_override_boundary_to_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_24_000001_add_email_login_state_to_users.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_24_000002_create_customer_email_identities.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_24_000003_split_provider_and_email_verification.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_24_000004_create_admins_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_24_000005_create_admin_role_admin_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_24_000006_add_admin_id_to_admin_audit_logs.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_24_000007_add_phone_to_admins_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_24_000008_migrate_cms_po_inventory_admin_ownership.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_24_000008_separate_admin_ownership.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_25_000001_create_admin_password_reset_tokens_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_26_000001_add_deleted_at_to_orders_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_26_235900_add_inventory_restored_at_to_orders.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_27_000001_upgrade_coupons_for_advanced_rules.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_27_000002_create_coupon_redemptions_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_28_000001_upgrade_posts_for_publishing.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_09_28_000002_add_public_author_profile_to_admins_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_10_01_000001_create_post_redirects_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_10_01_000001_repair_inventory_purchasing_schema.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_10_01_000002_create_post_revisions_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_10_03_000001_add_storefront_footer_settings.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\2026_10_03_000002_add_author_card_image_to_store_settings.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\migrations\\create_form_submissions_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\oldmigrations\\2026_03_07_131000_create_categories_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\oldmigrations\\2026_03_07_131100_create_posts_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\oldmigrations\\2026_03_07_131207_create_category_post_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\oldmigrations\\2026_03_09_224123_add_expert_to_categories_table.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "database\\seeders\\DatabaseSeeder.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "routes\\auth.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "routes\\console.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "routes\\web.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\Pest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\TestCase.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\Feature\\ExampleTest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\Feature\\ProfileTest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\Unit\\ExampleTest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\Feature\\Auth\\AuthenticationTest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\Feature\\Auth\\EmailVerificationTest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\Feature\\Auth\\PasswordConfirmationTest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\Feature\\Auth\\PasswordResetTest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\Feature\\Auth\\PasswordUpdateTest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "tests\\Feature\\Auth\\RegistrationTest.php",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "public\\asset\\js\\about.js",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "public\\asset\\js\\admin-dashboard.js",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "public\\asset\\js\\blogs.js",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "public\\asset\\js\\checkout-stripe.js",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "public\\asset\\js\\contact.js",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "public\\asset\\js\\dashboard.js",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "public\\asset\\js\\main.js",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "public\\asset\\js\\policy-condtions.js",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "public\\asset\\js\\product.js",
+    "pass": true,
+    "error": ""
+  },
+  {
+    "path": "public\\asset\\js\\thankyou.js",
+    "pass": true,
+    "error": ""
+  }
+]

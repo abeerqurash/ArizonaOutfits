@@ -1,0 +1,15 @@
+Verification results
+checks.json: 78 PASS
+integration-checks.json: 57 PASS
+backup-roundtrip-checks.json: 8 PASS
+customer-content-regression-checks.json: 65 PASS
+inventory-purchasing-regression-checks.json: 89 PASS
+inventory-extra-regression-checks.json: 26 PASS
+Total: 323 PASS
+PHP syntax: 34 PASS
+Blade syntax: 16 PASS
+JavaScript syntax: 4 PASS
+Routes: 44 PASS
+Installer: 51 replacements and 45 backups verified on isolated copy
+Installed application unchanged: verified SHA-256
+Stripe live payment and actual SMTP delivery: pending user testing

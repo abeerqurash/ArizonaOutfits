@@ -1,0 +1,13 @@
+01_AdminNavigationMenuController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminNavigationMenuController.php
+
+02_NavigationMenuItem.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Models\NavigationMenuItem.php
+
+03_header-menu-links.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\header-menu-links.blade.php
+
+04_footer-menu-links.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\footer-menu-links.blade.php
+
+Copy all four files. Run php artisan optimize:clear. In Menu Builder choose Website route, then Account (Login / My Account), Favorites, Cart page or Cart sidebar. Add both cart entries if desired. A cart page entry navigates normally; sidebar entry opens the drawer. Existing account links resolve dynamically. No migration required.

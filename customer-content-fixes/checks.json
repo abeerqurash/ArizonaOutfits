@@ -1,0 +1,327 @@
+[
+    {
+        "result": "PASS",
+        "check": "Customer search finds phone",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Legacy administrator excluded from customer list",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin cannot be viewed as customer",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer status validates allowed values",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer name and blocked status save",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Blocked filter works",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unreferenced customer can be deleted",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer detail includes archived orders",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer spending counts paid purchases only",
+        "detail": "Expected USD 50"
+    },
+    {
+        "result": "PASS",
+        "check": "Customer order count includes archived orders",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer deletion blocked when only archived orders exist",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Pending reviews hidden publicly",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Approved review appears publicly",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Review search\/status\/rating filters combine",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Review status validates allowed values",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Rejected review disappears publicly",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Review deletion removes record",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Blocked customer cannot submit reviews",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Inactive product cannot receive reviews",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Public reviews use customer guard when admin coexists",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Duplicate customer review blocked",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Category create assigns parent",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Category self-parent rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Category descendant-parent rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Category with children cannot be deleted",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Category update can move child to root",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unused category deletion works",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Post creation records administrator author",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Post creation attaches categories and primary",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Draft hidden from public scope",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Category used by posts cannot be deleted",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Post update saves revision snapshot",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Slug update creates old URL redirect",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Revision restores original title and slug",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Revision restore retains safety snapshot",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cross-post revision restore rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Post deletion works",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Invalid publishing status rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Scheduled post requires date",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Scheduled post stays hidden before publishing",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Published post visible in public scope",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Publishing missing custom Blade template rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe template name rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Deleting category preserves image used by another category",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Customers",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Customer detail",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Reviews",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Blog Posts",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Post create",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Post edit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Blog Categories",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Category create",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Category edit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.customers.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.customers.update",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.customers.destroy",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.reviews.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.reviews.update",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.reviews.destroy",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.posts.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.posts.store",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.posts.revisions.restore",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.categories.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.categories.store",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.categories.destroy",
+        "detail": ""
+    }
+]

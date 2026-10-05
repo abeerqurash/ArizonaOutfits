@@ -1,0 +1,9 @@
+@extends('layouts.app')
+@section('title',$page->meta_title ?: $page->title)
+@section('meta_description',$page->meta_description ?: $page->excerpt)
+@section('content')
+<article class="cms-public-page template-{{ $page->template }}"><header><div class="cms-container"><span>Arizona Outfits</span><h1>{{ $page->title }}</h1>@if($page->excerpt)<p>{{ $page->excerpt }}</p>@endif</div></header><div class="cms-container cms-content">{!! $page->content !!}</div></article>
+@endsection
+@push('page-styles')<style>
+.cms-public-page{padding:130px 0 90px;background:#f8fafc;color:#172033}.cms-container{width:min(1100px,calc(100% - 40px));margin:0 auto}.cms-public-page.template-wide .cms-container{width:min(1380px,calc(100% - 40px))}.cms-public-page.template-minimal .cms-container{width:min(760px,calc(100% - 40px))}.cms-public-page header{padding:65px 0;background:linear-gradient(135deg,#111827,#0f766e);color:#fff}.cms-public-page header span{color:#99f6e4;font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}.cms-public-page h1{margin:10px 0 0;font-size:clamp(38px,7vw,72px);line-height:1.05}.cms-public-page header p{max-width:760px;margin:15px 0 0;color:#ccfbf1;font-size:17px;line-height:1.7}.cms-content{padding-top:55px;padding-bottom:55px;font-size:16px;line-height:1.8}.cms-content h2,.cms-content h3,.cms-content h4{margin:1.5em 0 .5em;line-height:1.25}.cms-content p{margin:0 0 1.2em}.cms-content img{max-width:100%;height:auto;border-radius:14px}.cms-content a{color:#0f766e}.cms-content table{display:block;max-width:100%;overflow-x:auto;border-collapse:collapse}.cms-content th,.cms-content td{padding:10px;border:1px solid #dbe3ea}.cms-content blockquote{margin:1.5em 0;padding:16px 20px;border-left:4px solid #0f766e;background:#ecfdf5}@media(max-width:650px){.cms-public-page{padding-top:90px}.cms-public-page header{padding:42px 0}.cms-container{width:min(100% - 28px,1100px)}}
+</style>@endpush

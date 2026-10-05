@@ -1,0 +1,62 @@
+<?php
+require __DIR__.'/../../vendor/autoload.php';
+spl_autoload_register(function ($class) {
+    if (str_starts_with($class, 'App\\')) {
+        $path = __DIR__.'/../_staged/app/'.str_replace('\\', '/', substr($class, 4)).'.php';
+        if (is_file($path)) require $path;
+    }
+}, true, true);
+$app=require __DIR__.'/../../bootstrap/app.php';$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+config(['database.default'=>'commerce_audit','database.connections.commerce_audit'=>['driver'=>'sqlite','database'=>':memory:','prefix'=>'','foreign_key_constraints'=>true],'logging.default'=>'inventory_audit','logging.channels.inventory_audit'=>['driver'=>'single','path'=>__DIR__.'/../diagnostic.log'],'session.driver'=>'array','cache.default'=>'array','queue.default'=>'sync']);
+use Illuminate\Support\Facades\Schema;use Illuminate\Support\Facades\DB;use Illuminate\Database\Schema\Blueprint;
+use App\Models\{User,Admin,Order,OrderItem,OrderNote,OrderActivity,Product,ProductVariant,ProductCategory,ProductTag,Coupon};
+$pdo=DB::connection()->getPdo();$pdo->sqliteCreateFunction('GREATEST',fn(...$v)=>max($v));
+Schema::create('users',function(Blueprint $t){$t->id();$t->string('name');$t->string('email');$t->string('password')->nullable();$t->timestamps();});
+Schema::create('customer_email_identities',function(Blueprint $t){$t->id();$t->integer('user_id');$t->string('source');$t->string('email')->nullable();$t->string('normalized_email')->nullable();$t->dateTime('connected_at')->nullable();$t->dateTime('disconnected_at')->nullable();$t->boolean('is_login_enabled')->default(true);$t->timestamps();});
+Schema::create('admins',function(Blueprint $t){$t->id();$t->string('name');$t->string('email');$t->timestamps();});
+Schema::create('orders',function(Blueprint $t){$t->id();$t->integer('user_id')->nullable();foreach(['order_number','tracking_number','payment_method','payment_status','order_status','coupon_code','payment_provider','payment_reference','payment_intent_id','currency','billing_name','billing_email','billing_phone','billing_address','billing_city','billing_country','shipping_name','shipping_email','shipping_phone','courier','courier_provider','admin_notes','payment_failure_message'] as $f)$t->string($f)->nullable();foreach(['subtotal','discount','shipping','total'] as $f)$t->decimal($f,12,2)->default(0);foreach(['paid_at','inventory_deducted_at','inventory_restored_at','payment_failed_at','manual_status_override_at','manual_status_override_shipment_event_at'] as $f)$t->dateTime($f)->nullable();$t->text('payment_metadata')->nullable();$t->softDeletes();$t->timestamps();});
+Schema::create('products',function(Blueprint $t){$t->id();foreach(['title','slug','sku','status','featured_image','short_description','long_description','additional_info','meta_title','meta_description','meta_keywords'] as $f)$t->string($f)->nullable();foreach(['regular_price','sale_price','cost_price','average_rating'] as $f)$t->decimal($f,12,2)->nullable();foreach(['stock','purchase_count','views_count','favorites_count','cart_count'] as $f)$t->integer($f)->default(0);$t->integer('reorder_point')->nullable();$t->integer('reorder_quantity')->nullable();$t->boolean('is_featured')->default(false);$t->timestamps();});
+Schema::create('product_variants',function(Blueprint $t){$t->id();$t->integer('product_id');$t->string('sku')->nullable();$t->string('image')->nullable();$t->text('options')->nullable();$t->decimal('regular_price',12,2)->nullable();$t->decimal('sale_price',12,2)->nullable();$t->integer('stock')->default(0);$t->integer('reorder_point')->nullable();$t->timestamps();});
+Schema::create('order_items',function(Blueprint $t){$t->id();$t->integer('order_id');$t->integer('product_id')->nullable();$t->integer('variant_id')->nullable();$t->string('product_title');$t->string('sku')->nullable();$t->decimal('price',12,2);$t->integer('quantity');$t->decimal('total',12,2);$t->text('options')->nullable();$t->timestamps();});
+Schema::create('order_notes',function(Blueprint $t){$t->id();$t->integer('order_id');$t->integer('user_id')->nullable();$t->integer('admin_id')->nullable();$t->string('note');$t->boolean('is_customer_visible');$t->timestamps();});
+Schema::create('order_activities',function(Blueprint $t){$t->id();$t->integer('order_id');$t->integer('user_id')->nullable();$t->integer('admin_id')->nullable();foreach(['type','title','description','field_name','old_value','new_value','metadata'] as $f)$t->text($f)->nullable();$t->timestamps();});
+Schema::create('product_categories',function(Blueprint $t){$t->id();$t->string('title');$t->string('slug');$t->integer('parent_id')->nullable();foreach(['description','featured_image','meta_title','meta_description','meta_keywords'] as $f)$t->text($f)->nullable();$t->timestamps();});
+foreach(['product_tags','product_options'] as $table)Schema::create($table,function(Blueprint $t){$t->id();$t->string('title')->nullable();$t->string('slug')->nullable();$t->string('name')->nullable();$t->timestamps();});
+Schema::create('product_option_values',function(Blueprint $t){$t->id();$t->integer('product_option_id');$t->string('label')->nullable();$t->string('value')->nullable();$t->timestamps();});
+foreach(['product_category_product'=>'product_category_id','product_product_tag'=>'product_tag_id','product_option_product'=>'product_option_id','product_option_value_product'=>'product_option_value_id'] as $table=>$column)Schema::create($table,function(Blueprint $t)use($column){$t->id();$t->integer('product_id');$t->integer($column);$t->timestamps();});
+Schema::create('product_images',function(Blueprint $t){$t->id();$t->integer('product_id');$t->string('image')->nullable();$t->integer('sort_order')->default(0);$t->timestamps();});
+Schema::create('inventory_histories',function(Blueprint $t){$t->id();foreach(['product_id','product_variant_id','order_id','user_id','admin_id'] as $f)$t->integer($f)->nullable();foreach(['quantity_change','stock_before','stock_after'] as $f)$t->integer($f);foreach(['movement_type','reason','notes','reference_type','reference_id','metadata'] as $f)$t->text($f)->nullable();$t->timestamps();});
+Schema::create('coupons',function(Blueprint $t){$t->id();$t->string('code')->unique();$t->string('type');$t->decimal('value',12,2);$t->decimal('minimum_order_amount',12,2)->default(0);$t->decimal('maximum_discount',12,2)->nullable();$t->integer('usage_limit')->nullable();$t->integer('per_user_usage_limit')->nullable();$t->integer('used_count')->default(0);$t->string('target_type')->default('all');foreach(['product_ids','category_ids','variant_ids'] as $f)$t->text($f)->nullable();$t->boolean('include_child_categories')->default(false);$t->string('event_name')->nullable();$t->dateTime('start_date')->nullable();$t->dateTime('end_date')->nullable();$t->boolean('status')->default(true);$t->timestamps();});
+(require __DIR__.'/../../database/migrations/2026_09_27_000002_create_coupon_redemptions_table.php')->up();
+
+foreach ([
+'2026_07_28_205829_create_inventory_alerts_table.php',
+'2026_08_04_181151_create_suppliers_table.php',
+'2026_08_01_032443_create_purchase_orders_table.php',
+'2026_08_01_032609_create_purchase_order_items_table.php',
+'2026_08_04_181154_add_supplier_id_to_purchase_orders_table.php',
+'2026_08_04_181152_create_supplier_contacts_table.php',
+'2026_08_07_000003_create_supplier_purchase_order_deliveries_table.php',
+'2026_08_07_000004_create_supplier_products_table.php',
+'2026_08_07_000005_create_receipts_and_supplier_returns_tables.php',
+] as $migration)(require __DIR__.'/../../database/migrations/'.$migration)->up();
+Schema::table('purchase_orders',function(Blueprint $t){$t->foreignId('admin_id')->nullable()->constrained('admins');});
+Schema::table('product_variants',function(Blueprint $t){$t->integer('reorder_quantity')->nullable();});
+// These two tables mirror the read-only local schema metadata, not the
+// missing replacement migrations named by the historical placeholders.
+Schema::create('supplier_ratings',function(Blueprint $t){$t->id();$t->foreignId('supplier_id')->constrained();$t->foreignId('purchase_order_id')->nullable()->constrained();foreach(['quality_rating','pricing_rating','delivery_rating','communication_rating','reliability_rating'] as $f)$t->integer($f)->nullable();$t->decimal('overall_rating',3,2)->nullable();$t->text('review')->nullable();$t->foreignId('rated_by')->nullable()->constrained('users');$t->timestamps();});
+Schema::create('supplier_documents',function(Blueprint $t){$t->id();$t->foreignId('supplier_id')->constrained();$t->string('document_type')->nullable();$t->string('title');$t->string('file_name');$t->string('file_path');$t->string('mime_type')->nullable();$t->integer('file_size')->nullable();$t->date('expiry_date')->nullable();$t->text('notes')->nullable();$t->foreignId('uploaded_by')->nullable()->constrained('users');$t->timestamps();});
+(require __DIR__.'/../_staged/database/migrations/2026_10_01_000001_repair_inventory_purchasing_schema.php')->up();
+$app['view']->getFinder()->prependLocation(__DIR__.'/../_staged/resources/views');
+$customer=User::create(['name'=>'Fixture customer','email'=>'customer@example.test']);$other=User::create(['name'=>'Other customer','email'=>'other@example.test']);
+DB::table('admins')->insert(['id'=>99,'name'=>'Fixture admin','email'=>'admin@example.test']);$admin=(new Admin)->forceFill(['id'=>99,'name'=>'Fixture admin','status'=>'active','is_super_admin'=>true]);
+$app['auth']->guard('admin')->setUser($admin);$app['auth']->guard('web')->setUser($customer);$app['auth']->shouldUse('admin');$app['session']->start();
+config(['mail.default'=>'array','inventory.alert_email'=>'audit@example.test','inventory.low_stock_threshold'=>5,'view.compiled'=>__DIR__.'/compiled','filesystems.disks.public'=>['driver'=>'local','root'=>__DIR__.'/files','throw'=>true]]);@mkdir(__DIR__.'/compiled');$app['view']->share('errors',new Illuminate\Support\ViewErrorBag);Illuminate\Support\Facades\Mail::fake();Illuminate\Support\Facades\Bus::fake();
+function req($data=[]){global $app,$admin;$r=Illuminate\Http\Request::create('http://arizona.test/admin/audit','POST',$data);$r->setUserResolver(fn()=>$admin);$r->setLaravelSession($app['session']->driver());$app->instance('request',$r);return $r;}
+$results=[];
+function check($label,$ok,$detail=''){global $results;$results[]=['result'=>$ok?'PASS':'ISSUE','check'=>$label,'detail'=>$detail];echo ($ok?'PASS: ':'ISSUE: ').$label.($detail?' -- '.$detail:'')."\n";}
+function run($label,$callback){try{$callback();}catch(Throwable $e){global $results;$results[]=['result'=>'ERROR','check'=>$label,'exception'=>get_class($e),'detail'=>$e->getMessage()];echo 'ERROR: '.$label.' '.get_class($e).' '.$e->getMessage()."\n";}}
+function validationBlocked($callback){try{$callback();return false;}catch(Illuminate\Validation\ValidationException){return true;}}
+function supplier($extra=[]){static $i=0;return App\Models\Supplier::create(array_replace(['company_name'=>'Supplier '.(++$i),'email'=>'supplier'.$i.'@example.test','currency'=>'GBP','status'=>'active'],$extra));}
+function po($supplier,$extra=[]){return App\Models\PurchaseOrder::create(array_replace(['supplier_id'=>$supplier->id,'supplier_name'=>$supplier->company_name,'status'=>'ordered','currency'=>$supplier->currency,'admin_id'=>99],$extra));}
+function line($po,$product,$quantity=5,$variant=null){return $po->items()->create(['product_id'=>$product->id,'product_variant_id'=>$variant?->id,'item_name'=>$product->title,'sku'=>$variant?->sku??$product->sku,'quantity_ordered'=>$quantity,'quantity_received'=>0,'unit_cost'=>10]);}

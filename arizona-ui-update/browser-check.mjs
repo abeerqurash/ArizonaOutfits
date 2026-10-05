@@ -1,0 +1,25 @@
+import puppeteer from '../complete-project-audit/lighthouse-tools/node_modules/puppeteer-core/lib/puppeteer/puppeteer-core.js';
+import fs from 'node:fs';
+const browser=await puppeteer.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true,args:['--disable-gpu']});
+const page=await browser.newPage(),errors=[],checks=[];page.on('pageerror',e=>errors.push(e.message));
+const stage='arizona-ui-update/_staged/';const css=fs.readFileSync(stage+'public/asset/css/arizona-admin-controls.css','utf8'),js=fs.readFileSync(stage+'public/asset/js/arizona-admin-controls.js','utf8');
+const record=(name,pass)=>{checks.push({name,pass});if(!pass)throw new Error(name);};
+for(const width of [1440,390]){
+ await page.goto('about:blank');await page.setViewport({width,height:900});
+ await page.setContent(`<style>${css}</style><body class="admin-body"><main class="admin-content"><form><label for="sort">Sort</label><select id="sort" name="sort"><option value="latest">Latest</option><option value="price">Price</option></select><label for="date">Start date</label><input id="date" type="date" name="start" min="2026-10-01" max="2026-10-31"><label for="publish">Publish</label><input id="publish" type="datetime-local" name="publish"></form></main><script>${js}</script>`);
+ await page.click('.az-select-trigger');await page.type('.az-select-popup input','Price');await page.click('.az-select-choice');record('Dropdown preserves native submitted value '+width,await page.$eval('#sort',s=>s.value==='price'));
+ await page.click('.az-date-trigger');await page.select('.az-calendar-head select','9');await page.$eval('.az-calendar-head input',e=>{e.value=2026;e.dispatchEvent(new Event('change'));});await page.click('[data-day="2026-10-15"]');record('Calendar stores ISO date '+width,await page.$eval('#date',i=>i.value==='2026-10-15'));
+ await page.click('.az-date-trigger');await page.keyboard.press('Escape');record('Calendar Escape closes '+width,await page.$eval('.az-calendar',d=>!d.open));
+ await page.$$eval('.az-date-trigger',b=>b[1].click());await page.select('.az-calendar-head select','9');await page.$eval('.az-calendar-head input',e=>{e.value=2026;e.dispatchEvent(new Event('change'));});await page.click('[data-day="2026-10-16"]');await page.$eval('.az-calendar-time input',i=>i.value='14:30');await page.$$eval('.az-calendar-actions button',buttons=>buttons.at(-1).click());record('Datetime calendar retains time '+width,await page.$eval('#publish',i=>i.value==='2026-10-16T14:30'));
+ record('Admin controls fit viewport '+width,await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2));
+}
+// Use actual rendered product/quick-view markup structure for custom placement.
+const productJS=fs.readFileSync(stage+'public/asset/js/product.js','utf8');
+for(const quick of [false,true]){
+ await page.goto('about:blank');await page.setContent(`<form data-product-form><div class="product-option-group"><div class="product-option-values"><button type="button" data-value-id="2">Custom</button></div><select class="product-option-select" data-option-id="1"><option value="">Choose Size</option><option value="1" data-label="M">Medium</option><option value="2" data-label="Custom">Custom</option></select><fieldset data-custom-measurements hidden disabled><input name="custom_measurements[chest]" type="number" required></fieldset></div></form><script>${productJS}</script>`);
+ await page.select('select','2');record((quick?'Quick view':'Product')+' shows custom fields below button group',await page.$eval('fieldset',f=>!f.hidden&&!f.disabled&&!f.closest('.product-option-values')));await page.select('select','1');record('Standard size disables custom fields',await page.$eval('fieldset',f=>f.hidden&&f.disabled));
+}
+let orderJS=fs.readFileSync(stage+'resources/views/admin/products/partials/value-order.blade.php','utf8').split('<script>')[1].split('</script>')[0];
+await page.goto('about:blank');await page.setContent(`<div id="productOptionsList"><div class="product-option-values"><label data-option-value><input data-option-value-checkbox value="1" data-value-label="Small">Small</label><label data-option-value><input data-option-value-checkbox value="2" data-value-label="Medium">Medium</label></div></div><script>${orderJS}</script>`);
+await page.$$eval('[data-move-value="-1"]',buttons=>buttons[1].click());record('Per-product reorder writes submitted positions',await page.$$eval('[data-value-position]',inputs=>inputs[0].name==='product_value_order[2]'&&inputs[0].value==='0'&&inputs[1].value==='1'));
+record('No browser JavaScript exceptions',errors.length===0);fs.writeFileSync('arizona-ui-update/browser-checks.json',JSON.stringify({checks,errors},null,2));await browser.close();console.log(checks.length+' browser checks passed');

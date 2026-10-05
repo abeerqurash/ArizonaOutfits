@@ -1,0 +1,70 @@
+[
+  {
+    "name": "Product keeps Add To Cart before selection",
+    "pass": true
+  },
+  {
+    "name": "Custom size opens enabled required fields",
+    "pass": true
+  },
+  {
+    "name": "Empty custom measurements prevent submission",
+    "pass": true
+  },
+  {
+    "name": "Complete custom measurements allow native validation",
+    "pass": true
+  },
+  {
+    "name": "Ordinary size hides and disables custom fields",
+    "pass": true
+  },
+  {
+    "name": "Single variation selects itself",
+    "pass": true
+  },
+  {
+    "name": "Single variation enables buying",
+    "pass": true
+  },
+  {
+    "name": "Actual out of stock remains disabled",
+    "pass": true
+  },
+  {
+    "name": "Quick view keeps Add To Cart before selection",
+    "pass": true
+  },
+  {
+    "name": "Custom size opens enabled required fields",
+    "pass": true
+  },
+  {
+    "name": "Empty custom measurements prevent submission",
+    "pass": true
+  },
+  {
+    "name": "Complete custom measurements allow native validation",
+    "pass": true
+  },
+  {
+    "name": "Ordinary size hides and disables custom fields",
+    "pass": true
+  },
+  {
+    "name": "Single variation selects itself",
+    "pass": true
+  },
+  {
+    "name": "Single variation enables buying",
+    "pass": true
+  },
+  {
+    "name": "Actual out of stock remains disabled",
+    "pass": true
+  },
+  {
+    "name": "No JavaScript exceptions",
+    "pass": true
+  }
+]

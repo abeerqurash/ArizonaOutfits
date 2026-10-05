@@ -1,0 +1,21 @@
+ARIZONA OUTFITS EMAIL TEMPLATE EDITOR DESIGN
+
+One shared view updates EVERY Email Templates > Edit screen.
+
+1. Back up your existing edit.blade.php.
+2. Replace ALL contents of:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\email-templates\edit.blade.php
+
+With all contents of 01_edit.blade.php.txt.
+Save the destination as edit.blade.php, not .txt.
+
+3. Run from C:\xampp\htdocs\ArizonaOutfits:
+C:\xampp\php\php.exe artisan optimize:clear
+
+4. Refresh with Ctrl+F5 and open any email template using Edit template.
+
+The design includes a navy branded header, rounded fields/buttons, responsive
+editor/sidebar, variable chips, a custom-template switch and a test-email card.
+Save, preview, test and validation use the existing routes/controllers.
+Preview and test email show saved content, so save edits first.
+Existing sent-email content/design and database records are unchanged.

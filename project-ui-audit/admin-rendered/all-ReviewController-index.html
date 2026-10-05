@@ -1,0 +1,875 @@
+<style>
+.admin-reviews-page{display:flex;flex-direction:column;gap:16px}
+.admin-page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+.admin-page-header h1{margin:3px 0 4px;font-size:24px;line-height:1.2;color:#101828}
+.admin-page-header p{margin:0;color:#667085;font-size:13px}
+.admin-page-eyebrow{font-size:10px;font-weight:800;letter-spacing:.13em;color:#635bff}
+.admin-page-actions{display:flex;gap:8px;flex-wrap:wrap}
+.admin-button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:7px 12px;border:1px solid #dfe3ea;border-radius:10px;background:#fff;color:#344054;text-decoration:none;font-size:12px;font-weight:700;cursor:pointer}
+.admin-button-primary{background:#635bff;border-color:#635bff;color:#fff}
+.admin-button-secondary{background:#fff}
+
+.review-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.admin-stat-card{display:flex;align-items:center;gap:10px;min-height:76px;background:#fff;border:1px solid #e4e7ec;border-radius:12px;padding:12px 14px}
+.admin-stat-icon{width:38px;height:38px;flex:0 0 38px;border-radius:10px;display:grid;place-items:center;font-size:15px}
+.admin-stat-card span{display:block;color:#667085;font-size:11px;font-weight:700}
+.admin-stat-card strong{display:block;margin-top:1px;font-size:19px;line-height:1.2;color:#101828}
+.review-stat-total{background:#f0efff;color:#635bff}
+.review-stat-pending{background:#fff7e6;color:#b76e00}
+.review-stat-approved{background:#ecfdf3;color:#027a48}
+.review-stat-rejected{background:#fff1f3;color:#c01048}
+
+.admin-panel{background:#fff;border:1px solid #e4e7ec;border-radius:12px}
+.review-filter-panel{padding:10px}
+.review-filter-form{display:grid;grid-template-columns:minmax(220px,1fr) 155px 140px auto auto;gap:8px}
+.review-search{position:relative}
+.review-search i{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:#98a2b3;font-size:12px}
+.review-filter-form input,.review-filter-form select{width:100%;height:36px;border:1px solid #dfe3ea;border-radius:9px;background:#fff;color:#344054;font-size:12px;outline:none}
+.review-filter-form input{padding:0 11px 0 32px}
+.review-filter-form select{padding:0 9px}
+.review-filter-form input:focus,.review-filter-form select:focus{border-color:#8c86ff;box-shadow:0 0 0 3px rgba(99,91,255,.08)}
+
+.review-grid{display:flex;flex-direction:column;gap:10px}
+.review-card{display:grid;grid-template-columns:118px minmax(0,1fr) 126px;min-height:150px;overflow:hidden;background:#fff;border:1px solid #e4e7ec;border-radius:12px}
+.review-product-media{position:relative;min-height:150px;background:#f2f4f7;overflow:hidden;border-right:1px solid #eef0f3}
+.review-product-media img{width:100%;height:100%;min-height:150px;object-fit:cover;display:block}
+.review-product-placeholder{height:100%;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#98a2b3}
+.review-product-placeholder i{font-size:22px}
+.review-product-placeholder span{font-size:10px;font-weight:700}
+.review-status{position:absolute;left:8px;top:8px;padding:4px 7px;border-radius:999px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;box-shadow:0 1px 3px rgba(16,24,40,.08)}
+.review-status-pending{background:#fff7e6;color:#9a5b00}
+.review-status-approved{background:#ecfdf3;color:#027a48}
+.review-status-rejected{background:#fff1f3;color:#c01048}
+
+.review-card-body{min-width:0;padding:13px 15px}
+.review-product-name{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.review-product-name span{font-size:9px;font-weight:800;letter-spacing:.1em;color:#98a2b3}
+.review-product-name strong{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:#344054}
+.review-rating{display:flex;align-items:center;gap:2px;color:#f5a524;font-size:11px;margin-bottom:7px}
+.review-rating span{margin-left:4px;color:#667085;font-size:10px;font-weight:700}
+.review-card-body h2{margin:0 0 5px;color:#101828;font-size:15px;line-height:1.3}
+.review-copy{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:3;margin:0;color:#475467;font-size:12px;line-height:1.55}
+.reviewer{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:8px;align-items:center;margin-top:10px;padding-top:9px;border-top:1px solid #f0f1f3}
+.reviewer-avatar{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:#f0efff;color:#635bff;font-weight:800;font-size:11px}
+.reviewer-details{min-width:0}
+.reviewer-details strong,.reviewer-details span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.reviewer-details strong{font-size:11px;color:#101828}
+.reviewer-details span,.reviewer time{font-size:10px;color:#98a2b3}
+
+.review-card-actions{display:flex;flex-direction:column;justify-content:center;gap:6px;padding:12px;border-left:1px solid #eef0f3;background:#fcfcfd}
+.review-card-actions form{width:100%}
+.review-action{width:100%;height:30px;display:inline-flex;align-items:center;justify-content:flex-start;gap:6px;padding:0 9px;border:1px solid #dfe3ea;border-radius:8px;background:#fff;color:#475467;font-size:10px;font-weight:800;cursor:pointer}
+.review-action:disabled{background:#f9fafb;opacity:.55;cursor:default}
+.review-action-approve{color:#027a48}
+.review-action-pending{color:#9a5b00}
+.review-action-reject,.review-action-delete{color:#c01048}
+
+.review-empty{text-align:center;padding:44px 20px}
+.review-empty-icon{width:44px;height:44px;margin:0 auto 10px;border-radius:11px;display:grid;place-items:center;background:#f0efff;color:#635bff;font-size:17px}
+.review-empty h2{margin:0 0 4px;font-size:16px}
+.review-empty p{margin:0;color:#667085;font-size:12px}
+.review-pagination{display:flex;justify-content:center}
+
+.admin-review-toast{position:fixed;right:22px;top:22px;z-index:1200;max-width:390px;display:flex;align-items:center;gap:8px;padding:11px 13px;border:1px solid;border-radius:10px;background:#fff;box-shadow:0 12px 30px rgba(16,24,40,.13);font-size:12px;font-weight:700}
+.admin-review-toast-success{border-color:#abefc6;color:#027a48}
+.admin-review-toast-error{border-color:#fecdca;color:#b42318}
+.admin-review-toast button{margin-left:auto;border:0;background:transparent;color:inherit;cursor:pointer}
+
+.review-modal-backdrop{position:fixed;inset:0;z-index:1300;background:rgba(15,23,42,.52);display:grid;place-items:center;padding:20px}
+.review-modal-backdrop[hidden]{display:none}
+.review-modal{position:relative;width:min(420px,100%);background:#fff;border:1px solid #e4e7ec;border-radius:12px;padding:22px;box-shadow:0 24px 70px rgba(15,23,42,.22)}
+.review-modal-close{position:absolute;right:13px;top:13px;border:0;background:transparent;color:#667085;font-size:15px;cursor:pointer}
+.review-modal-icon{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;background:#fff1f3;color:#c01048;font-size:16px;margin-bottom:12px}
+.review-modal h2{margin:4px 0 7px;font-size:19px;color:#101828}
+.review-modal p{margin:0;color:#667085;font-size:12px;line-height:1.55}
+.review-modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.review-delete-confirm{background:#d92d20;border-color:#d92d20;color:#fff}
+
+@media(max-width:1050px){
+.review-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.review-filter-form{grid-template-columns:1fr 1fr 1fr}
+.review-search{grid-column:1/-1}
+.review-card{grid-template-columns:105px minmax(0,1fr)}
+.review-card-actions{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);border-left:0;border-top:1px solid #eef0f3}
+}
+@media(max-width:700px){
+.admin-page-header{flex-direction:column}
+.review-card{grid-template-columns:90px minmax(0,1fr)}
+.review-product-media,.review-product-media img,.review-product-placeholder{min-height:140px}
+.review-card-actions{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+.review-stat-grid{grid-template-columns:1fr}
+.review-filter-form{grid-template-columns:1fr}
+.review-search{grid-column:auto}
+.review-card{display:block}
+.review-product-media{height:190px;border-right:0;border-bottom:1px solid #eef0f3}
+.review-product-media img{height:190px}
+.review-card-actions{display:grid;grid-template-columns:1fr 1fr}
+.reviewer{grid-template-columns:30px minmax(0,1fr)}
+.reviewer time{grid-column:2}
+.admin-review-toast{left:12px;right:12px;top:12px}
+.review-modal-actions{flex-direction:column-reverse}
+.review-modal-actions .admin-button,.review-modal-actions form,.review-modal-actions form button{width:100%}
+}
+</style>
+
+<script>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', function () {
+    const modal = document.querySelector('[data-review-modal]');
+    const deleteForm = document.querySelector('[data-review-delete-form]');
+    const modalName = document.querySelector('[data-review-modal-name]');
+    const deleteButtons = document.querySelectorAll('[data-review-delete]');
+    const cancelButtons = document.querySelectorAll('[data-review-modal-cancel]');
+
+    function closeDeleteModal() {
+        if (!modal) {
+            return;
+        }
+
+        modal.hidden = true;
+
+        if (deleteForm) {
+            deleteForm.removeAttribute('action');
+        }
+    }
+
+    deleteButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            if (!modal || !deleteForm) {
+                return;
+            }
+
+            deleteForm.action = button.dataset.deleteUrl || '';
+
+            if (modalName) {
+                modalName.textContent = button.dataset.reviewName || 'Product Review';
+            }
+
+            modal.hidden = false;
+        });
+    });
+
+    cancelButtons.forEach(function (button) {
+        button.addEventListener('click', closeDeleteModal);
+    });
+
+    if (modal) {
+        modal.addEventListener('click', function (event) {
+            if (event.target === modal) {
+                closeDeleteModal();
+            }
+        });
+    }
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && modal && !modal.hidden) {
+            closeDeleteModal();
+        }
+    });
+
+    document.querySelectorAll('[data-review-toast]').forEach(function (toast) {
+        const closeButton = toast.querySelector('[data-review-toast-close]');
+
+        if (closeButton) {
+            closeButton.addEventListener('click', function () {
+                toast.remove();
+            });
+        }
+
+        window.setTimeout(function () {
+            if (toast.isConnected) {
+                toast.remove();
+            }
+        }, 4500);
+    });
+});
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Manage Reviews | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+        <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Reviews</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                    <div class="admin-alert admin-alert-danger" role="alert"><i class="fa-solid fa-circle-exclamation"></i><span>Select one or more reorder items before creating a purchase order.</span><button type="button" class="admin-alert-close" aria-label="Close error message"><i class="fa-solid fa-xmark"></i></button></div>
+                                                <div class="admin-reviews-page">
+
+    <div class="admin-page-header">
+        <div>
+            <div class="admin-page-eyebrow">CUSTOMER FEEDBACK</div>
+            <h1>Product Reviews</h1>
+            <p>Moderate customer feedback, ratings and product reviews.</p>
+        </div>
+
+        <div class="admin-page-actions">
+            <a href="http://127.0.0.1:8000/admin/dashboard" class="admin-button admin-button-secondary">
+                <i class="fa-solid fa-arrow-left"></i>
+                Dashboard
+            </a>
+        </div>
+    </div>
+
+    
+    
+    <div class="review-stat-grid">
+        <div class="admin-stat-card">
+            <div class="admin-stat-icon review-stat-total">
+                <i class="fa-solid fa-comments"></i>
+            </div>
+            <div>
+                <span>Total Reviews</span>
+                <strong>1</strong>
+            </div>
+        </div>
+
+        <div class="admin-stat-card">
+            <div class="admin-stat-icon review-stat-pending">
+                <i class="fa-solid fa-clock"></i>
+            </div>
+            <div>
+                <span>Pending</span>
+                <strong>0</strong>
+            </div>
+        </div>
+
+        <div class="admin-stat-card">
+            <div class="admin-stat-icon review-stat-approved">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+                <span>Approved</span>
+                <strong>1</strong>
+            </div>
+        </div>
+
+        <div class="admin-stat-card">
+            <div class="admin-stat-icon review-stat-rejected">
+                <i class="fa-solid fa-circle-xmark"></i>
+            </div>
+            <div>
+                <span>Rejected</span>
+                <strong>0</strong>
+            </div>
+        </div>
+    </div>
+
+    <section class="admin-panel review-filter-panel">
+        <form action="http://127.0.0.1:8000/admin/reviews" method="GET" class="review-filter-form">
+            <div class="review-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input
+                    type="search"
+                    name="search"
+                    value=""
+                    placeholder="Search customer, product or review..."
+                    aria-label="Search reviews"
+                >
+            </div>
+
+            <select name="status" aria-label="Filter by status">
+                <option value="">All statuses</option>
+                                    <option value="pending" >
+                        Pending
+                    </option>
+                                    <option value="approved" >
+                        Approved
+                    </option>
+                                    <option value="rejected" >
+                        Rejected
+                    </option>
+                            </select>
+
+            <select name="rating" aria-label="Filter by rating">
+                <option value="">All ratings</option>
+                                    <option
+                        value="5"
+                                            >
+                        5 Stars
+                    </option>
+                                    <option
+                        value="4"
+                                            >
+                        4 Stars
+                    </option>
+                                    <option
+                        value="3"
+                                            >
+                        3 Stars
+                    </option>
+                                    <option
+                        value="2"
+                                            >
+                        2 Stars
+                    </option>
+                                    <option
+                        value="1"
+                                            >
+                        1 Star
+                    </option>
+                            </select>
+
+            <button type="submit" class="admin-button admin-button-primary">
+                <i class="fa-solid fa-filter"></i>
+                Filter
+            </button>
+
+                    </form>
+    </section>
+
+    <section class="review-grid">
+                    
+            <article class="review-card">
+                <div class="review-product-media">
+                                            <div class="review-product-placeholder">
+                            <i class="fa-solid fa-image"></i>
+                            <span>No product image</span>
+                        </div>
+                    
+                    <span class="review-status review-status-approved">
+                        Approved
+                    </span>
+                </div>
+
+                <div class="review-card-body">
+                    <div class="review-product-name">
+                        <span>PRODUCT</span>
+                        <strong>Test Outfit 1</strong>
+                    </div>
+
+                    <div class="review-rating" aria-label="5 out of 5 stars">
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                    <i class="fa-solid fa-star"></i>
+                                                <span>5/5</span>
+                    </div>
+
+                    <h2>Product Review</h2>
+
+                    <p class="review-copy">A fixture review with no title field.</p>
+
+                    <div class="reviewer">
+                        <div class="reviewer-avatar">
+                            F
+                        </div>
+
+                        <div class="reviewer-details">
+                            <strong>Fixture customer</strong>
+
+                                                            <span>fixture@example.com</span>
+                                                    </div>
+
+                        <time datetime="2026-10-05T18:35:30+05:00">
+                            Oct 5, 2026
+                        </time>
+                    </div>
+                </div>
+
+                <div class="review-card-actions">
+                    <form action="http://127.0.0.1:8000/admin/reviews/1" method="POST">
+                        <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">                        <input type="hidden" name="_method" value="PUT">                        <input type="hidden" name="status" value="approved">
+
+                        <button
+                            type="submit"
+                            class="review-action review-action-approve"
+                            disabled                        >
+                            <i class="fa-solid fa-check"></i>
+                            Approved
+                        </button>
+                    </form>
+
+                    <form action="http://127.0.0.1:8000/admin/reviews/1" method="POST">
+                        <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">                        <input type="hidden" name="_method" value="PUT">                        <input type="hidden" name="status" value="pending">
+
+                        <button
+                            type="submit"
+                            class="review-action review-action-pending"
+                                                    >
+                            <i class="fa-regular fa-clock"></i>
+                            Pending
+                        </button>
+                    </form>
+
+                    <form action="http://127.0.0.1:8000/admin/reviews/1" method="POST">
+                        <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">                        <input type="hidden" name="_method" value="PUT">                        <input type="hidden" name="status" value="rejected">
+
+                        <button
+                            type="submit"
+                            class="review-action review-action-reject"
+                                                    >
+                            <i class="fa-solid fa-ban"></i>
+                            Rejected
+                        </button>
+                    </form>
+
+                    <button
+                        type="button"
+                        class="review-action review-action-delete"
+                        data-review-delete
+                        data-review-id="1"
+                        data-delete-url="http://127.0.0.1:8000/admin/reviews/1"
+                    >
+                        <i class="fa-regular fa-trash-can"></i>
+                        Delete
+                    </button>
+                </div>
+            </article>
+            </section>
+
+    </div>
+
+<div class="review-modal-backdrop" data-review-modal hidden>
+    <div class="review-modal" role="dialog" aria-modal="true" aria-labelledby="review-delete-title">
+        <button type="button" class="review-modal-close" data-review-modal-cancel aria-label="Close">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="review-modal-icon">
+            <i class="fa-regular fa-trash-can"></i>
+        </div>
+
+        <div class="admin-page-eyebrow">PERMANENT ACTION</div>
+        <h2 id="review-delete-title">Delete this review?</h2>
+        <p>
+            <strong data-review-modal-name>Product Review</strong> will be permanently removed.
+            This action cannot be undone.
+        </p>
+
+        <div class="review-modal-actions">
+            <button type="button" class="admin-button admin-button-secondary" data-review-modal-cancel>
+                Cancel
+            </button>
+
+            <form method="POST" data-review-delete-form>
+                <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="admin-button review-delete-confirm">
+                    <i class="fa-regular fa-trash-can"></i>
+                    Delete Permanently
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+        <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

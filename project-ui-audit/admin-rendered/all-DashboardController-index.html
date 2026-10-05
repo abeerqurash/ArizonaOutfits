@@ -1,0 +1,3454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Admin Dashboard | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+        <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Dashboard</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                <div id="dashboardLoadingOverlay" class="dashboard-loading-overlay d-none">
+    <div class="dashboard-loading-spinner"></div>
+    <span>Loading dashboard...</span>
+</div>
+<div class="admin-page-header">
+
+    <div>
+        <span class="admin-page-eyebrow">
+            Store overview
+        </span>
+
+        <h2>
+            Welcome back, Administrator
+        </h2>
+
+        <p>
+            Here is a live overview of your products, orders,
+            customers, reviews and paid revenue.
+        </p>
+    </div>
+
+
+    <div class="admin-page-actions">
+
+        <a
+            href="http://127.0.0.1:8000/admin/orders"
+            class="admin-button admin-button-secondary">
+            <i class="fa-solid fa-bag-shopping"></i>
+            View Orders
+        </a>
+
+        <a
+            href="http://127.0.0.1:8000/admin/products/create"
+            class="admin-button admin-button-primary">
+            <i class="fa-solid fa-plus"></i>
+            Add Product
+        </a>
+
+    </div>
+
+</div>
+<div id="dashboard-content">
+    <div
+    class="admin-dashboard-filter"
+    id="adminDashboardFilter"
+    data-filter-url="http://127.0.0.1:8000/admin/dashboard/filter">
+    <div class="admin-dashboard-filter-heading">
+        <div>
+            <span class="admin-panel-eyebrow">
+                Dashboard period
+            </span>
+
+            <h3>
+                Filter dashboard data
+            </h3>
+        </div>
+
+        <div
+            class="admin-dashboard-filter-status"
+            id="dashboardFilterStatus"
+            aria-live="polite"></div>
+    </div>
+
+    <div class="admin-dashboard-filter-buttons">
+
+        <button
+            type="button"
+            class="admin-dashboard-filter-button"
+            data-dashboard-range="today">
+            Today
+        </button>
+
+        <button
+            type="button"
+            class="admin-dashboard-filter-button"
+            data-dashboard-range="7days">
+            Last 7 Days
+        </button>
+
+        <button
+            type="button"
+            class="admin-dashboard-filter-button"
+            data-dashboard-range="30days">
+            Last 30 Days
+        </button>
+
+        <button
+            type="button"
+            class="admin-dashboard-filter-button active"
+            data-dashboard-range="month">
+            This Month
+        </button>
+
+        <button
+            type="button"
+            class="admin-dashboard-filter-button"
+            data-dashboard-range="year">
+            This Year
+        </button>
+
+    </div>
+</div>
+
+<style>
+    .admin-dashboard-filter {
+        margin-bottom: 24px;
+        padding: 20px 22px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+    }
+
+    .admin-dashboard-filter-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 16px;
+    }
+
+    .admin-dashboard-filter-heading h3 {
+        margin: 4px 0 0;
+        color: #0f172a;
+        font-size: 18px;
+    }
+
+    .admin-dashboard-filter-buttons {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .admin-dashboard-filter-button {
+        appearance: none;
+        padding: 10px 15px;
+        background: #ffffff;
+        color: #475569;
+        border: 1px solid #cbd5e1;
+        border-radius: 9px;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease,
+            transform 0.2s ease;
+    }
+
+    .admin-dashboard-filter-button:hover {
+        color: #0f172a;
+        border-color: #64748b;
+        transform: translateY(-1px);
+    }
+
+    .admin-dashboard-filter-button.active {
+        background: #111827;
+        color: #ffffff;
+        border-color: #111827;
+    }
+
+    .admin-dashboard-filter-button:disabled {
+        cursor: wait;
+        opacity: 0.65;
+        transform: none;
+    }
+
+    .admin-dashboard-filter-status {
+        min-height: 20px;
+        color: #64748b;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .admin-dashboard-filter-status.is-loading {
+        color: #7c3aed;
+    }
+
+    .admin-dashboard-filter-status.is-error {
+        color: #dc2626;
+    }
+
+    .admin-dashboard-filter-status.is-success {
+        color: #15803d;
+    }
+
+    @media (max-width: 700px) {
+        .admin-dashboard-filter-heading {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .admin-dashboard-filter-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            width: 100%;
+        }
+
+        .admin-dashboard-filter-button {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 430px) {
+        .admin-dashboard-filter-buttons {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterContainer = document.getElementById(
+            'adminDashboardFilter'
+        );
+
+        if (!filterContainer) {
+            return;
+        }
+
+        const filterUrl = filterContainer.dataset.filterUrl;
+
+        const buttons = Array.from(
+            filterContainer.querySelectorAll(
+                '[data-dashboard-range]'
+            )
+        );
+
+        const statusElement = document.getElementById(
+            'dashboardFilterStatus'
+        );
+
+        const numberFormatter = new Intl.NumberFormat('en-PK');
+
+        const moneyFormatter = new Intl.NumberFormat('en-PK', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        function setStatus(message, type = '') {
+            if (!statusElement) {
+                return;
+            }
+
+            statusElement.textContent = message;
+
+            statusElement.classList.remove(
+                'is-loading',
+                'is-error',
+                'is-success'
+            );
+
+            if (type) {
+                statusElement.classList.add('is-' + type);
+            }
+        }
+
+        function setLoading(isLoading) {
+            buttons.forEach(function(button) {
+                button.disabled = isLoading;
+            });
+
+            filterContainer.classList.toggle(
+                'is-loading',
+                isLoading
+            );
+        }
+
+        function findStatisticCard(label) {
+            const cards = document.querySelectorAll(
+                '.admin-stat-card'
+            );
+
+            for (const card of cards) {
+                const labelElement = card.querySelector(
+                    '.admin-stat-label'
+                );
+
+                if (
+                    labelElement &&
+                    labelElement.textContent.trim() === label
+                ) {
+                    return card;
+                }
+            }
+
+            return null;
+        }
+
+        function updateStatistic(label, value, type = 'number') {
+            const card = findStatisticCard(label);
+
+            if (!card) {
+                return;
+            }
+
+            const valueElement = card.querySelector(
+                '.admin-stat-value'
+            );
+
+            if (!valueElement) {
+                return;
+            }
+
+            if (type === 'money') {
+                valueElement.textContent =
+                    '$' + moneyFormatter.format(Number(value || 0));
+
+                return;
+            }
+
+            valueElement.textContent = numberFormatter.format(
+                Number(value || 0)
+            );
+        }
+
+        function updateStatistics(statistics) {
+            updateStatistic(
+                'Total Products',
+                statistics.products
+            );
+
+            updateStatistic(
+                'Total Orders',
+                statistics.orders
+            );
+
+            updateStatistic(
+                'Pending Orders',
+                statistics.pending_orders
+            );
+
+            updateStatistic(
+                'Customers',
+                statistics.customers
+            );
+
+            updateStatistic(
+                'Pending Reviews',
+                statistics.pending_reviews
+            );
+
+            updateStatistic(
+                'Paid Revenue',
+                statistics.revenue,
+                'money'
+            );
+        }
+
+        function updateChartSummary(summary) {
+            const summaryItems = document.querySelectorAll(
+                '.admin-chart-summary > div'
+            );
+
+            if (summaryItems.length < 2) {
+                return;
+            }
+
+            const revenueLabel = summaryItems[0].querySelector(
+                'small'
+            );
+
+            const revenueValue = summaryItems[0].querySelector(
+                'strong'
+            );
+
+            const ordersLabel = summaryItems[1].querySelector(
+                'small'
+            );
+
+            const ordersValue = summaryItems[1].querySelector(
+                'strong'
+            );
+
+            if (revenueLabel) {
+                revenueLabel.textContent =
+                    summary.label + ' revenue';
+            }
+
+            if (revenueValue) {
+                revenueValue.textContent =
+                    '$' +
+                    moneyFormatter.format(
+                        Number(summary.revenue || 0)
+                    );
+            }
+
+            if (ordersLabel) {
+                ordersLabel.textContent =
+                    summary.label + ' orders';
+            }
+
+            if (ordersValue) {
+                ordersValue.textContent =
+                    numberFormatter.format(
+                        Number(summary.orders || 0)
+                    );
+            }
+        }
+
+        function updateChart(chartData) {
+            if (
+                typeof Chart === 'undefined' ||
+                !chartData
+            ) {
+                return;
+            }
+
+            const chart = Chart.getChart('adminSalesChart');
+
+            if (!chart) {
+                return;
+            }
+
+            chart.data.labels = chartData.labels || [];
+
+            if (chart.data.datasets[0]) {
+                chart.data.datasets[0].data =
+                    chartData.revenue || [];
+            }
+
+            if (chart.data.datasets[1]) {
+                chart.data.datasets[1].data =
+                    chartData.orders || [];
+            }
+
+            chart.update();
+        }
+
+        async function loadDashboardRange(button) {
+            const range = button.dataset.dashboardRange;
+
+            setLoading(true);
+            setStatus('Updating dashboard…', 'loading');
+
+            try {
+                const requestUrl = new URL(
+                    filterUrl,
+                    window.location.origin
+                );
+
+                requestUrl.searchParams.set('range', range);
+
+                const response = await fetch(
+                    requestUrl.toString(), {
+                        method: 'GET',
+                        headers: {
+                            Accept: 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        credentials: 'same-origin'
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(
+                        data.message ||
+                        'Dashboard data could not be loaded.'
+                    );
+                }
+
+                updateStatistics(data.statistics);
+                updateChartSummary(data.chart_summary);
+                updateChart(data.chart_data);
+                updateRecentOrders(data.recent_orders_html);
+                updateDashboardAlerts(data.dashboard_alerts_html);
+                updateLatestReviews(data.latest_reviews_html);
+                updateOrderOverview(data.order_overview_html);
+                updateBestSellers(data.best_sellers_html);
+                updateLowStockProducts(
+                    data.low_stock_products_html
+                );
+                updateCustomerAnalytics(
+    response.customer_analytics_html
+);
+
+                buttons.forEach(function(filterButton) {
+                    filterButton.classList.toggle(
+                        'active',
+                        filterButton === button
+                    );
+                });
+
+                setStatus(
+                    'Showing ' + data.range_label,
+                    'success'
+                );
+            } catch (error) {
+                console.error(
+                    'Dashboard filter error:',
+                    error
+                );
+
+                setStatus(
+                    error.message ||
+                    'Something went wrong while filtering.',
+                    'error'
+                );
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                if (
+                    button.disabled ||
+                    button.classList.contains('active')
+                ) {
+                    return;
+                }
+
+                loadDashboardRange(button);
+            });
+        });
+    });
+
+    function updateRecentOrders(html) {
+        const recentOrdersBody = document.getElementById(
+            'dashboardRecentOrdersBody'
+        );
+
+        if (!recentOrdersBody || typeof html !== 'string') {
+            return;
+        }
+
+        recentOrdersBody.innerHTML = html;
+    }
+
+    function updateDashboardAlerts(html) {
+        const alertsContainer = document.getElementById(
+            'dashboardAlertsContainer'
+        );
+
+        if (
+            !alertsContainer ||
+            typeof html !== 'string'
+        ) {
+            return;
+        }
+
+        alertsContainer.innerHTML = html;
+    }
+
+    function updateLatestReviews(html) {
+        const container = document.getElementById(
+            "latestReviewsContainer"
+        );
+
+        if (!container || typeof html !== "string") {
+            return;
+        }
+
+        container.innerHTML = html;
+    }
+
+    function updateOrderOverview(html) {
+        const container = document.getElementById(
+            'orderOverviewContainer'
+        );
+
+        if (container && typeof html === 'string') {
+            container.innerHTML = html;
+        }
+    }
+
+    function updateBestSellers(html) {
+        const container = document.getElementById(
+            'bestSellersContainer'
+        );
+
+        if (container && typeof html === 'string') {
+            container.innerHTML = html;
+        }
+    }
+
+    function updateLowStockProducts(html) {
+        const container = document.getElementById(
+            'lowStockProductsContainer'
+        );
+
+        if (container && typeof html === 'string') {
+            container.innerHTML = html;
+        }
+    }
+
+    function updateCustomerAnalytics(html) {
+        const container = document.getElementById(
+            'customerAnalyticsContainer'
+        );
+
+        if (container && typeof html === 'string') {
+            container.innerHTML = html;
+        }
+    }
+</script>    
+    <section class="admin-statistics-grid">
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-blue">
+                    <i class="fa-solid fa-box-open"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Total Products
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                14
+            </strong>
+
+            <a href="http://127.0.0.1:8000/admin/products">
+                Manage products
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-purple">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Total Orders
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                0
+            </strong>
+
+            <a href="http://127.0.0.1:8000/admin/orders">
+                Manage orders
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-orange">
+                    <i class="fa-regular fa-clock"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Pending Orders
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                0
+            </strong>
+
+            <a
+                href="http://127.0.0.1:8000/admin/orders?order_status=pending">
+                View pending orders
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-green">
+                    <i class="fa-solid fa-users"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Customers
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                0
+            </strong>
+
+            <a href="http://127.0.0.1:8000/admin/customers">
+                Manage customers
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-yellow">
+                    <i class="fa-solid fa-star"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Pending Reviews
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                0
+            </strong>
+
+            <a
+                href="http://127.0.0.1:8000/admin/reviews?status=pending">
+                Moderate reviews
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-dark">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Paid Revenue
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                $0.00
+            </strong>
+
+            <a href="http://127.0.0.1:8000/admin/orders">
+                View paid orders
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+    </section>
+
+        <div id="dashboardAlertsContainer">
+        <section class="admin-dashboard-alert-centre">
+
+    <div class="admin-dashboard-alert-heading">
+
+        <div>
+            <span class="admin-page-eyebrow">
+                Attention required
+            </span>
+
+            <h3>
+                Dashboard Alerts
+            </h3>
+
+            <p>
+                Important store issues that may require administrator action.
+            </p>
+        </div>
+
+        <div class="admin-alert-summary">
+
+            <span>
+                <strong>
+                    0
+                </strong>
+
+                Total
+            </span>
+
+            
+        </div>
+
+    </div>
+
+    
+        <div class="admin-dashboard-all-clear">
+
+            <span>
+                <i class="fa-solid fa-circle-check"></i>
+            </span>
+
+            <div>
+                <strong>
+                    Everything looks good
+                </strong>
+
+                <p>
+                    There are currently no store issues requiring your
+                    attention.
+                </p>
+            </div>
+
+        </div>
+
+    
+</section>
+
+<style>
+    .admin-dashboard-alert-centre {
+        margin-bottom: 24px;
+        padding: 24px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+    }
+
+    .admin-dashboard-alert-heading {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 20px;
+    }
+
+    .admin-dashboard-alert-heading h3 {
+        margin: 5px 0 0;
+        color: #0f172a;
+        font-size: 20px;
+    }
+
+    .admin-dashboard-alert-heading p {
+        margin: 7px 0 0;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .admin-alert-summary {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .admin-alert-summary span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 12px;
+        color: #475569;
+        background: #f1f5f9;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .admin-alert-summary strong {
+        color: #0f172a;
+    }
+
+    .admin-alert-summary .admin-alert-summary-critical {
+        color: #b91c1c;
+        background: #fee2e2;
+    }
+
+    .admin-alert-summary-critical strong {
+        color: #991b1b;
+    }
+
+    .admin-dashboard-alert-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .admin-dashboard-alert {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 15px;
+        padding: 16px;
+        border: 1px solid transparent;
+        border-radius: 12px;
+    }
+
+    .admin-dashboard-alert-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 11px;
+        font-size: 17px;
+    }
+
+    .admin-dashboard-alert-content {
+        min-width: 0;
+    }
+
+    .admin-dashboard-alert-content strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #0f172a;
+        font-size: 14px;
+    }
+
+    .admin-dashboard-alert-content p {
+        margin: 0;
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.55;
+    }
+
+    .admin-dashboard-alert > a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #0f172a;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .admin-dashboard-alert > a:hover {
+        text-decoration: underline;
+    }
+
+    .admin-dashboard-alert-danger {
+        background: #fff7f7;
+        border-color: #fecaca;
+    }
+
+    .admin-dashboard-alert-danger
+    .admin-dashboard-alert-icon {
+        color: #b91c1c;
+        background: #fee2e2;
+    }
+
+    .admin-dashboard-alert-warning {
+        background: #fffbeb;
+        border-color: #fde68a;
+    }
+
+    .admin-dashboard-alert-warning
+    .admin-dashboard-alert-icon {
+        color: #b45309;
+        background: #fef3c7;
+    }
+
+    .admin-dashboard-alert-info {
+        background: #eff6ff;
+        border-color: #bfdbfe;
+    }
+
+    .admin-dashboard-alert-info
+    .admin-dashboard-alert-icon {
+        color: #1d4ed8;
+        background: #dbeafe;
+    }
+
+    .admin-dashboard-alert-notice {
+        background: #faf5ff;
+        border-color: #e9d5ff;
+    }
+
+    .admin-dashboard-alert-notice
+    .admin-dashboard-alert-icon {
+        color: #7e22ce;
+        background: #f3e8ff;
+    }
+
+    .admin-dashboard-all-clear {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 18px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 12px;
+    }
+
+    .admin-dashboard-all-clear > span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 44px;
+        width: 44px;
+        height: 44px;
+        color: #15803d;
+        background: #dcfce7;
+        border-radius: 50%;
+        font-size: 18px;
+    }
+
+    .admin-dashboard-all-clear strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #166534;
+        font-size: 14px;
+    }
+
+    .admin-dashboard-all-clear p {
+        margin: 0;
+        color: #4d7c5a;
+        font-size: 13px;
+    }
+
+    @media (max-width: 800px) {
+        .admin-dashboard-alert-heading {
+            flex-direction: column;
+        }
+
+        .admin-dashboard-alert {
+            grid-template-columns: auto minmax(0, 1fr);
+        }
+
+        .admin-dashboard-alert > a {
+            grid-column: 2;
+            justify-self: flex-start;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .admin-dashboard-alert-centre {
+            padding: 16px;
+        }
+
+        .admin-alert-summary {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .admin-dashboard-alert {
+            grid-template-columns: 1fr;
+        }
+
+        .admin-dashboard-alert-icon {
+            width: 38px;
+            height: 38px;
+        }
+
+        .admin-dashboard-alert > a {
+            grid-column: 1;
+        }
+    }
+</style>    </div>
+
+    <section class="admin-panel admin-sales-chart-panel">
+
+        <div class="admin-panel-header">
+
+            <div>
+                <span class="admin-panel-eyebrow">
+                    Sales performance
+                </span>
+
+                <h3>
+                    Revenue and Orders
+                </h3>
+
+                <p class="admin-chart-description">
+                    Monthly paid revenue and order activity during the
+                    last 12 months.
+                </p>
+            </div>
+
+            <div class="admin-chart-summary">
+
+                <div>
+                    <small>
+                        October 2026 revenue
+                    </small>
+
+                    <strong>
+                        $0.00
+                    </strong>
+                </div>
+
+                <div>
+                    <small>
+                        October 2026 orders
+                    </small>
+
+                    <strong>
+                        0
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="admin-chart-wrapper">
+
+            <canvas
+                id="adminSalesChart"
+                aria-label="Monthly revenue and orders chart"
+                role="img"></canvas>
+
+        </div>
+
+    </section>
+    <section class="admin-analytics-widgets">
+
+    
+    <article class="admin-panel admin-analytics-widget">
+
+        <div class="admin-panel-header">
+
+            <div>
+                <span class="admin-panel-eyebrow">
+                    Revenue comparison
+                </span>
+
+                <h3>
+                    Monthly Revenue
+                </h3>
+            </div>
+
+            <span
+                class="admin-growth-indicator
+                    admin-growth-indicator-same"
+            >
+                                    <i class="fa-solid fa-minus"></i>
+                
+                0.0%
+            </span>
+
+        </div>
+
+        <div class="admin-revenue-comparison">
+
+            <div class="admin-revenue-current">
+
+                <small>
+                    October 2026
+                </small>
+
+                <strong>
+                    $0.00
+                </strong>
+
+                <span>
+                    Current-month paid revenue
+                </span>
+
+            </div>
+
+            <div class="admin-revenue-previous">
+
+                <small>
+                    September 2026
+                </small>
+
+                <strong>
+                    $0.00
+                </strong>
+
+                <span>
+                    Previous-month paid revenue
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="admin-revenue-difference">
+
+            
+                <i class="fa-solid fa-circle-minus"></i>
+
+                <span>
+                    Revenue is unchanged from last month.
+                </span>
+
+            
+        </div>
+
+    </article>
+
+    
+    <article class="admin-panel admin-analytics-widget">
+
+        <div class="admin-panel-header">
+
+            <div>
+                <span class="admin-panel-eyebrow">
+                    Stock overview
+                </span>
+
+                <h3>
+                    Inventory Health
+                </h3>
+            </div>
+
+            <span class="admin-inventory-total">
+                14
+                products
+            </span>
+
+        </div>
+
+        <div class="admin-inventory-health-list">
+
+            <div class="admin-inventory-health-item">
+
+                <div class="admin-inventory-health-heading">
+
+                    <span>
+                        <i class="fa-solid fa-circle-check"></i>
+                        In Stock
+                    </span>
+
+                    <strong>
+                        14
+                    </strong>
+
+                </div>
+
+                <div class="admin-inventory-progress">
+
+                    <span
+                        class="admin-inventory-progress-in-stock"
+                        style="width: 100%;"
+                    ></span>
+
+                </div>
+
+                <small>
+                    100.0% of all products
+                </small>
+
+            </div>
+
+            <div class="admin-inventory-health-item">
+
+                <div class="admin-inventory-health-heading">
+
+                    <span>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Low Stock
+                    </span>
+
+                    <strong>
+                        0
+                    </strong>
+
+                </div>
+
+                <div class="admin-inventory-progress">
+
+                    <span
+                        class="admin-inventory-progress-low-stock"
+                        style="width: 0%;"
+                    ></span>
+
+                </div>
+
+                <small>
+                    0.0% of all products
+                </small>
+
+            </div>
+
+            <div class="admin-inventory-health-item">
+
+                <div class="admin-inventory-health-heading">
+
+                    <span>
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        Out of Stock
+                    </span>
+
+                    <strong>
+                        0
+                    </strong>
+
+                </div>
+
+                <div class="admin-inventory-progress">
+
+                    <span
+                        class="admin-inventory-progress-out-of-stock"
+                        style="width: 0%;"
+                    ></span>
+
+                </div>
+
+                <small>
+                    0.0% of all products
+                </small>
+
+            </div>
+
+            <div class="admin-inventory-health-item">
+
+                <div class="admin-inventory-health-heading">
+
+                    <span>
+                        <i class="fa-solid fa-file-pen"></i>
+                        Draft Products
+                    </span>
+
+                    <strong>
+                        0
+                    </strong>
+
+                </div>
+
+                <div class="admin-inventory-progress">
+
+                    <span
+                        class="admin-inventory-progress-draft"
+                        style="width: 0%;"
+                    ></span>
+
+                </div>
+
+                <small>
+                    0.0% of all products
+                </small>
+
+            </div>
+
+        </div>
+
+    </article>
+
+</section>
+
+<style>
+    .admin-analytics-widgets {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        margin-bottom: 24px;
+    }
+
+    .admin-analytics-widget {
+        min-width: 0;
+    }
+
+    .admin-growth-indicator,
+    .admin-inventory-total {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .admin-growth-indicator-up {
+        color: #15803d;
+        background: #dcfce7;
+    }
+
+    .admin-growth-indicator-down {
+        color: #b91c1c;
+        background: #fee2e2;
+    }
+
+    .admin-growth-indicator-same {
+        color: #475569;
+        background: #f1f5f9;
+    }
+
+    .admin-inventory-total {
+        color: #334155;
+        background: #f1f5f9;
+    }
+
+    .admin-revenue-comparison {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        padding: 24px;
+    }
+
+    .admin-revenue-current,
+    .admin-revenue-previous {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        padding: 18px;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+    }
+
+    .admin-revenue-current {
+        background: #f8fafc;
+    }
+
+    .admin-revenue-comparison small {
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .admin-revenue-comparison strong {
+        color: #0f172a;
+        font-size: 25px;
+        line-height: 1.2;
+    }
+
+    .admin-revenue-comparison span {
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .admin-revenue-difference {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin: 0 24px 24px;
+        padding: 14px;
+        color: #475569;
+        background: #f8fafc;
+        border-radius: 12px;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+    .admin-revenue-difference i {
+        margin-top: 3px;
+    }
+
+    .admin-inventory-health-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 24px;
+    }
+
+    .admin-inventory-health-item {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .admin-inventory-health-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .admin-inventory-health-heading span {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .admin-inventory-health-heading strong {
+        color: #0f172a;
+        font-size: 15px;
+    }
+
+    .admin-inventory-health-item small {
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .admin-inventory-progress {
+        position: relative;
+        width: 100%;
+        height: 8px;
+        overflow: hidden;
+        background: #e2e8f0;
+        border-radius: 999px;
+    }
+
+    .admin-inventory-progress span {
+        display: block;
+        min-width: 0;
+        height: 100%;
+        border-radius: inherit;
+    }
+
+    .admin-inventory-progress-in-stock {
+        background: #22c55e;
+    }
+
+    .admin-inventory-progress-low-stock {
+        background: #f59e0b;
+    }
+
+    .admin-inventory-progress-out-of-stock {
+        background: #ef4444;
+    }
+
+    .admin-inventory-progress-draft {
+        background: #64748b;
+    }
+
+    @media (max-width: 1050px) {
+        .admin-analytics-widgets {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .admin-revenue-comparison {
+            grid-template-columns: 1fr;
+            padding: 16px;
+        }
+
+        .admin-revenue-difference {
+            margin: 0 16px 16px;
+        }
+
+        .admin-inventory-health-list {
+            padding: 16px;
+        }
+    }
+</style>
+    <div id="customerAnalyticsContainer">
+        <section class="admin-customer-analytics">
+
+    <div class="admin-customer-kpi-grid">
+
+        <article class="admin-customer-kpi-card">
+
+            <span class="admin-customer-kpi-icon">
+                <i class="fa-solid fa-user-plus"></i>
+            </span>
+
+            <div>
+                <small>New customers this month</small>
+
+                <strong>
+                    0
+                </strong>
+
+                <p>
+                    Customers registered during
+                    October
+                </p>
+            </div>
+
+        </article>
+
+        <article class="admin-customer-kpi-card">
+
+            <span class="admin-customer-kpi-icon">
+                <i class="fa-solid fa-rotate"></i>
+            </span>
+
+            <div>
+                <small>Returning customers</small>
+
+                <strong>
+                    0
+                </strong>
+
+                <p>
+                    Customers with two or more paid orders
+                </p>
+            </div>
+
+        </article>
+
+        <article class="admin-customer-kpi-card">
+
+            <span class="admin-customer-kpi-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </span>
+
+            <div>
+                <small>Repeat purchase rate</small>
+
+                <strong>
+                    0.0%
+                </strong>
+
+                <p>
+                    Based on customers who completed purchases
+                </p>
+            </div>
+
+        </article>
+
+        <article class="admin-customer-kpi-card">
+
+            <span class="admin-customer-kpi-icon">
+                <i class="fa-solid fa-wallet"></i>
+            </span>
+
+            <div>
+                <small>Average customer spend</small>
+
+                <strong>
+                    Rs.
+                    0.00
+                </strong>
+
+                <p>
+                    Average paid revenue per customer
+                </p>
+            </div>
+
+        </article>
+
+    </div>
+
+    <article class="admin-panel admin-top-customers-panel">
+
+        <div class="admin-panel-header">
+
+            <div>
+                <span class="admin-panel-eyebrow">
+                    Customer leaderboard
+                </span>
+
+                <h3>
+                    Top Customers
+                </h3>
+
+                <p>
+                    Customers ranked by successfully paid revenue.
+                </p>
+            </div>
+
+            <span class="admin-top-customer-count">
+                0
+                paying customers
+            </span>
+
+        </div>
+
+        
+            <div class="admin-top-customers-empty">
+
+                <span>
+                    <i class="fa-solid fa-users"></i>
+                </span>
+
+                <strong>No customer purchases yet</strong>
+
+                <p>
+                    Customers will appear here after completing paid orders.
+                </p>
+
+            </div>
+
+        
+    </article>
+
+</section>
+
+<style>
+    .admin-customer-analytics {
+        margin-bottom: 24px;
+    }
+
+    .admin-customer-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+        margin-bottom: 24px;
+    }
+
+    .admin-customer-kpi-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        min-width: 0;
+        padding: 20px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 15px;
+    }
+
+    .admin-customer-kpi-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 44px;
+        width: 44px;
+        height: 44px;
+        color: #4338ca;
+        background: #eef2ff;
+        border-radius: 12px;
+        font-size: 17px;
+    }
+
+    .admin-customer-kpi-card > div {
+        min-width: 0;
+    }
+
+    .admin-customer-kpi-card small {
+        display: block;
+        margin-bottom: 7px;
+        color: #64748b;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .admin-customer-kpi-card strong {
+        display: block;
+        color: #0f172a;
+        font-size: 23px;
+        line-height: 1.2;
+    }
+
+    .admin-customer-kpi-card p {
+        margin: 7px 0 0;
+        color: #94a3b8;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .admin-top-customers-panel {
+        overflow: hidden;
+    }
+
+    .admin-top-customers-panel .admin-panel-header p {
+        margin: 6px 0 0;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    .admin-top-customer-count {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 12px;
+        color: #334155;
+        background: #f1f5f9;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .admin-top-customers-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .admin-top-customers-table {
+        width: 100%;
+        min-width: 850px;
+        border-collapse: collapse;
+    }
+
+    .admin-top-customers-table th {
+        padding: 13px 18px;
+        color: #64748b;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+        border-bottom: 1px solid #e2e8f0;
+        font-size: 11px;
+        font-weight: 700;
+        text-align: left;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .admin-top-customers-table td {
+        padding: 15px 18px;
+        color: #475569;
+        border-bottom: 1px solid #eef2f7;
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+    .admin-top-customers-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .admin-top-customers-table tbody tr:hover {
+        background: #f8fafc;
+    }
+
+    .admin-customer-identity {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 220px;
+    }
+
+    .admin-customer-avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 40px;
+        width: 40px;
+        height: 40px;
+        color: #3730a3;
+        background: #e0e7ff;
+        border-radius: 50%;
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .admin-customer-identity > div {
+        min-width: 0;
+    }
+
+    .admin-customer-identity strong {
+        display: block;
+        max-width: 210px;
+        overflow: hidden;
+        color: #0f172a;
+        font-size: 13px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .admin-customer-identity small {
+        display: block;
+        max-width: 210px;
+        margin-top: 4px;
+        overflow: hidden;
+        color: #94a3b8;
+        font-size: 11px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .admin-customer-view-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        color: #475569;
+        background: #f1f5f9;
+        border-radius: 9px;
+        text-decoration: none;
+    }
+
+    a.admin-customer-view-button:hover {
+        color: #ffffff;
+        background: #0f172a;
+    }
+
+    .admin-customer-view-disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+    }
+
+    .admin-top-customers-empty {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 46px 20px;
+        text-align: center;
+    }
+
+    .admin-top-customers-empty > span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 54px;
+        height: 54px;
+        margin-bottom: 14px;
+        color: #64748b;
+        background: #f1f5f9;
+        border-radius: 50%;
+        font-size: 20px;
+    }
+
+    .admin-top-customers-empty strong {
+        color: #0f172a;
+        font-size: 15px;
+    }
+
+    .admin-top-customers-empty p {
+        margin: 7px 0 0;
+        color: #64748b;
+        font-size: 13px;
+    }
+
+    @media (max-width: 1200px) {
+        .admin-customer-kpi-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 650px) {
+        .admin-customer-kpi-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .admin-customer-kpi-card {
+            padding: 16px;
+        }
+    }
+</style>    </div>
+    
+    <section class="admin-dashboard-layout">
+
+        <div class="admin-dashboard-main-column">
+
+            
+            <div class="admin-panel">
+
+                <div class="admin-panel-header">
+
+                    <div>
+                        <span class="admin-panel-eyebrow">
+                            Latest activity
+                        </span>
+
+                        <h3>
+                            Recent Orders
+                        </h3>
+                    </div>
+
+                    <a href="http://127.0.0.1:8000/admin/orders">
+                        View all orders
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+                <div class="admin-table-wrapper">
+
+                    <table class="admin-table">
+
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="dashboardRecentOrdersBody">
+                            <tr>
+        <td colspan="7">
+
+            <div class="admin-empty-state">
+
+                <span>
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </span>
+
+                <h4>
+                    No orders found
+                </h4>
+
+                <p>
+                    No orders were placed during this selected period.
+                </p>
+
+            </div>
+
+        </td>
+    </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            
+            <div id="lowStockProductsContainer">
+
+                <div class="admin-panel">
+
+    <div class="admin-panel-header">
+
+        <div>
+            <span class="admin-panel-eyebrow">
+                Inventory alerts
+            </span>
+
+            <h3>
+                Low-Stock Products
+            </h3>
+        </div>
+
+        <a href="http://127.0.0.1:8000/admin/products">
+            Manage inventory
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+    </div>
+
+    <div class="admin-table-wrapper">
+
+        <table class="admin-table">
+
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>SKU</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                
+                <tr>
+                    <td colspan="5">
+
+                        <div class="admin-empty-state">
+
+                            <span>
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </span>
+
+                            <h4>
+                                Inventory looks healthy
+                            </h4>
+
+                            <p>
+                                No products have stock at or below
+                                5 units.
+                            </p>
+
+                        </div>
+
+                    </td>
+                </tr>
+
+                
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+            </div>
+
+            
+            <div id="latestReviewsContainer">
+
+                <div class="admin-panel">
+
+    <div class="admin-panel-header">
+
+        <div>
+            <span class="admin-panel-eyebrow">
+                Customer feedback
+            </span>
+
+            <h3>
+                Latest Reviews
+            </h3>
+        </div>
+
+        <a href="http://127.0.0.1:8000/admin/reviews">
+            View all reviews
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+    </div>
+
+    <div class="admin-table-wrapper">
+
+        <table class="admin-table">
+
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Product</th>
+                    <th>Rating</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                
+                
+                <tr>
+
+                    <td>
+                        <strong>
+                            Fixture customer
+                        </strong>
+
+                                                <small>
+                            fixture@example.com
+                        </small>
+                                            </td>
+
+                    <td>
+                        Test Outfit 1
+                    </td>
+
+                    <td>
+                        <strong>
+                            5/5
+                        </strong>
+
+                        <small>
+                                                                                            ★
+                                                                                                                                ★
+                                                                                                                                ★
+                                                                                                                                ★
+                                                                                                                                ★
+                                                                                        </small>
+                    </td>
+
+                    <td>
+                        <span
+                            class="admin-badge admin-badge-approved">
+                            Approved
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="admin-table-date">
+                            Oct 05, 2026
+                        </span>
+                    </td>
+
+                </tr>
+
+                
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+            </div>
+
+        </div>
+
+        <aside class="admin-dashboard-side-column">
+
+            
+
+            <div id="orderOverviewContainer">
+
+                <div class="admin-panel">
+
+    <div class="admin-panel-header">
+
+        <div>
+            <span class="admin-panel-eyebrow">
+                Fulfilment
+            </span>
+
+            <h3>
+                Order Overview
+            </h3>
+        </div>
+
+    </div>
+
+    <div class="admin-section-links">
+
+        <a
+            href="http://127.0.0.1:8000/admin/orders?order_status=pending">
+            <i class="fa-regular fa-clock"></i>
+
+            <span>
+                Pending
+                (0)
+            </span>
+
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+        <a
+            href="http://127.0.0.1:8000/admin/orders?order_status=processing">
+            <i class="fa-solid fa-box"></i>
+
+            <span>
+                Processing
+                (0)
+            </span>
+
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+        <a
+            href="http://127.0.0.1:8000/admin/orders?order_status=completed">
+            <i class="fa-solid fa-circle-check"></i>
+
+            <span>
+                Completed
+                (0)
+            </span>
+
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+        <a
+            href="http://127.0.0.1:8000/admin/orders?order_status=cancelled">
+            <i class="fa-solid fa-circle-xmark"></i>
+
+            <span>
+                Cancelled
+                (0)
+            </span>
+
+            <i class="fa-solid fa-arrow-right"></i>
+        </a>
+
+    </div>
+
+</div>
+            </div>
+            
+            <div id="bestSellersContainer">
+
+                <div class="admin-panel">
+
+    <div class="admin-panel-header">
+
+        <div>
+            <span class="admin-panel-eyebrow">
+                Product performance
+            </span>
+
+            <h3>
+                Best Sellers
+            </h3>
+        </div>
+
+    </div>
+
+    <div class="admin-section-links">
+
+        
+        <div class="admin-empty-state">
+
+            <span>
+                <i class="fa-solid fa-chart-line"></i>
+            </span>
+
+            <h4>
+                No sales data yet
+            </h4>
+
+            <p>
+                Best-selling products will appear here.
+            </p>
+
+        </div>
+
+        
+    </div>
+
+</div>
+            </div>
+
+            
+            <div class="admin-panel">
+
+                <div class="admin-panel-header">
+
+                    <div>
+                        <span class="admin-panel-eyebrow">
+                            Shortcuts
+                        </span>
+
+                        <h3>
+                            Quick Actions
+                        </h3>
+                    </div>
+
+                </div>
+
+                <div class="admin-quick-actions">
+
+                    <a href="http://127.0.0.1:8000/admin/products/create">
+
+                        <span class="admin-quick-action-icon">
+                            <i class="fa-solid fa-plus"></i>
+                        </span>
+
+                        <span>
+                            <strong>Add Product</strong>
+                            <small>Create a new store product</small>
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+                    <a href="http://127.0.0.1:8000/admin/orders">
+
+                        <span class="admin-quick-action-icon">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </span>
+
+                        <span>
+                            <strong>Manage Orders</strong>
+                            <small>Process customer orders</small>
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+                    <a href="http://127.0.0.1:8000/admin/coupons/create">
+
+                        <span class="admin-quick-action-icon">
+                            <i class="fa-solid fa-ticket"></i>
+                        </span>
+
+                        <span>
+                            <strong>Create Coupon</strong>
+                            <small>Add a discount coupon</small>
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+                    <a href="http://127.0.0.1:8000/admin/posts/create">
+
+                        <span class="admin-quick-action-icon">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </span>
+
+                        <span>
+                            <strong>Create Blog Post</strong>
+                            <small>Publish new content</small>
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+                    <a href="http://127.0.0.1:8000/admin/ecommerce-settings">
+
+                        <span class="admin-quick-action-icon">
+                            <i class="fa-solid fa-gear"></i>
+                        </span>
+
+                        <span>
+                            <strong>Store Settings</strong>
+                            <small>Payments, shipping and tax</small>
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            
+            <div class="admin-panel">
+
+                <div class="admin-panel-header">
+
+                    <div>
+                        <span class="admin-panel-eyebrow">
+                            Management
+                        </span>
+
+                        <h3>
+                            Store Sections
+                        </h3>
+                    </div>
+
+                </div>
+
+                <div class="admin-section-links">
+
+                    <a href="http://127.0.0.1:8000/admin/product-categories">
+                        <i class="fa-solid fa-layer-group"></i>
+
+                        <span>Product Categories</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="http://127.0.0.1:8000/admin/product-tags">
+                        <i class="fa-solid fa-tags"></i>
+
+                        <span>Product Tags</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="http://127.0.0.1:8000/admin/reviews">
+                        <i class="fa-solid fa-star"></i>
+
+                        <span>Customer Reviews</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="http://127.0.0.1:8000/admin/customers">
+                        <i class="fa-solid fa-users"></i>
+
+                        <span>Customers</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </section>
+</div>
+<style>
+
+    /* ============================================================
+       DASHBOARD INVENTORY ALERTS
+    ============================================================ */
+
+    .dashboard-inventory-panel {
+        overflow: hidden;
+        margin: 18px 0;
+        border: 1px solid #e6eaf1;
+        border-radius: 11px;
+        background: #fff;
+        box-shadow: none;
+    }
+
+    .dashboard-inventory-header {
+        gap: 18px;
+        padding: 16px 18px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .dashboard-inventory-header h3 {
+        margin: 3px 0 0;
+        color: #172033;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .dashboard-inventory-header .admin-panel-eyebrow {
+        color: #635bff;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: .12em;
+    }
+
+    .dashboard-inventory-description {
+        max-width: 560px;
+        margin: 5px 0 0;
+        color: #8a93a4;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .dashboard-inventory-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dashboard-inventory-summary {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .dashboard-inventory-summary span {
+        display: inline-flex;
+        align-items: center;
+        min-height: 25px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        background: #f3f5f8;
+        color: #586174;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-summary span.is-critical {
+        background: #ffeded;
+        color: #c13b3b;
+    }
+
+    .dashboard-inventory-view-all,
+    .dashboard-inventory-open {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        text-decoration: none;
+        transition:
+            border-color .18s ease,
+            background .18s ease,
+            color .18s ease,
+            transform .18s ease;
+    }
+
+    .dashboard-inventory-view-all {
+        min-height: 30px;
+        padding: 5px 10px;
+        border: 1px solid #e2e6ed;
+        border-radius: 999px;
+        background: #fff;
+        color: #5d57f4;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-view-all:hover {
+        border-color: #635bff;
+        background: #635bff;
+        color: #fff;
+    }
+
+    .dashboard-inventory-list {
+        padding: 6px 18px 12px;
+    }
+
+    .dashboard-inventory-item {
+        display: grid;
+        grid-template-columns: 34px minmax(180px, 1fr) auto 70px auto;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        padding: 11px 0;
+        border-bottom: 1px solid #f0f2f6;
+    }
+
+    .dashboard-inventory-item:last-child {
+        border-bottom: 0;
+    }
+
+    .dashboard-inventory-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        font-size: 12px;
+    }
+
+    .dashboard-inventory-icon.is-warning {
+        background: #fff4df;
+        color: #d88716;
+    }
+
+    .dashboard-inventory-icon.is-critical {
+        background: #ffeded;
+        color: #c13b3b;
+    }
+
+    .dashboard-inventory-product {
+        min-width: 0;
+    }
+
+    .dashboard-inventory-product strong,
+    .dashboard-inventory-product span {
+        display: block;
+    }
+
+    .dashboard-inventory-product strong {
+        overflow: hidden;
+        color: #172033;
+        font-size: 10px;
+        font-weight: 800;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-product span {
+        margin-top: 3px;
+        color: #929aaa;
+        font-size: 8px;
+    }
+
+    .dashboard-inventory-status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 23px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-status.is-warning {
+        background: #fff4dc;
+        color: #a86a00;
+    }
+
+    .dashboard-inventory-status.is-critical {
+        background: #ffeded;
+        color: #c13b3b;
+    }
+
+    .dashboard-inventory-stock {
+        text-align: center;
+    }
+
+    .dashboard-inventory-stock small,
+    .dashboard-inventory-stock strong {
+        display: block;
+    }
+
+    .dashboard-inventory-stock small {
+        color: #929aaa;
+        font-size: 7px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .dashboard-inventory-stock strong {
+        margin-top: 2px;
+        color: #172033;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .dashboard-inventory-open {
+        min-height: 29px;
+        padding: 5px 9px;
+        border: 1px solid #e2e6ed;
+        border-radius: 999px;
+        color: #5d57f4;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-open:hover {
+        border-color: #635bff;
+        background: #635bff;
+        color: #fff;
+        transform: translateX(1px);
+    }
+
+    @media (max-width: 900px) {
+        .dashboard-inventory-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .dashboard-inventory-header-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .dashboard-inventory-item {
+            grid-template-columns: 34px minmax(0, 1fr) auto;
+        }
+
+        .dashboard-inventory-status {
+            grid-column: 2;
+            justify-self: start;
+        }
+
+        .dashboard-inventory-stock {
+            grid-column: 3;
+            grid-row: 1;
+        }
+
+        .dashboard-inventory-open {
+            grid-column: 3;
+            grid-row: 2;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .dashboard-inventory-panel {
+            border-radius: 10px;
+        }
+
+        .dashboard-inventory-header,
+        .dashboard-inventory-list {
+            padding-right: 14px;
+            padding-left: 14px;
+        }
+
+        .dashboard-inventory-header-actions {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .dashboard-inventory-summary {
+            flex-wrap: wrap;
+        }
+
+        .dashboard-inventory-view-all {
+            width: 100%;
+        }
+
+        .dashboard-inventory-item {
+            grid-template-columns: 34px minmax(0, 1fr);
+            gap: 9px 10px;
+            padding: 13px 0;
+        }
+
+        .dashboard-inventory-product {
+            grid-column: 2;
+        }
+
+        .dashboard-inventory-product strong {
+            white-space: normal;
+        }
+
+        .dashboard-inventory-status {
+            grid-column: 2;
+            grid-row: auto;
+        }
+
+        .dashboard-inventory-stock {
+            grid-column: 2;
+            grid-row: auto;
+            justify-self: start;
+            text-align: left;
+        }
+
+        .dashboard-inventory-stock small,
+        .dashboard-inventory-stock strong {
+            display: inline;
+        }
+
+        .dashboard-inventory-stock strong {
+            margin-left: 4px;
+        }
+
+        .dashboard-inventory-open {
+            grid-column: 2;
+            grid-row: auto;
+            width: max-content;
+        }
+    }
+
+    .admin-sales-chart-panel {
+        margin-bottom: 24px;
+    }
+
+    .admin-chart-description {
+        margin: 6px 0 0;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .admin-chart-summary {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+    }
+
+    .admin-chart-summary>div {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .admin-chart-summary small {
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .admin-chart-summary strong {
+        color: #0f172a;
+        font-size: 18px;
+    }
+
+    .admin-chart-wrapper {
+        position: relative;
+        width: 100%;
+        height: 390px;
+        padding: 20px 24px 24px;
+    }
+
+    @media (max-width: 900px) {
+        .admin-sales-chart-panel .admin-panel-header {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .admin-chart-summary {
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .admin-chart-summary {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .admin-chart-summary>div {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .admin-chart-wrapper {
+            height: 320px;
+            padding: 16px 12px 20px;
+        }
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script
+    type="application/json"
+    id="adminSalesChartData">
+    {"labels":["Nov 2025","Dec 2025","Jan 2026","Feb 2026","Mar 2026","Apr 2026","May 2026","Jun 2026","Jul 2026","Aug 2026","Sep 2026","Oct 2026"],"revenue":[0,0,0,0,0,0,0,0,0,0,0,0],"orders":[0,0,0,0,0,0,0,0,0,0,0,0]}</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chartCanvas = document.getElementById(
+            'adminSalesChart'
+        );
+
+        const chartDataElement = document.getElementById(
+            'adminSalesChartData'
+        );
+
+        if (
+            !chartCanvas ||
+            !chartDataElement ||
+            typeof Chart === 'undefined'
+        ) {
+            return;
+        }
+
+        let chartData;
+
+        try {
+            chartData = JSON.parse(
+                chartDataElement.textContent.trim()
+            );
+        } catch (error) {
+            console.error(
+                'Unable to parse dashboard chart data:',
+                error
+            );
+
+            return;
+        }
+
+        window.adminSalesChart = new Chart(chartCanvas, {
+            type: 'line',
+
+            data: {
+                labels: chartData.labels || [],
+
+                datasets: [{
+                        label: 'Paid Revenue',
+                        data: chartData.revenue || [],
+                        borderColor: '#111827',
+                        backgroundColor: 'rgba(17, 24, 39, 0.10)',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#111827',
+                        fill: true,
+                        tension: 0.35,
+                        yAxisID: 'revenueAxis'
+                    },
+                    {
+                        label: 'Orders',
+                        data: chartData.orders || [],
+                        borderColor: '#7c3aed',
+                        backgroundColor: 'rgba(124, 58, 237, 0.08)',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#7c3aed',
+                        fill: false,
+                        tension: 0.35,
+                        yAxisID: 'ordersAxis'
+                    }
+                ]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 8,
+                            boxHeight: 8,
+                            padding: 20,
+
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        }
+                    },
+
+                    tooltip: {
+                        padding: 12,
+                        displayColors: true,
+
+                        callbacks: {
+                            label: function(context) {
+                                if (
+                                    context.dataset.yAxisID ===
+                                    'revenueAxis'
+                                ) {
+                                    const revenue = Number(
+                                        context.parsed.y || 0
+                                    );
+
+                                    return (
+                                        'Paid Revenue: $' +
+                                        revenue.toLocaleString(
+                                            'en-US', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            }
+                                        )
+                                    );
+                                }
+
+                                return (
+                                    'Orders: ' +
+                                    Number(
+                                        context.parsed.y || 0
+                                    ).toLocaleString('en-US')
+                                );
+                            }
+                        }
+                    }
+                },
+
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+
+                        ticks: {
+                            color: '#64748b',
+                            maxRotation: 0,
+                            autoSkip: true,
+                            maxTicksLimit: 12
+                        }
+                    },
+
+                    revenueAxis: {
+                        type: 'linear',
+                        position: 'left',
+                        beginAtZero: true,
+
+                        grid: {
+                            color: 'rgba(148, 163, 184, 0.18)'
+                        },
+
+                        ticks: {
+                            color: '#64748b',
+
+                            callback: function(value) {
+                                return (
+                                    '$' +
+                                    Number(value).toLocaleString(
+                                        'en-US'
+                                    )
+                                );
+                            }
+                        },
+
+                        title: {
+                            display: true,
+                            text: 'Paid Revenue'
+                        }
+                    },
+
+                    ordersAxis: {
+                        type: 'linear',
+                        position: 'right',
+                        beginAtZero: true,
+
+                        grid: {
+                            drawOnChartArea: false
+                        },
+
+                        ticks: {
+                            color: '#64748b',
+                            precision: 0
+                        },
+
+                        title: {
+                            display: true,
+                            text: 'Orders'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+        <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

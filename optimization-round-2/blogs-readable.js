@@ -1,0 +1,170 @@
+const heroSection = document.querySelector(".home-hero"), navCover = document.querySelector(".navigation-cover"), navbar = document.querySelector(".navbar");
+window.addEventListener("scroll", () => {
+  const e = heroSection.offsetHeight;
+  window.scrollY > e / 2 ? (navCover.classList.add("active"), navbar.classList.add("scrolled")) : (navCover.classList.remove("active"), navbar.classList.remove("scrolled"));
+});
+const button = document.querySelectorAll(".moving-circle");
+button.forEach((e) => {
+  e.addEventListener("mousemove", (n) => {
+    const t = e.getBoundingClientRect(), s = n.clientX - t.left - t.width / 2, o = n.clientY - t.top - t.height / 2, r = s / 4, c = o / 4;
+    e.style.transform = `translate3d(${r}px, ${c}px, 0) scale(1.15)`;
+  }), e.addEventListener("mouseleave", () => {
+    e.style.transform = "translate3d(0, 0, 0) scale(1)";
+  });
+});
+const buttons = document.querySelectorAll(".btn-style-1, .btn-style-2, .btn-style-3");
+buttons.forEach((e) => {
+  const n = e.querySelector(".button-text");
+  n && (e.addEventListener("mousemove", (t) => {
+    const s = e.getBoundingClientRect(), o = t.clientX - s.left - s.width / 2, r = t.clientY - s.top - s.height / 2;
+    n.style.transform = `translate3d(${o / 6}px, ${r / 6}px, 0) scale(1.12)`;
+  }), e.addEventListener("mouseleave", () => {
+    n.style.transform = "translate3d(0, 0, 0) scale(1)";
+  }));
+});
+const heroImage = document.querySelector(".home-hero .background-hero");
+let lastScrollTop = 0;
+window.addEventListener("scroll", () => {
+  const e = window.pageYOffset || document.documentElement.scrollTop, n = e - lastScrollTop, t = e * -0;
+  let s = 1;
+  n > 0 ? s = 1 + e * 3e-4 : s = 1 - e * 2e-5, heroImage.style.transform = `translate3d(0, ${t}px, 0) scale(${s})`, lastScrollTop = e <= 0 ? 0 : e;
+});
+const menuBtn = document.querySelector(".menu-button"), megaMenu = document.querySelector(".mega-menu");
+menuBtn.addEventListener("click", function() {
+  megaMenu.classList.toggle("active");
+});
+function toggleMenu() {
+  document.querySelector(".menu-button").classList.toggle("open");
+}
+document.addEventListener("DOMContentLoaded", function() {
+  const e = document.querySelectorAll(".blog-posts .about-info-parent, .recent-projects .list-item,.blog-posts .card-parent"), n = new IntersectionObserver((t, s) => {
+    t.forEach((o) => {
+      if (o.isIntersecting) {
+        const r = Array.from(e).indexOf(o.target);
+        setTimeout(() => {
+          o.target.classList.add("in-view");
+        }, r * 150), s.unobserve(o.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  e.forEach((t) => n.observe(t));
+}), document.addEventListener("DOMContentLoaded", () => {
+  const e = document.getElementById("blogs-container"), n = document.getElementById("load-more-btn");
+  if (!n) return;
+  let t = parseInt(n.dataset.page) || 1;
+  const s = e.dataset.url;
+  let o = document.getElementById("load-less-btn");
+  n.addEventListener("click", async () => {
+    t++;
+    try {
+      const d = await (await fetch(`${s}?page=${t}`, { headers: { "X-Requested-With": "XMLHttpRequest" } })).text(), l = document.createElement("div");
+      l.innerHTML = d, l.querySelectorAll(".blogs-card-parent").forEach((m) => e.appendChild(m)), l.querySelector("#hasMore") || (n.style.display = "none"), t > 1 && r();
+    } catch (i) {
+      console.error(i);
+    }
+  });
+  function r() {
+    if (o) {
+      o.style.display = "flex";
+      return;
+    }
+    o = document.createElement("button"), o.id = "load-less-btn", o.textContent = "LOAD LESS", o.className = "btn btn-secondary mt-3", e.parentNode.appendChild(o), o.addEventListener("click", c);
+  }
+  async function c() {
+    try {
+      t = 1;
+      const d = await (await fetch(`${s}?page=1`, { headers: { "X-Requested-With": "XMLHttpRequest" } })).text(), l = document.createElement("div");
+      l.innerHTML = d;
+      const u = l.querySelectorAll(".blogs-card-parent");
+      e.innerHTML = "", u.forEach((h) => e.appendChild(h)), n.style.display = "inline-block", o && (o.style.display = "none");
+    } catch (i) {
+      console.error(i);
+    }
+  }
+}), document.addEventListener("DOMContentLoaded", function() {
+  const e = document.querySelectorAll(".blog-posts .about-info-parent, .recent-projects .list-item,.blog-posts .card-parent"), n = new IntersectionObserver((t, s) => {
+    t.forEach((o) => {
+      if (o.isIntersecting) {
+        const r = Array.from(e).indexOf(o.target);
+        setTimeout(() => {
+          o.target.classList.add("in-view");
+        }, r * 150), s.unobserve(o.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  e.forEach((t) => n.observe(t));
+}), document.addEventListener("DOMContentLoaded", () => {
+  const e = [{ image: "asset/media/olivia-smith.webp", first: "Olivia", last: "Smith", location: "United States", testiDescription: "IdeoStream has become my daily morning read. The variety of topics covered is honestly impressive \u2014 from science to culture to personal development. It never feels like clickbait, just real, thoughtful writing." }, { image: "asset/media/harry-wilson.webp", first: "Harry", last: "Wilson", location: "Germany", testiDescription: "I stumbled across IdeoStream while searching for an article on productivity, and I've been hooked ever since. The content is well-researched and the writers clearly know what they're talking about. Bookmarked for life." }, { image: "asset/media/james-smith.webp", first: "James", last: "Smith", location: "UAE", testiDescription: "As someone who reads a lot of blogs for research, IdeoStream stands out. The articles are balanced and don't just skim the surface. I especially love the topics on psychology and human behavior. Would love even more academic references though!" }, { image: "asset/media/jeffrey-gordon.webp", first: "Jeffrey", last: "Gordon", location: "United Kingdom", testiDescription: "Running a business means I need to stay informed on a LOT of different things. IdeoStream literally covers everything \u2014 tech, business, lifestyle, world events. It's like having one smart friend who knows about everything." }, { image: "asset/media/freya-brown.webp", first: "Freya", last: "Brown", location: "China", testiDescription: "The writing quality on IdeoStream is what got me. Clean, engaging, no fluff. You can tell the team genuinely cares about the content they publish. I've even shared several articles with my own readers." }, { image: "asset/media/oliver-taylor.webp", first: "Oliver", last: "Taylor", location: "Canada", testiDescription: "I'm not the youngest person on the internet, but IdeoStream is easy to navigate and the articles are written in a way that's accessible without being dumbed down. Very refreshing compared to most news sites today." }, { image: "asset/media/alex-friedman.webp", first: "Alex", last: "Friedman", location: "United Kingdom", testiDescription: "I used an IdeoStream article as a starting point for one of my essays and it led me down the best rabbit hole. The content sparks curiosity in a way most blogs just don't. Highly recommend to anyone who loves learning." }, { image: "asset/media/lily-taylor.webp", first: "Lily", last: "Taylor", location: "Poland", testiDescription: "I finally found a blog that covers topics I actually care about \u2014 health, parenting, world news, lifestyle \u2014 all in one place. IdeoStream feels personal, not robotic. My only wish is that they posted even more frequently!" }, { image: "asset/media/thomas-williams.webp", first: "Thomas", last: "Williams", location: "Philippines", testiDescription: "From a professional standpoint, IdeoStream does something rare: it covers broad topics without losing depth. The editorial standards are clearly high. This is the kind of blog the internet actually needs more of." }, { image: "asset/media/amelia-williams.webp", first: "Amelia", last: "Williams", location: "Canada", testiDescription: "I travel constantly and IdeoStream keeps me connected to ideas and conversations happening around the world. Whether I'm reading about culture, technology, or health \u2014 the content always feels relevant and timely. A gem of a website." }];
+  let n = 0;
+  const t = document.querySelector(".testimonial-background-image"), s = document.querySelector(".first-name"), o = document.querySelector(".last-name"), r = document.querySelector(".location-title"), c = document.querySelector(".testimonial-description .description"), i = [s, o, r, c], d = document.querySelector(".arrow-right"), l = document.querySelector(".arrow-left");
+  if (!t || i.some((a) => !a) || !d || !l) return;
+  t.style.transition = "transform 1.2s cubic-bezier(.4,0,.2,1)", i.forEach((a) => {
+    a.style.transition = "all .7s cubic-bezier(.4,0,.2,1)";
+  });
+  function u() {
+    t.style.transform = "scale(1.2)", i.forEach((a) => {
+      a.style.opacity = "0", a.style.transform = "translate3d(0,100%,0) scale3d(0,0,0) rotate(5deg)";
+    });
+  }
+  function h() {
+    t.style.transform = "scale(1)", i.forEach((a) => {
+      a.style.opacity = "1", a.style.transform = "translate3d(0,0,0) scale3d(1,1,1) rotate(0)";
+    });
+  }
+  function m() {
+    u(), setTimeout(() => {
+      const a = e[n];
+      t.style.backgroundImage = `url("${a.image}")`, s.textContent = a.first, o.textContent = a.last, r.textContent = a.location, c.textContent = a.testiDescription, h();
+    }, 500);
+  }
+  d.addEventListener("click", () => {
+    n = (n + 1) % e.length, m();
+  }), l.addEventListener("click", () => {
+    n = (n - 1 + e.length) % e.length, m();
+  }), m();
+});
+const menuItems = document.querySelectorAll(".news-letter .menu-item");
+menuItems.forEach((e) => {
+  const n = e.querySelector(".radio-btn-ctr"), t = e.querySelector(".radio-input");
+  e.addEventListener("click", () => {
+    document.querySelectorAll(".news-letter .radio-btn-ctr").forEach((s) => s.classList.remove("radio-checked")), document.querySelectorAll(".news-letter .radio-input").forEach((s) => s.checked = false), n.classList.add("radio-checked"), t.checked = true;
+  });
+});
+const newsletterBg = document.querySelector(".background-newsletter");
+let lastScroll = window.scrollY, current = 0, target = 0;
+const speed = 0.08, scale = 1.55;
+window.addEventListener("scroll", () => {
+  const e = window.scrollY, n = e - lastScroll;
+  target += n * 0.4, lastScroll = e;
+});
+function animate() {
+  current += (target - current) * speed, !(!newsletterBg || window.matchMedia("(prefers-reduced-motion:reduce)").matches) && (newsletterBg.style.transform = `translate3d(0, ${-current}px, 0) scale3d(${scale}, ${scale}, 1)`, requestAnimationFrame(animate));
+}
+animate();
+const scrollingItem = document.querySelector(".scrolling-item");
+if (scrollingItem) {
+  let s = function() {
+    t += (n - t) * 0.08, scrollingItem.style.transform = `translate3d(${t}px, 0, 0)`, requestAnimationFrame(s);
+  };
+  var animateScrollingItem = s;
+  let e = window.scrollY, n = 0, t = 0;
+  window.addEventListener("scroll", () => {
+    const r = window.scrollY, c = r - e;
+    n -= c * 0.5, e = r;
+  }), s();
+}
+document.addEventListener("DOMContentLoaded", function() {
+  const e = document.querySelector(".blog-form-submission"), n = document.querySelector("input[name='fullName']"), t = document.querySelector("input[name='subject']"), s = document.querySelector(".email-field"), o = document.querySelector(".phone-field");
+  if (!o) {
+    console.log("Phone input not found");
+    return;
+  }
+  const r = window.intlTelInput(o, { initialCountry: "pk", separateDialCode: true, utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js" });
+}), document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".blog-form-submission").forEach(function(n) {
+    n.addEventListener("submit", function() {
+      const t = n.querySelector('[type="submit"]');
+      t && (t.disabled = true, t.value = "Submitting...");
+    });
+  });
+});

@@ -1,0 +1,130 @@
+[
+  {
+    "file": "analytics.html",
+    "width": 1440,
+    "overflow": false,
+    "dropdowns": 1,
+    "calendars": 2,
+    "errors": []
+  },
+  {
+    "file": "analytics.html",
+    "width": 390,
+    "overflow": false,
+    "dropdowns": 1,
+    "calendars": 2,
+    "errors": []
+  },
+  {
+    "file": "audit.html",
+    "width": 1440,
+    "overflow": false,
+    "dropdowns": 3,
+    "calendars": 2,
+    "errors": []
+  },
+  {
+    "file": "audit.html",
+    "width": 390,
+    "overflow": false,
+    "dropdowns": 3,
+    "calendars": 2,
+    "errors": []
+  },
+  {
+    "file": "backups.html",
+    "width": 1440,
+    "overflow": false,
+    "dropdowns": 1,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "backups.html",
+    "width": 390,
+    "overflow": false,
+    "dropdowns": 1,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "create-product.html",
+    "width": 1440,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "create-product.html",
+    "width": 390,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "notifications.html",
+    "width": 1440,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "notifications.html",
+    "width": 390,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "roles.html",
+    "width": 1440,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "roles.html",
+    "width": 390,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "settings.html",
+    "width": 1440,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "settings.html",
+    "width": 390,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "users.html",
+    "width": 1440,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "users.html",
+    "width": 390,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  }
+]

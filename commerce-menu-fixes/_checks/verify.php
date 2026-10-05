@@ -1,0 +1,195 @@
+<?php
+require __DIR__.'/../../vendor/autoload.php';
+spl_autoload_register(function ($class) {
+    if (str_starts_with($class, 'App\\')) {
+        $path = __DIR__.'/../_staged/app/'.str_replace('\\','/',substr($class,4)).'.php';
+        if (is_file($path)) require $path;
+    }
+}, true, true);
+$app=require __DIR__.'/../../bootstrap/app.php';
+$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+$app['router']->setRoutes(new Illuminate\Routing\RouteCollection);
+require __DIR__.'/../_staged/routes/web.php';
+$app['router']->getRoutes()->refreshNameLookups();
+$app['router']->getRoutes()->refreshActionLookups();
+$app['view']->getFinder()->prependLocation(__DIR__.'/../_staged/resources/views');
+config(['database.default'=>'commerce_audit','database.connections.commerce_audit'=>['driver'=>'sqlite','database'=>':memory:','prefix'=>'','foreign_key_constraints'=>true],'session.driver'=>'array','cache.default'=>'array','queue.default'=>'sync']);
+use Illuminate\Support\Facades\Schema;use Illuminate\Support\Facades\DB;use Illuminate\Database\Schema\Blueprint;
+use App\Models\{User,Admin,Order,OrderItem,OrderNote,OrderActivity,Product,ProductVariant,ProductCategory,ProductTag,Coupon};
+$pdo=DB::connection()->getPdo();$pdo->sqliteCreateFunction('GREATEST',fn(...$v)=>max($v));
+Schema::create('users',function(Blueprint $t){$t->id();$t->string('name');$t->string('email');$t->string('password')->nullable();$t->timestamps();});
+Schema::create('customer_email_identities',function(Blueprint $t){$t->id();$t->integer('user_id');$t->string('source');$t->string('email')->nullable();$t->string('normalized_email')->nullable();$t->dateTime('connected_at')->nullable();$t->dateTime('disconnected_at')->nullable();$t->boolean('is_login_enabled')->default(true);$t->timestamps();});
+Schema::create('admins',function(Blueprint $t){$t->id();$t->string('name');$t->string('email');$t->timestamps();});
+Schema::create('orders',function(Blueprint $t){$t->id();$t->integer('user_id')->nullable();foreach(['order_number','tracking_number','payment_method','payment_status','order_status','coupon_code','payment_provider','payment_reference','payment_intent_id','currency','billing_name','billing_email','billing_phone','billing_address','billing_city','billing_country','shipping_name','shipping_email','shipping_phone','courier','courier_provider','admin_notes','payment_failure_message'] as $f)$t->string($f)->nullable();foreach(['subtotal','discount','shipping','total'] as $f)$t->decimal($f,12,2)->default(0);foreach(['paid_at','inventory_deducted_at','inventory_restored_at','payment_failed_at','manual_status_override_at','manual_status_override_shipment_event_at'] as $f)$t->dateTime($f)->nullable();$t->text('payment_metadata')->nullable();$t->softDeletes();$t->timestamps();});
+Schema::create('products',function(Blueprint $t){$t->id();foreach(['title','slug','sku','status','featured_image','short_description','long_description','additional_info','meta_title','meta_description','meta_keywords'] as $f)$t->string($f)->nullable();foreach(['regular_price','sale_price','cost_price','average_rating'] as $f)$t->decimal($f,12,2)->nullable();foreach(['stock','purchase_count','views_count','favorites_count','cart_count'] as $f)$t->integer($f)->default(0);$t->integer('reorder_point')->nullable();$t->integer('reorder_quantity')->nullable();$t->boolean('is_featured')->default(false);$t->timestamps();});
+Schema::create('product_variants',function(Blueprint $t){$t->id();$t->integer('product_id');$t->string('sku')->nullable();$t->string('image')->nullable();$t->text('options')->nullable();$t->decimal('regular_price',12,2)->nullable();$t->decimal('sale_price',12,2)->nullable();$t->integer('stock')->default(0);$t->integer('reorder_point')->nullable();$t->timestamps();});
+Schema::create('order_items',function(Blueprint $t){$t->id();$t->integer('order_id');$t->integer('product_id')->nullable();$t->integer('variant_id')->nullable();$t->string('product_title');$t->string('sku')->nullable();$t->decimal('price',12,2);$t->integer('quantity');$t->decimal('total',12,2);$t->text('options')->nullable();$t->timestamps();});
+Schema::create('order_notes',function(Blueprint $t){$t->id();$t->integer('order_id');$t->integer('user_id')->nullable();$t->integer('admin_id')->nullable();$t->string('note');$t->boolean('is_customer_visible');$t->timestamps();});
+Schema::create('order_activities',function(Blueprint $t){$t->id();$t->integer('order_id');$t->integer('user_id')->nullable();$t->integer('admin_id')->nullable();foreach(['type','title','description','field_name','old_value','new_value','metadata'] as $f)$t->text($f)->nullable();$t->timestamps();});
+Schema::create('product_categories',function(Blueprint $t){$t->id();$t->string('title');$t->string('slug');$t->integer('parent_id')->nullable();foreach(['description','featured_image','meta_title','meta_description','meta_keywords'] as $f)$t->text($f)->nullable();$t->timestamps();});
+foreach(['product_tags','product_options'] as $table)Schema::create($table,function(Blueprint $t){$t->id();$t->string('title')->nullable();$t->string('slug')->nullable();$t->string('name')->nullable();$t->timestamps();});
+Schema::create('product_option_values',function(Blueprint $t){$t->id();$t->integer('product_option_id');$t->string('label')->nullable();$t->string('value')->nullable();$t->timestamps();});
+foreach(['product_category_product'=>'product_category_id','product_product_tag'=>'product_tag_id','product_option_product'=>'product_option_id','product_option_value_product'=>'product_option_value_id'] as $table=>$column)Schema::create($table,function(Blueprint $t)use($column){$t->id();$t->integer('product_id');$t->integer($column);$t->timestamps();});
+Schema::create('product_images',function(Blueprint $t){$t->id();$t->integer('product_id');$t->string('image')->nullable();$t->integer('sort_order')->default(0);$t->timestamps();});
+Schema::create('inventory_histories',function(Blueprint $t){$t->id();foreach(['product_id','product_variant_id','order_id','user_id','admin_id'] as $f)$t->integer($f)->nullable();foreach(['quantity_change','stock_before','stock_after'] as $f)$t->integer($f);foreach(['movement_type','reason','notes','reference_type','reference_id','metadata'] as $f)$t->text($f)->nullable();$t->timestamps();});
+Schema::create('coupons',function(Blueprint $t){$t->id();$t->string('code')->unique();$t->string('type');$t->decimal('value',12,2);$t->decimal('minimum_order_amount',12,2)->default(0);$t->decimal('maximum_discount',12,2)->nullable();$t->integer('usage_limit')->nullable();$t->integer('per_user_usage_limit')->nullable();$t->integer('used_count')->default(0);$t->string('target_type')->default('all');foreach(['product_ids','category_ids','variant_ids'] as $f)$t->text($f)->nullable();$t->boolean('include_child_categories')->default(false);$t->string('event_name')->nullable();$t->dateTime('start_date')->nullable();$t->dateTime('end_date')->nullable();$t->boolean('status')->default(true);$t->timestamps();});
+(require __DIR__.'/../../database/migrations/2026_09_27_000002_create_coupon_redemptions_table.php')->up();
+$customer=User::create(['name'=>'Customer A','email'=>'a@example.test']);$other=User::create(['name'=>'Customer B','email'=>'b@example.test']);
+$admin=(new Admin)->forceFill(['id'=>99,'status'=>'active','is_super_admin'=>true]);$app['auth']->guard('admin')->setUser($admin);$app['auth']->guard('web')->setUser($customer);$app['session']->start();
+function req($payload=[],$user=null){global $app,$customer,$admin;$r=Illuminate\Http\Request::create('http://arizona.test/admin/audit','POST',$payload);$r->setUserResolver(fn($guard=null)=>$guard==='admin'?$admin:($user??$customer));$r->setLaravelSession($app['session']->driver());$app->instance('request',$r);return $r;}
+$results=[];function record($ok,$label,$finding=false){global $results;if(!$ok)throw new RuntimeException('CHECK FAILED: '.$label);$results[]=['result'=>$finding?'REPRODUCED ISSUE':'PASS','check'=>$label];echo ($finding?'ISSUE: ':'PASS: ').$label."\n";}
+function order($extra=[]){global $customer;static $n=0;return Order::create(array_replace(['user_id'=>$customer->id,'order_number'=>'TEST-'.(++$n),'payment_status'=>'pending','order_status'=>'pending','payment_provider'=>'bank_transfer','payment_method'=>'bank_transfer','total'=>100,'subtotal'=>100,'discount'=>0,'currency'=>'USD','billing_email'=>'a@example.test','billing_name'=>'Customer A'],$extra));}
+function item($order,$product,$quantity=1){return $order->items()->create(['product_id'=>$product->id,'product_title'=>'Stored item title','sku'=>'STORED-SKU','price'=>10,'quantity'=>$quantity,'total'=>10*$quantity,'options'=>[['name'=>'Size','value'=>'Small']]]);}
+$alerts=Mockery::mock(App\Services\InventoryAlertService::class);$alerts->shouldReceive('checkOrder')->andReturnNull();
+$inventory=new App\Services\InventoryService($alerts,new App\Services\InventoryHistoryService);
+$mail=Mockery::mock(App\Services\OrderEmailService::class);$mail->shouldReceive('sendBankTransferVerified','sendBankTransferRejected','sendOrderEmails','sendCustomerStatusUpdated')->andReturnNull();
+$redemption=new App\Services\CouponRedemptionService;$couponService=new App\Services\CouponService;
+$customerController=new App\Http\Controllers\CustomerDashboardController;$adminOrders=new App\Http\Controllers\Admin\OrderController;$payments=new App\Http\Controllers\Admin\PaymentVerificationController;
+$catalog=new App\Http\Controllers\Admin\ProductController;$categories=new App\Http\Controllers\Admin\ProductCategoryController;$tags=new App\Http\Controllers\Admin\ProductTagController;$shop=new App\Http\Controllers\ShopController;
+$product=Product::create(['title'=>'Current item title','slug'=>'current-item','sku'=>'ITEM','regular_price'=>100,'cost_price'=>50,'stock'=>20,'status'=>'active','is_featured'=>true]);
+$own=order(['payment_status'=>'paid']);$snapshot=item($own,$product,2);$alien=order(['user_id'=>$other->id]);$guest=order(['user_id'=>null]);
+$list=$customerController->orders(req())->getData()['orders'];record($list->pluck('id')->all()===[$own->id],'Customer list excludes another customer and guest orders');
+try{$customerController->show(req(),$alien->id);throw new RuntimeException('Other-customer order exposed');}catch(Illuminate\Database\Eloquent\ModelNotFoundException){record(true,'Customer cannot open another customer order');}
+try{$customerController->invoice(req(),$alien->id);throw new RuntimeException('Other-customer invoice exposed');}catch(Illuminate\Database\Eloquent\ModelNotFoundException){record(true,'Customer cannot open another customer invoice');}
+$own->notes()->create(['note'=>'Internal secret','is_customer_visible'=>false]);$own->notes()->create(['note'=>'Customer update','is_customer_visible'=>true]);
+$shown=$customerController->show(req(),$own->id)->getData()['order'];record($shown->notes->pluck('note')->all()===['Customer update'],'Customer detail excludes internal notes');
+record($shown->items->first()->product_title==='Stored item title' && (float)$shown->items->first()->price===10.0,'Order display uses saved item title and price snapshots');
+$stock=$product->fresh()->stock;$adminOrders->destroy($own);record(Order::onlyTrashed()->whereKey($own->id)->exists() && OrderItem::whereKey($snapshot->id)->exists(),'Archive soft-deletes order and preserves order items');
+record($customerController->orders(req())->getData()['orders']->contains('id',$own->id),'Archived order remains in authenticated customer history');
+record($customerController->invoice(req(),$own->id)->getData()['order']->id===$own->id,'Customer can open own archived invoice');
+$adminOrders->restore($own->id);record($customerController->orders(req())->getData()['orders']->contains('id',$own->id),'Restoring archive restores customer order visibility');
+record($product->fresh()->stock===$stock,'Archive/restore does not deduct or restore inventory');
+$bank=order();item($bank,$product,2);$payments->verifyBankTransfer(req(['payment_reference'=>'BANK-OK']),$bank,$inventory,$redemption,$mail);
+record($bank->fresh()->payment_status==='paid' && $bank->fresh()->order_status==='processing' && $product->fresh()->stock===$stock-2,'Normal bank verification marks paid and deducts stock once');
+$payments->verifyBankTransfer(req(['payment_reference'=>'BANK-OK']),$bank->fresh(),$inventory,$redemption,$mail);record($product->fresh()->stock===$stock-2,'Repeated bank verification does not deduct stock twice');
+record($bank->activities()->where('type','payment_status_changed')->count()===1,'Bank verification records payment timeline once');
+$payments->rejectBankTransfer(req(['admin_notes'=>'Reject after paid']),$bank->fresh(),$mail);record($bank->fresh()->payment_status==='paid','Paid bank transfer cannot be rejected');
+$unpaid=order();$payments->rejectBankTransfer(req(['admin_notes'=>'Receipt not received']),$unpaid,$mail);record($unpaid->fresh()->payment_status==='failed','Pending bank transfer rejection records failed payment');
+$closed=order(['order_status'=>'cancelled']);item($closed,$product);$payments->verifyBankTransfer(req(['payment_reference'=>'CANCELLED-TEST']),$closed,$inventory,$redemption,$mail);
+record($closed->fresh()->payment_status==='pending' && $closed->fresh()->order_status==='cancelled','Cancelled bank order verification is blocked');
+$refunded=order(['order_status'=>'refunded','payment_status'=>'refunded','inventory_deducted_at'=>now(),'inventory_restored_at'=>now()]);item($refunded,$product);$stockBefore=$product->fresh()->stock;
+$payments->verifyBankTransfer(req(['payment_reference'=>'REFUND-TEST']),$refunded,$inventory,$redemption,$mail);record($refunded->fresh()->payment_status==='refunded' && $refunded->fresh()->order_status==='refunded' && $product->fresh()->stock===$stockBefore,'Refunded bank order verification preserves refund and stock');
+$cancel=order();item($cancel,$product);$inventory->deductForOrder($cancel);$deducted=$product->fresh()->stock;$inventory->restoreForOrder($cancel,'cancelled');$inventory->restoreForOrder($cancel,'cancelled');record($product->fresh()->stock===$deducted+1,'Inventory restoration is idempotent across repeated calls');
+$guard=$adminOrders->bulkUpdate(req(['order_ids'=>[$unpaid->id],'action'=>'payment_status','value'=>'paid']),new App\Services\OrderActivityService);record($guard->getStatusCode()===422,'Bulk update cannot mark payment paid');
+$guard=$adminOrders->bulkUpdate(req(['order_ids'=>[$unpaid->id],'action'=>'order_status','value'=>'shipped']),new App\Services\OrderActivityService);record($guard->getStatusCode()===422,'Bulk update cannot ship unpaid order');
+$parent=ProductCategory::create(['title'=>'Root','slug'=>'root']);$child=ProductCategory::create(['title'=>'Child','slug'=>'child','parent_id'=>$parent->id]);$product->categories()->attach($child->id);
+$categories->destroy($child);record(ProductCategory::whereKey($child->id)->exists(),'Assigned product category deletion is blocked');
+$categories->destroy($parent);record(ProductCategory::whereKey($parent->id)->exists(),'Category with children cannot be deleted');
+$categoryMethod=new ReflectionMethod($categories,'validateCategory');try{$categoryMethod->invoke($categories,req(['title'=>'Root','parent_id'=>$child->id]),$parent);throw new RuntimeException('Cycle permitted');}catch(Illuminate\Validation\ValidationException){record(true,'Category rejects descendant as parent');}
+$tag=ProductTag::create(['title'=>'Summer','slug'=>'summer']);$product->tags()->attach($tag->id);$tags->destroy($tag);record(ProductTag::whereKey($tag->id)->exists(),'Assigned tag deletion is blocked');
+$unused=ProductTag::create(['title'=>'Unused','slug'=>'unused']);$tags->destroy($unused);record(!ProductTag::whereKey($unused->id)->exists(),'Unused tag can be deleted');
+$method=new ReflectionMethod($catalog,'productHasReferences');record($method->invoke($catalog,$product),'Product referenced by historical order items is protected against deletion');
+$validate=new ReflectionMethod($catalog,'validateProduct');$bad=['title'=>'Audit variant','regular_price'=>'100','cost_price'=>'50','status'=>'draft','variants'=>[['regular_price'=>null,'sale_price'=>'110','options'=>[]]]];
+record(str_contains(file_get_contents(__DIR__.'/../../app/Http/Controllers/Admin/ProductController.php'),'productRegularPrice:'),'Product Step 2 inherited-price fix is installed in current controller');
+$draftProduct=Product::create(['title'=>'Draft','slug'=>'draft','status'=>'draft','regular_price'=>10,'stock'=>8]);try{$shop->quickView($draftProduct);throw new RuntimeException('Draft quick view exposed');}catch(Symfony\Component\HttpKernel\Exception\HttpException $e){record($e->getStatusCode()===404,'Storefront quick-view rejects draft product');}
+$filter=new ReflectionMethod($shop,'applyFilters');$query=Product::query()->where('status','active');$filter->invoke($shop,$query,['featured'=>'1']);$unfeatured=Product::create(['title'=>'Not featured','slug'=>'not-featured','status'=>'active','is_featured'=>false,'regular_price'=>40,'stock'=>0]);record(!$query->whereKey($unfeatured->id)->exists(),'Featured filter excludes unfeatured product without search');
+$free=Product::create(['title'=>'Free sale','slug'=>'free-sale','status'=>'active','regular_price'=>100,'sale_price'=>0,'stock'=>1]);$priceSql=(new ReflectionMethod($shop,'productEffectivePriceSql'))->invoke($shop);$sqlPrice=Product::whereKey($free->id)->selectRaw($priceSql.' AS effective')->first()->effective;record($free->final_price===0.0 && (float)$sqlPrice===0.0,'Zero sale price agrees between model/cart and shop SQL');
+$variable=Product::create(['title'=>'Sold-out variants','slug'=>'sold-out-variants','status'=>'active','regular_price'=>100,'stock'=>5]);ProductVariant::create(['product_id'=>$variable->id,'sku'=>'SOLD-V','stock'=>0]);$query=Product::query()->whereKey($variable->id);$filter->invoke($shop,$query,['availability'=>['in_stock']]);record(!$query->exists(),'Variable product with sold-out variants is excluded from in-stock filter');
+$inherited=Product::create(['title'=>'Inherited variant','slug'=>'inherited-variant','status'=>'active','regular_price'=>100,'stock'=>0]);ProductVariant::create(['product_id'=>$inherited->id,'sku'=>'INH-V','regular_price'=>null,'sale_price'=>50,'stock'=>1]);$query=Product::query()->whereKey($inherited->id);$filter->invoke($shop,$query,['offers'=>['on_sale']]);record($query->exists(),'Sale filter includes variant inheriting regular price');
+$split=Product::create(['title'=>'Split range','slug'=>'split-range','status'=>'active','regular_price'=>10,'stock'=>0]);ProductVariant::create(['product_id'=>$split->id,'sku'=>'RANGE-V','regular_price'=>100,'stock'=>1]);$query=Product::query()->whereKey($split->id);$filter->invoke($shop,$query,['min_price'=>40,'max_price'=>60]);$query->setBindings(array_map(fn($v)=>is_float($v) && floor($v)===$v ? (int)$v : $v,$query->getBindings()));record(!$query->exists(),'Price range must match one purchasable item');
+$coupon=Coupon::create(['code'=>'TEN','type'=>'percentage','value'=>10,'status'=>true,'target_type'=>'all']);$cart=[['product_id'=>$product->id,'price'=>100,'quantity'=>2]];
+record($couponService->evaluate($coupon,$cart,$customer->id)['discount']===20.0,'Percentage coupon calculates eligible discount');
+$fixed=Coupon::create(['code'=>'CAP','type'=>'fixed','value'=>999,'maximum_discount'=>25,'status'=>true]);record($couponService->evaluate($fixed,$cart)['discount']===25.0,'Coupon discount respects maximum cap and subtotal');
+$inactive=Coupon::create(['code'=>'OFF','type'=>'fixed','value'=>10,'status'=>false]);record(!$couponService->evaluate($inactive,$cart)['valid'],'Inactive coupon rejected');
+$categoryCoupon=Coupon::create(['code'=>'ROOT','type'=>'percentage','value'=>10,'status'=>true,'target_type'=>'categories','category_ids'=>[$parent->id],'include_child_categories'=>true]);record($couponService->evaluate($categoryCoupon,$cart)['discount']===20.0,'Parent-category coupon includes child-category products');
+$limited=Coupon::create(['code'=>'ONE','type'=>'fixed','value'=>10,'status'=>true,'usage_limit'=>10,'per_user_usage_limit'=>1]);record(!$couponService->evaluate($limited,$cart,null)['valid'],'Per-customer coupon requires login');
+$redeem=order(['payment_status'=>'paid','coupon_code'=>'ONE','discount'=>10]);DB::transaction(fn()=>$redemption->redeemPaidOrder($redeem));DB::transaction(fn()=>$redemption->redeemPaidOrder($redeem));record($limited->fresh()->used_count===1 && DB::table('coupon_redemptions')->where('order_id',$redeem->id)->count()===1,'Paid coupon redemption records once per order');
+record(!$couponService->evaluate($limited->fresh(),$cart,$customer->id)['valid'],'Paid coupon blocks repeat use before archiving');$redeem->delete();record(!$couponService->evaluate($limited->fresh(),$cart,$customer->id)['valid'],'Archived coupon purchase still consumes per-customer usage');
+$pendingCoupon=Coupon::create(['code'=>'PENDING','type'=>'fixed','value'=>10,'status'=>true]);$pendingOrder=order(['coupon_code'=>'PENDING','discount'=>10]);$coupons=new App\Http\Controllers\Admin\CouponController;$coupons->destroy($pendingCoupon);record(Coupon::whereKey($pendingCoupon->id)->exists(),'Pending order protects coupon from deletion');$pendingOrder->payment_status='paid';DB::transaction(fn()=>$redemption->redeemPaidOrder($pendingOrder));record(DB::table('coupon_redemptions')->where('order_id',$pendingOrder->id)->exists(),'Protected pending coupon can finalize payment');
+$webhook=new App\Http\Controllers\Webhooks\StripeWebhookController($inventory,$mail,$redemption);record((new ReflectionClass($webhook))->hasProperty('couponRedemptionService'),'Stripe webhook has injected coupon service');
+$stripeOrder=order(['payment_provider'=>'stripe','payment_method'=>'stripe','payment_intent_id'=>'pi_fixture','total'=>10]);item($stripeOrder,$product);$intent=Stripe\PaymentIntent::constructFrom(['id'=>'pi_fixture','amount'=>1000,'amount_received'=>1000,'currency'=>'usd','status'=>'succeeded','latest_charge'=>null,'metadata'=>['order_id'=>(string)$stripeOrder->id,'order_number'=>$stripeOrder->order_number]]);$beforeStock=$product->fresh()->stock;
+(new ReflectionMethod($webhook,'handlePaymentSucceeded'))->invoke($webhook,$intent,'evt_fixture');
+record($stripeOrder->fresh()->payment_status==='paid' && $product->fresh()->stock===$beforeStock-1,'Offline Stripe success finalizes payment and inventory');
+(new ReflectionMethod($webhook,'handlePaymentSucceeded'))->invoke($webhook,$intent,'evt_fixture_repeat');
+record($product->fresh()->stock===$beforeStock-1 && OrderActivity::where('order_id',$stripeOrder->id)->where('type','payment_status_changed')->count()===1,'Repeated Stripe success preserves inventory and single activity');
+$stripeOrder->delete();record((new ReflectionMethod($webhook,'findAndLockOrder'))->invoke($webhook,$intent)->id===$stripeOrder->id,'Webhook lookup resolves archived Stripe order');
+$stripePayment=new App\Http\Controllers\Payment\StripePaymentController; $shipping=(new ReflectionMethod($stripePayment,'calculateShipping'))->invoke($stripePayment,100.0,'PK');record($shipping===(float)config('shipping.methods.standard.price'),'Stripe Pakistan default shipping matches configured standard shipping');
+
+
+// Additional regression and permission checks for the repaired behaviors.
+$archivedBank=order();item($archivedBank,$product);$archivedBank->delete();$stockBefore=$product->fresh()->stock;
+$payments->verifyBankTransfer(req(['payment_reference'=>'ARCHIVE-BANK']),$archivedBank,$inventory,$redemption,$mail);
+record(Order::withTrashed()->find($archivedBank->id)->payment_status==='paid' && $product->fresh()->stock===$stockBefore-1,'Archived pending bank order can be verified without restore');
+$archivedStripe=order(['payment_provider'=>'stripe','payment_method'=>'stripe','payment_intent_id'=>'pi_archived','total'=>10]);item($archivedStripe,$product);$archivedStripe->delete();$stockBefore=$product->fresh()->stock;
+$archivedIntent=Stripe\PaymentIntent::constructFrom(['id'=>'pi_archived','amount'=>1000,'amount_received'=>1000,'currency'=>'usd','status'=>'succeeded','latest_charge'=>null,'metadata'=>['order_id'=>(string)$archivedStripe->id]]);
+(new ReflectionMethod($webhook,'handlePaymentSucceeded'))->invoke($webhook,$archivedIntent,'evt_archived');
+record(Order::withTrashed()->find($archivedStripe->id)->payment_status==='paid' && $product->fresh()->stock===$stockBefore-1,'Payment can finalize after admin archives pending Stripe order');
+$payments->rejectBankTransfer(req(['admin_notes'=>'Invalid retry']),$refunded,$mail);record($refunded->fresh()->payment_status==='refunded','Bank rejection cannot overwrite refunded payment');
+$couponData=['code'=>'CHANGED','type'=>'fixed','value'=>10,'target_type'=>'all','status'=>1,'usage_limit'=>10,'per_user_usage_limit'=>1];
+try{$coupons->update(req($couponData),$limited->fresh());throw new RuntimeException('Referenced code changed');}catch(Illuminate\Validation\ValidationException){record(true,'Referenced coupon code cannot be renamed');}
+$coupons->destroy($limited->fresh());record(Coupon::whereKey($limited->id)->exists() && DB::table('coupon_redemptions')->where('order_id',$redeem->id)->count()===1,'Coupon deletion preserves archived redemption ledger');
+$unusedCoupon=Coupon::create(['code'=>'UNUSED','type'=>'fixed','value'=>2,'status'=>true]);$coupons->destroy($unusedCoupon);record(!Coupon::whereKey($unusedCoupon->id)->exists(),'Unreferenced coupon can be deleted');
+$query=Product::query()->whereKey($unfeatured->id);$filter->invoke($shop,$query,['search'=>'Not','featured'=>'1']);record(!$query->exists(),'Featured filter applies alongside search');
+$query=Product::query()->whereKey($variable->id);$filter->invoke($shop,$query,['availability'=>['out_of_stock']]);record($query->exists(),'Sold-out variants appear in out-of-stock filter');
+$query=Product::query()->whereKey($free->id);$filter->invoke($shop,$query,['offers'=>['on_sale']]);record($query->exists(),'Zero-priced sale is included in sale filter');
+$query=Product::query()->whereKey($split->id);$filter->invoke($shop,$query,['min_price'=>90,'max_price'=>110]);record($query->exists(),'Price filter matches valid variant within range');
+try{$query=Product::query();$filter->invoke($shop,$query,['min_price'=>100,'max_price'=>10]);throw new RuntimeException('Inverted range accepted');}catch(Illuminate\Validation\ValidationException){record(true,'Inverted price range rejected');}
+$parentSale=Product::create(['title'=>'Parent sale only','slug'=>'parent-sale-only','regular_price'=>100,'sale_price'=>20,'status'=>'active']);$v=ProductVariant::create(['product_id'=>$parentSale->id,'sku'=>'NO-SALE','regular_price'=>null,'sale_price'=>null,'stock'=>1]);
+$vSql=(new ReflectionMethod($shop,'variantEffectivePriceSql'))->invoke($shop);record((float)ProductVariant::whereKey($v->id)->selectRaw($vSql.' AS effective')->first()->effective===100.0,'Variant without own sale agrees with cart regular-price inheritance');
+$priceRange=(new ReflectionMethod($shop,'getAvailablePriceRange'))->invoke($shop);record($priceRange['min']===0.0 && $priceRange['max']>=100,'Available range includes inherited variant prices and zero sale');
+foreach(['economy','standard','express'] as $method){$result=(new ReflectionMethod($stripePayment,'calculateShipping'))->invoke($stripePayment,500.0,'PK',$method);record($result===(float)config('shipping.methods.'.$method.'.price'),'Stripe selected shipping matches configuration: '.$method);}
+// The pending-payment matcher stores the same human-readable shipping name
+// as bank checkout and refuses reusing an intent for a changed method.
+$details=['name'=>'Customer A','email'=>'a@example.test','phone'=>'123','address'=>'Street','country'=>'PK','state'=>'Punjab','city'=>'Lahore','zip'=>'54000'];
+$checkout=['shipping_method'=>'standard','billing_name'=>'Customer A','billing_email'=>'a@example.test','billing_phone'=>'123','billing_address'=>'Street','billing_country'=>'PK','billing_state'=>'Punjab','billing_city'=>'Lahore','billing_zip'=>'54000'];
+$matchOrder=(new Order)->forceFill(['total'=>100,'currency'=>'USD','shipping_method'=>config('shipping.methods.standard.name'),'coupon_code'=>null,'discount'=>0]);
+foreach($checkout as $key=>$value)if(str_starts_with($key,'billing_'))$matchOrder->setAttribute($key,$value);
+foreach($details as $key=>$value)$matchOrder->setAttribute('shipping_'.$key,$value);
+$matchOrder->setRelation('items',new Illuminate\Database\Eloquent\Collection);session()->forget('cart_coupon');
+$match=new ReflectionMethod($stripePayment,'pendingOrderMatchesCheckout');record($match->invoke($stripePayment,$matchOrder,[],$checkout,$details,100.0,'USD'),'Pending Stripe intent matches saved shipping method name');
+$checkout['shipping_method']='express';record(!$match->invoke($stripePayment,$matchOrder,[],$checkout,$details,100.0,'USD'),'Changed shipping method cannot reuse pending Stripe intent');
+try{(new ReflectionMethod($stripePayment,'calculateShipping'))->invoke($stripePayment,100.0,'PK','invalid');throw new RuntimeException('Unknown shipping accepted');}catch(Symfony\Component\HttpKernel\Exception\HttpException $e){record($e->getStatusCode()===422,'Unknown Stripe shipping method rejected');}
+foreach(['admin.orders.index','admin.orders.archived','admin.payment-verifications.index','admin.products.index','admin.product-categories.index','admin.product-tags.index','admin.coupons.index'] as $name){
+    $restricted=Mockery::mock(Admin::class)->makePartial();$restricted->shouldReceive('isActive')->andReturn(true);$restricted->shouldReceive('hasAdminPermission')->andReturn(false);$app['auth']->guard('admin')->setUser($restricted);
+    $r=req();$route=$app['router']->getRoutes()->getByName($name);$r->setRouteResolver(fn()=>$route);
+    try{(new App\Http\Middleware\AdminMiddleware)->handle($r,fn()=>response('allowed'));throw new RuntimeException('Restricted admin allowed');}catch(Symfony\Component\HttpKernel\Exception\HttpException $e){record($e->getStatusCode()===403,'Server permission enforced: '.$name);}
+}
+$app['auth']->guard('admin')->setUser($admin);
+foreach(['admin.payment-verifications.show','admin.payment-verifications.verify-bank-transfer','admin.payment-verifications.reject-bank-transfer','admin.orders.show','admin.orders.invoice','admin.orders.invoice.download'] as $name)record($app['router']->getRoutes()->getByName($name)->allowsTrashedBindings(),'Archived order binding enabled: '.$name);
+$tracking=new App\Http\Controllers\OrderTrackingController;
+record($tracking->lookup(req(['order_number'=>$archivedBank->order_number,'email'=>$customer->email]))->getData()['order']->id===$archivedBank->id,'Public tracking can resolve archived order with matching email');
+record($tracking->lookup(req(['order_number'=>$archivedBank->order_number,'email'=>$other->email])) instanceof Illuminate\Http\RedirectResponse,'Public tracking rejects mismatched email on archived order');
+$pendingEdit=Coupon::create(['code'=>'EDITSAFE','type'=>'fixed','value'=>10,'status'=>true,'usage_limit'=>10]);$waiting=order(['coupon_code'=>'EDITSAFE','discount'=>10]);
+try{$coupons->update(req(['code'=>'EDITSAFE','type'=>'fixed','value'=>10,'status'=>1,'target_type'=>'all','usage_limit'=>1]),$pendingEdit);throw new RuntimeException('Pending coupon limit reduced');}catch(Illuminate\Validation\ValidationException){record(true,'Coupon usage limit cannot shrink while payment pending');}
+$coupons->update(req(['code'=>'EDITSAFE','type'=>'fixed','value'=>10,'status'=>0,'target_type'=>'all','usage_limit'=>10]),$pendingEdit);record(!$pendingEdit->fresh()->status,'Referenced coupon can be deactivated for new purchases');
+$legacy=Coupon::create(['code'=>'LEGACY','type'=>'fixed','value'=>10,'status'=>true,'usage_limit'=>2,'used_count'=>1]);$legacyOrder=order(['payment_status'=>'paid','coupon_code'=>'LEGACY','discount'=>10]);DB::transaction(fn()=>$redemption->redeemPaidOrder($legacyOrder));record($legacy->fresh()->used_count===2,'New redemption preserves pre-ledger usage count');
+record(!$couponService->evaluate($legacy->fresh(),$cart,$customer->id)['valid'],'Legacy coupon reaches correct global limit');
+$paidCoupon=Coupon::create(['code'=>'STRIPECOUPON','type'=>'fixed','value'=>10,'status'=>true,'usage_limit'=>1]);$paidCouponOrder=order(['payment_provider'=>'stripe','payment_method'=>'stripe','payment_intent_id'=>'pi_coupon','total'=>90,'coupon_code'=>'STRIPECOUPON','discount'=>10]);item($paidCouponOrder,$product);
+$couponIntent=Stripe\PaymentIntent::constructFrom(['id'=>'pi_coupon','amount'=>9000,'amount_received'=>9000,'currency'=>'usd','status'=>'succeeded','latest_charge'=>null,'metadata'=>['order_id'=>(string)$paidCouponOrder->id]]);
+(new ReflectionMethod($webhook,'handlePaymentSucceeded'))->invoke($webhook,$couponIntent,'evt_coupon');(new ReflectionMethod($webhook,'handlePaymentSucceeded'))->invoke($webhook,$couponIntent,'evt_coupon_repeat');
+record($paidCoupon->fresh()->used_count===1 && DB::table('coupon_redemptions')->where('order_id',$paidCouponOrder->id)->count()===1,'Stripe coupon redemption remains once after duplicate success');
+$refundedStripe=order(['payment_provider'=>'stripe','payment_method'=>'stripe','payment_status'=>'refunded','order_status'=>'refunded','payment_intent_id'=>'pi_refunded','total'=>10]);
+$closedIntent=Stripe\PaymentIntent::constructFrom(['id'=>'pi_refunded','amount'=>1000,'amount_received'=>1000,'currency'=>'usd','status'=>'succeeded','latest_charge'=>null,'last_payment_error'=>null,'metadata'=>['order_id'=>(string)$refundedStripe->id]]);
+foreach(['handlePaymentProcessing','handlePaymentFailed','handlePaymentCancelled','handlePaymentSucceeded'] as $method)(new ReflectionMethod($webhook,$method))->invoke($webhook,$closedIntent,'evt_closed');
+record($refundedStripe->fresh()->payment_status==='refunded' && $refundedStripe->fresh()->order_status==='refunded','Late Stripe events cannot overwrite refunded order');
+Schema::create('inventory_alerts',function(Blueprint $t){$t->id();$t->string('status');});DB::table('inventory_alerts')->insert([['status'=>'active'],['status'=>'active'],['status'=>'resolved']]);
+
+config(['view.compiled'=>__DIR__.'/compiled']);@mkdir(__DIR__.'/compiled');$app['view']->share('errors',new Illuminate\Support\ViewErrorBag);
+$admin->is_super_admin=true;$app['auth']->shouldUse('admin');
+
+req();$sidebarView=view('admin.partials.sidebar');$sidebarHtml=$sidebarView->render();
+record($sidebarView->getData()['activeInventoryAlertCount']===2 && $sidebarView->getData()['reorderRequiredCount']>0,'Actual sidebar receives inventory and reorder badge counts');
+$r=req();$r->setRouteResolver(fn()=>$app['router']->getRoutes()->getByName('admin.orders.archived'));$html=view('admin.partials.sidebar')->render();preg_match_all('/<a\b[^>]*class="[^"]*admin-menu-link[^"]*active[^"]*"/s',$html,$active);record(count($active[0])===1,'Only archive menu is active on archived-orders page');
+$restricted=Mockery::mock(Admin::class)->makePartial();$restricted->shouldReceive('hasAdminPermission')->andReturn(false);$app['auth']->guard('admin')->setUser($restricted);req();$html=view('admin.partials.sidebar')->render();
+foreach(['orders.index','orders.archived','payment-verifications.index','products.index','product-categories.index','product-tags.index','coupons.index'] as $suffix)record(!str_contains($html,'href="'.route('admin.'.$suffix).'"'),'Sidebar hides unauthorized menu: '.$suffix);
+$app['auth']->guard('admin')->setUser($admin);
+foreach(['admin.orders.index','admin.products.index','admin.coupons.index'] as $name){$r=req();$r->setRouteResolver(fn()=>$app['router']->getRoutes()->getByName($name));record((new App\Http\Middleware\AdminMiddleware)->handle($r,fn()=>response('ok'))->getStatusCode()===200,'Super admin retains module access: '.$name);}
+
+$pages=[
+'Admin Orders'=>fn()=>$adminOrders->index(req()),
+'Archived Orders'=>fn()=>$adminOrders->archived(req()),
+'Payment Verifications'=>fn()=>$payments->index(req()),
+'Payment Verification detail'=>fn()=>$payments->show($bank->fresh()),
+'Products'=>fn()=>$catalog->index(req()),
+'Product Categories'=>fn()=>$categories->index(req()),
+'Product Tags'=>fn()=>$tags->index(req()),
+'Coupons'=>fn()=>$coupons->index(req()),
+];
+$renderResults=[];
+foreach($pages as $label=>$factory){try{$view=$factory();$html=$view->render();record(strlen($html)>1000,'Fixture page renders: '.$label);$renderResults[$label]=['result'=>'PASS','bytes'=>strlen($html)];}catch(Throwable $e){$renderResults[$label]=['result'=>'RENDER ERROR','message'=>$e->getMessage()];echo 'RENDER ERROR: '.$label.' '.$e->getMessage()."\n";}}
+$app['auth']->shouldUse('web');
+foreach(['Customer order list'=>fn()=>$customerController->orders(req()),'Customer order detail'=>fn()=>$customerController->show(req(),$bank->id),'Customer invoice'=>fn()=>$customerController->invoice(req(),$bank->id)] as $label=>$factory){try{$html=$factory()->render();record(strlen($html)>1000,'Fixture page renders: '.$label);$renderResults[$label]=['result'=>'PASS','bytes'=>strlen($html)];}catch(Throwable $e){$renderResults[$label]=['result'=>'RENDER ERROR','message'=>$e->getMessage()];echo 'RENDER ERROR: '.$label.' '.$e->getMessage()."\n";}}
+file_put_contents(__DIR__.'/../page-render-checks.json',json_encode($renderResults,JSON_PRETTY_PRINT));
+
+DB::disconnect('commerce_audit');file_put_contents(__DIR__.'/../checks.json',json_encode($results,JSON_PRETTY_PRINT));echo 'COMPLETED '.count($results).' checks, including '.count(array_filter($results,fn($r)=>$r['result']==='REPRODUCED ISSUE'))." reproduced issues. No provider calls or live database writes. Staged replacements tested; app sources untouched.\n";
+

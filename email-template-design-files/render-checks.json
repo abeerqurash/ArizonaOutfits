@@ -1,0 +1,14 @@
+[
+    {
+        "template": "customer-order-confirmation",
+        "rendered": true
+    },
+    {
+        "template": "admin-new-order",
+        "rendered": true
+    },
+    {
+        "template": "inventory-alert",
+        "rendered": true
+    }
+]

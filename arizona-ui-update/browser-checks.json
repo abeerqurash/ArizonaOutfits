@@ -1,0 +1,69 @@
+{
+  "checks": [
+    {
+      "name": "Dropdown preserves native submitted value 1440",
+      "pass": true
+    },
+    {
+      "name": "Calendar stores ISO date 1440",
+      "pass": true
+    },
+    {
+      "name": "Calendar Escape closes 1440",
+      "pass": true
+    },
+    {
+      "name": "Datetime calendar retains time 1440",
+      "pass": true
+    },
+    {
+      "name": "Admin controls fit viewport 1440",
+      "pass": true
+    },
+    {
+      "name": "Dropdown preserves native submitted value 390",
+      "pass": true
+    },
+    {
+      "name": "Calendar stores ISO date 390",
+      "pass": true
+    },
+    {
+      "name": "Calendar Escape closes 390",
+      "pass": true
+    },
+    {
+      "name": "Datetime calendar retains time 390",
+      "pass": true
+    },
+    {
+      "name": "Admin controls fit viewport 390",
+      "pass": true
+    },
+    {
+      "name": "Product shows custom fields below button group",
+      "pass": true
+    },
+    {
+      "name": "Standard size disables custom fields",
+      "pass": true
+    },
+    {
+      "name": "Quick view shows custom fields below button group",
+      "pass": true
+    },
+    {
+      "name": "Standard size disables custom fields",
+      "pass": true
+    },
+    {
+      "name": "Per-product reorder writes submitted positions",
+      "pass": true
+    },
+    {
+      "name": "No browser JavaScript exceptions",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

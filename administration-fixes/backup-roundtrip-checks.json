@@ -1,0 +1,42 @@
+[
+    {
+        "result": "PASS",
+        "check": "Actual MariaDB exporter completes",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Two successful same-second backups remain separate",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Dump uses explicit writable column names",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Dump restores text, Unicode, NULL, binary and generated values",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Zero primary key survives restoration",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Full backup completes and contains database",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Full backup includes both isolated upload roots",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Full backup includes restore instructions",
+        "detail": ""
+    }
+]

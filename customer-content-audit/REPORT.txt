@@ -1,0 +1,30 @@
+CUSTOMERS / REVIEWS / BLOG POSTS / BLOG CATEGORIES AUDIT
+
+Installed schema inspected read-only. Behavioral tests used SQLite memory.
+
+Original findings:
+- Customer detail includes archived orders: 
+- Customer spending counts paid purchases only: Expected USD 50
+- Customer order count includes archived orders: 
+- Customer deletion blocked when only archived orders exist: 
+- Blocked customer cannot submit reviews: 
+- Inactive product cannot receive reviews: 
+- Public review account/product guards: SQLSTATE[23000]: Integrity constraint violation: 19 FOREIGN KEY constraint failed (Connection: commerce_audit, Database: :memory:, SQL: insert into "reviews" ("product_id", "user_id", "name", "email", "rating", "title", "review", "status", "updated_at", "created_at") values (1, 99, Fixture admin, ?, 5, ?, A helpful review from the real customer, pending, 2026-10-01 15:50:07, 2026-10-01 15:50:07))
+- Publishing missing custom Blade template rejected: 
+- Unsafe template name rejected: 
+- Deleting category preserves image used by another category: 
+- Unauthorized admin denied: admin.customers.index: 
+- Unauthorized admin denied: admin.customers.update: 
+- Unauthorized admin denied: admin.customers.destroy: 
+- Unauthorized admin denied: admin.reviews.index: 
+- Unauthorized admin denied: admin.reviews.update: 
+- Unauthorized admin denied: admin.reviews.destroy: 
+- Unauthorized admin denied: admin.posts.index: 
+- Unauthorized admin denied: admin.posts.store: 
+- Unauthorized admin denied: admin.posts.revisions.restore: 
+- Unauthorized admin denied: admin.categories.index: 
+- Unauthorized admin denied: admin.categories.store: 
+- Unauthorized admin denied: admin.categories.destroy: 
+
+Repair set: C:\xampp\htdocs\ArizonaOutfits\customer-content-fixes
+All 85 staged checks pass; existing source retained.

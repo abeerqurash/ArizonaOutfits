@@ -1,0 +1,22 @@
+[
+  {
+    "file": "app/Services/AdminBellService.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\bell-notification-files\\_staged\\app\\Services\\AdminBellService.php\n"
+  },
+  {
+    "file": "app/Observers/AdminBellObserver.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\bell-notification-files\\_staged\\app\\Observers\\AdminBellObserver.php\n"
+  },
+  {
+    "file": "app/Providers/AppServiceProvider.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\bell-notification-files\\_staged\\app\\Providers\\AppServiceProvider.php\n"
+  },
+  {
+    "file": "app/Http/Controllers/Admin/AdminBackupController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\bell-notification-files\\_staged\\app\\Http\\Controllers\\Admin\\AdminBackupController.php\n"
+  }
+]

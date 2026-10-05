@@ -1,0 +1,67 @@
+[
+  {
+    "file": "01_header.blade.php.txt",
+    "destination": "resources/views/partials/header.blade.php",
+    "sha256": "40f9b46952fff8b03a5c25d76211670f3324e5013af7f1348fd185d324950ba8"
+  },
+  {
+    "file": "02_visual-copy.blade.php.txt",
+    "destination": "resources/views/auth/partials/visual-copy.blade.php",
+    "sha256": "cd742b7e8bcef0281af0623d06c920f583a1117adb1113867c01ca5170428455"
+  },
+  {
+    "file": "03_about.blade.php.txt",
+    "destination": "resources/views/about.blade.php",
+    "sha256": "2b0f45190dfa6371f34310a6b0f0b984ed08b7a560ab3936358695090c5248bc"
+  },
+  {
+    "file": "04_contact.blade.php.txt",
+    "destination": "resources/views/contact.blade.php",
+    "sha256": "7a5564c90ba039110553e1555dc78a9b36f1fe40cd8cfb6fa60ec5ca2e9807ef"
+  },
+  {
+    "file": "05_index.blade.php.txt",
+    "destination": "resources/views/products/index.blade.php",
+    "sha256": "ec331eb0bfa4caf60eea208354e7efa50ff6f9bfb331caf8ef12fe890af4163a"
+  },
+  {
+    "file": "06_storefront-icons.css.txt",
+    "destination": "public/asset/css/storefront-icons.css",
+    "sha256": "8eac66d831d0a02728333d37c5bcf6a54e408de2b0465c8561e42881c60113b5"
+  },
+  {
+    "file": "07_app.blade.php.txt",
+    "destination": "resources/views/layouts/app.blade.php",
+    "sha256": "90df31e2f7db7be1a0d5a29d27c3ab93fa3e71a47f8ce7378b93859cb03ea6c0"
+  },
+  {
+    "file": "08_storefront-fa-solid-900.woff2",
+    "destination": "public/asset/fonts/storefront-fa-solid-900.woff2",
+    "sha256": "c806254b3fbcdd87e167aa4d17210177fa5b57c28b727fcc97876a393d50b9ae"
+  },
+  {
+    "file": "09_storefront-fa-regular-400.woff2",
+    "destination": "public/asset/fonts/storefront-fa-regular-400.woff2",
+    "sha256": "e3f0b1ce94b8bf833140d52a039b5c3e82460aa13517a0070bf976f5a469e5d5"
+  },
+  {
+    "file": "10_storefront-fa-brands-400.woff2",
+    "destination": "public/asset/fonts/storefront-fa-brands-400.woff2",
+    "sha256": "7b995dd8337841aa3fd76aa7925fe97cff2a045e50641be53c2347e8efbf1565"
+  },
+  {
+    "file": "11_icon-font-display.blade.php.txt",
+    "destination": "resources/views/partials/icon-font-display.blade.php",
+    "sha256": "547cfa69bdad67f757ae6c179d780abfb739147b7c88df1053a2b92279dca4be"
+  },
+  {
+    "file": "12_FontAwesome-LICENSE.txt.txt",
+    "destination": "public/asset/fonts/FontAwesome-LICENSE.txt",
+    "sha256": "329f24fdba0c57714d7d202d30a74767feac6907685ee24f0abbf1bd47581a07"
+  },
+  {
+    "file": "13_main.js.txt",
+    "destination": "public/asset/js/main.js",
+    "sha256": "533ce90c7960eabe3c9a8c96a319ccbe283711c490f07bb06004bad60b89d15d"
+  }
+]

@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="e7pX2n4fBL9fxUOc0Cd2aauYxceWrbA3I5lKNRG3">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Edit Email Template | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    <style>
+.ao-template-editor{display:grid;gap:20px;max-width:1440px;margin:0 auto;color:#172033}
+.ao-template-hero{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px 30px;border:1px solid #243249;border-radius:20px;background:linear-gradient(120deg,#172033,#25324d);color:#fff;box-shadow:0 12px 30px rgba(15,23,42,.07)}
+.ao-template-back{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;color:#d8e3f5;font-size:12px;font-weight:700;text-decoration:none}.ao-template-back:hover{color:#fff}
+.ao-template-eyebrow{display:block;color:#b8c8df;font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}.ao-template-hero h2{margin:8px 0;font-size:clamp(23px,2.5vw,31px);line-height:1.2;overflow-wrap:anywhere}.ao-template-hero p{max-width:700px;margin:0;color:#d4deec;font-size:13px;line-height:1.7}
+.ao-template-state{display:inline-flex;flex-shrink:0;align-items:center;gap:8px;padding:10px 13px;border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(255,255,255,.08);color:#e2e8f0;font-size:11px;font-weight:750}.ao-template-state.enabled{background:#d1fae5;border-color:#d1fae5;color:#065f46}
+.ao-template-grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;align-items:start;gap:20px}.ao-template-aside{display:grid;gap:18px;min-width:0}.ao-template-card{min-width:0;overflow:hidden;border:1px solid #e2e8f0;border-radius:16px;background:#fff;box-shadow:0 7px 22px rgba(15,23,42,.035)}
+.ao-template-card-heading{display:flex;align-items:center;gap:12px;padding:20px 22px;border-bottom:1px solid #edf0f5}.ao-template-card-heading h3{margin:0;font-size:16px;font-weight:800}.ao-template-card-heading p{margin:4px 0 0;color:#64748b;font-size:11px;line-height:1.5}.ao-template-icon{display:grid;flex:0 0 40px;width:40px;height:40px;place-items:center;border-radius:11px;background:#e8edf5;color:#25324d;font-size:17px}.ao-template-icon.violet{background:#ede9fe;color:#6d28d9}.ao-template-icon.green{background:#d1fae5;color:#047857}
+.ao-template-form{padding:24px}.ao-template-field{display:grid;gap:9px;margin-bottom:22px}.ao-template-field label{color:#334155;font-size:10px;font-weight:850;letter-spacing:.1em;text-transform:uppercase}.ao-template-field label>span{color:#be123c}.ao-template-field input,.ao-template-field textarea{display:block;box-sizing:border-box;width:100%;min-width:0;padding:13px 14px;border:1px solid #dbe2ed;border-radius:10px;background:#f9fbfe;color:#172033;font:inherit;font-size:13px;line-height:1.6;transition:border-color .15s,box-shadow .15s}.ao-template-field input{min-height:48px}.ao-template-field textarea{min-height:390px;resize:vertical;font-family:Consolas,"Courier New",monospace;font-size:12px;tab-size:2}.ao-template-field input::placeholder{color:#7b889b}.ao-template-field input:focus,.ao-template-field textarea:focus{outline:0;border-color:#657fa7;box-shadow:0 0 0 3px rgba(101,127,167,.15);background:#fff}.ao-template-field [aria-invalid=true]{border-color:#e11d48}
+.ao-template-label-row{display:flex;align-items:center;justify-content:space-between;gap:12px}.ao-template-format{padding:3px 7px;border-radius:5px;background:#f1f5f9;color:#64748b;font-size:9px;font-weight:800}.ao-template-help{margin:0;color:#64748b;font-size:11px;line-height:1.6}.ao-template-field-error{margin:0;color:#be123c;font-size:12px}
+.ao-template-setting{padding:16px;border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc}.ao-template-toggle{display:flex;align-items:center;gap:12px;position:relative;cursor:pointer}.ao-template-toggle input{position:absolute;width:1px;height:1px;opacity:0}.ao-template-switch{position:relative;flex:0 0 40px;width:40px;height:23px;border-radius:999px;background:#64748b;transition:background .15s}.ao-template-switch:after{content:"";position:absolute;left:3px;top:3px;width:17px;height:17px;border-radius:50%;background:#fff;transition:transform .15s}.ao-template-toggle input:checked+.ao-template-switch{background:#0f766e}.ao-template-toggle input:checked+.ao-template-switch:after{transform:translateX(17px)}.ao-template-toggle input:focus-visible+.ao-template-switch{outline:3px solid #8bb7e6;outline-offset:3px}.ao-template-toggle strong,.ao-template-toggle small{display:block}.ao-template-toggle strong{font-size:12px}.ao-template-toggle small{margin-top:3px;color:#64748b;font-size:11px;line-height:1.5}
+.ao-template-form-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;padding-top:21px;border-top:1px solid #edf0f5}.ao-template-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:44px;box-sizing:border-box;padding:11px 19px;border:1px solid transparent;border-radius:999px;cursor:pointer;font:inherit;font-size:11px;font-weight:800;text-decoration:none;transition:background .15s,box-shadow .15s}.ao-template-button.primary{background:#172033;color:#fff}.ao-template-button.primary:hover{background:#2d3d5a;box-shadow:0 4px 12px rgba(15,23,42,.12)}.ao-template-button.secondary{border-color:#dbe2ed;background:#fff;color:#334155}.ao-template-button.secondary:hover{background:#f1f5f9}.ao-template-button:focus-visible,.ao-template-back:focus-visible{outline:3px solid #8bb7e6;outline-offset:3px}
+.ao-template-card-body,.ao-template-test-form{padding:20px 22px}.ao-template-aside-copy{margin:0 0 16px;color:#64748b;font-size:12px;line-height:1.7}.ao-template-variables{display:flex;flex-wrap:wrap;gap:8px}.ao-template-variables code{max-width:100%;padding:7px 9px;border:1px solid #e3def9;border-radius:7px;background:#f5f3ff;color:#5b21b6;font-family:Consolas,"Courier New",monospace;font-size:11px;overflow-wrap:anywhere;user-select:all}.ao-template-tip{display:flex;align-items:flex-start;gap:8px;margin-top:17px;padding:12px;border-radius:9px;background:#f0f9ff;color:#075985}.ao-template-tip i{margin-top:2px}.ao-template-tip p{margin:0;font-size:11px;line-height:1.6}.ao-template-test-form .ao-template-button{width:100%}.ao-template-updated{display:flex;align-items:center;gap:7px;padding:0 5px;color:#64748b;font-size:11px}
+@media(max-width:1150px){.ao-template-grid{grid-template-columns:minmax(0,1fr) 290px}.ao-template-hero{align-items:flex-start;flex-direction:column}.ao-template-card-heading,.ao-template-card-body,.ao-template-test-form{padding:18px}.ao-template-form{padding:20px}}
+@media(max-width:850px){.ao-template-grid{grid-template-columns:1fr}.ao-template-aside{grid-template-columns:repeat(2,minmax(0,1fr))}.ao-template-updated{grid-column:1/-1}}
+@media(max-width:600px){.ao-template-editor{gap:16px}.ao-template-hero{padding:22px;border-radius:15px}.ao-template-aside{grid-template-columns:1fr}.ao-template-form{padding:17px}.ao-template-form-actions{flex-direction:column}.ao-template-button{width:100%}.ao-template-field textarea{min-height:300px}.ao-template-card-heading h3{font-size:15px}}
+</style>
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/orders"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-bag-shopping"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Orders
+
+                    </span>
+
+
+
+                </a>
+
+
+
+                
+                <a
+                    href="http://127.0.0.1:8000/admin/orders/archived"
+                    class="admin-menu-link ">
+                    <span class="admin-menu-icon"><i class="fa-solid fa-box-archive"></i></span>
+                    <span class="admin-menu-text">Archived Orders</span>
+                </a>
+
+                
+                <a
+                    href="http://127.0.0.1:8000/admin/payment-verifications"
+                    class="admin-menu-link ">
+                    <span class="admin-menu-icon"><i class="fa-solid fa-credit-card"></i></span>
+                    <span class="admin-menu-text">Payment Verifications</span>
+                </a>
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/products"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-box-open"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Products
+
+                    </span>
+
+
+
+                </a>
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/product-categories"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-layer-group"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Product Categories
+
+                    </span>
+
+
+
+                </a>
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/product-tags"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-tags"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Product Tags
+
+                    </span>
+
+
+
+                </a>
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/coupons"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-ticket"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Coupons
+
+                    </span>
+
+
+
+                </a>
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/inventory-alerts"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-regular fa-bell"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Inventory Alerts
+
+                    </span>
+
+
+
+                    
+
+
+                </a>
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/inventory-history"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Inventory History
+
+                    </span>
+
+
+
+                </a>
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/inventory-reports"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-file-lines"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Inventory Reports
+
+                    </span>
+
+
+
+                </a>
+
+
+
+                
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/stock-valuation"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-column"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Stock Valuation
+
+                    </span>
+
+
+
+                </a>
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/reorder-dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-cart-flatbed"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Reorder Dashboard
+
+                    </span>
+
+
+
+                    
+
+
+                </a>
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/purchase-orders"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Purchase Orders
+
+                    </span>
+
+
+
+                </a>
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/suppliers"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+
+
+                        <i class="fa-solid fa-truck-field"></i>
+
+
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Suppliers
+
+                    </span>
+
+
+
+                </a>
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/customers"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-users"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Customers
+
+                    </span>
+
+
+
+                </a>
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/reviews"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-star"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Reviews
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/posts"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-newspaper"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Blog Posts
+
+                    </span>
+
+
+
+                </a>
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/categories"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-folder-tree"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Blog Categories
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/ecommerce-settings"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-gear"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Store Settings
+
+                    </span>
+
+
+
+                </a>
+
+                <a href="http://127.0.0.1:8000/admin/pages" class="admin-menu-link ">
+        <span class="admin-menu-icon"><i class="fa-regular fa-file-lines"></i></span>
+        <span class="admin-menu-text">CMS Pages</span>
+    </a>
+
+    <a href="http://127.0.0.1:8000/admin/navigation-menus" class="admin-menu-link ">
+        <span class="admin-menu-icon"><i class="fa-solid fa-bars-staggered"></i></span>
+        <span class="admin-menu-text">Menu Builder</span>
+    </a>
+
+    <a href="http://127.0.0.1:8000/admin/analytics" class="admin-menu-link ">
+        <span class="admin-menu-icon"><i class="fa-solid fa-chart-line"></i></span>
+        <span class="admin-menu-text">Global Analytics</span>
+    </a>
+
+    <a href="http://127.0.0.1:8000/admin/admin-users" class="admin-menu-link ">
+        <span class="admin-menu-icon"><i class="fa-solid fa-users-gear"></i></span>
+        <span class="admin-menu-text">Admin Team</span>
+    </a>
+    <a href="http://127.0.0.1:8000/admin/admin-roles" class="admin-menu-link ">
+        <span class="admin-menu-icon"><i class="fa-solid fa-user-shield"></i></span>
+        <span class="admin-menu-text">Roles & Permissions</span>
+    </a>
+
+    <a href="http://127.0.0.1:8000/admin/notifications" class="admin-menu-link ">
+        <span class="admin-menu-icon"><i class="fa-regular fa-bell"></i></span>
+        <span class="admin-menu-text">Notification Center</span>
+    </a>
+
+    <a href="http://127.0.0.1:8000/admin/audit-logs" class="admin-menu-link ">
+        <span class="admin-menu-icon"><i class="fa-solid fa-clipboard-list"></i></span>
+        <span class="admin-menu-text">Audit Logs</span>
+    </a>
+
+    <a href="http://127.0.0.1:8000/admin/backups" class="admin-menu-link ">
+        <span class="admin-menu-icon"><i class="fa-solid fa-database"></i></span>
+        <span class="admin-menu-text">Backups</span>
+    </a>
+
+    <a href="http://127.0.0.1:8000/admin/email-templates" class="admin-menu-link ">
+        <span class="admin-menu-icon"><i class="fa-solid fa-envelope-open-text"></i></span>
+        <span class="admin-menu-text">Email Templates</span>
+    </a>
+
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="e7pX2n4fBL9fxUOc0Cd2aauYxceWrbA3I5lKNRG3" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Edit Email Template</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+                    <div class="admin-notification-wrapper">
+                <button type="button" class="admin-topbar-action" id="adminNotificationButton" aria-label="Open notifications" aria-expanded="false">
+                    <i class="fa-regular fa-bell"></i>
+                                    </button>
+                <div class="admin-dropdown admin-notification-dropdown" id="adminNotificationDropdown">
+                    <div class="admin-dropdown-header notification-heading">
+                        <div><strong>Notifications</strong><span>0 unread update(s)</span></div>
+                        <a href="http://127.0.0.1:8000/admin/notifications">View all</a>
+                    </div>
+                                            <div class="admin-dropdown-empty"><i class="fa-regular fa-bell-slash"></i><p>You have no notifications yet.</p></div>
+                                    </div>
+            </div>
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture admin</strong><small>Super Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture admin</strong><span>admin@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="e7pX2n4fBL9fxUOc0Cd2aauYxceWrbA3I5lKNRG3" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                <div class="ao-template-editor">
+    <header class="ao-template-hero">
+        <div>
+            <a class="ao-template-back" href="http://127.0.0.1:8000/admin/email-templates"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Email templates</a>
+            <span class="ao-template-eyebrow">Arizona Outfits Â· Store communication</span>
+            <h2>Administrator new order</h2>
+            <p>Sent to store administrators when a new order is received.</p>
+        </div>
+        <span class="ao-template-state enabled"><i class="fa-solid fa-circle-check" aria-hidden="true"></i>Custom template active</span>
+    </header>
+
+    <div class="ao-template-grid">
+        <section class="ao-template-card">
+            <header class="ao-template-card-heading"><span class="ao-template-icon"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i></span><div><h3>Edit your message</h3><p>Keep your communication clear and consistent with your store.</p></div></header>
+            <form method="POST" action="http://127.0.0.1:8000/admin/email-templates/2" class="ao-template-form">
+                <input type="hidden" name="_token" value="e7pX2n4fBL9fxUOc0Cd2aauYxceWrbA3I5lKNRG3" autocomplete="off">                <input type="hidden" name="_method" value="PUT">                <div class="ao-template-field">
+                    <label for="subject">Email subject <span aria-hidden="true">*</span></label>
+                    <input type="text" id="subject" name="subject" maxlength="255" required value="New order received - {{order_number}}" aria-describedby="ao-subject-help" >
+                    <p id="ao-subject-help" class="ao-template-help">The subject customers or administrators will see in their inbox.</p>
+                                    </div>
+                <div class="ao-template-field">
+                    <div class="ao-template-label-row"><label for="body">Email body <span aria-hidden="true">*</span></label><span class="ao-template-format">HTML</span></div>
+                    <textarea id="body" name="body" rows="18" required maxlength="50000" spellcheck="false" aria-describedby="ao-body-help" >&lt;h1&gt;New order received&lt;/h1&gt;&lt;p&gt;Order &lt;strong&gt;{{order_number}}&lt;/strong&gt; was placed by {{customer_name}}.&lt;/p&gt;&lt;p&gt;Total: &lt;strong&gt;{{currency}} {{order_total}}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;{{admin_order_url}}&quot;&gt;Open order in admin&lt;/a&gt;&lt;/p&gt;</textarea>
+                    <p id="ao-body-help" class="ao-template-help">Basic HTML is supported. Unsafe tags and attributes are removed when rendering.</p>
+                                    </div>
+                <div class="ao-template-setting">
+                    <input type="hidden" name="is_enabled" value="0">
+                    <label class="ao-template-toggle" for="is_enabled"><input id="is_enabled" type="checkbox" name="is_enabled" value="1" checked><span class="ao-template-switch" aria-hidden="true"></span><span><strong>Use this custom template</strong><small>Turn off to use the built-in email instead.</small></span></label>
+                </div>
+                <footer class="ao-template-form-actions">
+                    <button type="submit" class="ao-template-button primary"><i class="fa-regular fa-floppy-disk" aria-hidden="true"></i> Save template</button>
+                    <a class="ao-template-button secondary" href="http://127.0.0.1:8000/admin/email-templates/2/preview" target="_blank" rel="noopener"><i class="fa-regular fa-eye" aria-hidden="true"></i> Preview saved template</a>
+                </footer>
+            </form>
+        </section>
+
+        <aside class="ao-template-aside" aria-label="Template guidance and test email">
+            <section class="ao-template-card">
+                <header class="ao-template-card-heading"><span class="ao-template-icon violet"><i class="fa-solid fa-code" aria-hidden="true"></i></span><div><h3>Available variables</h3><p>Personalize each email automatically.</p></div></header>
+                <div class="ao-template-card-body">
+                    <p class="ao-template-aside-copy">Copy a variable exactly as shown into the subject or email body. It will be replaced with the corresponding information when sending.</p>
+                    <div class="ao-template-variables">
+                                                    <code>{{customer_name}}</code>
+                                                    <code>{{order_number}}</code>
+                                                    <code>{{order_total}}</code>
+                                                    <code>{{currency}}</code>
+                                                    <code>{{payment_status}}</code>
+                                                    <code>{{admin_order_url}}</code>
+                                                    <code>{{store_name}}</code>
+                                            </div>
+                    <div class="ao-template-tip"><i class="fa-solid fa-circle-info" aria-hidden="true"></i><p>Only the variables listed here are accepted for this template.</p></div>
+                </div>
+            </section>
+            <section class="ao-template-card">
+                <header class="ao-template-card-heading"><span class="ao-template-icon green"><i class="fa-regular fa-paper-plane" aria-hidden="true"></i></span><div><h3>Send a test email</h3><p>Check the message in a real inbox.</p></div></header>
+                <form method="POST" action="http://127.0.0.1:8000/admin/email-templates/2/test" class="ao-template-test-form">
+                    <input type="hidden" name="_token" value="e7pX2n4fBL9fxUOc0Cd2aauYxceWrbA3I5lKNRG3" autocomplete="off">                    <p class="ao-template-aside-copy">Save your changes first. Preview and test email use the saved template with sample information.</p>
+                    <div class="ao-template-field"><label for="test-email">Recipient email <span aria-hidden="true">*</span></label><input type="email" id="test-email" name="email" value="" required maxlength="255" placeholder="you@example.com" autocomplete="email" ></div>
+                    <button type="submit" class="ao-template-button primary"><i class="fa-regular fa-paper-plane" aria-hidden="true"></i> Send test email</button>
+                </form>
+            </section>
+            <div class="ao-template-updated"><i class="fa-regular fa-clock" aria-hidden="true"></i> Last saved 1 second ago</div>
+        </aside>
+    </div>
+</div>
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+    </body>
+</html>

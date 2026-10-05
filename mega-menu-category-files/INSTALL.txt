@@ -1,0 +1,6 @@
+01_AdminNavigationMenuController.php.txt -> C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminNavigationMenuController.php
+02_NavigationMenuService.php.txt -> C:\xampp\htdocs\ArizonaOutfits\app\Services\NavigationMenuService.php
+03_header.blade.php.txt -> C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\header.blade.php
+04_index.blade.php.txt -> C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\navigation-menus\index.blade.php
+
+Copy full contents into each destination. Run C:\xampp\php\php.exe artisan optimize:clear from the project folder. Open Admin > Menu Builder > Mega Menu Product Categories. Select a category and click Add category. Repeat up to 15. Arrange with arrows and Save order. Remove with ×. Refresh storefront. No migration needed; opening Menu Builder creates the panel. Existing header/footer links remain intact.

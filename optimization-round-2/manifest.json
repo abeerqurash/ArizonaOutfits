@@ -1,0 +1,112 @@
+[
+  {
+    "file": "01_app.blade.php.txt",
+    "destination": "resources/views/layouts/app.blade.php",
+    "sha256": "318f4fa83a5082ce801015075cfd9791b8b5dcf7125e27fcea030e4ddb5e6cab"
+  },
+  {
+    "file": "02_optimized-backgrounds.blade.php.txt",
+    "destination": "resources/views/partials/optimized-backgrounds.blade.php",
+    "sha256": "8d72d5ae208e2020e6cead785f71da853dc8728a4ca30085f0725f2287902e42"
+  },
+  {
+    "file": "03_card-carousel.js.txt",
+    "destination": "public/asset/js/card-carousel.js",
+    "sha256": "008b09e7210aed9ea40c7f94b09a783ae8467a975d2cc7de74bccfb6b0807983"
+  },
+  {
+    "file": "04_card-carousel.css.txt",
+    "destination": "public/asset/css/card-carousel.css",
+    "sha256": "7fe9d95634fdb3f9db454ab6ea2f20342aa3332ae372213a095df4e9e7a7a5ee"
+  },
+  {
+    "file": "05_header.blade.php.txt",
+    "destination": "resources/views/partials/header.blade.php",
+    "sha256": "a73321893c5633a1dabb2a46e353f872ef01aff32b2452f2727c98e863c22e15"
+  },
+  {
+    "file": "06_about.blade.php.txt",
+    "destination": "resources/views/about.blade.php",
+    "sha256": "581523d6065abdd98b945c3bd7ec7768d10705ce6134c9f1080e024bae6d9264"
+  },
+  {
+    "file": "07_app.blade.php.txt",
+    "destination": "resources/views/customer/layouts/app.blade.php",
+    "sha256": "77c77f6ac202405bdb4f109a2661574569c13bc24a6ba9cd5ed8b516fa9f994a"
+  },
+  {
+    "file": "08_storefront-styles.blade.php.txt",
+    "destination": "resources/views/partials/storefront-styles.blade.php",
+    "sha256": "ed53af2325c0fd1c75451954e525e4cfa08022ebb3d3020dd340e0a3cbf00d52"
+  },
+  {
+    "file": "09_about.js.txt",
+    "destination": "public/asset/js/about.js",
+    "sha256": "8127c628084532bcf3dd76414f167b619ed3b778ee1f0469bf9f26ade4fadcf9"
+  },
+  {
+    "file": "10_dashboard.js.txt",
+    "destination": "public/asset/js/dashboard.js",
+    "sha256": "c4b8cac43fef6d3a0b5ba1446d7a777ea74de3118eeb447242dfba6c9146ec80"
+  },
+  {
+    "file": "11_frontend-styles.blade.php.txt",
+    "destination": "resources/views/auth/partials/frontend-styles.blade.php",
+    "sha256": "d978261dc0d10c064c83d908907f823beb0dcb1a4d69a8bc449043cbd3d18880"
+  },
+  {
+    "file": "12_carousel-styles.blade.php.txt",
+    "destination": "resources/views/partials/carousel-styles.blade.php",
+    "sha256": "1715a05e9d4a763a7670bf0b01de4db51f051311cb70f547a65d71e76b7b4585"
+  },
+  {
+    "file": "13_categories.blade.php.txt",
+    "destination": "resources/views/products/categories.blade.php",
+    "sha256": "d060156c0964b39868c5f67d0c5970041b31e0e6cfedcb215bf7ec068b5e06ea"
+  },
+  {
+    "file": "14_main.js.txt",
+    "destination": "public/asset/js/main.js",
+    "sha256": "de173358b500b6c77bdee2f4c00bf2b14b07031afd93ac8f04b0373b41f41998"
+  },
+  {
+    "file": "15_contact.js.txt",
+    "destination": "public/asset/js/contact.js",
+    "sha256": "96e1e57cb72340b851154427f668d5314aa7f348f430ea83d9d2f7045ae19e52"
+  },
+  {
+    "file": "16_article-author-latest.blade.php.txt",
+    "destination": "resources/views/blogs/partials/article-author-latest.blade.php",
+    "sha256": "8aeff9bd17f73ca7ceed165a5fc56bf20b8904ed6c2a88f80c80eeece1f71d40"
+  },
+  {
+    "file": "17_show.blade.php.txt",
+    "destination": "resources/views/products/show.blade.php",
+    "sha256": "a4117aa645a6af46b077d1b4d45bebab3e39933fbe3e05414eb68401af02e1e8"
+  },
+  {
+    "file": "18_ProjectsController.php.txt",
+    "destination": "app/Http/Controllers/ProjectsController.php",
+    "sha256": "01d9d9eec25d1d70e438b8333c5bf12d2eca2f16daf198be716235067f5d38ec"
+  },
+  {
+    "file": "19_ServicesController.php.txt",
+    "destination": "app/Http/Controllers/ServicesController.php",
+    "sha256": "c9b3d15d451072b9c2df4b66d3056be1bc474d6bb7f48890b8f29e5b8a0308f2"
+  },
+  {
+    "file": "20_AbeerKhanController.php.txt",
+    "destination": "app/Http/Controllers/AbeerKhanController.php",
+    "sha256": "55738e624a3ba81fef641963cb0a650382780f0487c4e4a441250c074c6eaf0c"
+  },
+  {
+    "file": "21_blogs.js.txt",
+    "destination": "public/asset/js/blogs.js",
+    "sha256": "73dbab3f4811fd9371adcb722d3fd8011e8182c3a142b0c42d57f83a8d73f13a"
+  },
+  {
+    "file": "22_icon-font-display.blade.php.txt",
+    "destination": "resources/views/partials/icon-font-display.blade.php",
+    "sha256": "4a291f216a12133535e74c21e523a2b3a4a2aeccbf3962ceb520dbed0e5b37b1"
+  }
+]

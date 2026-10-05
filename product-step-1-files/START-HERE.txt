@@ -1,0 +1,59 @@
+PRODUCT SYSTEM - STEP 1: FEATURED FILTER FIX
+
+This step fixes the admin product listing's Featured dropdown.
+Previously, choosing All products could hide featured products because
+an empty featured value was incorrectly treated as Not featured.
+
+1. BACK UP THIS EXISTING FILE
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\ProductController.php
+
+2. COPY THE COMPLETE REPLACEMENT
+Open ProductController.txt from this folder and copy ALL its contents.
+Paste over ALL contents of this EXISTING file, then save:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\ProductController.php
+Keep the filename ProductController.php, not ProductController.php.txt.
+This is the ADMIN controller, not the public product controller.
+
+3. CHECK SYNTAX
+Open PowerShell and run these commands one at a time:
+Set-Location 'C:\xampp\htdocs\ArizonaOutfits'
+C:\xampp\php\php.exe -l app\Http\Controllers\Admin\ProductController.php
+
+Expect No syntax errors detected.
+No database migration, timezone change, or view replacement is required.
+If syntax fails, restore your backup and share the error text.
+
+4. TEST IN THE ADMIN PRODUCT LIST
+Open your normal admin Products page and refresh with Ctrl+F5.
+In the Featured dropdown:
+- All products: expect featured AND non-featured products.
+- Featured: expect only featured products.
+- Not featured: expect only non-featured products.
+Select All products again and try a product title or SKU search.
+Combine it with a category or status filter and confirm matching products
+still appear. Clear the filters to see the full catalog again.
+The top catalog totals should not change merely because a filter changes.
+If enough products match for multiple pages, check page two as well.
+You do not need to add products solely for pagination testing; pagination
+was checked with disposable fixtures before delivery.
+If your catalog contains only featured or only non-featured products,
+the opposite filter correctly shows no matches.
+
+WHAT CHANGED
+Only the condition that activates the Featured filter was changed.
+An omitted, blank, or null featured value now means All products.
+The string 0 still correctly means Not featured.
+Existing create/edit, variants, pricing, images, inventory and deletion
+logic is retained in the complete replacement.
+Your custom product/page layouts are not changed by this step.
+
+VALIDATION
+PHP syntax passed. 16 isolated checks passed, including reproduction of
+the original bug, blank/null/zero filter values, combined filters, SKU
+search, statistics, pagination, and unchanged original source.
+No live products were created or changed; the fixtures were memory-only.
+These checks cover this listing fix, not complete product-system QA.
+Your source controller has not been replaced automatically.
+
+Reply PASS after installing and checking the Featured dropdown, or share
+any error. Then we continue the next Product System step.

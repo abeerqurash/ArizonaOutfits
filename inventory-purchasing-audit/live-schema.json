@@ -1,0 +1,564 @@
+{
+    "inventory_alerts": {
+        "columns": [
+            "id",
+            "product_id",
+            "product_variant_id",
+            "alert_type",
+            "stock_level",
+            "threshold",
+            "status",
+            "notified_at",
+            "resolved_at",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "inventory_alerts_product_id_foreign",
+                "columns": [
+                    "product_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "products",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "inventory_alerts_product_variant_id_foreign",
+                "columns": [
+                    "product_variant_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "product_variants",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "inventory_histories": {
+        "columns": [
+            "id",
+            "product_id",
+            "product_variant_id",
+            "order_id",
+            "user_id",
+            "admin_id",
+            "quantity_change",
+            "stock_before",
+            "stock_after",
+            "movement_type",
+            "reason",
+            "notes",
+            "reference_type",
+            "reference_id",
+            "metadata",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "inventory_histories_admin_id_foreign",
+                "columns": [
+                    "admin_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admins",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "inventory_histories_order_id_foreign",
+                "columns": [
+                    "order_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "orders",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "inventory_histories_product_id_foreign",
+                "columns": [
+                    "product_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "products",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "inventory_histories_product_variant_id_foreign",
+                "columns": [
+                    "product_variant_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "product_variants",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "inventory_histories_user_id_foreign",
+                "columns": [
+                    "user_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "purchase_orders": {
+        "columns": [
+            "id",
+            "reference",
+            "supplier_id",
+            "supplier_name",
+            "supplier_email",
+            "supplier_phone",
+            "supplier_address",
+            "status",
+            "order_date",
+            "expected_date",
+            "ordered_at",
+            "received_at",
+            "cancelled_at",
+            "subtotal",
+            "tax_amount",
+            "shipping_amount",
+            "discount_amount",
+            "total_amount",
+            "currency",
+            "notes",
+            "internal_notes",
+            "created_by",
+            "admin_id",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "purchase_orders_admin_id_foreign",
+                "columns": [
+                    "admin_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admins",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "purchase_orders_created_by_foreign",
+                "columns": [
+                    "created_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "purchase_orders_supplier_id_foreign",
+                "columns": [
+                    "supplier_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "suppliers",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "purchase_order_receipts": {
+        "columns": [
+            "id",
+            "reference",
+            "purchase_order_id",
+            "supplier_id",
+            "received_at",
+            "notes",
+            "received_by",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "purchase_order_receipts_purchase_order_id_foreign",
+                "columns": [
+                    "purchase_order_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "purchase_orders",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            },
+            {
+                "name": "purchase_order_receipts_received_by_foreign",
+                "columns": [
+                    "received_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "purchase_order_receipts_supplier_id_foreign",
+                "columns": [
+                    "supplier_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "suppliers",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "supplier_returns": {
+        "columns": [
+            "id",
+            "reference",
+            "purchase_order_id",
+            "supplier_id",
+            "status",
+            "reason_category",
+            "reason",
+            "returned_at",
+            "expected_credit",
+            "actual_credit",
+            "notes",
+            "created_by",
+            "completed_by",
+            "completed_at",
+            "cancelled_by",
+            "cancelled_at",
+            "cancellation_reason",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "supplier_returns_cancelled_by_foreign",
+                "columns": [
+                    "cancelled_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "supplier_returns_completed_by_foreign",
+                "columns": [
+                    "completed_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "supplier_returns_created_by_foreign",
+                "columns": [
+                    "created_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "supplier_returns_purchase_order_id_foreign",
+                "columns": [
+                    "purchase_order_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "purchase_orders",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            },
+            {
+                "name": "supplier_returns_supplier_id_foreign",
+                "columns": [
+                    "supplier_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "suppliers",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "suppliers": {
+        "columns": [
+            "id",
+            "company_name",
+            "slug",
+            "supplier_code",
+            "contact_person",
+            "email",
+            "phone",
+            "alternate_phone",
+            "website",
+            "address_line_1",
+            "address_line_2",
+            "city",
+            "state",
+            "postal_code",
+            "country",
+            "currency",
+            "payment_terms",
+            "lead_time_days",
+            "credit_limit",
+            "tax_number",
+            "registration_number",
+            "bank_name",
+            "account_name",
+            "account_number",
+            "sort_code",
+            "iban",
+            "swift_code",
+            "status",
+            "is_preferred",
+            "notes",
+            "internal_notes",
+            "created_by",
+            "created_at",
+            "updated_at",
+            "deleted_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "suppliers_created_by_foreign",
+                "columns": [
+                    "created_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "supplier_documents": {
+        "columns": [
+            "id",
+            "supplier_id",
+            "document_type",
+            "title",
+            "file_name",
+            "file_path",
+            "mime_type",
+            "file_size",
+            "expiry_date",
+            "notes",
+            "uploaded_by",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "supplier_documents_supplier_id_foreign",
+                "columns": [
+                    "supplier_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "suppliers",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            },
+            {
+                "name": "supplier_documents_uploaded_by_foreign",
+                "columns": [
+                    "uploaded_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "supplier_ratings": {
+        "columns": [
+            "id",
+            "supplier_id",
+            "purchase_order_id",
+            "quality_rating",
+            "pricing_rating",
+            "delivery_rating",
+            "communication_rating",
+            "reliability_rating",
+            "overall_rating",
+            "review",
+            "rated_by",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "supplier_ratings_purchase_order_id_foreign",
+                "columns": [
+                    "purchase_order_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "purchase_orders",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "supplier_ratings_rated_by_foreign",
+                "columns": [
+                    "rated_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "supplier_ratings_supplier_id_foreign",
+                "columns": [
+                    "supplier_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "suppliers",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            }
+        ]
+    },
+    "supplier_purchase_order_deliveries": {
+        "columns": [
+            "id",
+            "supplier_id",
+            "purchase_order_id",
+            "recipient_emails",
+            "subject",
+            "message",
+            "attach_pdf",
+            "status",
+            "error_message",
+            "sent_by",
+            "queued_at",
+            "sent_at",
+            "failed_at",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "supplier_purchase_order_deliveries_purchase_order_id_foreign",
+                "columns": [
+                    "purchase_order_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "purchase_orders",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            },
+            {
+                "name": "supplier_purchase_order_deliveries_sent_by_foreign",
+                "columns": [
+                    "sent_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "supplier_purchase_order_deliveries_supplier_id_foreign",
+                "columns": [
+                    "supplier_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "suppliers",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            }
+        ]
+    }
+}

@@ -1,0 +1,8 @@
+Date,Product,Variant,SKU,Movement,Before,Change,After,User,Reason,Order
+"2026-10-01 14:52","Simple fixture",,SIMPLE,purchase_order_receipt,2,2,4,"Unrelated customer sharing admin ID","Purchase order inventory received",
+"2026-10-01 14:52","Simple fixture",,SIMPLE,purchase_order_receipt,4,2,6,"Unrelated customer sharing admin ID","Purchase order inventory received",
+"2026-10-01 14:52","Simple fixture",,SIMPLE,inventory_correction,6,-1,5,"Unrelated customer sharing admin ID","Purchase order receiving correction",
+"2026-10-01 14:52","Simple fixture",,SIMPLE,supplier_return,5,-1,4,"Unrelated customer sharing admin ID","Inventory returned to supplier",
+"2026-10-01 14:52","Simple fixture",,SIMPLE,supplier_return_cancelled,4,1,5,"Unrelated customer sharing admin ID","Supplier return cancelled; stock restored",
+"2026-10-01 14:52","Simple fixture",,SIMPLE,order_deduction,5,-1,4,,"Audit archived order",
+"2026-10-01 14:52","Variable fixture",,PARENT,restock,2,1,3,,"Variant export fixture",

@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Product Categories | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    <style>
+    .category-statistics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .category-filter-panel {
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+
+    .category-filter-form {
+        display: grid;
+        grid-template-columns: minmax(260px, 1fr) 220px auto auto;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .category-filter-search {
+        position: relative;
+    }
+
+    .category-filter-search i {
+        position: absolute;
+        top: 50%;
+        left: 13px;
+        transform: translateY(-50%);
+        color: #94a3b8;
+        font-size: 11px;
+        pointer-events: none;
+    }
+
+    .category-filter-search input,
+    .category-filter-form select {
+        width: 100%;
+        min-height: 41px;
+        border: 1px solid rgba(15, 23, 42, .10);
+        border-radius: 9px;
+        outline: 0;
+        background: #fff;
+        color: #111827;
+        font: inherit;
+        font-size: 10px;
+    }
+
+    .category-filter-search input {
+        padding: 9px 12px 9px 35px;
+    }
+
+    .category-filter-form select {
+        padding: 9px 11px;
+    }
+
+    .category-identity {
+        min-width: 260px;
+        display: flex;
+        align-items: center;
+        gap: 11px;
+    }
+
+    .category-thumbnail {
+        flex: 0 0 52px;
+        width: 52px;
+        height: 52px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(15, 23, 42, .08);
+        border-radius: 10px;
+        background: #f8fafc;
+        color: #94a3b8;
+    }
+
+    .category-thumbnail img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .category-thumbnail span {
+        font-size: 16px;
+    }
+
+    .category-identity-copy {
+        min-width: 0;
+    }
+
+    .category-identity-copy strong {
+        display: block;
+        margin-bottom: 4px;
+        color: #111827;
+        font-size: 11px;
+    }
+
+    .category-identity-copy span {
+        display: block;
+        max-width: 330px;
+        overflow: hidden;
+        color: #94a3b8;
+        font-size: 9px;
+        line-height: 1.45;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .category-slug {
+        padding: 4px 7px;
+        border-radius: 6px;
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 9px;
+    }
+
+    .category-parent-badge,
+    .category-root-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 8px;
+        border-radius: 999px;
+        font-size: 8px;
+        font-weight: 750;
+    }
+
+    .category-parent-badge {
+        background: #f5f3ff;
+        color: #6d5dfc;
+    }
+
+    .category-root-badge {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+    .category-count {
+        color: #374151;
+        font-size: 11px;
+    }
+
+    .category-actions-heading {
+        text-align: right !important;
+    }
+
+    .category-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 6px;
+    }
+
+    .category-action-button {
+        min-height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        padding: 6px 9px;
+        border: 1px solid rgba(15, 23, 42, .09);
+        border-radius: 7px;
+        background: #fff;
+        color: #475569;
+        font: inherit;
+        font-size: 8px;
+        font-weight: 750;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .category-action-button:hover {
+        border-color: #7c6cff;
+        color: #5b4df6;
+    }
+
+    .category-action-button.is-danger {
+        border-color: #fecaca;
+        color: #dc2626;
+    }
+
+    .category-action-button:disabled {
+        opacity: .38;
+        cursor: not-allowed;
+    }
+
+    .category-empty-state {
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        color: #94a3b8;
+        text-align: center;
+    }
+
+    .category-empty-state i {
+        font-size: 28px;
+    }
+
+    .category-empty-state strong {
+        color: #475569;
+        font-size: 12px;
+    }
+
+    .category-empty-state span {
+        font-size: 9px;
+    }
+
+    .category-pagination {
+        padding: 15px 18px;
+        border-top: 1px solid rgba(15, 23, 42, .07);
+    }
+
+    .category-delete-modal[hidden] {
+        display: none !important;
+    }
+
+    .category-delete-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .category-delete-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 23, 42, .52);
+        backdrop-filter: blur(3px);
+    }
+
+    .category-delete-dialog {
+        position: relative;
+        z-index: 1;
+        width: min(420px, 100%);
+        padding: 24px;
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: 0 24px 70px rgba(15, 23, 42, .20);
+        text-align: center;
+    }
+
+    .category-delete-icon {
+        width: 48px;
+        height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        border-radius: 50%;
+        background: #fef2f2;
+        color: #dc2626;
+        font-size: 17px;
+    }
+
+    .category-delete-dialog h3 {
+        margin: 0 0 8px;
+        color: #111827;
+        font-size: 16px;
+    }
+
+    .category-delete-dialog p {
+        margin: 0;
+        color: #64748b;
+        font-size: 10px;
+        line-height: 1.65;
+    }
+
+    .category-delete-actions {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .category-confirm-delete {
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 13px;
+        border: 0;
+        border-radius: 9px;
+        background: #dc2626;
+        color: #fff;
+        font: inherit;
+        font-size: 10px;
+        font-weight: 750;
+        cursor: pointer;
+    }
+
+    @media (max-width: 1050px) {
+        .category-statistics-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .category-filter-form {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 620px) {
+        .category-statistics-grid,
+        .category-filter-form {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Product Categories</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                
+
+<div class="admin-page-header">
+    <div>
+        <span class="admin-page-eyebrow">Catalog organization</span>
+        <h2>Product Categories</h2>
+        <p>
+            Organize products into parent and child categories and manage their storefront metadata.
+        </p>
+    </div>
+
+    <div class="admin-page-actions">
+        <a
+            href="http://127.0.0.1:8000/admin/product-categories/create"
+            class="admin-button admin-button-primary"
+        >
+            <i class="fa-solid fa-plus"></i>
+            Add Category
+        </a>
+    </div>
+</div>
+
+<div class="category-statistics-grid">
+
+    <div class="admin-stat-card">
+        <div class="admin-stat-card-top">
+            <div>
+                <span class="admin-stat-label">Total Categories</span>
+                <strong class="admin-stat-value">4</strong>
+            </div>
+            <span class="admin-stat-icon"><i class="fa-solid fa-layer-group"></i></span>
+        </div>
+    </div>
+
+    <div class="admin-stat-card">
+        <div class="admin-stat-card-top">
+            <div>
+                <span class="admin-stat-label">Parent Categories</span>
+                <strong class="admin-stat-value">2</strong>
+            </div>
+            <span class="admin-stat-icon"><i class="fa-solid fa-folder-tree"></i></span>
+        </div>
+    </div>
+
+    <div class="admin-stat-card">
+        <div class="admin-stat-card-top">
+            <div>
+                <span class="admin-stat-label">Child Categories</span>
+                <strong class="admin-stat-value">2</strong>
+            </div>
+            <span class="admin-stat-icon"><i class="fa-solid fa-code-branch"></i></span>
+        </div>
+    </div>
+
+    <div class="admin-stat-card">
+        <div class="admin-stat-card-top">
+            <div>
+                <span class="admin-stat-label">With Products</span>
+                <strong class="admin-stat-value">1</strong>
+            </div>
+            <span class="admin-stat-icon"><i class="fa-solid fa-box"></i></span>
+        </div>
+    </div>
+
+</div>
+
+<section class="admin-panel category-filter-panel">
+    <form
+        action="http://127.0.0.1:8000/admin/product-categories"
+        method="GET"
+        class="category-filter-form"
+    >
+        <div class="category-filter-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                type="search"
+                name="search"
+                value=""
+                placeholder="Search title, slug or description..."
+            >
+        </div>
+
+        <select name="parent">
+            <option value="">All parents</option>
+
+                            <option
+                    value="1"
+                                    >
+                    Men Outfits
+                </option>
+                            <option
+                    value="3"
+                                    >
+                    Women Outfits
+                </option>
+                    </select>
+
+        <button
+            type="submit"
+            class="admin-button admin-button-primary"
+        >
+            <i class="fa-solid fa-filter"></i>
+            Filter
+        </button>
+
+            </form>
+</section>
+
+<section class="admin-panel">
+    <div class="admin-panel-header">
+        <div>
+            <span class="admin-panel-eyebrow">Category directory</span>
+            <h3>
+                4
+                Categories
+            </h3>
+        </div>
+    </div>
+
+    <div class="admin-table-wrapper">
+        <table class="admin-table category-table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Slug</th>
+                    <th>Parent</th>
+                    <th>Products</th>
+                    <th>Children</th>
+                    <th class="category-actions-heading">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                                    <tr>
+                        <td>
+                            <div class="category-identity">
+                                <div class="category-thumbnail">
+                                                                            <span>
+                                            <i class="fa-regular fa-image"></i>
+                                        </span>
+                                                                    </div>
+
+                                <div class="category-identity-copy">
+                                    <strong>Men Outfits</strong>
+
+                                                                            <span>No description</span>
+                                                                    </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <code class="category-slug">men-outfits</code>
+                        </td>
+
+                        <td>
+                                                            <span class="category-root-badge">
+                                    Root
+                                </span>
+                                                    </td>
+
+                        <td>
+                            <strong class="category-count">
+                                14
+                            </strong>
+                        </td>
+
+                        <td>
+                            <strong class="category-count">
+                                1
+                            </strong>
+                        </td>
+
+                        <td>
+                            <div class="category-actions">
+                                <a
+                                    href="http://127.0.0.1:8000/admin/product-categories/1/edit"
+                                    class="category-action-button"
+                                    title="Edit category"
+                                >
+                                    <i class="fa-solid fa-pen"></i>
+                                    Edit
+                                </a>
+
+                                <button
+                                    type="button"
+                                    class="category-action-button is-danger"
+                                    data-delete-category
+                                    data-delete-url="http://127.0.0.1:8000/admin/product-categories/1"
+                                    data-category-title="Men Outfits"
+                                    disabled                                    title="Move assigned products before deleting"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                                    <tr>
+                        <td>
+                            <div class="category-identity">
+                                <div class="category-thumbnail">
+                                                                            <span>
+                                            <i class="fa-regular fa-image"></i>
+                                        </span>
+                                                                    </div>
+
+                                <div class="category-identity-copy">
+                                    <strong>Women Outfits</strong>
+
+                                                                            <span>No description</span>
+                                                                    </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <code class="category-slug">women-outfits</code>
+                        </td>
+
+                        <td>
+                                                            <span class="category-root-badge">
+                                    Root
+                                </span>
+                                                    </td>
+
+                        <td>
+                            <strong class="category-count">
+                                0
+                            </strong>
+                        </td>
+
+                        <td>
+                            <strong class="category-count">
+                                1
+                            </strong>
+                        </td>
+
+                        <td>
+                            <div class="category-actions">
+                                <a
+                                    href="http://127.0.0.1:8000/admin/product-categories/3/edit"
+                                    class="category-action-button"
+                                    title="Edit category"
+                                >
+                                    <i class="fa-solid fa-pen"></i>
+                                    Edit
+                                </a>
+
+                                <button
+                                    type="button"
+                                    class="category-action-button is-danger"
+                                    data-delete-category
+                                    data-delete-url="http://127.0.0.1:8000/admin/product-categories/3"
+                                    data-category-title="Women Outfits"
+                                    disabled                                    title="Move or delete child categories first"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                                    <tr>
+                        <td>
+                            <div class="category-identity">
+                                <div class="category-thumbnail">
+                                                                            <span>
+                                            <i class="fa-regular fa-image"></i>
+                                        </span>
+                                                                    </div>
+
+                                <div class="category-identity-copy">
+                                    <strong>Men Jackets</strong>
+
+                                                                            <span>No description</span>
+                                                                    </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <code class="category-slug">men-jackets</code>
+                        </td>
+
+                        <td>
+                                                            <span class="category-parent-badge">
+                                    Men Outfits
+                                </span>
+                                                    </td>
+
+                        <td>
+                            <strong class="category-count">
+                                0
+                            </strong>
+                        </td>
+
+                        <td>
+                            <strong class="category-count">
+                                0
+                            </strong>
+                        </td>
+
+                        <td>
+                            <div class="category-actions">
+                                <a
+                                    href="http://127.0.0.1:8000/admin/product-categories/2/edit"
+                                    class="category-action-button"
+                                    title="Edit category"
+                                >
+                                    <i class="fa-solid fa-pen"></i>
+                                    Edit
+                                </a>
+
+                                <button
+                                    type="button"
+                                    class="category-action-button is-danger"
+                                    data-delete-category
+                                    data-delete-url="http://127.0.0.1:8000/admin/product-categories/2"
+                                    data-category-title="Men Jackets"
+                                                                        title="Delete category"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                                    <tr>
+                        <td>
+                            <div class="category-identity">
+                                <div class="category-thumbnail">
+                                                                            <span>
+                                            <i class="fa-regular fa-image"></i>
+                                        </span>
+                                                                    </div>
+
+                                <div class="category-identity-copy">
+                                    <strong>Women Jackets</strong>
+
+                                                                            <span>No description</span>
+                                                                    </div>
+                            </div>
+                        </td>
+
+                        <td>
+                            <code class="category-slug">women-jackets</code>
+                        </td>
+
+                        <td>
+                                                            <span class="category-parent-badge">
+                                    Women Outfits
+                                </span>
+                                                    </td>
+
+                        <td>
+                            <strong class="category-count">
+                                0
+                            </strong>
+                        </td>
+
+                        <td>
+                            <strong class="category-count">
+                                0
+                            </strong>
+                        </td>
+
+                        <td>
+                            <div class="category-actions">
+                                <a
+                                    href="http://127.0.0.1:8000/admin/product-categories/4/edit"
+                                    class="category-action-button"
+                                    title="Edit category"
+                                >
+                                    <i class="fa-solid fa-pen"></i>
+                                    Edit
+                                </a>
+
+                                <button
+                                    type="button"
+                                    class="category-action-button is-danger"
+                                    data-delete-category
+                                    data-delete-url="http://127.0.0.1:8000/admin/product-categories/4"
+                                    data-category-title="Women Jackets"
+                                                                        title="Delete category"
+                                >
+                                    <i class="fa-solid fa-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                            </tbody>
+        </table>
+    </div>
+
+    </section>
+
+<div
+    class="category-delete-modal"
+    id="categoryDeleteModal"
+    hidden
+>
+    <div
+        class="category-delete-backdrop"
+        data-close-delete-modal
+    ></div>
+
+    <div
+        class="category-delete-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="categoryDeleteTitle"
+    >
+        <div class="category-delete-icon">
+            <i class="fa-solid fa-trash"></i>
+        </div>
+
+        <h3 id="categoryDeleteTitle">Delete Category?</h3>
+
+        <p>
+            You are about to permanently delete
+            <strong id="categoryDeleteName"></strong>.
+            This action cannot be undone.
+        </p>
+
+        <div class="category-delete-actions">
+            <button
+                type="button"
+                class="admin-button admin-button-secondary"
+                data-close-delete-modal
+            >
+                Cancel
+            </button>
+
+            <form
+                method="POST"
+                id="categoryDeleteForm"
+            >
+                <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">                <input type="hidden" name="_method" value="DELETE">
+                <button
+                    type="submit"
+                    class="category-confirm-delete"
+                >
+                    <i class="fa-solid fa-trash"></i>
+                    Delete Category
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+    <script>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const modal =
+        document.getElementById(
+            'categoryDeleteModal'
+        );
+
+    const deleteForm =
+        document.getElementById(
+            'categoryDeleteForm'
+        );
+
+    const deleteName =
+        document.getElementById(
+            'categoryDeleteName'
+        );
+
+    function closeDeleteModal() {
+        if (modal) {
+            modal.hidden = true;
+        }
+    }
+
+    document
+        .querySelectorAll(
+            '[data-delete-category]'
+        )
+        .forEach(function (button) {
+
+            button.addEventListener(
+                'click',
+                function () {
+                    if (
+                        button.disabled ||
+                        !modal ||
+                        !deleteForm
+                    ) {
+                        return;
+                    }
+
+                    deleteForm.action =
+                        button.dataset.deleteUrl || '';
+
+                    if (deleteName) {
+                        deleteName.textContent =
+                            button.dataset.categoryTitle || '';
+                    }
+
+                    modal.hidden = false;
+                }
+            );
+
+        });
+
+    document
+        .querySelectorAll(
+            '[data-close-delete-modal]'
+        )
+        .forEach(function (button) {
+            button.addEventListener(
+                'click',
+                closeDeleteModal
+            );
+        });
+
+    document.addEventListener(
+        'keydown',
+        function (event) {
+            if (
+                event.key === 'Escape' &&
+                modal &&
+                !modal.hidden
+            ) {
+                closeDeleteModal();
+            }
+        }
+    );
+
+});
+</script>
+
+<style>
+.category-statistics-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:18px}
+.category-statistics-grid .admin-stat-card{min-height:112px;padding:17px;border:1px solid #e6eaf1;border-radius:11px;background:#fff;box-shadow:none}
+.category-statistics-grid .admin-stat-icon{width:34px;height:34px;border-radius:9px;background:#eef0ff;color:#635bff}
+.cat-index-select{position:relative;min-width:180px}
+.cat-index-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.cat-index-button{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:40px;padding:0 11px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#344054;font-size:11px;font-weight:600;cursor:pointer}
+.cat-index-select.open .cat-index-button,.cat-index-button:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.10);outline:none}
+.cat-index-menu{position:absolute;z-index:12500;top:calc(100% + 6px);left:0;display:none;width:100%;max-height:240px;overflow:auto;padding:5px;border:1px solid #e0e5ed;border-radius:9px;background:#fff;box-shadow:0 14px 38px rgba(15,23,42,.16)}
+.cat-index-select.open .cat-index-menu{display:block}
+.cat-index-option{display:flex;justify-content:space-between;width:100%;padding:8px 9px;border:0;border-radius:6px;background:transparent;color:#344054;font-size:11px;font-weight:600;text-align:left;cursor:pointer}
+.cat-index-option:hover,.cat-index-option.selected{background:#eeedff;color:#5149d8}
+.cat-index-option.selected::after{content:"\2713";color:#635bff}
+.cat-feedback{position:fixed;inset:0;z-index:13000;display:flex;align-items:center;justify-content:center;padding:20px}
+.cat-feedback-bg{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}
+.cat-feedback-box{position:relative;z-index:2;width:100%;max-width:430px;padding:30px;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.24);text-align:center}
+@media(max-width:900px){.category-statistics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.category-statistics-grid{grid-template-columns:1fr}}
+</style>
+<script>
+'use strict';
+document.addEventListener('DOMContentLoaded',function(){
+ document.querySelectorAll('.category-filter-form select:not([multiple])').forEach(function(select){
+  const w=document.createElement('div');w.className='cat-index-select';const b=document.createElement('button');b.type='button';b.className='cat-index-button';const v=document.createElement('span'),i=document.createElement('i');i.className='fa-solid fa-chevron-down';b.append(v,i);const m=document.createElement('div');m.className='cat-index-menu';select.parentNode.insertBefore(w,select);w.append(select,b,m);select.classList.add('cat-index-native');
+  function render(){m.innerHTML='';Array.from(select.options).forEach(o=>{const x=document.createElement('button');x.type='button';x.className='cat-index-option'+(String(o.value)===String(select.value)?' selected':'');x.textContent=o.textContent.trim();x.onclick=()=>{select.value=o.value;select.dispatchEvent(new Event('change',{bubbles:true}));render();w.classList.remove('open')};m.append(x)});const o=select.options[select.selectedIndex];v.textContent=o?o.textContent.trim():'Select'}
+  b.onclick=()=>w.classList.toggle('open');document.addEventListener('click',e=>{if(!w.contains(e.target))w.classList.remove('open')});render();
+ });
+ const p=document.getElementById('catFeedback');if(p){document.body.style.overflow='hidden';p.querySelectorAll('[data-cat-feedback-close]').forEach(x=>x.onclick=()=>{p.remove();document.body.style.overflow=''})}
+});
+</script>
+
+    <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

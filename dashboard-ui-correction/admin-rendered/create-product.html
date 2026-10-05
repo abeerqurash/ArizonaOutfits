@@ -1,0 +1,6343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Create Product | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    
+<style>
+    .product-form-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .product-form-main,
+    .product-form-sidebar {
+        display: grid;
+        gap: 24px;
+    }
+
+    .product-form-panel {
+        overflow: hidden;
+    }
+
+    section.admin-panel.product-form-panel.product-sticky-panel {
+    overflow: inherit;
+}
+
+    .product-form-body {
+        padding: 20px;
+    }
+
+    .product-panel-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #f3f4f6;
+        color: #4b5563;
+    }
+
+    .product-form-grid-2,
+    .product-form-grid-3 {
+        display: grid;
+        gap: 16px;
+    }
+
+    .product-form-grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .product-form-grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .product-field {
+        margin-bottom: 18px;
+    }
+
+    .product-field:last-child {
+        margin-bottom: 0;
+    }
+
+    .product-field>label {
+        display: block;
+        margin-bottom: 7px;
+        color: #1f2937;
+        font-size: 12px;
+        font-weight: 750;
+    }
+
+    .required {
+        color: #dc2626;
+    }
+
+    .product-field input[type="text"],
+    .product-field input[type="search"],
+    .product-field input[type="number"],
+    .product-field input[type="url"],
+    .product-field select,
+    .product-field textarea,
+    .product-checkbox-search input {
+        width: 100%;
+        border: 1px solid rgba(15, 23, 42, .13);
+        border-radius: 10px;
+        background: #fff;
+        color: #111827;
+        font: inherit;
+        font-size: 13px;
+        outline: none;
+        transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .product-field input[type="text"],
+    .product-field input[type="search"],
+    .product-field input[type="number"],
+    .product-field input[type="url"],
+    .product-field select {
+        height: 44px;
+        padding: 0 13px;
+    }
+
+    /* ============================================================
+   FEATURED IMAGE ACTIONS
+============================================================ */
+
+    .product-featured-image-actions {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 12px;
+    }
+
+    .product-featured-image-actions label {
+        margin: 0 !important;
+        cursor: pointer;
+    }
+
+    .product-remove-featured-button {
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 8px 14px;
+        border: 1px solid #fecaca;
+        border-radius: 9px;
+        background: #fff;
+        color: #dc2626;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+            background .2s ease,
+            border-color .2s ease,
+            color .2s ease;
+    }
+
+    .product-remove-featured-button:hover {
+        border-color: #dc2626;
+        background: #fef2f2;
+    }
+
+    .product-remove-featured-button[hidden] {
+        display: none !important;
+    }
+
+    .product-featured-preview.is-removing {
+        opacity: .55;
+    }
+
+    .product-featured-preview.is-removing::after {
+        content: "Image will be removed when you save";
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(17, 24, 39, .72);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .product-field textarea {
+        min-height: 100px;
+        padding: 12px 13px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    .product-field input:focus,
+    .product-field select:focus,
+    .product-field textarea:focus {
+        border-color: rgba(17, 24, 39, .45);
+        box-shadow: 0 0 0 3px rgba(17, 24, 39, .06);
+    }
+
+    .product-field-help,
+    .product-character-count {
+        display: block;
+        margin-top: 6px;
+        color: #9ca3af;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .product-character-count {
+        text-align: right;
+    }
+
+    .product-field-error {
+        display: block;
+        margin-top: 6px;
+        color: #dc2626;
+        font-size: 11px;
+        font-weight: 650;
+    }
+
+    .product-input-prefix,
+    .product-money-input {
+        display: flex;
+        align-items: center;
+        border: 1px solid rgba(15, 23, 42, .13);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .product-input-prefix>span,
+    .product-money-input>span {
+        align-self: stretch;
+        display: flex;
+        align-items: center;
+        padding: 0 11px;
+        background: #f9fafb;
+        border-right: 1px solid rgba(15, 23, 42, .08);
+        color: #6b7280;
+        font-size: 11px;
+        white-space: nowrap;
+    }
+
+    .product-input-prefix input,
+    .product-money-input input {
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .product-margin-preview {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 4px;
+        padding: 14px;
+        border-radius: 11px;
+        background: #f9fafb;
+    }
+
+    .product-margin-preview div {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .product-margin-preview span {
+        color: #9ca3af;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .product-margin-preview strong {
+        color: #111827;
+        font-size: 14px;
+    }
+
+
+    /* Media */
+
+    .product-media-uploader {
+        display: block !important;
+        margin: 0 !important;
+        cursor: pointer;
+    }
+
+    .product-media-uploader>input,
+    .product-gallery-upload-button>input {
+        display: none;
+    }
+
+    .product-featured-preview {
+        min-height: 280px;
+        position: relative;
+        overflow: hidden;
+        border: 2px dashed rgba(15, 23, 42, .13);
+        border-radius: 14px;
+        background: #f9fafb;
+    }
+
+    .product-featured-preview img {
+        width: 100%;
+        max-height: 460px;
+        display: block;
+        object-fit: contain;
+        background: #f3f4f6;
+    }
+
+    .product-upload-empty {
+        min-height: 280px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 25px;
+        color: #9ca3af;
+        text-align: center;
+    }
+
+    .product-upload-empty i {
+        font-size: 32px;
+    }
+
+    .product-upload-empty strong {
+        color: #4b5563;
+        font-size: 13px;
+    }
+
+    .product-upload-empty span {
+        font-size: 10px;
+    }
+
+    .product-gallery-upload-button {
+        width: max-content;
+        display: inline-flex !important;
+        align-items: center;
+        gap: 7px;
+        min-height: 39px;
+        padding: 8px 13px;
+        margin-bottom: 0 !important;
+        border: 1px solid rgba(15, 23, 42, .13);
+        border-radius: 9px;
+        background: #fff;
+        cursor: pointer;
+    }
+
+    .product-existing-gallery,
+    .product-gallery-preview {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 14px;
+    }
+
+    .product-existing-image,
+    .product-gallery-preview-item {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 1 / 1;
+        border-radius: 10px;
+        background: #f3f4f6;
+    }
+
+    .product-existing-image img,
+    .product-gallery-preview-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .product-remove-image {
+        position: absolute;
+        inset: auto 7px 7px 7px;
+    }
+
+    .product-remove-image input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .product-remove-image span {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        padding: 7px;
+        border-radius: 7px;
+        background: rgba(17, 24, 39, .82);
+        color: #fff;
+        font-size: 9px;
+        cursor: pointer;
+    }
+
+    .product-remove-image input:checked+span {
+        background: #dc2626;
+    }
+
+
+    /* Sidebar */
+
+    .product-featured-toggle {
+        display: flex !important;
+        align-items: flex-start;
+        gap: 11px;
+        margin: 0 !important;
+        cursor: pointer;
+    }
+
+    .product-featured-toggle>input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .product-toggle-ui {
+        width: 40px;
+        height: 22px;
+        position: relative;
+        flex: 0 0 auto;
+        border-radius: 999px;
+        background: #d1d5db;
+        transition: .2s ease;
+    }
+
+    .product-toggle-ui::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #fff;
+        transition: .2s ease;
+    }
+
+    .product-featured-toggle input:checked+.product-toggle-ui {
+        background: #111827;
+    }
+
+    .product-featured-toggle input:checked+.product-toggle-ui::after {
+        transform: translateX(18px);
+    }
+
+    .product-featured-toggle strong,
+    .product-featured-toggle small {
+        display: block;
+    }
+
+    .product-featured-toggle strong {
+        color: #111827;
+        font-size: 12px;
+    }
+
+    .product-featured-toggle small {
+        margin-top: 3px;
+        color: #9ca3af;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .product-checkbox-search {
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+    .product-checkbox-search i {
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        font-size: 11px;
+    }
+
+    .product-checkbox-search input {
+        height: 40px;
+        padding: 0 12px 0 34px;
+    }
+
+    .product-checklist {
+        max-height: 280px;
+        overflow-y: auto;
+        display: grid;
+        gap: 4px;
+    }
+
+    .product-check-item {
+        display: flex !important;
+        align-items: center;
+        gap: 8px;
+        margin: 0 !important;
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .product-check-item:hover {
+        background: #f9fafb;
+    }
+
+    .product-check-item input {
+        width: 15px;
+        height: 15px;
+    }
+
+    .product-check-item>span {
+        color: #374151;
+        font-size: 11px;
+        font-weight: 650;
+    }
+
+    .product-check-item small {
+        display: block;
+        margin-top: 2px;
+        color: #9ca3af;
+        font-size: 9px;
+    }
+
+    .product-sidebar-empty {
+        color: #9ca3af;
+        font-size: 11px;
+    }
+
+
+    /* Options */
+
+    .product-options-toolbar,
+    .product-variant-generator {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .product-options-toolbar {
+        margin-bottom: 16px;
+    }
+
+    .product-options-toolbar p {
+        max-width: 650px;
+        margin: 0;
+        color: #6b7280;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .product-options-list {
+        display: grid;
+        gap: 12px;
+    }
+
+    .product-option-card {
+        padding: 15px;
+        border: 1px solid rgba(15, 23, 42, .09);
+        border-radius: 12px;
+    }
+
+    .product-option-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 12px;
+    }
+
+    .product-option-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .product-option-enable {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        cursor: pointer;
+    }
+
+    .product-option-enable span {
+        color: #111827;
+        font-size: 13px;
+        font-weight: 750;
+    }
+
+    .product-option-type {
+        padding: 3px 7px;
+        border-radius: 999px;
+        background: #f3f4f6;
+        color: #6b7280;
+        font-size: 8px;
+        font-weight: 750;
+        text-transform: uppercase;
+    }
+
+    .product-add-value-button {
+        border: 0;
+        background: transparent;
+        color: #4b5563;
+        font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .product-option-values {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+    }
+
+    .product-option-value {
+        display: inline-flex !important;
+        align-items: center;
+        gap: 6px;
+        margin: 0 !important;
+        padding: 7px 10px;
+        border: 1px solid rgba(15, 23, 42, .1);
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .product-option-value:has(input:checked) {
+        border-color: #111827;
+        background: #f9fafb;
+    }
+
+    .product-option-value input {
+        width: 14px;
+        height: 14px;
+    }
+
+    .product-color-swatch {
+        width: 15px;
+        height: 15px;
+        border: 1px solid rgba(0, 0, 0, .15);
+        border-radius: 50%;
+    }
+
+    .product-option-empty {
+        color: #9ca3af;
+        font-size: 10px;
+    }
+
+    .product-options-empty,
+    .product-variants-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 35px;
+        border: 1px dashed rgba(15, 23, 42, .13);
+        border-radius: 12px;
+        color: #9ca3af;
+        text-align: center;
+    }
+
+    .product-options-empty i,
+    .product-variants-empty i {
+        font-size: 25px;
+    }
+
+    .product-options-empty strong,
+    .product-variants-empty strong {
+        color: #4b5563;
+        font-size: 12px;
+    }
+
+    .product-options-empty span,
+    .product-variants-empty span {
+        font-size: 10px;
+    }
+
+    .product-variant-generator {
+        margin-top: 18px;
+        padding: 14px;
+        border-radius: 11px;
+        background: #f9fafb;
+    }
+
+    .product-variant-generator strong,
+    .product-variant-generator span {
+        display: block;
+    }
+
+    .product-variant-generator strong {
+        color: #111827;
+        font-size: 12px;
+    }
+
+    .product-variant-generator span {
+        margin-top: 3px;
+        color: #9ca3af;
+        font-size: 10px;
+    }
+
+    .product-variant-main-error {
+        margin-top: 12px;
+    }
+
+
+    /* Variants */
+
+    .product-variants-container {
+        margin-top: 15px;
+    }
+
+    .product-variant-row {
+        margin-bottom: 10px;
+        padding: 14px;
+        border: 1px solid rgba(15, 23, 42, .09);
+        border-radius: 12px;
+    }
+
+    .product-variant-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .product-variant-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 12px;
+    }
+
+    .product-variant-heading strong {
+        color: #111827;
+        font-size: 12px;
+    }
+
+    .product-variant-remove {
+        border: 0;
+        background: transparent;
+        color: #dc2626;
+        font-size: 10px;
+        cursor: pointer;
+    }
+
+    .product-variant-fields {
+        display: grid;
+        grid-template-columns:
+            minmax(130px, 1.2fr) repeat(5, minmax(90px, 1fr)) minmax(120px, 1fr);
+        gap: 9px;
+        align-items: end;
+    }
+
+    .product-variant-field label {
+        display: block;
+        margin-bottom: 5px;
+        color: #6b7280;
+        font-size: 8px;
+        font-weight: 750;
+        text-transform: uppercase;
+    }
+
+    .product-variant-field input {
+        width: 100%;
+        height: 38px;
+        padding: 0 9px;
+        border: 1px solid rgba(15, 23, 42, .11);
+        border-radius: 8px;
+        font-size: 11px;
+    }
+
+    .product-variant-image-input {
+        position: relative;
+    }
+
+    .product-variant-image-input input[type="file"] {
+        padding: 7px;
+        font-size: 9px;
+    }
+
+    .product-variant-current-image {
+        width: 42px;
+        height: 42px;
+        margin-top: 6px;
+        overflow: hidden;
+        border-radius: 7px;
+        background: #f3f4f6;
+    }
+
+    .product-variant-current-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+    /* Actions */
+
+    .product-form-actions {
+        position: sticky;
+        bottom: 0;
+        z-index: 20;
+        display: flex;
+        justify-content: flex-end;
+        gap: 9px;
+        margin-top: 24px;
+        padding: 14px 18px;
+        border: 1px solid rgba(15, 23, 42, .08);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, .96);
+        box-shadow: 0 -6px 25px rgba(15, 23, 42, .06);
+        backdrop-filter: blur(10px);
+    }
+
+
+    /* Modals */
+
+    .product-form-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .product-form-modal.is-open {
+        display: flex;
+    }
+
+    .product-form-modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 23, 42, .58);
+    }
+
+    .product-form-modal-dialog {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        max-width: 450px;
+        padding: 25px;
+        border-radius: 16px;
+        background: #fff;
+    }
+
+    .product-form-modal-dialog h3 {
+        margin: 4px 0 20px;
+    }
+
+    .product-form-modal-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 34px;
+        height: 34px;
+        border: 0;
+        border-radius: 8px;
+        background: #f3f4f6;
+        cursor: pointer;
+    }
+
+    .product-modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .product-modal-message {
+        display: none;
+        margin-bottom: 14px;
+        padding: 9px 11px;
+        border-radius: 8px;
+        font-size: 11px;
+    }
+
+    .product-modal-message.is-error {
+        display: block;
+        background: #fef2f2;
+        color: #b91c1c;
+    }
+
+    .product-modal-message.is-success {
+        display: block;
+        background: #ecfdf3;
+        color: #15803d;
+    }
+
+    /* ============================================================
+   GALLERY IMAGES
+============================================================ */
+
+    .product-gallery-toolbar {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .product-gallery-add-button {
+        margin: 0 !important;
+        cursor: pointer;
+    }
+
+    .product-gallery-count {
+        color: #6b7280;
+        font-size: 11px;
+        font-weight: 650;
+    }
+
+    .product-existing-gallery,
+    .product-gallery-preview {
+        display: grid;
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+
+    /* Individual image */
+
+    .product-existing-image,
+    .product-gallery-preview-item {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 1 / 1;
+        border: 1px solid rgba(15, 23, 42, .09);
+        border-radius: 12px;
+        background: #f3f4f6;
+    }
+
+    .product-existing-image img,
+    .product-gallery-preview-item img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
+
+    /* Hover overlay */
+
+    .product-gallery-image-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding: 9px;
+        background:
+            linear-gradient(transparent 45%,
+                rgba(17, 24, 39, .8));
+        opacity: 0;
+        transition: opacity .2s ease;
+    }
+
+    .product-existing-image:hover .product-gallery-image-overlay,
+    .product-gallery-preview-item:hover .product-gallery-image-overlay {
+        opacity: 1;
+    }
+
+
+    /* Remove button */
+
+    .product-gallery-remove-button {
+        width: 100%;
+        min-height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border: 0;
+        border-radius: 8px;
+        background: #dc2626;
+        color: #fff;
+        font: inherit;
+        font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .product-gallery-remove-button:hover {
+        background: #b91c1c;
+    }
+
+
+    /* New image filename */
+
+    .product-gallery-file-name {
+        position: absolute;
+        top: 7px;
+        left: 7px;
+        right: 7px;
+        overflow: hidden;
+        padding: 5px 7px;
+        border-radius: 6px;
+        background: rgba(17, 24, 39, .72);
+        color: #fff;
+        font-size: 8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    /* Existing image marked for removal */
+
+    .product-existing-image.is-removing img {
+        opacity: .22;
+    }
+
+    .product-existing-image.is-removing .product-gallery-image-overlay {
+        display: none;
+    }
+
+    .product-gallery-remove-state {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 12px;
+        background: rgba(254, 242, 242, .94);
+        color: #dc2626;
+        text-align: center;
+    }
+
+    .product-gallery-remove-state[hidden] {
+        display: none;
+    }
+
+    .product-gallery-remove-state>i {
+        font-size: 19px;
+    }
+
+    .product-gallery-remove-state strong {
+        font-size: 10px;
+    }
+
+    .product-gallery-remove-state button {
+        padding: 5px 9px;
+        border: 1px solid #fecaca;
+        border-radius: 7px;
+        background: #fff;
+        color: #dc2626;
+        font: inherit;
+        font-size: 9px;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+    .product-gallery-remove-state button:hover {
+        border-color: #dc2626;
+    }
+
+
+    /* Responsive */
+
+    @media (max-width: 900px) {
+
+        .product-existing-gallery,
+        .product-gallery-preview {
+            grid-template-columns:
+                repeat(3, minmax(0, 1fr));
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .product-existing-gallery,
+        .product-gallery-preview {
+            grid-template-columns:
+                repeat(2, minmax(0, 1fr));
+        }
+
+    }
+
+    @media (max-width: 380px) {
+
+        .product-existing-gallery,
+        .product-gallery-preview {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+    @media (max-width: 1200px) {
+
+        .product-form-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .product-form-sidebar {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .product-sticky-panel {
+            position: static;
+        }
+
+        .product-variant-fields {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+    }
+
+
+    @media (max-width: 760px) {
+
+        .product-form-grid-2,
+        .product-form-grid-3,
+        .product-form-sidebar,
+        .product-margin-preview {
+            grid-template-columns: 1fr;
+        }
+
+        .product-existing-gallery,
+        .product-gallery-preview {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .product-options-toolbar,
+        .product-variant-generator {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .product-variant-fields {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .product-form-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .product-form-actions .admin-button {
+            justify-content: center;
+        }
+
+    }
+
+
+    @media (max-width: 480px) {
+
+        .product-variant-fields {
+            grid-template-columns: 1fr;
+        }
+
+    }
+</style>
+
+<style>
+.product-editor-header{margin-bottom:18px}
+.product-editor-header .admin-page-eyebrow{color:#635bff;font-size:9px;font-weight:800;letter-spacing:.12em}
+.product-editor-header h2{margin:4px 0;color:#0f172a;font-size:24px;font-weight:800;letter-spacing:-.025em}
+.product-editor-header p{color:#7b8497;font-size:12px}
+.product-editor-header .admin-button{min-height:38px;border-radius:7px;font-size:10px}
+</style>
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-purple-fix">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Create Product</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                
+<div class="admin-page-header product-editor-header">
+    <div>
+        <span class="admin-page-eyebrow">Product management</span>
+        <h2>Create Product</h2>
+        <p>Add a product with pricing, inventory, media, categories, tags, options, variants and SEO.</p>
+    </div>
+
+    <div class="admin-page-actions">
+        <a href="http://127.0.0.1:8000/admin/products" class="admin-button admin-button-secondary">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Products
+        </a>
+    </div>
+</div>
+
+<form
+    action="http://127.0.0.1:8000/admin/products"
+    method="POST"
+    enctype="multipart/form-data"
+    data-product-form
+    novalidate
+>
+    <input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off">    <div class="product-form-layout">
+
+    
+
+    <div class="product-form-main">
+
+
+        
+
+        <section class="admin-panel product-form-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+                    <span class="admin-panel-eyebrow">
+                        Product details
+                    </span>
+
+                    <h3>Basic Information</h3>
+                </div>
+
+                <div class="product-panel-icon">
+                    <i class="fa-solid fa-box"></i>
+                </div>
+
+            </div>
+
+
+            <div class="product-form-body">
+
+                <div class="product-field">
+
+                    <label for="title">
+                        Product Title
+                        <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        value=""
+                        maxlength="255"
+                        required
+                        placeholder="e.g. Men's Black Leather Jacket">
+
+                    
+                </div>
+
+
+                <div class="product-form-grid-2">
+
+                    <div class="product-field">
+
+                        <label for="slug">
+                            URL Slug
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="product-input-prefix">
+
+                            <span>/products/</span>
+
+                            <input
+                                type="text"
+                                id="slug"
+                                name="slug"
+                                value=""
+                                maxlength="255"
+                                placeholder="mens-black-leather-jacket">
+
+                        </div>
+
+                        <span class="product-field-help">
+                            Generated automatically from the title until you edit it manually.
+                        </span>
+
+                        
+                    </div>
+
+
+                    <div class="product-field">
+
+                        <label for="sku">
+                            Product SKU
+                        </label>
+
+                        <input
+                            type="text"
+                            id="sku"
+                            name="sku"
+                            value=""
+                            maxlength="100"
+                            placeholder="AO-JACKET-001">
+
+                        <span class="product-field-help">
+                            Leave blank if this product is managed entirely through variant SKUs.
+                        </span>
+
+                        
+                    </div>
+
+                </div>
+
+
+                <div class="product-field">
+
+                    <label for="short_description">
+                        Short Description
+                    </label>
+
+                    <textarea
+                        id="short_description"
+                        name="short_description"
+                        rows="3"
+                        placeholder="A short description used in product summaries..."></textarea>
+
+                    
+                </div>
+
+
+                <div class="product-field">
+
+                    <label for="long_description">
+                        Full Description
+                    </label>
+
+                    <textarea
+                        id="long_description"
+                        name="long_description"
+                        rows="9"
+                        placeholder="Complete product description..."></textarea>
+
+                    
+                </div>
+
+
+                <div class="product-field">
+
+                    <label for="additional_info">
+                        Additional Information
+                    </label>
+
+                    <textarea
+                        id="additional_info"
+                        name="additional_info"
+                        rows="5"
+                        placeholder="Materials, care instructions, fit information, shipping notes..."></textarea>
+
+                    
+                </div>
+
+            </div>
+
+        </section>
+
+
+        
+
+        <section class="admin-panel product-form-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+                    <span class="admin-panel-eyebrow">
+                        Product pricing
+                    </span>
+
+                    <h3>Pricing</h3>
+                </div>
+
+                <div class="product-panel-icon">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                </div>
+
+            </div>
+
+
+            <div class="product-form-body">
+
+                <div class="product-form-grid-3">
+
+                    <div class="product-field">
+
+                        <label for="regular_price">
+                            Regular Price
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="product-money-input">
+
+                            <span>$</span>
+
+                            <input
+                                type="number"
+                                id="regular_price"
+                                name="regular_price"
+                                value=""
+                                min="0"
+                                step="0.01"
+                                required
+                                placeholder="0.00">
+
+                        </div>
+
+                        
+                    </div>
+
+
+                    <div class="product-field">
+
+                        <label for="sale_price">
+                            Sale Price
+                        </label>
+
+                        <div class="product-money-input">
+
+                            <span>$</span>
+
+                            <input
+                                type="number"
+                                id="sale_price"
+                                name="sale_price"
+                                value=""
+                                min="0"
+                                step="0.01"
+                                placeholder="0.00">
+
+                        </div>
+
+                        
+                    </div>
+
+
+                    <div class="product-field">
+
+                        <label for="cost_price">
+                            Cost Price
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="product-money-input">
+
+                            <span>$</span>
+
+                            <input
+                                type="number"
+                                id="cost_price"
+                                name="cost_price"
+                                value=""
+                                min="0"
+                                step="0.01"
+                                required
+                                placeholder="0.00">
+
+                        </div>
+
+                        
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="product-margin-preview"
+                    id="productMarginPreview">
+
+                    <div>
+                        <span>Current selling price</span>
+                        <strong id="marginSellingPrice">$0.00</strong>
+                    </div>
+
+                    <div>
+                        <span>Estimated margin</span>
+                        <strong id="marginAmount">$0.00</strong>
+                    </div>
+
+                    <div>
+                        <span>Margin percentage</span>
+                        <strong id="marginPercentage">0%</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        
+
+        <section class="admin-panel product-form-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+                    <span class="admin-panel-eyebrow">
+                        Stock management
+                    </span>
+
+                    <h3>Inventory</h3>
+                </div>
+
+                <div class="product-panel-icon">
+                    <i class="fa-solid fa-warehouse"></i>
+                </div>
+
+            </div>
+
+
+            <div class="product-form-body">
+
+                <div class="product-form-grid-3">
+
+                    <div class="product-field">
+
+                        <label for="stock">
+                            Stock Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="stock"
+                            name="stock"
+                            value="0"
+                            min="0"
+                            step="1">
+
+                        
+                    </div>
+
+
+                    <div class="product-field">
+
+                        <label for="reorder_point">
+                            Reorder Point
+                        </label>
+
+                        <input
+                            type="number"
+                            id="reorder_point"
+                            name="reorder_point"
+                            value=""
+                            min="0"
+                            step="1"
+                            placeholder="5">
+
+                        <span class="product-field-help">
+                            Low-stock threshold.
+                        </span>
+
+                        
+                    </div>
+
+
+                    <div class="product-field">
+
+                        <label for="reorder_quantity">
+                            Reorder Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="reorder_quantity"
+                            name="reorder_quantity"
+                            value=""
+                            min="1"
+                            step="1"
+                            placeholder="10">
+
+                        
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        
+
+        <section class="admin-panel product-form-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+                    <span class="admin-panel-eyebrow">
+                        Product photography
+                    </span>
+
+                    <h3>Product Media</h3>
+                </div>
+
+                <div class="product-panel-icon">
+                    <i class="fa-regular fa-images"></i>
+                </div>
+
+            </div>
+
+
+            <div class="product-form-body">
+
+                
+
+                <div class="product-field">
+
+                    <label>
+                        Featured Image
+                    </label>
+
+                    <label
+                        for="featured_image"
+                        class="product-media-uploader"
+                        id="featuredUploader">
+
+                        <input
+                            type="file"
+                            id="featured_image"
+                            name="featured_image"
+                            accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+
+                        <div
+                            class="product-featured-preview"
+                            id="featuredPreview">
+
+                            
+                            <img
+                                src=""
+                                alt=""
+                                id="featuredPreviewImage"
+                                hidden>
+
+                            <div
+                                class="product-upload-empty"
+                                id="featuredEmpty">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                                <strong>
+                                    Choose featured image
+                                </strong>
+
+                                <span>
+                                    JPG, PNG or WebP · Maximum 5 MB
+                                </span>
+                            </div>
+
+                            
+                        </div>
+
+                    </label>
+
+
+                    <div class="product-featured-image-actions">
+
+                        <label
+                            for="featured_image"
+                            class="admin-button admin-button-secondary">
+                            <i class="fa-solid fa-image"></i>
+
+                            <span id="featuredChooseText">
+                                Choose Image
+                            </span>
+                        </label>
+
+
+                        <button
+                            type="button"
+                            class="product-remove-featured-button"
+                            id="removeFeaturedImage"
+                                                        hidden
+                                                        >
+                            <i class="fa-solid fa-trash"></i>
+                            Remove Image
+                        </button>
+
+                    </div>
+
+
+                    
+                    <input
+                        type="hidden"
+                        name="remove_featured_image"
+                        id="removeFeaturedImageInput"
+                        value="0">
+
+
+                    <span class="product-field-help">
+                        Uploading a new image replaces the current featured image.
+                        Remove Image permanently removes the current image after saving.
+                    </span>
+
+
+                    
+                </div>
+
+
+                
+
+                <div class="product-field">
+
+                    <label>
+                        Gallery Images
+                    </label>
+
+                    <div class="product-gallery-toolbar">
+
+                        <label
+                            for="gallery_images"
+                            class="admin-button admin-button-secondary product-gallery-add-button">
+                            <i class="fa-solid fa-images"></i>
+                            Add Gallery Images
+                        </label>
+
+                        <input
+                            type="file"
+                            id="gallery_images"
+                            name="gallery_images[]"
+                            multiple
+                            accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                            hidden>
+
+                        <span
+                            class="product-gallery-count"
+                            id="galleryImageCount"></span>
+
+                    </div>
+
+                    <span class="product-field-help">
+                        Select multiple JPG, PNG or WebP images. You can remove
+                        existing or newly selected images before saving.
+                    </span>
+
+
+                    
+
+                    
+
+                    
+
+                    <div
+                        class="product-gallery-preview"
+                        id="galleryPreview"></div>
+
+
+                    
+
+                    
+
+                    
+                </div>
+
+            </div>
+
+        </section>
+
+
+        
+
+        <section class="admin-panel product-form-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+                    <span class="admin-panel-eyebrow">
+                        Sizes, colors and variations
+                    </span>
+
+                    <h3>Product Options & Variants</h3>
+                </div>
+
+                <div class="product-panel-icon">
+                    <i class="fa-solid fa-code-branch"></i>
+                </div>
+
+            </div>
+
+
+            <div class="product-form-body">
+
+                <div class="product-options-toolbar">
+
+                    <p>
+                        Select the values available for this product,
+                        then generate every possible variant combination.
+                    </p>
+
+                    <button
+                        type="button"
+                        class="admin-button admin-button-secondary"
+                        id="openNewOptionModal">
+                        <i class="fa-solid fa-plus"></i>
+                        New Option
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="product-options-list"
+                    id="productOptionsList">
+
+                    
+                    <div
+                        class="product-option-card"
+                        data-option-card
+                        data-option-id="1"
+                        data-option-name="Size">
+
+                        <div class="product-option-heading">
+
+                            <div>
+
+                                <div class="product-option-title">
+
+                                    <label class="product-option-enable">
+
+                                        <input
+                                            type="checkbox"
+                                            name="product_options[]"
+                                            value="1"
+                                            data-option-toggle
+                                                                                    >
+
+                                        <span>
+                                            Size
+                                        </span>
+
+                                    </label>
+
+                                    <span class="product-option-type">
+                                        Select
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="product-add-value-button"
+                                data-add-value
+                                data-option-id="1"
+                                data-option-name="Size">
+                                <i class="fa-solid fa-plus"></i>
+                                Add Value
+                            </button>
+
+                        </div>
+
+
+                        <div class="product-option-values">
+
+                            
+                            <label
+                                class="product-option-value"
+                                data-option-value>
+
+                                <input
+                                    type="checkbox"
+                                    name="product_option_values[]"
+                                    value="1"
+                                    data-option-value-checkbox
+                                    data-option-id="1"
+                                    data-option-name="Size"
+                                    data-value-id="1"
+                                    data-value-label="Medium"
+                                                                    >
+
+                                
+                                <span>
+                                    Medium
+                                </span>
+
+                            </label>
+
+                            
+                        </div>
+
+                    </div>
+
+                    
+                </div>
+
+
+                <div class="product-variant-generator">
+
+                    <div>
+
+                        <strong>
+                            Generate Variants
+                        </strong>
+
+                        <span>
+                            Existing matching variants are preserved when you regenerate.
+                        </span>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="admin-button admin-button-primary"
+                        id="generateVariants">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        Generate Variants
+                    </button>
+
+                </div>
+
+
+                
+
+                <div
+                    class="product-variants-container"
+                    id="variantsContainer">
+
+                    <div
+                        class="product-variants-empty"
+                        id="variantsEmpty">
+                        <i class="fa-solid fa-code-branch"></i>
+
+                        <strong>No variants generated</strong>
+
+                        <span>
+                            Select option values above and click Generate Variants.
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+    
+
+    <aside class="product-form-sidebar">
+
+
+        
+
+        <section class="admin-panel product-form-panel product-sticky-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+                    <span class="admin-panel-eyebrow">
+                        Visibility
+                    </span>
+
+                    <h3>Publish</h3>
+                </div>
+
+            </div>
+
+
+            <div class="product-form-body">
+
+                <div class="product-field">
+
+                    <label for="status">
+                        Product Status
+                        <span class="required">*</span>
+                    </label>
+
+                    <select
+                        id="status"
+                        name="status"
+                        required>
+
+                        <option
+                            value="draft"
+                            selected                            >
+                            Draft
+                        </option>
+
+                        <option
+                            value="active"
+                                                        >
+                            Active
+                        </option>
+
+                        <option
+                            value="inactive"
+                                                        >
+                            Inactive
+                        </option>
+
+                    </select>
+
+                    
+                </div>
+
+
+                <label class="product-featured-toggle">
+
+                    <input
+                        type="hidden"
+                        name="is_featured"
+                        value="0">
+
+                    <input
+                        type="checkbox"
+                        name="is_featured"
+                        value="1"
+                                            >
+
+                    <span class="product-toggle-ui"></span>
+
+                    <span>
+
+                        <strong>
+                            Featured Product
+                        </strong>
+
+                        <small>
+                            Highlight this product throughout the storefront.
+                        </small>
+
+                    </span>
+
+                </label>
+
+            </div>
+
+        </section>
+
+
+        
+
+        <section class="admin-panel product-form-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+                    <span class="admin-panel-eyebrow">
+                        Organization
+                    </span>
+
+                    <h3>Categories</h3>
+                </div>
+
+            </div>
+
+
+            <div class="product-form-body">
+
+                <div class="product-checkbox-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="search"
+                        placeholder="Search categories..."
+                        data-filter-checkboxes="#categoryChecklist">
+
+                </div>
+
+
+                <div
+                    class="product-checklist"
+                    id="categoryChecklist">
+
+                    
+                    <label
+                        class="product-check-item"
+                        data-check-label="men jackets">
+
+                        <input
+                            type="checkbox"
+                            name="categories[]"
+                            value="2"
+                                                    >
+
+                        <span>
+                            Men Jackets
+
+                                                        <small>
+                                Men Outfits
+                            </small>
+                                                    </span>
+
+                    </label>
+
+                    
+                    <label
+                        class="product-check-item"
+                        data-check-label="men outfits">
+
+                        <input
+                            type="checkbox"
+                            name="categories[]"
+                            value="1"
+                                                    >
+
+                        <span>
+                            Men Outfits
+
+                                                    </span>
+
+                    </label>
+
+                    
+                    <label
+                        class="product-check-item"
+                        data-check-label="women jackets">
+
+                        <input
+                            type="checkbox"
+                            name="categories[]"
+                            value="4"
+                                                    >
+
+                        <span>
+                            Women Jackets
+
+                                                        <small>
+                                Women Outfits
+                            </small>
+                                                    </span>
+
+                    </label>
+
+                    
+                    <label
+                        class="product-check-item"
+                        data-check-label="women outfits">
+
+                        <input
+                            type="checkbox"
+                            name="categories[]"
+                            value="3"
+                                                    >
+
+                        <span>
+                            Women Outfits
+
+                                                    </span>
+
+                    </label>
+
+                    
+                </div>
+
+                
+            </div>
+
+        </section>
+
+
+        
+
+        <section class="admin-panel product-form-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+                    <span class="admin-panel-eyebrow">
+                        Discoverability
+                    </span>
+
+                    <h3>Tags</h3>
+                </div>
+
+            </div>
+
+
+            <div class="product-form-body">
+
+                <div class="product-checkbox-search">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="search"
+                        placeholder="Search tags..."
+                        data-filter-checkboxes="#tagChecklist">
+
+                </div>
+
+
+                <div
+                    class="product-checklist"
+                    id="tagChecklist">
+
+                    
+                    <p class="product-sidebar-empty">
+                        No tags available.
+                    </p>
+
+                    
+                </div>
+
+            </div>
+
+        </section>
+
+
+        
+
+        <section class="admin-panel product-form-panel">
+
+            <div class="admin-panel-header">
+
+                <div>
+                    <span class="admin-panel-eyebrow">
+                        Search engines
+                    </span>
+
+                    <h3>SEO</h3>
+                </div>
+
+            </div>
+
+
+            <div class="product-form-body">
+
+                <div class="product-field">
+
+                    <label for="meta_title">
+                        Meta Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="meta_title"
+                        name="meta_title"
+                        maxlength="255"
+                        value=""
+                        placeholder="SEO title...">
+
+                    <div class="product-character-count">
+                        <span id="metaTitleCount">0</span>/60 recommended
+                    </div>
+
+                </div>
+
+
+                <div class="product-field">
+
+                    <label for="meta_description">
+                        Meta Description
+                    </label>
+
+                    <textarea
+                        id="meta_description"
+                        name="meta_description"
+                        rows="5"
+                        placeholder="SEO description..."></textarea>
+
+                    <div class="product-character-count">
+                        <span id="metaDescriptionCount">0</span>/160 recommended
+                    </div>
+
+                </div>
+
+
+                <div class="product-field product-keywords-field">
+
+                    <label for="metaKeywordInput">
+                        Meta Keywords
+                    </label>
+
+                    <div
+                        class="product-keyword-editor"
+                        id="metaKeywordEditor"
+                        data-keyword-editor
+                    >
+                        <div
+                            class="product-keyword-tags"
+                            id="metaKeywordTags"
+                            aria-live="polite"
+                        ></div>
+
+                        <input
+                            type="text"
+                            id="metaKeywordInput"
+                            class="product-keyword-input"
+                            autocomplete="off"
+                            placeholder="Type a keyword and press Enter"
+                            aria-describedby="metaKeywordHelp"
+                        >
+                    </div>
+
+                    <input
+                        type="hidden"
+                        id="meta_keywords"
+                        name="meta_keywords"
+                        value=""
+                    >
+
+                    <div
+                        class="product-field-help"
+                        id="metaKeywordHelp"
+                    >
+                        Press Enter or comma after each keyword. Click × to remove a keyword.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </aside>
+
+</div>
+
+
+
+
+<div class="product-form-actions">
+
+    <a
+        href="http://127.0.0.1:8000/admin/products"
+        class="admin-button admin-button-secondary">
+        <i class="fa-solid fa-xmark"></i>
+        Cancel
+    </a>
+
+
+    <button
+        type="submit"
+        class="admin-button admin-button-primary product-save-button"
+        data-product-submit>
+
+        <i class="fa-solid fa-floppy-disk"></i>
+
+        Create Product
+
+    </button>
+
+</div>
+
+
+
+
+<div
+    class="product-form-modal"
+    id="newOptionModal"
+    aria-hidden="true">
+
+    <div
+        class="product-form-modal-backdrop"
+        data-close-option-modal></div>
+
+    <div class="product-form-modal-dialog">
+
+        <button
+            type="button"
+            class="product-form-modal-close"
+            data-close-option-modal>
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <span class="admin-panel-eyebrow">
+            Product options
+        </span>
+
+        <h3>Create New Option</h3>
+
+        <div
+            class="product-modal-message"
+            id="newOptionMessage"></div>
+
+
+        <div class="product-field">
+
+            <label for="newOptionName">
+                Option Name
+            </label>
+
+            <input
+                type="text"
+                id="newOptionName"
+                placeholder="e.g. Color">
+
+        </div>
+
+
+        <div class="product-field">
+
+            <label for="newOptionType">
+                Option Type
+            </label>
+
+            <select id="newOptionType">
+
+                <option value="select">
+                    Select
+                </option>
+
+                <option value="color">
+                    Color
+                </option>
+
+                <option value="text">
+                    Text
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="product-modal-actions">
+
+            <button
+                type="button"
+                class="admin-button admin-button-secondary"
+                data-close-option-modal>
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="admin-button admin-button-primary"
+                id="saveNewOption">
+                <i class="fa-solid fa-plus"></i>
+                Create Option
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<div
+    class="product-form-modal"
+    id="newValueModal"
+    aria-hidden="true">
+
+    <div
+        class="product-form-modal-backdrop"
+        data-close-value-modal></div>
+
+    <div class="product-form-modal-dialog">
+
+        <button
+            type="button"
+            class="product-form-modal-close"
+            data-close-value-modal>
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <span class="admin-panel-eyebrow">
+            Option value
+        </span>
+
+        <h3 id="newValueModalTitle">
+            Add Value
+        </h3>
+
+        <div
+            class="product-modal-message"
+            id="newValueMessage"></div>
+
+
+        <input
+            type="hidden"
+            id="newValueOptionId">
+
+
+        <div class="product-field">
+
+            <label for="newValueLabel">
+                Label
+            </label>
+
+            <input
+                type="text"
+                id="newValueLabel"
+                placeholder="e.g. Black">
+
+        </div>
+
+
+        <div class="product-field">
+
+            <label for="newValueValue">
+                Value / Slug
+            </label>
+
+            <input
+                type="text"
+                id="newValueValue"
+                placeholder="black">
+
+            <span class="product-field-help">
+                Leave blank to generate automatically.
+            </span>
+
+        </div>
+
+
+        <div class="product-field">
+
+            <label for="newValueColor">
+                Color Code
+            </label>
+
+            <input
+                type="text"
+                id="newValueColor"
+                placeholder="#000000">
+
+        </div>
+
+
+        <div class="product-modal-actions">
+
+            <button
+                type="button"
+                class="admin-button admin-button-secondary"
+                data-close-value-modal>
+                Cancel
+            </button>
+
+            <button
+                type="button"
+                class="admin-button admin-button-primary"
+                id="saveNewValue">
+                <i class="fa-solid fa-plus"></i>
+                Add Value
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+<style>
+/* ============================================================
+   ARIZONA ADMIN DASHBOARD VISUAL SYSTEM — PRODUCT FORM
+============================================================ */
+.product-form-layout{gap:18px}
+.product-form-panel{margin-bottom:18px;border:1px solid #e6eaf1!important;border-radius:11px!important;background:#fff!important;box-shadow:none!important}
+.product-form-panel .admin-panel-header{padding:15px 17px!important;border-bottom:1px solid #edf0f5!important}
+.product-form-panel .admin-panel-eyebrow{color:#635bff!important;font-size:9px!important;font-weight:800!important;letter-spacing:.12em!important}
+.product-form-panel .admin-panel-header h3{margin:3px 0 0!important;color:#172033!important;font-size:14px!important;font-weight:800!important}
+.product-form-body{padding:16px 17px!important}
+.product-field label{margin-bottom:6px!important;color:#687386!important;font-size:9px!important;font-weight:800!important;letter-spacing:.045em!important;text-transform:uppercase}
+.product-field input[type="text"],.product-field input[type="number"],.product-field input[type="url"],.product-field input[type="email"],.product-field input[type="file"],.product-field select,.product-field textarea,.product-input-prefix{border-color:#e0e5ed!important;border-radius:7px!important;color:#344054!important;font-size:11px!important}
+.product-field input[type="text"],.product-field input[type="number"],.product-field input[type="url"],.product-field input[type="email"],.product-field select{min-height:40px!important}
+.product-field textarea{line-height:1.6}
+.product-field input:focus,.product-field select:focus,.product-field textarea:focus{border-color:#635bff!important;box-shadow:0 0 0 3px rgba(99,91,255,.10)!important}
+.product-field-help,.product-character-count{color:#8a93a4!important;font-size:9px!important}
+.product-field-error{display:none!important}
+.product-form-actions{position:sticky;bottom:12px;z-index:20;display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:18px;padding:12px 14px;border:1px solid #e6eaf1;border-radius:11px;background:rgba(255,255,255,.96);box-shadow:0 8px 28px rgba(15,23,42,.08);backdrop-filter:blur(8px)}
+.product-form-actions .admin-button{min-height:38px;border-radius:7px;font-size:10px}
+.product-save-button{border-color:#635bff!important;background:#635bff!important;color:#fff!important}
+.product-form-modal-dialog{border:1px solid #e6eaf1!important;border-radius:14px!important;box-shadow:0 24px 80px rgba(15,23,42,.24)!important}
+.product-form-modal-dialog .admin-panel-eyebrow{color:#635bff!important}
+
+/* validation / server feedback popup */
+.product-form-feedback{position:fixed;inset:0;z-index:11000;display:flex;align-items:center;justify-content:center;padding:20px}
+.product-form-feedback-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}
+.product-form-feedback-dialog{position:relative;z-index:2;width:100%;max-width:460px;max-height:calc(100vh - 40px);overflow:auto;padding:30px;border:1px solid #e6eaf1;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.24);text-align:center}
+.product-form-feedback-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border:0;border-radius:7px;background:#f3f5f8;color:#687386;cursor:pointer}
+.product-form-feedback-icon{display:flex;align-items:center;justify-content:center;width:58px;height:58px;margin:0 auto 15px;border-radius:50%;background:#fff0f0;color:#d14343;font-size:21px}
+.product-form-feedback.is-warning .product-form-feedback-icon{background:#fff4df;color:#d88716}
+.product-form-feedback-dialog .admin-page-eyebrow{color:#635bff;font-size:9px;font-weight:800;letter-spacing:.12em}
+.product-form-feedback-dialog h3{margin:5px 0 8px;color:#172033;font-size:18px;font-weight:800}
+.product-form-feedback-dialog p{margin:0;color:#687386;font-size:11px;line-height:1.65}
+.product-form-feedback-errors{margin:14px 0 0;padding:12px 16px;border:1px solid #fecaca;border-radius:9px;background:#fff7f7;color:#b42318;font-size:10px;line-height:1.6;list-style-position:inside;text-align:left}
+.product-form-feedback-ok{min-width:130px;margin-top:20px;justify-content:center;border-color:#635bff!important;background:#635bff!important}
+body.product-form-feedback-open{overflow:hidden}
+@media(max-width:760px){.product-form-layout{grid-template-columns:1fr!important}.product-form-actions{bottom:8px;flex-wrap:wrap}.product-form-actions .admin-button{flex:1 1 140px;justify-content:center}}
+</style>
+
+<script>
+'use strict';
+document.addEventListener('DOMContentLoaded', function () {
+    const feedback = document.getElementById('productFormFeedback');
+    if (!feedback) return;
+
+    document.body.classList.add('product-form-feedback-open');
+
+    function closeFeedback() {
+        feedback.remove();
+        document.body.classList.remove('product-form-feedback-open');
+
+        const invalid = document.querySelector('.is-invalid, [aria-invalid="true"]');
+        if (invalid) invalid.focus();
+    }
+
+    feedback.querySelectorAll('[data-product-form-feedback-close]').forEach(function (button) {
+        button.addEventListener('click', closeFeedback);
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && document.body.contains(feedback)) {
+            closeFeedback();
+        }
+    });
+});
+</script>
+
+
+<style>
+/* Meta keyword tag editor */
+.product-keyword-editor{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:7px;
+    min-height:44px;
+    padding:6px 8px;
+    border:1px solid #e0e5ed;
+    border-radius:7px;
+    background:#fff;
+    transition:border-color .18s ease,box-shadow .18s ease;
+    cursor:text
+}
+.product-keyword-editor:focus-within{
+    border-color:#635bff;
+    box-shadow:0 0 0 3px rgba(99,91,255,.10)
+}
+.product-keyword-tags{
+    display:contents
+}
+.product-keyword-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    max-width:100%;
+    min-height:27px;
+    padding:4px 7px 4px 9px;
+    border:1px solid #dddfff;
+    border-radius:6px;
+    background:#f3f2ff;
+    color:#5149d8;
+    font-size:10px;
+    font-weight:700;
+    line-height:1.2
+}
+.product-keyword-tag-text{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+.product-keyword-remove{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:17px;
+    height:17px;
+    padding:0;
+    border:0;
+    border-radius:4px;
+    background:transparent;
+    color:#7770e7;
+    font-size:12px;
+    line-height:1;
+    cursor:pointer
+}
+.product-keyword-remove:hover,
+.product-keyword-remove:focus{
+    background:#e4e2ff;
+    color:#332bb8;
+    outline:none
+}
+.product-keyword-input{
+    flex:1 1 170px;
+    min-width:150px;
+    min-height:30px!important;
+    padding:3px 4px!important;
+    border:0!important;
+    border-radius:0!important;
+    background:transparent!important;
+    box-shadow:none!important;
+    color:#344054!important;
+    font-size:11px!important
+}
+.product-keyword-input:focus{
+    border:0!important;
+    box-shadow:none!important;
+    outline:none!important
+}
+</style>
+
+
+<script>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', function () {
+    const editor = document.querySelector('[data-keyword-editor]');
+    const input = document.getElementById('metaKeywordInput');
+    const tagsContainer = document.getElementById('metaKeywordTags');
+    const hiddenInput = document.getElementById('meta_keywords');
+
+    if (!editor || !input || !tagsContainer || !hiddenInput) {
+        return;
+    }
+
+    let keywords = [];
+
+    function normalizeKeyword(value) {
+        return String(value || '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .replace(/^,+|,+$/g, '')
+            .trim();
+    }
+
+    function syncHiddenInput() {
+        hiddenInput.value = keywords.join(', ');
+    }
+
+    function renderKeywords() {
+        tagsContainer.innerHTML = '';
+
+        keywords.forEach(function (keyword, index) {
+            const tag = document.createElement('span');
+            tag.className = 'product-keyword-tag';
+
+            const text = document.createElement('span');
+            text.className = 'product-keyword-tag-text';
+            text.textContent = keyword;
+
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'product-keyword-remove';
+            remove.setAttribute('aria-label', 'Remove ' + keyword);
+            remove.innerHTML = '&times;';
+
+            remove.addEventListener('click', function () {
+                keywords.splice(index, 1);
+                renderKeywords();
+                input.focus();
+            });
+
+            tag.appendChild(text);
+            tag.appendChild(remove);
+            tagsContainer.appendChild(tag);
+        });
+
+        syncHiddenInput();
+    }
+
+    function addKeyword(value) {
+        const keyword = normalizeKeyword(value);
+
+        if (!keyword) {
+            return;
+        }
+
+        const exists = keywords.some(function (existing) {
+            return existing.toLowerCase() === keyword.toLowerCase();
+        });
+
+        if (!exists) {
+            keywords.push(keyword);
+        }
+
+        input.value = '';
+        renderKeywords();
+    }
+
+    function addInputKeywords() {
+        input.value
+            .split(',')
+            .forEach(addKeyword);
+
+        input.value = '';
+    }
+
+    hiddenInput.value
+        .split(',')
+        .map(normalizeKeyword)
+        .filter(Boolean)
+        .forEach(function (keyword) {
+            const exists = keywords.some(function (existing) {
+                return existing.toLowerCase() === keyword.toLowerCase();
+            });
+
+            if (!exists) {
+                keywords.push(keyword);
+            }
+        });
+
+    renderKeywords();
+
+    input.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ',') {
+            event.preventDefault();
+            addInputKeywords();
+            return;
+        }
+
+        if (
+            event.key === 'Backspace' &&
+            input.value === '' &&
+            keywords.length
+        ) {
+            keywords.pop();
+            renderKeywords();
+        }
+    });
+
+    input.addEventListener('blur', function () {
+        addInputKeywords();
+    });
+
+    input.addEventListener('paste', function () {
+        window.setTimeout(function () {
+            if (input.value.includes(',')) {
+                addInputKeywords();
+            }
+        }, 0);
+    });
+
+    editor.addEventListener('click', function (event) {
+        if (!event.target.closest('.product-keyword-remove')) {
+            input.focus();
+        }
+    });
+
+    const form = editor.closest('form');
+
+    if (form) {
+        form.addEventListener('submit', function () {
+            addInputKeywords();
+            syncHiddenInput();
+        });
+    }
+});
+</script>
+
+
+<style>
+/* ============================================================
+   ARIZONA ADMIN — STYLED SELECT / DROPDOWN SYSTEM
+============================================================ */
+.product-field select,
+.product-variant-field select,
+.product-option-row select,
+.product-form-modal select {
+    width:100%;
+    min-height:40px;
+    padding:0 38px 0 11px!important;
+    border:1px solid #e0e5ed!important;
+    border-radius:7px!important;
+    background-color:#fff!important;
+    background-image:
+        linear-gradient(45deg, transparent 50%, #7b8497 50%),
+        linear-gradient(135deg, #7b8497 50%, transparent 50%)!important;
+    background-position:
+        calc(100% - 16px) 50%,
+        calc(100% - 11px) 50%!important;
+    background-size:5px 5px,5px 5px!important;
+    background-repeat:no-repeat!important;
+    color:#344054!important;
+    font-size:11px!important;
+    font-weight:600;
+    line-height:1.2;
+    appearance:none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    cursor:pointer;
+    transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease
+}
+.product-field select:hover,
+.product-variant-field select:hover,
+.product-option-row select:hover,
+.product-form-modal select:hover {
+    border-color:#c9ced8!important;
+    background-color:#fbfcff!important
+}
+.product-field select:focus,
+.product-variant-field select:focus,
+.product-option-row select:focus,
+.product-form-modal select:focus {
+    border-color:#635bff!important;
+    background-color:#fff!important;
+    box-shadow:0 0 0 3px rgba(99,91,255,.10)!important;
+    outline:none!important
+}
+.product-field select:disabled,
+.product-variant-field select:disabled,
+.product-option-row select:disabled,
+.product-form-modal select:disabled {
+    background-color:#f5f6f8!important;
+    color:#98a2b3!important;
+    cursor:not-allowed;
+    opacity:1
+}
+.product-field select option,
+.product-variant-field select option,
+.product-option-row select option,
+.product-form-modal select option {
+    background:#fff;
+    color:#344054;
+    font-size:11px
+}
+
+/* Multi-selects use a dashboard selection surface instead of an arrow. */
+.product-field select[multiple] {
+    min-height:130px!important;
+    padding:6px!important;
+    background-image:none!important;
+    overflow:auto
+}
+.product-field select[multiple] option {
+    margin:2px 0;
+    padding:8px 9px;
+    border-radius:6px;
+    cursor:pointer
+}
+.product-field select[multiple] option:checked {
+    background:#eeedff linear-gradient(0deg,#eeedff,#eeedff)!important;
+    color:#5149d8!important;
+    font-weight:700
+}
+</style>
+
+
+<style>
+/* ============================================================
+   ARIZONA ADMIN — PRODUCT DROPDOWN UI
+   Applies to Index, Create and Edit
+============================================================ */
+.product-admin-select,
+.product-filter-field select,
+.product-form-panel select,
+.product-form-modal select {
+    width:100%;
+    min-height:40px;
+    padding:0 38px 0 11px!important;
+    border:1px solid #e0e5ed!important;
+    border-radius:7px!important;
+    background-color:#fff!important;
+    background-image:
+        linear-gradient(45deg,transparent 50%,#7b8497 50%),
+        linear-gradient(135deg,#7b8497 50%,transparent 50%)!important;
+    background-position:
+        calc(100% - 16px) 50%,
+        calc(100% - 11px) 50%!important;
+    background-size:5px 5px,5px 5px!important;
+    background-repeat:no-repeat!important;
+    color:#344054!important;
+    font-size:11px!important;
+    font-weight:600!important;
+    appearance:none!important;
+    -webkit-appearance:none!important;
+    -moz-appearance:none!important;
+    cursor:pointer;
+    transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease
+}
+.product-admin-select:hover,
+.product-filter-field select:hover,
+.product-form-panel select:hover,
+.product-form-modal select:hover {
+    border-color:#c9ced8!important;
+    background-color:#fbfcff!important
+}
+.product-admin-select:focus,
+.product-filter-field select:focus,
+.product-form-panel select:focus,
+.product-form-modal select:focus {
+    border-color:#635bff!important;
+    background-color:#fff!important;
+    box-shadow:0 0 0 3px rgba(99,91,255,.10)!important;
+    outline:none!important
+}
+.product-admin-select:disabled,
+.product-filter-field select:disabled,
+.product-form-panel select:disabled,
+.product-form-modal select:disabled {
+    background-color:#f5f6f8!important;
+    color:#98a2b3!important;
+    cursor:not-allowed;
+    opacity:1
+}
+.product-admin-select option,
+.product-filter-field select option,
+.product-form-panel select option,
+.product-form-modal select option {
+    background:#fff!important;
+    color:#344054!important;
+    font-size:11px!important
+}
+
+/* Multiple-value dropdown/list controls */
+.product-form-panel select[multiple] {
+    min-height:132px!important;
+    padding:6px!important;
+    background-image:none!important;
+    overflow:auto
+}
+.product-form-panel select[multiple] option {
+    margin:2px 0;
+    padding:8px 9px;
+    border-radius:6px;
+    cursor:pointer
+}
+.product-form-panel select[multiple] option:checked {
+    background:#eeedff linear-gradient(0deg,#eeedff,#eeedff)!important;
+    color:#5149d8!important;
+    font-weight:700!important
+}
+</style>
+
+
+<style>
+/* ============================================================
+   ARIZONA PRODUCT — CUSTOM SELECT OPTIONS UI V1
+   Keeps native SELECT for Laravel, replaces opened native menu visually.
+============================================================ */
+.az-product-select{
+    position:relative;
+    width:100%;
+}
+.az-product-select-native{
+    position:absolute!important;
+    width:1px!important;
+    height:1px!important;
+    margin:-1px!important;
+    padding:0!important;
+    overflow:hidden!important;
+    clip:rect(0,0,0,0)!important;
+    white-space:nowrap!important;
+    border:0!important;
+    opacity:0!important;
+    pointer-events:none!important;
+}
+.az-product-select-button{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    width:100%;
+    min-height:40px;
+    padding:0 11px;
+    border:1px solid #e0e5ed;
+    border-radius:7px;
+    background:#fff;
+    color:#344054;
+    font:600 11px/1.2 inherit;
+    text-align:left;
+    cursor:pointer;
+    transition:border-color .18s ease,box-shadow .18s ease,background-color .18s ease
+}
+.az-product-select-button:hover{
+    border-color:#c9ced8;
+    background:#fbfcff
+}
+.az-product-select.is-open .az-product-select-button,
+.az-product-select-button:focus{
+    border-color:#635bff;
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(99,91,255,.10);
+    outline:none
+}
+.az-product-select-button:disabled{
+    background:#f5f6f8;
+    color:#98a2b3;
+    cursor:not-allowed
+}
+.az-product-select-value{
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
+}
+.az-product-select-chevron{
+    flex:0 0 auto;
+    color:#7b8497;
+    font-size:9px;
+    transition:transform .18s ease
+}
+.az-product-select.is-open .az-product-select-chevron{
+    transform:rotate(180deg)
+}
+.az-product-select-menu{
+    position:absolute;
+    z-index:12000;
+    top:calc(100% + 6px);
+    left:0;
+    display:none;
+    width:100%;
+    max-height:240px;
+    overflow:auto;
+    padding:5px;
+    border:1px solid #e0e5ed;
+    border-radius:9px;
+    background:#fff;
+    box-shadow:0 14px 38px rgba(15,23,42,.16)
+}
+.az-product-select.is-open .az-product-select-menu{
+    display:block
+}
+.az-product-select-option{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    width:100%;
+    min-height:34px;
+    margin:0;
+    padding:7px 9px;
+    border:0;
+    border-radius:6px;
+    background:transparent;
+    color:#344054;
+    font:600 11px/1.25 inherit;
+    text-align:left;
+    cursor:pointer
+}
+.az-product-select-option:hover,
+.az-product-select-option.is-focused{
+    background:#f5f4ff;
+    color:#5149d8
+}
+.az-product-select-option.is-selected{
+    background:#eeedff;
+    color:#5149d8;
+    font-weight:800
+}
+.az-product-select-option.is-selected::after{
+    content:"\2713";
+    flex:0 0 auto;
+    color:#635bff;
+    font-size:11px;
+    font-weight:900
+}
+.az-product-select-option:disabled{
+    color:#a4acb9;
+    background:transparent;
+    cursor:not-allowed
+}
+</style>
+
+<script>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', function () {
+    const SELECTOR = [
+        '.product-form-panel select:not([multiple])',
+        '.product-form-modal select:not([multiple])',
+        '.product-variant-field select:not([multiple])',
+        '.product-option-row select:not([multiple])'
+    ].join(',');
+
+    function closeAll(except) {
+        document.querySelectorAll('.az-product-select.is-open').forEach(function (wrapper) {
+            if (wrapper !== except) {
+                wrapper.classList.remove('is-open');
+
+                const button = wrapper.querySelector('.az-product-select-button');
+                if (button) {
+                    button.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+    }
+
+    function enhanceSelect(select) {
+        if (
+            !select ||
+            select.multiple ||
+            select.dataset.azProductSelectReady === '1' ||
+            select.closest('.az-product-select')
+        ) {
+            return;
+        }
+
+        select.dataset.azProductSelectReady = '1';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'az-product-select';
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'az-product-select-button';
+        button.setAttribute('aria-haspopup', 'listbox');
+        button.setAttribute('aria-expanded', 'false');
+
+        const value = document.createElement('span');
+        value.className = 'az-product-select-value';
+
+        const chevron = document.createElement('i');
+        chevron.className = 'fa-solid fa-chevron-down az-product-select-chevron';
+        chevron.setAttribute('aria-hidden', 'true');
+
+        button.appendChild(value);
+        button.appendChild(chevron);
+
+        const menu = document.createElement('div');
+        menu.className = 'az-product-select-menu';
+        menu.setAttribute('role', 'listbox');
+
+        select.parentNode.insertBefore(wrapper, select);
+        wrapper.appendChild(select);
+        wrapper.appendChild(button);
+        wrapper.appendChild(menu);
+
+        select.classList.add('az-product-select-native');
+
+        let focusedIndex = -1;
+
+        function selectableOptions() {
+            return Array.from(menu.querySelectorAll('.az-product-select-option:not(:disabled)'));
+        }
+
+        function sync() {
+            const selected = select.options[select.selectedIndex];
+
+            value.textContent = selected
+                ? selected.textContent.trim()
+                : 'Select an option';
+
+            button.disabled = select.disabled;
+
+            menu.querySelectorAll('.az-product-select-option').forEach(function (optionButton) {
+                const isSelected = optionButton.dataset.value === String(select.value);
+                optionButton.classList.toggle('is-selected', isSelected);
+                optionButton.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+            });
+        }
+
+        function buildOptions() {
+            menu.innerHTML = '';
+
+            Array.from(select.options).forEach(function (option) {
+                const optionButton = document.createElement('button');
+                optionButton.type = 'button';
+                optionButton.className = 'az-product-select-option';
+                optionButton.dataset.value = option.value;
+                optionButton.textContent = option.textContent.trim();
+                optionButton.disabled = option.disabled;
+                optionButton.setAttribute('role', 'option');
+
+                optionButton.addEventListener('click', function () {
+                    if (optionButton.disabled) {
+                        return;
+                    }
+
+                    select.value = option.value;
+                    select.dispatchEvent(new Event('change', { bubbles:true }));
+
+                    wrapper.classList.remove('is-open');
+                    button.setAttribute('aria-expanded', 'false');
+                    focusedIndex = -1;
+                    sync();
+                    button.focus();
+                });
+
+                menu.appendChild(optionButton);
+            });
+
+            sync();
+        }
+
+        function openMenu() {
+            if (button.disabled) {
+                return;
+            }
+
+            closeAll(wrapper);
+            wrapper.classList.add('is-open');
+            button.setAttribute('aria-expanded', 'true');
+
+            const options = selectableOptions();
+            focusedIndex = options.findIndex(function (item) {
+                return item.dataset.value === String(select.value);
+            });
+
+            if (focusedIndex < 0 && options.length) {
+                focusedIndex = 0;
+            }
+
+            focusOption(options);
+        }
+
+        function closeMenu() {
+            wrapper.classList.remove('is-open');
+            button.setAttribute('aria-expanded', 'false');
+            focusedIndex = -1;
+        }
+
+        function focusOption(options) {
+            options.forEach(function (item) {
+                item.classList.remove('is-focused');
+            });
+
+            if (focusedIndex >= 0 && options[focusedIndex]) {
+                options[focusedIndex].classList.add('is-focused');
+                options[focusedIndex].scrollIntoView({ block:'nearest' });
+            }
+        }
+
+        button.addEventListener('click', function () {
+            if (wrapper.classList.contains('is-open')) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        button.addEventListener('keydown', function (event) {
+            const options = selectableOptions();
+
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                event.preventDefault();
+
+                if (!wrapper.classList.contains('is-open')) {
+                    openMenu();
+                    return;
+                }
+
+                if (!options.length) {
+                    return;
+                }
+
+                focusedIndex += event.key === 'ArrowDown' ? 1 : -1;
+
+                if (focusedIndex >= options.length) {
+                    focusedIndex = 0;
+                }
+
+                if (focusedIndex < 0) {
+                    focusedIndex = options.length - 1;
+                }
+
+                focusOption(options);
+                return;
+            }
+
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+
+                if (!wrapper.classList.contains('is-open')) {
+                    openMenu();
+                    return;
+                }
+
+                if (options[focusedIndex]) {
+                    options[focusedIndex].click();
+                }
+
+                return;
+            }
+
+            if (event.key === 'Escape') {
+                closeMenu();
+            }
+        });
+
+        select.addEventListener('change', sync);
+
+        /* Keep dynamically modified option lists in sync. */
+        const observer = new MutationObserver(function () {
+            buildOptions();
+        });
+
+        observer.observe(select, {
+            childList:true,
+            subtree:true,
+            attributes:true,
+            attributeFilter:['disabled','selected']
+        });
+
+        buildOptions();
+    }
+
+    document.querySelectorAll(SELECTOR).forEach(enhanceSelect);
+
+    /* Product options/variants can add SELECT elements dynamically. */
+    const dynamicObserver = new MutationObserver(function (mutations) {
+        mutations.forEach(function (mutation) {
+            mutation.addedNodes.forEach(function (node) {
+                if (!(node instanceof Element)) {
+                    return;
+                }
+
+                if (node.matches && node.matches(SELECTOR)) {
+                    enhanceSelect(node);
+                }
+
+                if (node.querySelectorAll) {
+                    node.querySelectorAll(SELECTOR).forEach(enhanceSelect);
+                }
+            });
+        });
+    });
+
+    dynamicObserver.observe(document.body, {
+        childList:true,
+        subtree:true
+    });
+
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('.az-product-select')) {
+            closeAll();
+        }
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeAll();
+        }
+    });
+});
+</script>
+
+<style>.product-existing-image .product-gallery-image-overlay{opacity:1!important;visibility:visible!important;pointer-events:auto!important}.az-gallery-remove-label{display:flex!important;align-items:center;gap:8px;padding:8px;background:#fff;color:#b91c1c;font-size:12px}.az-gallery-remove-label input{display:inline-block!important;position:static!important;width:18px!important;height:18px!important;opacity:1!important}.product-existing-image{min-height:160px}.product-existing-image img{min-height:100px}</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+ const optionUrl = "http:\/\/127.0.0.1:8000\/admin\/product-options\/__ID__";
+ const valueUrl = "http:\/\/127.0.0.1:8000\/admin\/product-option-values\/__ID__";
+ const csrf = "2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9";
+ function addButtons() {
+  document.querySelectorAll('[data-option-card]').forEach(card => {
+   const heading = card.querySelector('.product-option-heading');
+   if (heading && !heading.querySelector('[data-delete-attribute]')) {
+    const b=document.createElement('button'); b.type='button'; b.textContent='Delete attribute'; b.dataset.deleteAttribute=card.dataset.optionId;
+    b.className='product-add-value-button'; heading.append(b);
+   }
+   card.querySelectorAll('[data-option-value]').forEach(label => {
+    const input=label.querySelector('[data-option-value-checkbox]');
+    if (!input || label.querySelector('[data-delete-value]')) return;
+    const b=document.createElement('button'); b.type='button'; b.textContent='Delete'; b.dataset.deleteValue=input.value;
+    b.setAttribute('aria-label','Delete '+input.dataset.valueLabel); label.append(b);
+   });
+  });
+ }
+ addButtons();
+ const list=document.getElementById('productOptionsList');
+ if(list) new MutationObserver(addButtons).observe(list,{childList:true,subtree:true});
+ document.addEventListener('click', async event => {
+  const button=event.target.closest('[data-delete-attribute], [data-delete-value]');
+  if(!button) return;
+  event.preventDefault(); event.stopPropagation();
+  const value=button.hasAttribute('data-delete-value');
+  const target=button.closest(value?'[data-option-value]':'[data-option-card]');
+  if(target.querySelector('input:checked')) { alert('Uncheck this attribute or value and remove its generated variants before deleting it.'); return; }
+  if(!confirm('Permanently delete this unused '+(value?'value':'attribute')+'?')) return;
+  button.disabled=true;
+  try {
+   const response=await fetch((value?valueUrl:optionUrl).replace('__ID__',value?button.dataset.deleteValue:button.dataset.deleteAttribute),{
+    method:'DELETE', headers:{'X-CSRF-TOKEN':csrf,'Accept':'application/json'}
+   });
+   const data=await response.json();
+   if(!response.ok) throw new Error(data.message || 'Deletion failed.');
+   target.remove();
+  } catch(error) { alert(error.message); button.disabled=false; }
+ });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+ const list=document.getElementById('productOptionsList'); if(!list)return;
+ function update(){
+  list.querySelectorAll('.product-option-values').forEach(group=>{
+   const labels=[...group.querySelectorAll('[data-option-value]')];
+   labels.forEach((label,index)=>{
+    const checkbox=label.querySelector('[data-option-value-checkbox]');if(!checkbox)return;
+    let input=label.querySelector('[data-value-position]');
+    if(!input){input=document.createElement('input');input.type='hidden';input.dataset.valuePosition='';input.name='product_value_order['+checkbox.value+']';label.append(input);}
+    input.value=index;
+    if(!label.querySelector('[data-move-value]')){
+     for(const [direction,title] of [[-1,'Move earlier'],[1,'Move later']]){
+      const button=document.createElement('button');button.type='button';button.dataset.moveValue=direction;button.textContent=direction<0?'↑':'↓';button.setAttribute('aria-label',title+' '+checkbox.dataset.valueLabel);button.className='az-value-move';label.append(button);
+     }
+    }
+    label.querySelector('[data-move-value="-1"]').disabled=index===0;
+    label.querySelector('[data-move-value="1"]').disabled=index===labels.length-1;
+   });
+  });
+ }
+ update();
+ let scheduled=false;new MutationObserver(()=>{if(!scheduled){scheduled=true;queueMicrotask(()=>{scheduled=false;update();});}}).observe(list,{childList:true,subtree:true});
+ list.addEventListener('click',event=>{const button=event.target.closest('[data-move-value]');if(!button)return;event.preventDefault();event.stopPropagation();const row=button.closest('[data-option-value]'),group=row.parentElement,rows=[...group.querySelectorAll('[data-option-value]')],index=rows.indexOf(row),next=rows[index+Number(button.dataset.moveValue)];if(next){Number(button.dataset.moveValue)<0?group.insertBefore(row,next):group.insertBefore(next,row);update();button.focus();}});
+});
+</script>
+<p class="az-order-help">Use ↑ and ↓ beside a value to set its order for this product. Save the product to apply the order to its page and quick view. Shared attributes and values stay unchanged.</p>
+</form>
+
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+    
+<script>
+    'use strict';
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Server data
+        |--------------------------------------------------------------------------
+        */
+
+        const initialVariants =
+            [];
+
+        const mediaBaseUrl =
+            "http:\/\/127.0.0.1:8000\/storage";
+
+        const optionStoreUrl =
+            "http:\/\/127.0.0.1:8000\/admin\/product-options";
+
+        const optionValueStoreUrlTemplate =
+            "http:\/\/127.0.0.1:8000\/admin\/product-options\/__OPTION_ID__\/values";
+
+        const csrfToken =
+            document.querySelector(
+                'meta[name="csrf-token"]'
+            )?.getAttribute('content') ||
+            "2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9";
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Helpers
+        |--------------------------------------------------------------------------
+        */
+
+        function escapeHtml(value) {
+
+            const div =
+                document.createElement('div');
+
+            div.textContent =
+                value == null ? '' : String(value);
+
+            return div.innerHTML;
+        }
+
+
+        function slugify(value) {
+
+            return String(value || '')
+                .normalize('NFKD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .toLowerCase()
+                .trim()
+                .replace(/['"]/g, '')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+        }
+
+
+        function normaliseImageUrl(path) {
+
+            if (!path) {
+                return '';
+            }
+
+            path = String(path);
+
+            if (
+                path.startsWith('http://') ||
+                path.startsWith('https://') ||
+                path.startsWith('//') ||
+                path.startsWith('data:')
+            ) {
+                return path;
+            }
+
+            path =
+                path.replace(/\\/g, '/')
+                .replace(/^\/+/, '');
+
+            if (path.startsWith('public/')) {
+                path = path.substring(7);
+            }
+
+            if (path.startsWith('storage/')) {
+                return '/' + path;
+            }
+
+            return mediaBaseUrl.replace(/\/$/, '') +
+                '/' +
+                path;
+        }
+
+
+        function optionSignature(options) {
+
+            return [...options]
+                .map(function(option) {
+
+                    return {
+                        option_id: Number(option.option_id),
+
+                        value_id: Number(option.value_id)
+                    };
+
+                })
+                .sort(function(a, b) {
+
+                    return a.option_id - b.option_id;
+
+                })
+                .map(function(option) {
+
+                    return option.option_id +
+                        ':' +
+                        option.value_id;
+
+                })
+                .join('|');
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Slug generation
+        |--------------------------------------------------------------------------
+        */
+
+        const titleInput =
+            document.getElementById('title');
+
+        const slugInput =
+            document.getElementById('slug');
+
+        let slugEditedManually =
+            Boolean(slugInput?.value);
+
+                slugEditedManually = false;
+        
+        slugInput?.addEventListener(
+            'input',
+            function() {
+
+                slugEditedManually = true;
+
+            }
+        );
+
+        titleInput?.addEventListener(
+            'input',
+            function() {
+
+                if (
+                    slugInput &&
+                    !slugEditedManually
+                ) {
+                    slugInput.value =
+                        slugify(titleInput.value);
+                }
+
+            }
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pricing margin
+        |--------------------------------------------------------------------------
+        */
+
+        const regularPrice =
+            document.getElementById(
+                'regular_price'
+            );
+
+        const salePrice =
+            document.getElementById(
+                'sale_price'
+            );
+
+        const costPrice =
+            document.getElementById(
+                'cost_price'
+            );
+
+        function updateMargin() {
+
+            const regular =
+                Number(regularPrice?.value || 0);
+
+            const sale =
+                Number(salePrice?.value || 0);
+
+            const cost =
+                Number(costPrice?.value || 0);
+
+            const selling =
+                sale > 0 && sale < regular ?
+                sale :
+                regular;
+
+            const margin =
+                selling - cost;
+
+            const percentage =
+                selling > 0 ?
+                (margin / selling) * 100 :
+                0;
+
+            document.getElementById(
+                    'marginSellingPrice'
+                ).textContent =
+                '$' + selling.toFixed(2);
+
+            document.getElementById(
+                    'marginAmount'
+                ).textContent =
+                '$' + margin.toFixed(2);
+
+            document.getElementById(
+                    'marginPercentage'
+                ).textContent =
+                percentage.toFixed(1) + '%';
+        }
+
+        [
+            regularPrice,
+            salePrice,
+            costPrice
+        ].forEach(function(element) {
+
+            element?.addEventListener(
+                'input',
+                updateMargin
+            );
+
+        });
+
+        updateMargin();
+
+
+        /*
+|--------------------------------------------------------------------------
+| Featured Image
+|--------------------------------------------------------------------------
+|
+| Supports:
+| - Add
+| - Preview
+| - Replace
+| - Remove
+| - Select another image after removal
+|
+*/
+
+        const featuredInput =
+            document.getElementById(
+                'featured_image'
+            );
+
+        const featuredImage =
+            document.getElementById(
+                'featuredPreviewImage'
+            );
+
+        const featuredEmpty =
+            document.getElementById(
+                'featuredEmpty'
+            );
+
+        const featuredPreview =
+            document.getElementById(
+                'featuredPreview'
+            );
+
+        const removeFeaturedButton =
+            document.getElementById(
+                'removeFeaturedImage'
+            );
+
+        const removeFeaturedInput =
+            document.getElementById(
+                'removeFeaturedImageInput'
+            );
+
+        const featuredChooseText =
+            document.getElementById(
+                'featuredChooseText'
+            );
+
+
+        let featuredObjectUrl = null;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | New / replacement image selected
+        |--------------------------------------------------------------------------
+        */
+
+        featuredInput?.addEventListener(
+            'change',
+            function() {
+
+                const file =
+                    this.files?.[0];
+
+                if (!file) {
+                    return;
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Release previous browser preview
+                |--------------------------------------------------------------------------
+                */
+
+                if (featuredObjectUrl) {
+
+                    URL.revokeObjectURL(
+                        featuredObjectUrl
+                    );
+
+                }
+
+
+                featuredObjectUrl =
+                    URL.createObjectURL(
+                        file
+                    );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Show preview
+                |--------------------------------------------------------------------------
+                */
+
+                if (featuredImage) {
+
+                    featuredImage.src =
+                        featuredObjectUrl;
+
+                    featuredImage.alt =
+                        file.name;
+
+                    featuredImage.hidden =
+                        false;
+
+                }
+
+
+                if (featuredEmpty) {
+
+                    featuredEmpty.hidden =
+                        true;
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Selecting another image cancels removal
+                |--------------------------------------------------------------------------
+                */
+
+                if (removeFeaturedInput) {
+
+                    removeFeaturedInput.value =
+                        '0';
+
+                }
+
+
+                featuredPreview?.classList.remove(
+                    'is-removing'
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Show remove button
+                |--------------------------------------------------------------------------
+                */
+
+                if (removeFeaturedButton) {
+
+                    removeFeaturedButton.hidden =
+                        false;
+
+                }
+
+
+                if (featuredChooseText) {
+
+                    featuredChooseText.textContent =
+                        'Replace Image';
+
+                }
+
+            }
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Remove featured image
+        |--------------------------------------------------------------------------
+        */
+
+        removeFeaturedButton?.addEventListener(
+            'click',
+            function() {
+
+                /*
+                |--------------------------------------------------------------------------
+                | Clear newly selected file
+                |--------------------------------------------------------------------------
+                */
+
+                if (featuredInput) {
+
+                    featuredInput.value = '';
+
+                }
+
+
+                if (featuredObjectUrl) {
+
+                    URL.revokeObjectURL(
+                        featuredObjectUrl
+                    );
+
+                    featuredObjectUrl = null;
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Tell backend to remove existing image
+                |--------------------------------------------------------------------------
+                */
+
+                if (removeFeaturedInput) {
+
+                    removeFeaturedInput.value =
+                        '1';
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Hide image
+                |--------------------------------------------------------------------------
+                */
+
+                if (featuredImage) {
+
+                    featuredImage.src = '';
+                    featuredImage.hidden = true;
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Show upload placeholder
+                |--------------------------------------------------------------------------
+                */
+
+                if (featuredEmpty) {
+
+                    featuredEmpty.hidden =
+                        false;
+
+                }
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Hide remove button
+                |--------------------------------------------------------------------------
+                */
+
+                removeFeaturedButton.hidden =
+                    true;
+
+
+                if (featuredChooseText) {
+
+                    featuredChooseText.textContent =
+                        'Choose Image';
+
+                }
+
+
+                featuredPreview?.classList.remove(
+                    'is-removing'
+                );
+
+            }
+        );
+
+
+        /*
+|--------------------------------------------------------------------------
+| Gallery Images
+|--------------------------------------------------------------------------
+|
+| Supports:
+| - Multiple uploads
+| - Preview before saving
+| - Remove newly selected image
+| - Remove existing image
+| - Undo existing image removal
+| - Add more images without losing previous selection
+|
+*/
+
+        const galleryInput =
+            document.getElementById(
+                'gallery_images'
+            );
+
+        const galleryPreview =
+            document.getElementById(
+                'galleryPreview'
+            );
+
+        const galleryImageCount =
+            document.getElementById(
+                'galleryImageCount'
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | New files selected by admin
+        |--------------------------------------------------------------------------
+        */
+
+        let selectedGalleryFiles = [];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Unique file identifier
+        |--------------------------------------------------------------------------
+        */
+
+        function galleryFileKey(file) {
+
+            return [
+                file.name,
+                file.size,
+                file.lastModified
+            ].join('::');
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Update actual <input type="file">
+        |--------------------------------------------------------------------------
+        |
+        | Because FileList is read-only, DataTransfer is used to rebuild it after
+        | an individual image is removed.
+        |
+        */
+
+        function syncGalleryInput() {
+
+            if (!galleryInput) {
+                return;
+            }
+
+            const transfer =
+                new DataTransfer();
+
+            selectedGalleryFiles.forEach(
+                function(file) {
+
+                    transfer.items.add(
+                        file
+                    );
+
+                }
+            );
+
+            galleryInput.files =
+                transfer.files;
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Gallery count
+        |--------------------------------------------------------------------------
+        */
+
+        function updateGalleryCount() {
+
+            if (!galleryImageCount) {
+                return;
+            }
+
+            const existingImages =
+                document.querySelectorAll(
+                    '[data-existing-gallery-image]'
+                );
+
+            let existingCount = 0;
+
+            existingImages.forEach(
+                function(image) {
+
+                    const checkbox =
+                        image.querySelector(
+                            '[data-existing-remove-checkbox]'
+                        );
+
+                    if (
+                        !checkbox ||
+                        !checkbox.checked
+                    ) {
+                        existingCount++;
+                    }
+
+                }
+            );
+
+            const newCount =
+                selectedGalleryFiles.length;
+
+            const total =
+                existingCount + newCount;
+
+            if (total === 0) {
+
+                galleryImageCount.textContent =
+                    'No gallery images';
+
+                return;
+            }
+
+            galleryImageCount.textContent =
+                total +
+                (
+                    total === 1 ?
+                    ' image' :
+                    ' images'
+                );
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Render newly selected images
+        |--------------------------------------------------------------------------
+        */
+
+        function renderGalleryPreview() {
+
+            if (!galleryPreview) {
+                return;
+            }
+
+            galleryPreview.innerHTML = '';
+
+
+            selectedGalleryFiles.forEach(
+                function(file) {
+
+                    const fileKey =
+                        galleryFileKey(file);
+
+
+                    const wrapper =
+                        document.createElement(
+                            'div'
+                        );
+
+                    wrapper.className =
+                        'product-gallery-preview-item';
+
+                    wrapper.dataset.galleryFileKey =
+                        fileKey;
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Preview
+                    |--------------------------------------------------------------------------
+                    */
+
+                    const image =
+                        document.createElement(
+                            'img'
+                        );
+
+                    const objectUrl =
+                        URL.createObjectURL(
+                            file
+                        );
+
+                    image.src =
+                        objectUrl;
+
+                    image.alt =
+                        file.name;
+
+                    image.onload =
+                        function() {
+
+                            URL.revokeObjectURL(
+                                objectUrl
+                            );
+
+                        };
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Filename
+                    |--------------------------------------------------------------------------
+                    */
+
+                    const fileName =
+                        document.createElement(
+                            'div'
+                        );
+
+                    fileName.className =
+                        'product-gallery-file-name';
+
+                    fileName.textContent =
+                        file.name;
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Overlay
+                    |--------------------------------------------------------------------------
+                    */
+
+                    const overlay =
+                        document.createElement(
+                            'div'
+                        );
+
+                    overlay.className =
+                        'product-gallery-image-overlay';
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Remove button
+                    |--------------------------------------------------------------------------
+                    */
+
+                    const removeButton =
+                        document.createElement(
+                            'button'
+                        );
+
+                    removeButton.type =
+                        'button';
+
+                    removeButton.className =
+                        'product-gallery-remove-button';
+
+                    removeButton.innerHTML =
+                        '<i class="fa-solid fa-trash"></i>' +
+                        '<span>Remove</span>';
+
+
+                    removeButton.addEventListener(
+                        'click',
+                        function() {
+
+                            selectedGalleryFiles =
+                                selectedGalleryFiles.filter(
+                                    function(
+                                        selectedFile
+                                    ) {
+
+                                        return (
+                                            galleryFileKey(
+                                                selectedFile
+                                            ) !== fileKey
+                                        );
+
+                                    }
+                                );
+
+
+                            syncGalleryInput();
+
+                            renderGalleryPreview();
+
+                            updateGalleryCount();
+
+                        }
+                    );
+
+
+                    overlay.appendChild(
+                        removeButton
+                    );
+
+                    wrapper.appendChild(
+                        image
+                    );
+
+                    wrapper.appendChild(
+                        fileName
+                    );
+
+                    wrapper.appendChild(
+                        overlay
+                    );
+
+                    galleryPreview.appendChild(
+                        wrapper
+                    );
+
+                }
+            );
+
+
+            updateGalleryCount();
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Add selected files
+        |--------------------------------------------------------------------------
+        */
+
+        galleryInput?.addEventListener(
+            'change',
+            function() {
+
+                const incomingFiles =
+                    Array.from(
+                        this.files || []
+                    );
+
+
+                incomingFiles.forEach(
+                    function(file) {
+
+                        const key =
+                            galleryFileKey(
+                                file
+                            );
+
+
+                        const alreadyExists =
+                            selectedGalleryFiles.some(
+                                function(
+                                    existingFile
+                                ) {
+
+                                    return (
+                                        galleryFileKey(
+                                            existingFile
+                                        ) === key
+                                    );
+
+                                }
+                            );
+
+
+                        if (!alreadyExists) {
+
+                            selectedGalleryFiles.push(
+                                file
+                            );
+
+                        }
+
+                    }
+                );
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | Keep maximum at 20 new files
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    selectedGalleryFiles.length >
+                    20
+                ) {
+
+                    selectedGalleryFiles =
+                        selectedGalleryFiles.slice(
+                            0,
+                            20
+                        );
+
+                    alert(
+                        'You can upload a maximum of 20 gallery images at one time.'
+                    );
+
+                }
+
+
+                syncGalleryInput();
+
+                renderGalleryPreview();
+
+            }
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Existing Gallery Images
+        |--------------------------------------------------------------------------
+        */
+
+        document
+            .querySelectorAll(
+                '[data-existing-gallery-image]'
+            )
+            .forEach(
+                function(imageCard) {
+
+                    const checkbox =
+                        imageCard.querySelector(
+                            '[data-existing-remove-checkbox]'
+                        );
+
+                    const removeButton =
+                        imageCard.querySelector(
+                            '[data-remove-existing-gallery]'
+                        );
+
+                    const undoButton =
+                        imageCard.querySelector(
+                            '[data-undo-gallery-remove]'
+                        );
+
+                    const removeState =
+                        imageCard.querySelector(
+                            '[data-gallery-remove-state]'
+                        );
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Apply state
+                    |--------------------------------------------------------------------------
+                    */
+
+                    function applyRemovalState() {
+
+                        const removing =
+                            Boolean(
+                                checkbox?.checked
+                            );
+
+
+                        imageCard.classList.toggle(
+                            'is-removing',
+                            removing
+                        );
+
+
+                        if (removeState) {
+
+                            removeState.hidden = !removing;
+
+                        }
+
+                    }
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Mark existing image for removal
+                    |--------------------------------------------------------------------------
+                    */
+
+                    removeButton?.addEventListener(
+                        'click',
+                        function() {
+
+                            if (!checkbox) {
+                                return;
+                            }
+
+                            checkbox.checked =
+                                true;
+
+                            applyRemovalState();
+
+                            updateGalleryCount();
+
+                        }
+                    );
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Undo removal
+                    |--------------------------------------------------------------------------
+                    */
+
+                    undoButton?.addEventListener(
+                        'click',
+                        function() {
+
+                            if (!checkbox) {
+                                return;
+                            }
+
+                            checkbox.checked =
+                                false;
+
+                            applyRemovalState();
+
+                            updateGalleryCount();
+
+                        }
+                    );
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | Restore state after Laravel validation redirect
+                    |--------------------------------------------------------------------------
+                    */
+
+                    applyRemovalState();
+
+                }
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Initial count
+        |--------------------------------------------------------------------------
+        */
+
+        updateGalleryCount();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Search categories / tags
+        |--------------------------------------------------------------------------
+        */
+
+        document
+            .querySelectorAll(
+                '[data-filter-checkboxes]'
+            )
+            .forEach(function(input) {
+
+                input.addEventListener(
+                    'input',
+                    function() {
+
+                        const container =
+                            document.querySelector(
+                                input.dataset
+                                .filterCheckboxes
+                            );
+
+                        if (!container) {
+                            return;
+                        }
+
+                        const query =
+                            input.value
+                            .trim()
+                            .toLowerCase();
+
+                        container
+                            .querySelectorAll(
+                                '[data-check-label]'
+                            )
+                            .forEach(
+                                function(item) {
+
+                                    item.style.display =
+                                        item.dataset
+                                        .checkLabel
+                                        .includes(query) ?
+                                        '' :
+                                        'none';
+
+                                }
+                            );
+
+                    }
+                );
+
+            });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Meta counters
+        |--------------------------------------------------------------------------
+        */
+
+        function setupCounter(
+            inputId,
+            counterId
+        ) {
+
+            const input =
+                document.getElementById(
+                    inputId
+                );
+
+            const counter =
+                document.getElementById(
+                    counterId
+                );
+
+            if (!input || !counter) {
+                return;
+            }
+
+            function update() {
+                counter.textContent =
+                    input.value.length;
+            }
+
+            input.addEventListener(
+                'input',
+                update
+            );
+
+            update();
+        }
+
+        setupCounter(
+            'meta_title',
+            'metaTitleCount'
+        );
+
+        setupCounter(
+            'meta_description',
+            'metaDescriptionCount'
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Enable option when a value is selected
+        |--------------------------------------------------------------------------
+        */
+
+        function bindOptionValueCheckbox(
+            checkbox
+        ) {
+
+            checkbox.addEventListener(
+                'change',
+                function() {
+
+                    if (!checkbox.checked) {
+                        return;
+                    }
+
+                    const card =
+                        checkbox.closest(
+                            '[data-option-card]'
+                        );
+
+                    card
+                        ?.querySelector(
+                            '[data-option-toggle]'
+                        )
+                        ?.setAttribute(
+                            'checked',
+                            'checked'
+                        );
+
+                    const optionToggle =
+                        card?.querySelector(
+                            '[data-option-toggle]'
+                        );
+
+                    if (optionToggle) {
+                        optionToggle.checked = true;
+                    }
+
+                }
+            );
+
+        }
+
+        document
+            .querySelectorAll(
+                '[data-option-value-checkbox]'
+            )
+            .forEach(
+                bindOptionValueCheckbox
+            );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Variant generator
+        |--------------------------------------------------------------------------
+        */
+
+        const variantsContainer =
+            document.getElementById(
+                'variantsContainer'
+            );
+
+        let variantsState =
+            Array.isArray(initialVariants) ?
+            initialVariants : [];
+
+
+        function getSelectedOptions() {
+
+            const result = [];
+
+            document
+                .querySelectorAll(
+                    '[data-option-card]'
+                )
+                .forEach(function(card) {
+
+                    const enabled =
+                        card.querySelector(
+                            '[data-option-toggle]'
+                        );
+
+                    if (
+                        !enabled ||
+                        !enabled.checked
+                    ) {
+                        return;
+                    }
+
+                    const values = [];
+
+                    card
+                        .querySelectorAll(
+                            '[data-option-value-checkbox]:checked'
+                        )
+                        .forEach(
+                            function(checkbox) {
+
+                                values.push({
+                                    option_id: Number(
+                                        checkbox.dataset
+                                        .optionId
+                                    ),
+
+                                    option_name: checkbox.dataset
+                                        .optionName,
+
+                                    value_id: Number(
+                                        checkbox.dataset
+                                        .valueId
+                                    ),
+
+                                    value_label: checkbox.dataset
+                                        .valueLabel
+                                });
+
+                            }
+                        );
+
+                    if (values.length) {
+                        result.push(values);
+                    }
+
+                });
+
+            return result;
+        }
+
+
+        function cartesianProduct(groups) {
+
+            return groups.reduce(
+                function(combinations, group) {
+
+                    const result = [];
+
+                    combinations.forEach(
+                        function(combination) {
+
+                            group.forEach(
+                                function(item) {
+
+                                    result.push([
+                                        ...combination,
+                                        item
+                                    ]);
+
+                                }
+                            );
+
+                        }
+                    );
+
+                    return result;
+
+                },
+                [
+                    []
+                ]
+            );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Read current DOM before regeneration
+        |--------------------------------------------------------------------------
+        |
+        | This is the key preservation behavior.
+        | If the admin edits SKU/price/stock and then clicks Generate Variants,
+        | the current values are retained for matching combinations.
+        |--------------------------------------------------------------------------
+        */
+
+        function captureCurrentVariants() {
+
+            const captured = [];
+
+            variantsContainer
+                .querySelectorAll(
+                    '[data-variant-row]'
+                )
+                .forEach(function(row) {
+
+                    const optionsJson =
+                        row.dataset.options;
+
+                    let options = [];
+
+                    try {
+                        options =
+                            JSON.parse(
+                                optionsJson || '[]'
+                            );
+                    } catch (error) {
+                        options = [];
+                    }
+
+                    captured.push({
+                        id: row.querySelector(
+                            '[data-variant-id]'
+                        )?.value || null,
+
+                        sku: row.querySelector(
+                            '[data-variant-sku]'
+                        )?.value || '',
+
+                        regular_price: row.querySelector(
+                            '[data-variant-regular]'
+                        )?.value || '',
+
+                        sale_price: row.querySelector(
+                            '[data-variant-sale]'
+                        )?.value || '',
+
+                        stock: row.querySelector(
+                            '[data-variant-stock]'
+                        )?.value || '0',
+
+                        reorder_point: row.querySelector(
+                            '[data-variant-reorder-point]'
+                        )?.value || '',
+
+                        reorder_quantity: row.querySelector(
+                            '[data-variant-reorder-quantity]'
+                        )?.value || '',
+
+                        image: row.dataset
+                            .existingImage || null,
+
+                        options: options
+                    });
+
+                });
+
+            if (captured.length) {
+                variantsState = captured;
+            }
+        }
+
+
+        function renderVariants(
+            variants
+        ) {
+
+            variantsContainer.innerHTML = '';
+
+            if (!variants.length) {
+
+                variantsContainer.innerHTML = `
+                <div class="product-variants-empty">
+                    <i class="fa-solid fa-code-branch"></i>
+                    <strong>No variants generated</strong>
+                    <span>
+                        Select option values above and click Generate Variants.
+                    </span>
+                </div>
+            `;
+
+                return;
+            }
+
+            variants.forEach(
+                function(variant, index) {
+
+                    const options =
+                        Array.isArray(
+                            variant.options
+                        ) ?
+                        variant.options : [];
+
+                    const title =
+                        options
+                        .map(
+                            option =>
+                            option.value_label
+                        )
+                        .join(' / ');
+
+                    const row =
+                        document.createElement(
+                            'div'
+                        );
+
+                    row.className =
+                        'product-variant-row';
+
+                    row.dataset.variantRow = '';
+                    row.dataset.options =
+                        JSON.stringify(options);
+
+                    row.dataset.existingImage =
+                        variant.image || '';
+
+                    const optionInputs =
+                        options
+                        .map(
+                            function(
+                                option,
+                                optionIndex
+                            ) {
+
+                                return `
+                                    <input
+                                        type="hidden"
+                                        name="variants[${index}][options][${optionIndex}][option_id]"
+                                        value="${escapeHtml(option.option_id)}"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="variants[${index}][options][${optionIndex}][option_name]"
+                                        value="${escapeHtml(option.option_name)}"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="variants[${index}][options][${optionIndex}][value_id]"
+                                        value="${escapeHtml(option.value_id)}"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="variants[${index}][options][${optionIndex}][value_label]"
+                                        value="${escapeHtml(option.value_label)}"
+                                    >
+                                `;
+
+                            }
+                        )
+                        .join('');
+
+                    const currentImage =
+                        variant.image ?
+                        `
+                            <div class="product-variant-current-image">
+                                <img
+                                    src="${escapeHtml(normaliseImageUrl(variant.image))}"
+                                    alt="${escapeHtml(title)}"
+                                >
+                            </div>
+                        ` :
+                        '';
+
+                    row.innerHTML = `
+
+                    ${variant.id ? `
+                        <input
+                            type="hidden"
+                            name="variants[${index}][id]"
+                            value="${escapeHtml(variant.id)}"
+                            data-variant-id
+                        >
+                    ` : `
+                        <input
+                            type="hidden"
+                            value=""
+                            data-variant-id
+                        >
+                    `}
+
+                    ${optionInputs}
+
+                    <div class="product-variant-heading">
+
+                        <strong>
+                            ${escapeHtml(title || 'Variant')}
+                        </strong>
+
+                        <button
+                            type="button"
+                            class="product-variant-remove"
+                            data-remove-variant
+                        >
+                            <i class="fa-solid fa-trash"></i>
+                            Remove
+                        </button>
+
+                    </div>
+
+
+                    <div class="product-variant-fields">
+
+                        <div class="product-variant-field">
+
+                            <label>SKU</label>
+
+                            <input
+                                type="text"
+                                name="variants[${index}][sku]"
+                                value="${escapeHtml(variant.sku || '')}"
+                                maxlength="100"
+                                data-variant-sku
+                            >
+
+                        </div>
+
+
+                        <div class="product-variant-field">
+
+                            <label>Regular Price</label>
+
+                            <input
+                                type="number"
+                                name="variants[${index}][regular_price]"
+                                value="${escapeHtml(variant.regular_price ?? '')}"
+                                min="0"
+                                step="0.01"
+                                data-variant-regular
+                            >
+
+                        </div>
+
+
+                        <div class="product-variant-field">
+
+                            <label>Sale Price</label>
+
+                            <input
+                                type="number"
+                                name="variants[${index}][sale_price]"
+                                value="${escapeHtml(variant.sale_price ?? '')}"
+                                min="0"
+                                step="0.01"
+                                data-variant-sale
+                            >
+
+                        </div>
+
+
+                        <div class="product-variant-field">
+
+                            <label>Stock</label>
+
+                            <input
+                                type="number"
+                                name="variants[${index}][stock]"
+                                value="${escapeHtml(variant.stock ?? 0)}"
+                                min="0"
+                                step="1"
+                                data-variant-stock
+                            >
+
+                        </div>
+
+
+                        <div class="product-variant-field">
+
+                            <label>Reorder Point</label>
+
+                            <input
+                                type="number"
+                                name="variants[${index}][reorder_point]"
+                                value="${escapeHtml(variant.reorder_point ?? '')}"
+                                min="0"
+                                step="1"
+                                data-variant-reorder-point
+                            >
+
+                        </div>
+
+
+                        <div class="product-variant-field">
+
+                            <label>Reorder Qty</label>
+
+                            <input
+                                type="number"
+                                name="variants[${index}][reorder_quantity]"
+                                value="${escapeHtml(variant.reorder_quantity ?? '')}"
+                                min="1"
+                                step="1"
+                                data-variant-reorder-quantity
+                            >
+
+                        </div>
+
+
+                        <div class="product-variant-field">
+
+                            <label>Image</label>
+
+                            <div class="product-variant-image-input">
+
+                                <input
+                                    type="file"
+                                    name="variants[${index}][image]"
+                                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                                >
+
+                                ${currentImage}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+
+                    variantsContainer.appendChild(
+                        row
+                    );
+
+                }
+            );
+
+            bindVariantRemoveButtons();
+        }
+
+
+        function generateVariants() {
+
+            captureCurrentVariants();
+
+            const selectedGroups =
+                getSelectedOptions();
+
+            if (!selectedGroups.length) {
+
+                alert(
+                    'Select at least one option and one value before generating variants.'
+                );
+
+                return;
+            }
+
+            const combinations =
+                cartesianProduct(
+                    selectedGroups
+                );
+
+            const existingBySignature =
+                new Map();
+
+            variantsState.forEach(
+                function(variant) {
+
+                    const signature =
+                        optionSignature(
+                            variant.options || []
+                        );
+
+                    if (signature) {
+                        existingBySignature.set(
+                            signature,
+                            variant
+                        );
+                    }
+
+                }
+            );
+
+            const generated =
+                combinations.map(
+                    function(options) {
+
+                        const signature =
+                            optionSignature(
+                                options
+                            );
+
+                        const existing =
+                            existingBySignature.get(
+                                signature
+                            );
+
+                        if (existing) {
+
+                            return {
+                                ...existing,
+                                options: options
+                            };
+
+                        }
+
+                        return {
+                            id: null,
+                            sku: '',
+                            regular_price: regularPrice?.value || '',
+                            sale_price: salePrice?.value || '',
+                            stock: 0,
+                            reorder_point: '',
+                            reorder_quantity: '',
+                            image: null,
+                            options: options
+                        };
+
+                    }
+                );
+
+            variantsState = generated;
+
+            renderVariants(
+                variantsState
+            );
+        }
+
+
+        document
+            .getElementById(
+                'generateVariants'
+            )
+            ?.addEventListener(
+                'click',
+                generateVariants
+            );
+
+
+        function bindVariantRemoveButtons() {
+
+            variantsContainer
+                .querySelectorAll(
+                    '[data-remove-variant]'
+                )
+                .forEach(function(button) {
+
+                    button.addEventListener(
+                        'click',
+                        function() {
+
+                            button
+                                .closest(
+                                    '[data-variant-row]'
+                                )
+                                ?.remove();
+
+                            captureCurrentVariants();
+
+                            if (
+                                !variantsContainer
+                                .querySelector(
+                                    '[data-variant-row]'
+                                )
+                            ) {
+                                renderVariants([]);
+                            }
+
+                        }
+                    );
+
+                });
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Render existing / validation variants immediately
+        |--------------------------------------------------------------------------
+        */
+
+        renderVariants(
+            variantsState
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Modal helpers
+        |--------------------------------------------------------------------------
+        */
+
+        function openModal(modal) {
+
+            modal?.classList.add(
+                'is-open'
+            );
+
+            modal?.setAttribute(
+                'aria-hidden',
+                'false'
+            );
+
+            document.body.style
+                .overflow = 'hidden';
+        }
+
+
+        function closeModal(modal) {
+
+            modal?.classList.remove(
+                'is-open'
+            );
+
+            modal?.setAttribute(
+                'aria-hidden',
+                'true'
+            );
+
+            document.body.style
+                .overflow = '';
+        }
+
+
+        const optionModal =
+            document.getElementById(
+                'newOptionModal'
+            );
+
+        const valueModal =
+            document.getElementById(
+                'newValueModal'
+            );
+
+
+        document
+            .getElementById(
+                'openNewOptionModal'
+            )
+            ?.addEventListener(
+                'click',
+                function() {
+
+                    openModal(
+                        optionModal
+                    );
+
+                }
+            );
+
+
+        document
+            .querySelectorAll(
+                '[data-close-option-modal]'
+            )
+            .forEach(function(button) {
+
+                button.addEventListener(
+                    'click',
+                    function() {
+
+                        closeModal(
+                            optionModal
+                        );
+
+                    }
+                );
+
+            });
+
+
+        document
+            .querySelectorAll(
+                '[data-close-value-modal]'
+            )
+            .forEach(function(button) {
+
+                button.addEventListener(
+                    'click',
+                    function() {
+
+                        closeModal(
+                            valueModal
+                        );
+
+                    }
+                );
+
+            });
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Add Value modal
+        |--------------------------------------------------------------------------
+        */
+
+        function bindAddValueButtons() {
+
+            document
+                .querySelectorAll(
+                    '[data-add-value]'
+                )
+                .forEach(function(button) {
+
+                    if (
+                        button.dataset.bound ===
+                        '1'
+                    ) {
+                        return;
+                    }
+
+                    button.dataset.bound = '1';
+
+                    button.addEventListener(
+                        'click',
+                        function() {
+
+                            document.getElementById(
+                                    'newValueOptionId'
+                                ).value =
+                                button.dataset
+                                .optionId;
+
+                            document.getElementById(
+                                    'newValueModalTitle'
+                                ).textContent =
+                                'Add ' +
+                                button.dataset
+                                .optionName +
+                                ' Value';
+
+                            document.getElementById(
+                                'newValueLabel'
+                            ).value = '';
+
+                            document.getElementById(
+                                'newValueValue'
+                            ).value = '';
+
+                            document.getElementById(
+                                'newValueColor'
+                            ).value = '';
+
+                            document.getElementById(
+                                    'newValueMessage'
+                                ).className =
+                                'product-modal-message';
+
+                            openModal(
+                                valueModal
+                            );
+
+                        }
+                    );
+
+                });
+
+        }
+
+        bindAddValueButtons();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Create new option
+        |--------------------------------------------------------------------------
+        */
+
+        document
+            .getElementById(
+                'saveNewOption'
+            )
+            ?.addEventListener(
+                'click',
+                async function() {
+
+                    const button = this;
+
+                    const name =
+                        document.getElementById(
+                            'newOptionName'
+                        ).value.trim();
+
+                    const type =
+                        document.getElementById(
+                            'newOptionType'
+                        ).value;
+
+                    const message =
+                        document.getElementById(
+                            'newOptionMessage'
+                        );
+
+                    if (!name) {
+
+                        message.className =
+                            'product-modal-message is-error';
+
+                        message.textContent =
+                            'Please enter an option name.';
+
+                        return;
+                    }
+
+                    button.disabled = true;
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                optionStoreUrl, {
+                                    method: 'POST',
+
+                                    headers: {
+                                        'Accept': 'application/json',
+
+                                        'Content-Type': 'application/json',
+
+                                        'X-CSRF-TOKEN': csrfToken
+                                    },
+
+                                    body: JSON.stringify({
+                                        name: name,
+                                        type: type
+                                    })
+                                }
+                            );
+
+                        const data =
+                            await response.json();
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                data.message ||
+                                Object.values(
+                                    data.errors || {}
+                                ).flat()[0] ||
+                                'Unable to create option.'
+                            );
+
+                        }
+
+                        const option =
+                            data.option || data;
+
+                        appendOptionCard(
+                            option
+                        );
+
+                        closeModal(
+                            optionModal
+                        );
+
+                        document.getElementById(
+                            'newOptionName'
+                        ).value = '';
+
+                    } catch (error) {
+
+                        message.className =
+                            'product-modal-message is-error';
+
+                        message.textContent =
+                            error.message;
+
+                    } finally {
+
+                        button.disabled = false;
+
+                    }
+
+                }
+            );
+
+
+        function appendOptionCard(
+            option
+        ) {
+
+            document.getElementById(
+                'noProductOptions'
+            )?.remove();
+
+            const container =
+                document.getElementById(
+                    'productOptionsList'
+                );
+
+            const card =
+                document.createElement(
+                    'div'
+                );
+
+            card.className =
+                'product-option-card';
+
+            card.dataset.optionCard = '';
+            card.dataset.optionId =
+                option.id;
+
+            card.dataset.optionName =
+                option.name;
+
+            card.innerHTML = `
+
+            <div class="product-option-heading">
+
+                <div class="product-option-title">
+
+                    <label class="product-option-enable">
+
+                        <input
+                            type="checkbox"
+                            name="product_options[]"
+                            value="${escapeHtml(option.id)}"
+                            data-option-toggle
+                            checked
+                        >
+
+                        <span>
+                            ${escapeHtml(option.name)}
+                        </span>
+
+                    </label>
+
+                    <span class="product-option-type">
+                        ${escapeHtml(option.type || 'select')}
+                    </span>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="product-add-value-button"
+                    data-add-value
+                    data-option-id="${escapeHtml(option.id)}"
+                    data-option-name="${escapeHtml(option.name)}"
+                >
+                    <i class="fa-solid fa-plus"></i>
+                    Add Value
+                </button>
+
+            </div>
+
+            <div class="product-option-values">
+
+                <span
+                    class="product-option-empty"
+                    data-option-empty
+                >
+                    No values yet.
+                </span>
+
+            </div>
+        `;
+
+            container.appendChild(
+                card
+            );
+
+            bindAddValueButtons();
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Create new option value
+        |--------------------------------------------------------------------------
+        */
+
+        document
+            .getElementById(
+                'saveNewValue'
+            )
+            ?.addEventListener(
+                'click',
+                async function() {
+
+                    const button = this;
+
+                    const optionId =
+                        document.getElementById(
+                            'newValueOptionId'
+                        ).value;
+
+                    const label =
+                        document.getElementById(
+                            'newValueLabel'
+                        ).value.trim();
+
+                    const value =
+                        document.getElementById(
+                            'newValueValue'
+                        ).value.trim();
+
+                    const colorCode =
+                        document.getElementById(
+                            'newValueColor'
+                        ).value.trim();
+
+                    const message =
+                        document.getElementById(
+                            'newValueMessage'
+                        );
+
+                    if (!label) {
+
+                        message.className =
+                            'product-modal-message is-error';
+
+                        message.textContent =
+                            'Please enter a value label.';
+
+                        return;
+                    }
+
+                    button.disabled = true;
+
+                    try {
+
+                        const url =
+                            optionValueStoreUrlTemplate
+                            .replace(
+                                '__OPTION_ID__',
+                                optionId
+                            );
+
+                        const response =
+                            await fetch(
+                                url, {
+                                    method: 'POST',
+
+                                    headers: {
+                                        'Accept': 'application/json',
+
+                                        'Content-Type': 'application/json',
+
+                                        'X-CSRF-TOKEN': csrfToken
+                                    },
+
+                                    body: JSON.stringify({
+                                        label: label,
+                                        value: value || null,
+                                        color_code: colorCode || null
+                                    })
+                                }
+                            );
+
+                        const data =
+                            await response.json();
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                data.message ||
+                                Object.values(
+                                    data.errors || {}
+                                ).flat()[0] ||
+                                'Unable to create value.'
+                            );
+
+                        }
+
+                        const optionValue =
+                            data.value || data;
+
+                        appendOptionValue(
+                            optionId,
+                            optionValue
+                        );
+
+                        closeModal(
+                            valueModal
+                        );
+
+                    } catch (error) {
+
+                        message.className =
+                            'product-modal-message is-error';
+
+                        message.textContent =
+                            error.message;
+
+                    } finally {
+
+                        button.disabled = false;
+
+                    }
+
+                }
+            );
+
+
+        function appendOptionValue(
+            optionId,
+            value
+        ) {
+
+            const card =
+                document.querySelector(
+                    `[data-option-card][data-option-id="${CSS.escape(String(optionId))}"]`
+                );
+
+            if (!card) {
+                return;
+            }
+
+            card.querySelector(
+                '[data-option-empty]'
+            )?.remove();
+
+            const valuesContainer =
+                card.querySelector(
+                    '.product-option-values'
+                );
+
+            const optionName =
+                card.dataset.optionName;
+
+            const label =
+                document.createElement(
+                    'label'
+                );
+
+            label.className =
+                'product-option-value';
+
+            label.dataset.optionValue = '';
+
+            const colorSwatch =
+                value.color_code ?
+                `
+                    <span
+                        class="product-color-swatch"
+                        style="background:${escapeHtml(value.color_code)}"
+                    ></span>
+                ` :
+                '';
+
+            label.innerHTML = `
+
+            <input
+                type="checkbox"
+                name="product_option_values[]"
+                value="${escapeHtml(value.id)}"
+                data-option-value-checkbox
+                data-option-id="${escapeHtml(optionId)}"
+                data-option-name="${escapeHtml(optionName)}"
+                data-value-id="${escapeHtml(value.id)}"
+                data-value-label="${escapeHtml(value.label)}"
+                checked
+            >
+
+            ${colorSwatch}
+
+            <span>
+                ${escapeHtml(value.label)}
+            </span>
+        `;
+
+            valuesContainer.appendChild(
+                label
+            );
+
+            const checkbox =
+                label.querySelector(
+                    '[data-option-value-checkbox]'
+                );
+
+            bindOptionValueCheckbox(
+                checkbox
+            );
+
+            const optionToggle =
+                card.querySelector(
+                    '[data-option-toggle]'
+                );
+
+            if (optionToggle) {
+                optionToggle.checked = true;
+            }
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Form submit
+        |--------------------------------------------------------------------------
+        */
+
+        const form =
+            document.querySelector(
+                'form[data-product-form]'
+            );
+
+        form?.addEventListener(
+            'submit',
+            function() {
+
+                captureCurrentVariants();
+
+                const submitButton =
+                    form.querySelector(
+                        '[data-product-submit]'
+                    );
+
+                if (submitButton) {
+
+                    submitButton.disabled = true;
+
+                    submitButton.innerHTML =
+                        '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+
+                }
+
+            }
+        );
+
+    });
+</script>
+
+    <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-purple-fix"></script>
+</body>
+</html>

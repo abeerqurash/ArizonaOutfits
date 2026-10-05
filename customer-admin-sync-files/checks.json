@@ -1,0 +1,392 @@
+[
+    {
+        "result": "PASS",
+        "check": "Store settings update saves numeric and checkbox values",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Settings reject tax above 100",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Saved default inventory threshold reaches inventory service",
+        "detail": "Saved threshold 22; service threshold 22"
+    },
+    {
+        "result": "PASS",
+        "check": "CMS page stores separate admin ownership",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "CMS removes script tags and event attributes",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Draft CMS page stays private",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "CMS publication sets public date",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Public CMS controller renders published content",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Public CMS URL accepts normal slug",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Custom page requires an existing Blade template",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Menu page link resolves to CMS URL",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Menu refuses javascript custom URL",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Menu rejects backslash authority bypass",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Menu reorder rejects duplicate IDs",
+        "detail": "Duplicate item IDs accepted"
+    },
+    {
+        "result": "PASS",
+        "check": "CMS edits invalidate cached menu URLs",
+        "detail": "Cached menu retains former page slug"
+    },
+    {
+        "result": "PASS",
+        "check": "Menu update clears location cache",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Menu hides unpublished page target",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Menu deletion removes item",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Analytics keeps archived paid revenue",
+        "detail": "Actual 60"
+    },
+    {
+        "result": "PASS",
+        "check": "Analytics top products agrees with total sold units",
+        "detail": "Summary=2; product rows=2"
+    },
+    {
+        "result": "PASS",
+        "check": "Analytics separates revenue by currency",
+        "detail": "Current scalar revenue combines currencies"
+    },
+    {
+        "result": "PASS",
+        "check": "Analytics rejects malformed dates",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Analytics CSV export runs",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Role creation saves selected permissions",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Duplicate role permission IDs rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "New administrator assigned independent admin role",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Assigned role cannot be deleted",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "System role cannot be deleted",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cannot revoke own administrator account",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Last super administrator cannot be demoted",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Promotion preserves original customer",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Promotion preserves password hash",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Role updates change permissions after cache refresh",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Notification list belongs to current admin",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cannot delete another admin notification",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Notification read changes unread count",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Notification rejects backslash redirect URL",
+        "detail": "Unsafe slash URL accepted"
+    },
+    {
+        "result": "PASS",
+        "check": "Notification rejects non-HTTP same-host URL",
+        "detail": "Same host accepted without scheme restriction"
+    },
+    {
+        "result": "PASS",
+        "check": "Clear-read leaves other admin notifications",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Audit trail records true administrator",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Audit redacts nested secrets",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Audit records validation as 422 rather than 500",
+        "detail": "Actual 422"
+    },
+    {
+        "result": "PASS",
+        "check": "Audit administrator search works",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Audit CSV identifies admin",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Failed repeated backup cannot delete earlier completed archive",
+        "detail": "Same-second failure removes shared path"
+    },
+    {
+        "result": "PASS",
+        "check": "Backup filenames unique between same-second attempts",
+        "detail": "Multiple records share file path"
+    },
+    {
+        "result": "PASS",
+        "check": "Backup failure retained as failed record",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Email update records administrator",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unknown compact template variables rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unknown spaced template variables rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "HTML template variables escaped",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Disabled template uses built-in fallback",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Email preview renders sample content",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "CMS sanitizer rejects executable encoded\/unquoted links",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Store Settings",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: CMS Pages",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: CMS create",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: CMS edit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Menu Builder",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Global Analytics",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Admin Team",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Admin edit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Roles",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Notifications",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Audit logs",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Backups",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Email Templates",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Email edit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.settings.update",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.pages.store",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.navigation-menus.items.store",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.analytics.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.admin-users.store",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.admin-roles.store",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.notifications.send",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.audit-logs.export",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.backups.download",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unauthorized admin denied: admin.email-templates.update",
+        "detail": ""
+    }
+]

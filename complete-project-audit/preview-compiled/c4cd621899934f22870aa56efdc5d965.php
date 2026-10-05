@@ -1,0 +1,22 @@
+<style>/* Responsive card collections retain a grid on desktop and native swipe below 880px. */
+.az-responsive-cards {min-width:0;}
+.az-carousel-controls {display:none;align-items:center;justify-content:flex-end;gap:12px;padding:18px 0;}
+.az-carousel-controls button {border:1px solid #d5dbea;border-radius:999px;background:#090b19;color:#fff;padding:12px 20px;font:inherit;cursor:pointer;}
+.az-carousel-controls button:disabled {opacity:.45;cursor:default;}
+.az-carousel-controls button:focus-visible,.az-responsive-cards:focus-visible {outline:3px solid #2563eb;outline-offset:4px;}
+.az-carousel-status {color:#374151;font-size:13px;}
+@media(max-width:880px){
+ .az-responsive-cards.az-responsive-cards {height:auto!important;display:flex!important;gap:20px!important;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;overscroll-behavior-x:contain;scrollbar-width:thin;padding-bottom:12px;grid-template-columns:none!important;width:100%;}
+ .az-responsive-cards.az-responsive-cards > * {flex:0 0 calc((100% - 20px)/2);min-width:0;max-width:none;scroll-snap-align:start;transform:none;opacity:1;margin-top:0!important;margin-bottom:0!important;}
+ .az-carousel-controls:not([hidden]) {display:flex;}
+ .blog-posts .post-and-categories:has(.az-responsive-cards) {grid-template-columns:minmax(0,1fr);}
+ .blog-posts .post-cards-parent:has(.az-responsive-cards) {min-width:0;width:100%;grid-area:auto!important;}
+ .blog-posts .post-and-categories:has(.az-responsive-cards) > .post-categories{grid-area:auto!important;position:relative;}
+}
+@media(max-width:600px){.az-responsive-cards.az-responsive-cards > * {flex-basis:100%;}}
+@media(prefers-reduced-motion:reduce){.az-responsive-cards.az-responsive-cards{scroll-behavior:auto!important;}.az-responsive-cards *{animation:none!important;transition:none!important;}}
+
+@media(min-width:881px){.blog-show .parent-wrapper[data-card-carousel]{grid-template-columns:repeat(3,minmax(0,1fr));}}
+
+.az-carousel-controls{padding:0 0 14px;min-height:44px}.az-carousel-controls button{width:44px;height:44px;padding:0;font-size:22px}.az-carousel-status{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style><?php /**PATH C:\xampp\htdocs\ArizonaOutfits\optimization-round-2\_staged\resources\views/partials/carousel-styles.blade.php ENDPATH**/ ?>

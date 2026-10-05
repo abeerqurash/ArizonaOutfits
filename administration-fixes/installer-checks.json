@@ -1,0 +1,386 @@
+[
+  {
+    "file": "app/Services/SafeContentUrl.php",
+    "pass": true
+  },
+  {
+    "file": "app/Services/HtmlContentSanitizer.php",
+    "pass": true
+  },
+  {
+    "file": "app/Services/CmsContentSanitizer.php",
+    "pass": true
+  },
+  {
+    "file": "app/Services/EmailTemplateService.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Middleware/AdminMiddleware.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/admin/partials/administration-links.blade.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/admin/partials/sidebar.blade.php",
+    "pass": true
+  },
+  {
+    "file": "routes/web.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/AdminPageController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Models/NavigationMenuItem.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/AdminNavigationMenuController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/AdminNotificationController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/AdminEmailTemplateController.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/admin/email-templates/edit.blade.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Middleware/AdminAuditMiddleware.php",
+    "pass": true
+  },
+  {
+    "file": "app/Services/AdminBackupService.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/AdminBackupController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/AdminAnalyticsController.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/admin/analytics/index.blade.php",
+    "pass": true
+  },
+  {
+    "file": "app/Services/AdminAccessPolicy.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/AdminRoleController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/AdminUserController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Services/StoreSettingsService.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Middleware/StorePolicyMiddleware.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/errors/store-maintenance.blade.php",
+    "pass": true
+  },
+  {
+    "file": "bootstrap/app.php",
+    "pass": true
+  },
+  {
+    "file": "app/Services/InventoryCatalogService.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/EcommerceSettingController.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/admin/settings/edit.blade.php",
+    "pass": true
+  },
+  {
+    "file": "app/Models/Order.php",
+    "pass": true
+  },
+  {
+    "file": "app/Services/InventoryService.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/CheckoutController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Payment/StripePaymentController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/CartController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Models/PurchaseOrderReceipt.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/checkout/index.blade.php",
+    "pass": true
+  },
+  {
+    "file": "public/asset/js/checkout-stripe.js",
+    "pass": true
+  },
+  {
+    "file": "resources/views/products/show.blade.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/products/partials/product-card.blade.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/products/partials/quick-view.blade.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/cart/index.blade.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/layouts/app.blade.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/checkout/thank-you.blade.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/ShopController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Mail/CustomerOrderConfirmationMail.php",
+    "pass": true
+  },
+  {
+    "file": "app/Mail/AdminNewOrderMail.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/emails/orders/customer-confirmation.blade.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/emails/orders/admin-new-order.blade.php",
+    "pass": true
+  },
+  {
+    "file": "resources/views/emails/orders/dynamic-template.blade.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/AdminAuditLogController.php",
+    "pass": true
+  },
+  {
+    "file": "app/Http/Controllers/Admin/OrderController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Services/CmsContentSanitizer.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Services/EmailTemplateService.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Middleware/AdminMiddleware.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/admin/partials/administration-links.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/admin/partials/sidebar.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "routes/web.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/AdminPageController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Models/NavigationMenuItem.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/AdminNavigationMenuController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/AdminNotificationController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/AdminEmailTemplateController.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/admin/email-templates/edit.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Middleware/AdminAuditMiddleware.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Services/AdminBackupService.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/AdminBackupController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/AdminAnalyticsController.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/admin/analytics/index.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/AdminRoleController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/AdminUserController.php",
+    "pass": true
+  },
+  {
+    "backup": "bootstrap/app.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Services/InventoryCatalogService.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/EcommerceSettingController.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/admin/settings/edit.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Models/Order.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Services/InventoryService.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/CheckoutController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Payment/StripePaymentController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/CartController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Models/PurchaseOrderReceipt.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/checkout/index.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "public/asset/js/checkout-stripe.js",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/products/show.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/products/partials/product-card.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/products/partials/quick-view.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/cart/index.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/layouts/app.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/checkout/thank-you.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/ShopController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Mail/CustomerOrderConfirmationMail.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Mail/AdminNewOrderMail.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/emails/orders/customer-confirmation.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/emails/orders/admin-new-order.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "resources/views/emails/orders/dynamic-template.blade.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/AdminAuditLogController.php",
+    "pass": true
+  },
+  {
+    "backup": "app/Http/Controllers/Admin/OrderController.php",
+    "pass": true
+  }
+]

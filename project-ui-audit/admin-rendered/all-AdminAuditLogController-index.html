@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Audit Logs | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    <style>
+.audit-page{display:grid;gap:20px;color:#172033}.audit-header{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:27px;border-radius:20px;background:linear-gradient(135deg,#111827,#0f766e);color:#fff}.audit-header span{color:#99f6e4;font-size:11px;font-weight:850;letter-spacing:.14em;text-transform:uppercase}.audit-header h1{margin:6px 0 0}.audit-header p{margin:7px 0 0;color:#ccfbf1}.audit-header>a{padding:10px 13px;border-radius:9px;background:#fff;color:#115e59;text-decoration:none;font-weight:800}.audit-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.audit-stats article{padding:17px;border:1px solid #e2e8f0;border-radius:14px;background:#fff}.audit-stats small{display:block;color:#64748b}.audit-stats strong{display:block;margin-top:5px;font-size:23px}.failed-value{color:#be123c}.audit-panel{overflow:visible;border:1px solid #e2e8f0;border-radius:17px;background:#fff}.filters-panel{overflow:hidden}.audit-filters{display:grid;grid-template-columns:2fr repeat(5,1fr);align-items:end;gap:12px;padding:17px}.field label{display:block;margin-bottom:6px;font-size:11px;font-weight:800}.field input,.field select{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:9px;padding:9px;font:inherit}.filter-actions{display:flex;gap:7px;grid-column:1/-1;justify-content:flex-end}.filter-actions button,.filter-actions a{border:0;border-radius:8px;padding:9px 12px;font:inherit;font-weight:800;text-decoration:none}.filter-actions button{background:#0f766e;color:#fff}.filter-actions a{background:#f1f5f9;color:#475569}.audit-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:17px 19px;border-bottom:1px solid #e2e8f0}.audit-panel-heading h2{margin:0;font-size:18px}.audit-panel-heading p{margin:4px 0 0;color:#64748b;font-size:12px}.audit-panel-heading>span{max-width:390px;color:#64748b;font-size:11px;text-align:right}.audit-table-wrap{overflow-x:auto}.audit-table{width:100%;min-width:1050px;border-collapse:collapse}.audit-table th{padding:11px 13px;background:#f8fafc;color:#64748b;font-size:10px;text-align:left;text-transform:uppercase}.audit-table td{position:relative;padding:13px;border-top:1px solid #e2e8f0;vertical-align:middle}.audit-table td strong,.audit-table td small{display:block}.audit-table td small{margin-top:3px;color:#64748b}.muted{color:#94a3b8}.outcome{padding:5px 8px;border-radius:999px;font-size:10px;font-weight:850}.outcome.success{background:#d1fae5;color:#047857}.outcome.failed{background:#ffe4e6;color:#be123c}.audit-details summary{display:grid;place-items:center;width:32px;height:32px;border-radius:8px;background:#f1f5f9;color:#475569;cursor:pointer;list-style:none}.detail-popover{position:absolute;z-index:20;right:13px;top:52px;width:min(520px,80vw);padding:16px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;box-shadow:0 18px 45px rgba(15,23,42,.2)}.detail-popover h3{margin:0 0 12px;font-size:14px}.detail-popover dl{margin:0 0 12px}.detail-popover dl>div{margin-top:7px}.detail-popover dt{color:#64748b;font-size:10px;font-weight:800;text-transform:uppercase}.detail-popover dd{margin:2px 0 0;overflow-wrap:anywhere;font-size:11px}.detail-popover pre{max-height:300px;overflow:auto;margin:7px 0 0;padding:11px;border-radius:8px;background:#0f172a;color:#e2e8f0;font-size:10px;white-space:pre-wrap}.audit-empty{text-align:center;padding:45px;color:#64748b}.audit-empty i{font-size:32px;color:#cbd5e1}.audit-empty h3{margin:11px 0 4px;color:#334155}.audit-pagination{padding:0 18px 18px}
+@media(max-width:1100px){.audit-filters{grid-template-columns:repeat(3,1fr)}.field.wide{grid-column:span 2}}@media(max-width:680px){.audit-header,.audit-panel-heading{align-items:stretch;flex-direction:column}.audit-stats,.audit-filters{grid-template-columns:1fr}.field.wide{grid-column:auto}.audit-header>a{text-align:center}.audit-panel-heading>span{text-align:left}}
+</style>
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Dashboard</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                <div class="audit-page">
+    <header class="audit-header">
+        <div><span>Administration</span><h1>Activity & Audit Logs</h1><p>Review administrator changes, failed actions, affected records, and request details.</p></div>
+        <a href="http://127.0.0.1:8000/admin/audit-logs/export"><i class="fa-solid fa-file-csv"></i> Export Filtered CSV</a>
+    </header>
+
+    <section class="audit-stats">
+        <article><small>Actions today</small><strong>0</strong></article>
+        <article><small>Last 7 days</small><strong>0</strong></article>
+        <article><small>Failed in 7 days</small><strong class="failed-value">0</strong></article>
+        <article><small>Active administrators</small><strong>0</strong></article>
+    </section>
+
+    <section class="audit-panel filters-panel">
+        <form method="GET" action="http://127.0.0.1:8000/admin/audit-logs" class="audit-filters">
+            <div class="field wide"><label>Search</label><input name="search" value="" placeholder="Action, administrator, route or IP address"></div>
+            <div class="field"><label>Administrator</label><select name="user_id"><option value="">All administrators</option><option value="1" >Fixture administrator</option></select></div>
+            <div class="field"><label>Action</label><select name="action"><option value="">All actions</option></select></div>
+            <div class="field"><label>Outcome</label><select name="outcome"><option value="">All outcomes</option><option value="success" >Success</option><option value="failed" >Failed</option></select></div>
+            <div class="field"><label>From</label><input type="date" name="date_from" value=""></div>
+            <div class="field"><label>To</label><input type="date" name="date_to" value=""></div>
+            <div class="filter-actions"><button type="submit"><i class="fa-solid fa-filter"></i> Apply Filters</button><a href="http://127.0.0.1:8000/admin/audit-logs">Reset</a></div>
+        </form>
+    </section>
+
+    <section class="audit-panel">
+        <div class="audit-panel-heading"><div><h2>Recorded activity</h2><p>0 matching audit entries</p></div><span>Passwords, tokens, payment details, and bank details are automatically redacted.</span></div>
+        <div class="audit-table-wrap">
+            <table class="audit-table">
+                <thead><tr><th>Date</th><th>Administrator</th><th>Action</th><th>Record</th><th>Request</th><th>Outcome</th><th></th></tr></thead>
+                <tbody>
+                    <tr><td colspan="7"><div class="audit-empty"><i class="fa-solid fa-clipboard-check"></i><h3>No audit entries found</h3><p>Try removing filters or perform an administrator update.</p></div></td></tr>                </tbody>
+            </table>
+        </div>
+            </section>
+</div>
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+        <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

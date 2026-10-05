@@ -1,0 +1,1386 @@
+<?php
+namespace App\Http\Controllers\Admin;
+use App\Models\Order;
+use App\Models\OrderActivity;
+use App\Models\OrderNote;
+use App\Services\OrderActivityService;
+use App\Services\OrderEmailService;
+use App\Services\OrderShipmentService;
+use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Validation\Rule;
+use Illuminate\View\View;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Mail;
+use Picqer\Barcode\BarcodeGeneratorPNG;
+use Endroid\QrCode\Builder\Builder as QrCodeBuilder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelMedium;
+use Endroid\QrCode\Writer\PngWriter;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+class OrderController extends AdminController
+{
+    private const ORDER_STATUSES = [
+        'pending',
+        'confirmed',
+        'processing',
+        'packed',
+        'shipped',
+        'out_for_delivery',
+        'delivered',
+        'completed',
+        'cancelled',
+        'refunded',
+    ];
+    private const PAYMENT_STATUSES = [
+        'pending',
+        'paid',
+        'partially_paid',
+        'completed',
+        'succeeded',
+        'failed',
+        'declined',
+        'cancelled',
+        'refunded',
+    ];
+    public function index(Request $request): View|JsonResponse
+    {
+        $filters = $this->validateFilters($request);
+        $orders = $this->buildOrdersQuery($filters)
+            ->paginate(15)
+            ->withQueryString();
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'table_html' => view(
+                    'admin.orders.partials.table',
+                    compact('orders')
+                )->render(),
+                'pagination_html' => view(
+                    'admin.orders.partials.pagination',
+                    compact('orders')
+                )->render(),
+                'results_summary' => $this->buildResultsSummary(
+                    $orders->firstItem(),
+                    $orders->lastItem(),
+                    $orders->total()
+                ),
+                'total' => $orders->total(),
+            ]);
+        }
+        return view('admin.orders.index', [
+            'orders' => $orders,
+            'filters' => $filters,
+        ]);
+    }
+    public function show(Order $order): View
+    {
+        $order->load([
+            'user',
+            'items.product.images',
+            'items.variant',
+            'notes' => function ($query) {
+                $query
+                    ->with(['admin', 'user'])
+                    ->latestFirst();
+            },
+            'activities' => function ($query) {
+                $query
+                    ->with(['admin', 'user'])
+                    ->latestFirst();
+            },
+            'shipments' => function ($query) {
+                $query
+                    ->latest('id')
+                    ->with([
+                        'trackingEvents' => function ($eventQuery) {
+                            $eventQuery
+                                ->orderByDesc('event_time')
+                                ->orderByDesc('received_at')
+                                ->orderByDesc('id');
+                        },
+                    ]);
+            },
+        ]);
+        $latestShipment = $order->shipments->first();
+        return view(
+            'admin.orders.show',
+            compact('order', 'latestShipment')
+        );
+    }
+    public function invoice(Order $order): View
+    {
+        $order->load([
+            'user',
+            'items.product.images',
+            'items.variant',
+        ]);
+        return view(
+            'admin.orders.invoice',
+            compact('order')
+        );
+    }
+    public function downloadInvoice(Order $order)
+    {
+        $order->load([
+            'user',
+            'items.product.images',
+            'items.variant',
+        ]);
+        $orderNumber = $order->order_number
+            ?: 'ORD-' . str_pad(
+                (string) $order->id,
+                6,
+                '0',
+                STR_PAD_LEFT
+            );
+        $safeOrderNumber = preg_replace(
+            '/[^A-Za-z0-9\\\\-\_]/',
+            '-',
+            $orderNumber
+        );
+        $pdf = Pdf::loadView(
+            'admin.orders.invoice-pdf',
+            compact('order')
+        );
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->setOptions([
+            'isRemoteEnabled' => true,
+            'isHtml5ParserEnabled' => true,
+            'defaultFont' => 'DejaVu Sans',
+        ]);
+        return $pdf->download(
+            'Invoice-' . $safeOrderNumber . '.pdf'
+        );
+    }
+    public function update(
+        Request $request,
+        Order $order,
+        OrderActivityService $activityService,
+        OrderShipmentService $shipmentService,
+        OrderEmailService $orderEmailService
+    ): RedirectResponse {
+        if (
+            !$request->filled('order_status')
+            && $request->filled('status')
+        ) {
+            $request->merge([
+                'order_status' => $request->input('status'),
+            ]);
+        }
+        $validated = $request->validate([
+            'order_status' => [
+                'required',
+                Rule::in(self::ORDER_STATUSES),
+            ],
+            'payment_status' => [
+                'required',
+                Rule::in(self::PAYMENT_STATUSES),
+            ],
+            'courier' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'courier_provider' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
+            'admin_notes' => [
+                'nullable',
+                'string',
+                'max:5000',
+            ],
+            'notify_customer' => [
+                'nullable',
+                'boolean',
+            ],
+        ]);
+        $notifyCustomer = $request->boolean('notify_customer');
+        unset($validated['notify_customer']);
+        if (
+            in_array($validated['order_status'], ['cancelled', 'refunded'], true)
+            && $validated['order_status'] !== $order->order_status
+        ) {
+            return redirect()
+                ->route('admin.orders.show', $order)
+                ->with(
+                    'error',
+                    'Cancelled and refunded states must use the dedicated order lifecycle actions.'
+                );
+        }
+        if (
+            in_array($order->order_status, ['cancelled', 'refunded'], true)
+            && $validated['order_status'] !== $order->order_status
+        ) {
+            return redirect()
+                ->route('admin.orders.show', $order)
+                ->with(
+                    'error',
+                    'A cancelled or refunded order cannot be reopened from the general order editor.'
+                );
+        }
+        $isBankTransfer = $order->payment_provider === 'bank_transfer'
+            || $order->payment_method === 'bank_transfer';
+        if ($isBankTransfer) {
+            if ($validated['payment_status'] !== $order->payment_status) {
+                return redirect()
+                    ->route('admin.orders.show', $order)
+                    ->with(
+                        'error',
+                        'Bank-transfer payment status can only be changed from Order Payment Verification.'
+                    );
+            }
+            $validated['payment_status'] = $order->payment_status;
+            if (
+                $order->payment_status !== 'paid'
+                && in_array(
+                    $validated['order_status'],
+                    ['confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery', 'delivered', 'completed'],
+                    true
+                )
+            ) {
+                return redirect()
+                    ->route('admin.orders.show', $order)
+                    ->with(
+                        'error',
+                        'This bank-transfer order is still awaiting payment verification. Verify the payment before advancing the order status.'
+                    );
+            }
+        }
+        $isStripe = $order->payment_provider === 'stripe'
+            || $order->payment_method === 'stripe';
+        if ($isStripe) {
+            if ($validated['payment_status'] !== $order->payment_status) {
+                return redirect()
+                    ->route('admin.orders.show', $order)
+                    ->with(
+                        'error',
+                        'Stripe payment status is controlled by Stripe and cannot be changed manually.'
+                    );
+            }
+            $validated['payment_status'] = $order->payment_status;
+            if (
+                $order->payment_status !== 'paid'
+                && in_array(
+                    $validated['order_status'],
+                    ['confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery', 'delivered', 'completed'],
+                    true
+                )
+            ) {
+                return redirect()
+                    ->route('admin.orders.show', $order)
+                    ->with(
+                        'error',
+                        'This Stripe order has not been confirmed as paid by the verified webhook. Wait for payment confirmation before advancing the order status.'
+                    );
+            }
+        }
+        $validated['courier'] = filled(
+            $validated['courier'] ?? null
+        )
+            ? trim($validated['courier'])
+            : null;
+        $validated['courier_provider'] = filled(
+            $validated['courier_provider'] ?? null
+        )
+            ? trim($validated['courier_provider'])
+            : null;
+        $validated['admin_notes'] = filled(
+            $validated['admin_notes'] ?? null
+        )
+            ? trim($validated['admin_notes'])
+            : null;
+        $oldOrderStatus = $order->order_status;
+        $oldPaymentStatus = $order->payment_status;
+        $oldCourierTrackingNumber = $order->courier;
+        $oldCourierProvider = $order->courier_provider;
+        $oldAdminNotes = $order->admin_notes;
+        DB::transaction(function () use (
+            $order,
+            $validated,
+            $oldOrderStatus,
+            $oldPaymentStatus,
+            $oldCourierTrackingNumber,
+            $oldCourierProvider,
+            $oldAdminNotes,
+            $activityService,
+            $shipmentService
+        ) {
+            if ($order->payment_method === 'cash_on_delivery') {
+                $locked=Order::withTrashed()->lockForUpdate()->findOrFail($order->id);
+                if ($locked->payment_status === 'paid' && $validated['payment_status'] !== 'paid') throw \Illuminate\Validation\ValidationException::withMessages(['payment_status'=>'Collected cash payments cannot be reverted here. Use the refund action.']);
+                if (in_array($locked->order_status,['cancelled','refunded'],true) && $validated['payment_status'] === 'paid') throw \Illuminate\Validation\ValidationException::withMessages(['payment_status'=>'A cancelled or refunded order cannot collect payment.']);
+                if ($validated['payment_status'] === 'paid') $validated['paid_at']=$locked->paid_at ?? now();
+            }
+            $order->update($validated);
+            if ($order->payment_method === 'cash_on_delivery' && $order->payment_status === 'paid') {
+                app(\App\Services\InventoryService::class)->deductForOrder($order);
+                app(\App\Services\CouponRedemptionService::class)->redeemPaidOrder($order);
+            }
+            $shipment = $shipmentService->syncFromOrder($order);
+            if ($oldOrderStatus !== $order->order_status) {
+                $order->forceFill([
+                    'manual_status_override_at' => now()->startOfSecond(),
+                    'manual_status_override_shipment_event_at' =>
+                    $shipment?->last_event_at?->copy()->startOfSecond(),
+                ])->save();
+                $activityService->orderStatusChanged(
+                    $order,
+                    $oldOrderStatus,
+                    $order->order_status
+                );
+            }
+            if ($oldPaymentStatus !== $order->payment_status) {
+                $activityService->paymentStatusChanged(
+                    $order,
+                    $oldPaymentStatus,
+                    $order->payment_status
+                );
+            }
+            if ($oldCourierProvider !== $order->courier_provider) {
+                $activityService->record(
+                    order: $order,
+                    type: OrderActivity::TYPE_ORDER_UPDATED,
+                    title: 'Courier provider updated',
+                    description: filled($order->courier_provider)
+                        ? 'The courier provider was updated to ' . $order->courier_provider . '.'
+                        : 'The courier provider was removed.',
+                    fieldName: 'courier_provider',
+                    oldValue: $oldCourierProvider,
+                    newValue: $order->courier_provider
+                );
+            }
+            if ($oldCourierTrackingNumber !== $order->courier) {
+                $activityService->record(
+                    order: $order,
+                    type: OrderActivity::TYPE_ORDER_UPDATED,
+                    title: 'Courier tracking number updated',
+                    description: filled($order->courier)
+                        ? 'The courier tracking number was updated to ' . $order->courier . '.'
+                        : 'The courier tracking number was removed.',
+                    fieldName: 'courier',
+                    oldValue: $oldCourierTrackingNumber,
+                    newValue: $order->courier
+                );
+            }
+            if ($oldAdminNotes !== $order->admin_notes) {
+                $activityService->record(
+                    order: $order,
+                    type: OrderActivity::TYPE_ORDER_UPDATED,
+                    title: 'Legacy admin notes updated',
+                    description: 'The order admin-notes field was updated.',
+                    fieldName: 'admin_notes',
+                    oldValue: $oldAdminNotes,
+                    newValue: $order->admin_notes
+                );
+            }
+        });
+        $statusChanged = $oldOrderStatus !== $order->order_status;
+        if ($notifyCustomer && $statusChanged) {
+            $queued = $orderEmailService->sendCustomerStatusUpdated(
+                $order->fresh(),
+                (string) $oldOrderStatus
+            );
+            if (!$queued) {
+                return redirect()
+                    ->route('admin.orders.show', $order)
+                    ->with(
+                        'warning',
+                        'Order updated successfully, but the customer status email could not be queued. Check the order notification log and mail/queue configuration.'
+                    );
+            }
+        }
+        return redirect()
+            ->route('admin.orders.show', $order)
+            ->with(
+                'success',
+                $notifyCustomer && $statusChanged
+                    ? 'Order updated successfully and the customer status email was sent.'
+                    : 'Order updated successfully.'
+            );
+    }
+    public function storeNote(
+        Request $request,
+        Order $order,
+        OrderActivityService $activityService
+    ): JsonResponse|RedirectResponse {
+        $validated = $request->validate([
+            'note' => [
+                'required',
+                'string',
+                'max:5000',
+            ],
+            'is_customer_visible' => [
+                'nullable',
+                'boolean',
+            ],
+        ]);
+        $noteText = trim($validated['note']);
+        $customerVisible = $request->boolean(
+            'is_customer_visible'
+        );
+        DB::transaction(function () use (
+            $order,
+            $noteText,
+            $customerVisible,
+            $activityService
+        ) {
+            $order->notes()->create([
+                'admin_id' => auth('admin')->id(),
+                'user_id' => null,
+                'note' => $noteText,
+                'is_customer_visible' => $customerVisible,
+            ]);
+            $activityService->noteAdded(
+                $order,
+                $noteText,
+                $customerVisible
+            );
+        });
+        $order->load([
+            'notes' => function ($query) {
+                $query
+                    ->with(['admin', 'user'])
+                    ->latestFirst();
+            },
+            'activities' => function ($query) {
+                $query
+                    ->with(['admin', 'user'])
+                    ->latestFirst();
+            },
+        ]);
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => $customerVisible
+                    ? 'Customer-visible note added successfully.'
+                    : 'Internal note added successfully.',
+                'notes_html' => view(
+                    'admin.orders.partials.notes',
+                    compact('order')
+                )->render(),
+                'activities_html' => view(
+                    'admin.orders.partials.activities',
+                    compact('order')
+                )->render(),
+            ]);
+        }
+        return redirect()
+            ->route('admin.orders.show', $order)
+            ->with('success', 'Order note added successfully.');
+    }
+    public function destroyNote(
+        Request $request,
+        Order $order,
+        OrderNote $note,
+        OrderActivityService $activityService
+    ): JsonResponse|RedirectResponse {
+        abort_unless(
+            (int) $note->order_id === (int) $order->id,
+            404
+        );
+        DB::transaction(function () use (
+            $order,
+            $note,
+            $activityService
+        ) {
+            $deletedNoteText = $note->note;
+            $note->delete();
+            $activityService->record(
+                order: $order,
+                type: OrderActivity::TYPE_ORDER_UPDATED,
+                title: 'Order note deleted',
+                description: $deletedNoteText,
+                metadata: [
+                    'action' => 'note_deleted',
+                ]
+            );
+        });
+        $order->load([
+            'notes' => function ($query) {
+                $query
+                    ->with(['admin', 'user'])
+                    ->latestFirst();
+            },
+            'activities' => function ($query) {
+                $query
+                    ->with(['admin', 'user'])
+                    ->latestFirst();
+            },
+        ]);
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Order note deleted successfully.',
+                'notes_html' => view(
+                    'admin.orders.partials.notes',
+                    compact('order')
+                )->render(),
+                'activities_html' => view(
+                    'admin.orders.partials.activities',
+                    compact('order')
+                )->render(),
+            ]);
+        }
+        return redirect()
+            ->route('admin.orders.show', $order)
+            ->with('success', 'Order note deleted successfully.');
+    }
+    public function destroy(Order $order): RedirectResponse
+    {
+        $order->delete();
+        return redirect()
+            ->route('admin.orders.index')
+            ->with('success', 'Order deleted successfully.');
+    }
+    public function archived(Request $request): View
+    {
+        $archivedBaseQuery = Order::onlyTrashed();
+        $archivedStats = [
+            'total' => (clone $archivedBaseQuery)->count(),
+            'paid' => (clone $archivedBaseQuery)
+                ->whereIn('payment_status', [
+                    'paid',
+                    'completed',
+                    'succeeded',
+                ])
+                ->count(),
+            'pending' => (clone $archivedBaseQuery)
+                ->where('payment_status', 'pending')
+                ->count(),
+            'refunded' => (clone $archivedBaseQuery)
+                ->where('payment_status', 'refunded')
+                ->count(),
+        ];
+        $query = Order::onlyTrashed()
+            ->with('user')
+            ->latest('deleted_at');
+        if ($request->filled('search')) {
+            $search = trim(
+                (string) $request->input('search')
+            );
+            $query->where(function ($q) use ($search) {
+                $q->where(
+                    'order_number',
+                    'like',
+                    "%{$search}%"
+                )
+                    ->orWhere(
+                        'tracking_number',
+                        'like',
+                        "%{$search}%"
+                    )
+                    ->orWhere(
+                        'billing_name',
+                        'like',
+                        "%{$search}%"
+                    )
+                    ->orWhere(
+                        'billing_email',
+                        'like',
+                        "%{$search}%"
+                    )
+                    ->orWhere(
+                        'billing_phone',
+                        'like',
+                        "%{$search}%"
+                    )
+                    ->orWhere(
+                        'shipping_name',
+                        'like',
+                        "%{$search}%"
+                    )
+                    ->orWhere(
+                        'shipping_email',
+                        'like',
+                        "%{$search}%"
+                    )
+                    ->orWhere(
+                        'shipping_phone',
+                        'like',
+                        "%{$search}%"
+                    );
+            });
+        }
+        $orders = $query
+            ->paginate(20)
+            ->withQueryString();
+        return view(
+            'admin.orders.archived',
+            compact(
+                'orders',
+                'archivedStats'
+            )
+        );
+    }
+    public function restore(int $order): RedirectResponse
+    {
+        $archivedOrder = Order::onlyTrashed()
+            ->findOrFail($order);
+        $archivedOrder->restore();
+        return redirect()
+            ->route('admin.orders.archived')
+            ->with(
+                'success',
+                "Order {$archivedOrder->order_number} restored successfully."
+            );
+    }
+    public function bulkRestore(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'order_ids' => ['required', 'array', 'min:1'],
+            'order_ids.*' => ['required', 'integer'],
+        ]);
+        $orders = Order::onlyTrashed()
+            ->whereIn('id', $validated['order_ids'])
+            ->get();
+        if ($orders->isEmpty()) {
+            return redirect()
+                ->route('admin.orders.archived')
+                ->with('error', 'No archived orders were found.');
+        }
+        $restoredCount = 0;
+        foreach ($orders as $order) {
+            $order->restore();
+            $restoredCount++;
+        }
+        return redirect()
+            ->route('admin.orders.archived')
+            ->with(
+                'success',
+                "{$restoredCount} archived order(s) restored successfully."
+            );
+    }
+    public function bulkUpdate(
+        Request $request,
+        OrderActivityService $activityService
+    ): JsonResponse {
+        $validated = $request->validate([
+            'order_ids' => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'order_ids.*' => [
+                'required',
+                'integer',
+                'distinct',
+                'exists:orders,id',
+            ],
+            'action' => [
+                'required',
+                'string',
+                Rule::in([
+                    'order_status',
+                    'payment_status',
+                ]),
+            ],
+            'value' => [
+                'required',
+                'string',
+            ],
+        ]);
+        if ($validated['action'] === 'payment_status') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment status cannot be changed in bulk. Use the payment-specific workflow for each order.',
+            ], 422);
+        }
+        if (in_array($validated['value'], ['cancelled', 'refunded'], true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cancelled and refunded orders must use the dedicated lifecycle action on the individual order.',
+            ], 422);
+        }
+        $selectedOrders = Order::query()
+            ->whereIn('id', $validated['order_ids'])
+            ->get(['id', 'order_number', 'order_status', 'payment_status']);
+        if (
+            $selectedOrders->contains(
+                fn(Order $selectedOrder) =>
+                in_array($selectedOrder->order_status, ['cancelled', 'refunded'], true)
+            )
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Cancelled or refunded orders cannot be reopened through bulk update.',
+            ], 422);
+        }
+        $fulfilmentStatuses = [
+            'confirmed',
+            'processing',
+            'packed',
+            'shipped',
+            'out_for_delivery',
+            'delivered',
+            'completed',
+        ];
+        if (
+            in_array($validated['value'], $fulfilmentStatuses, true)
+            && $selectedOrders->contains(
+                fn(Order $selectedOrder) =>
+                !in_array(
+                    $selectedOrder->payment_status,
+                    ['paid', 'completed', 'succeeded'],
+                    true
+                )
+            )
+        ) {
+            return response()->json([
+                'success' => false,
+                'message' => 'One or more selected orders are not paid. Unpaid orders cannot be advanced into fulfilment in bulk.',
+            ], 422);
+        }
+        $allowedValues = self::ORDER_STATUSES;
+        if (!in_array($validated['value'], $allowedValues, true)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'The selected status is invalid.',
+            ], 422);
+        }
+        $updatedCount = DB::transaction(function () use (
+            $validated,
+            $activityService
+        ) {
+            $orders = Order::query()
+                ->whereIn('id', $validated['order_ids'])
+                ->get();
+            $updated = 0;
+            foreach ($orders as $order) {
+                $field = $validated['action'];
+                if ($order->payment_method === 'cash_on_delivery' && $field === 'payment_status') continue;
+                $oldValue = $order->{$field};
+                $newValue = $validated['value'];
+                $isBankTransfer = $order->payment_provider === 'bank_transfer'
+                    || $order->payment_method === 'bank_transfer';
+                $isStripe = $order->payment_provider === 'stripe'
+                    || $order->payment_method === 'stripe';
+                if (
+                    ($isBankTransfer || $isStripe)
+                    && $field === 'payment_status'
+                    && $newValue !== $oldValue
+                ) {
+                    continue;
+                }
+                if (
+                    ($isBankTransfer || $isStripe)
+                    && $order->payment_status !== 'paid'
+                    && $field === 'order_status'
+                    && in_array(
+                        $newValue,
+                        ['confirmed', 'processing', 'packed', 'shipped', 'out_for_delivery', 'delivered', 'completed'],
+                        true
+                    )
+                ) {
+                    continue;
+                }
+                if ($oldValue === $newValue) {
+                    continue;
+                }
+                $order->update([
+                    $field => $newValue,
+                ]);
+                if ($field === 'order_status') {
+                    $activityService->orderStatusChanged(
+                        $order,
+                        $oldValue,
+                        $newValue
+                    );
+                } else {
+                    $activityService->paymentStatusChanged(
+                        $order,
+                        $oldValue,
+                        $newValue
+                    );
+                }
+                $updated++;
+            }
+            return $updated;
+        });
+        $label = $validated['action'] === 'order_status'
+            ? 'order status'
+            : 'payment status';
+        return response()->json([
+            'success' => true,
+            'message' => sprintf(
+                '%d order(s) had their %s updated to %s.',
+                $updatedCount,
+                $label,
+                ucfirst($validated['value'])
+            ),
+            'updated_count' => $updatedCount,
+        ]);
+    }
+    public function bulkDelete(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'order_ids' => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'order_ids.*' => [
+                'required',
+                'integer',
+                'distinct',
+                'exists:orders,id',
+            ],
+        ]);
+        $deletedCount = DB::transaction(function () use ($validated) {
+            $orders = Order::query()
+                ->whereIn('id', $validated['order_ids'])
+                ->get();
+            $deleted = 0;
+            foreach ($orders as $order) {
+                $order->delete();
+                $deleted++;
+            }
+            return $deleted;
+        });
+        return response()->json([
+            'success' => true,
+            'message' => sprintf(
+                '%d order(s) deleted successfully.',
+                $deletedCount
+            ),
+            'deleted_count' => $deletedCount,
+        ]);
+    }
+    public function bulkExport(Request $request): StreamedResponse
+    {
+        $validated = $request->validate([
+            'order_ids' => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'order_ids.\*' => [
+                'required',
+                'integer',
+                'distinct',
+                'exists:orders,id',
+            ],
+        ]);
+        $orders = Order::query()
+            ->with('user')
+            ->withCount('items')
+            ->whereIn('id', $validated['order_ids'])
+            ->orderByDesc('created_at')
+            ->get();
+        $filename = 'orders-' . now()->format('Y-m-d-His') . '.csv';
+        return response()->streamDownload(
+            function () use ($orders) {
+                $handle = fopen('php://output', 'w');
+                fwrite($handle, "\xEF\xBB\xBF");
+                fputcsv($handle, [
+                    'Order ID',
+                    'Order Number',
+                    'Customer Name',
+                    'Customer Email',
+                    'Customer Phone',
+                    'Items',
+                    'Subtotal',
+                    'Discount',
+                    'Coupon Code',
+                    'Shipping',
+                    'Tax',
+                    'Total',
+                    'Currency',
+                    'Payment Method',
+                    'Payment Status',
+                    'Order Status',
+                    'Tracking Number',
+                    'Created At',
+                ]);
+                foreach ($orders as $order) {
+                    $customerName = $order->billing_name
+                        ?: $order->shipping_name
+                        ?: $order->user?->name
+                        ?: 'Guest';
+                    $customerEmail = $order->billing_email
+                        ?: $order->shipping_email
+                        ?: $order->user?->email
+                        ?: '';
+                    $customerPhone = $order->billing_phone
+                        ?: $order->shipping_phone
+                        ?: '';
+                    fputcsv($handle, [
+                        $order->id,
+                        $order->order_number ?: '#' . $order->id,
+                        $customerName,
+                        $customerEmail,
+                        $customerPhone,
+                        $order->items_count,
+                        number_format((float) $order->subtotal, 2, '.', ''),
+                        number_format((float) $order->discount, 2, '.', ''),
+                        $order->coupon_code ?: '',
+                        number_format((float) $order->shipping, 2, '.', ''),
+                        number_format((float) $order->tax, 2, '.', ''),
+                        number_format((float) $order->total, 2, '.', ''),
+                        strtoupper($order->currency ?: 'USD'),
+                        $order->payment_method,
+                        $order->payment_status,
+                        $order->order_status,
+                        $order->tracking_number,
+                        $order->created_at?->format('Y-m-d H:i:s'),
+                    ]);
+                }
+                fclose($handle);
+            },
+            $filename,
+            [
+                'Content-Type' => 'text/csv; charset=UTF-8',
+            ]
+        );
+    }
+    private function validateFilters(Request $request): array
+    {
+        return $request->validate([
+            'search' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'order_status' => [
+                'nullable',
+                Rule::in(self::ORDER_STATUSES),
+            ],
+            'payment_status' => [
+                'nullable',
+                Rule::in(self::PAYMENT_STATUSES),
+            ],
+            'date_range' => [
+                'nullable',
+                Rule::in([
+                    'today',
+                    '7days',
+                    '30days',
+                    'month',
+                    'year',
+                    'custom',
+                ]),
+            ],
+            'date_from' => [
+                'nullable',
+                'date',
+                'required_if:date_range,custom',
+            ],
+            'date_to' => [
+                'nullable',
+                'date',
+                'required_if:date_range,custom',
+                'after_or_equal:date_from',
+            ],
+            'sort' => [
+                'nullable',
+                Rule::in([
+                    'newest',
+                    'oldest',
+                    'total_high',
+                    'total_low',
+                ]),
+            ],
+            'page' => [
+                'nullable',
+                'integer',
+                'min:1',
+            ],
+        ]);
+    }
+    private function buildOrdersQuery(array $filters): Builder
+    {
+        $query = Order::query()
+            ->with('user')
+            ->withCount('items');
+        $search = trim((string) ($filters['search'] ?? ''));
+        if ($search !== '') {
+            $query->where(function (Builder $orderQuery) use ($search) {
+                $orderQuery
+                    ->where('order_number', 'like', "%{$search}%")
+                    ->orWhere('tracking_number', 'like', "%{$search}%")
+                    ->orWhere('billing_name', 'like', "%{$search}%")
+                    ->orWhere('billing_email', 'like', "%{$search}%")
+                    ->orWhere('billing_phone', 'like', "%{$search}%")
+                    ->orWhere('shipping_name', 'like', "%{$search}%")
+                    ->orWhere('shipping_email', 'like', "%{$search}%")
+                    ->orWhere('shipping_phone', 'like', "%{$search}%")
+                    ->orWhere('payment_reference', 'like', "%{$search}%")
+                    ->orWhereHas(
+                        'user',
+                        function (Builder $userQuery) use ($search) {
+                            $userQuery
+                                ->where('name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%");
+                            if ($this->userTableHasPhoneColumn()) {
+                                $userQuery->orWhere(
+                                    'phone',
+                                    'like',
+                                    "%{$search}%"
+                                );
+                            }
+                        }
+                    );
+            });
+        }
+        if (!empty($filters['order_status'])) {
+            $query->where(
+                'order_status',
+                $filters['order_status']
+            );
+        }
+        if (!empty($filters['payment_status'])) {
+            $query->where(
+                'payment_status',
+                $filters['payment_status']
+            );
+        }
+        $this->applyDateFilter(
+            $query,
+            $filters['date_range'] ?? null,
+            $filters['date_from'] ?? null,
+            $filters['date_to'] ?? null
+        );
+        $this->applySorting(
+            $query,
+            $filters['sort'] ?? 'newest'
+        );
+        return $query;
+    }
+    private function applyDateFilter(
+        Builder $query,
+        ?string $dateRange,
+        ?string $dateFrom,
+        ?string $dateTo
+    ): void {
+        if (!$dateRange) {
+            return;
+        }
+        [$startDate, $endDate] = match ($dateRange) {
+            'today' => [
+                now()->copy()->startOfDay(),
+                now()->copy()->endOfDay(),
+            ],
+            '7days' => [
+                now()->copy()->subDays(6)->startOfDay(),
+                now()->copy()->endOfDay(),
+            ],
+            '30days' => [
+                now()->copy()->subDays(29)->startOfDay(),
+                now()->copy()->endOfDay(),
+            ],
+            'month' => [
+                now()->copy()->startOfMonth(),
+                now()->copy()->endOfDay(),
+            ],
+            'year' => [
+                now()->copy()->startOfYear(),
+                now()->copy()->endOfDay(),
+            ],
+            'custom' => [
+                $dateFrom
+                    ? now()->parse($dateFrom)->startOfDay()
+                    : null,
+                $dateTo
+                    ? now()->parse($dateTo)->endOfDay()
+                    : null,
+            ],
+            default => [null, null],
+        };
+        if (
+            $startDate instanceof CarbonInterface &&
+            $endDate instanceof CarbonInterface
+        ) {
+            $query->whereBetween('created_at', [
+                $startDate,
+                $endDate,
+            ]);
+        }
+    }
+    private function applySorting(
+        Builder $query,
+        string $sort
+    ): void {
+        match ($sort) {
+            'oldest' => $query
+                ->orderBy('created_at')
+                ->orderBy('id'),
+            'total_high' => $query
+                ->orderByDesc('total')
+                ->orderByDesc('created_at'),
+            'total_low' => $query
+                ->orderBy('total')
+                ->orderByDesc('created_at'),
+            default => $query
+                ->orderByDesc('created_at')
+                ->orderByDesc('id'),
+        };
+    }
+    private function buildResultsSummary(
+        ?int $firstItem,
+        ?int $lastItem,
+        int $total
+    ): string {
+        if ($total === 0) {
+            return 'No orders found';
+        }
+        return sprintf(
+            'Showing %s–%s of %s orders',
+            number_format((int) $firstItem),
+            number_format((int) $lastItem),
+            number_format($total)
+        );
+    }
+    private function userTableHasPhoneColumn(): bool
+    {
+        static $hasPhoneColumn = null;
+        if ($hasPhoneColumn !== null) {
+            return $hasPhoneColumn;
+        }
+        $hasPhoneColumn = Schema::hasColumn('users', 'phone');
+        return $hasPhoneColumn;
+    }
+    public function packingSlip(Order $order)
+    {
+        $order->load([
+            'user',
+            'items.product.images',
+            'items.variant',
+        ]);
+        return view(
+            'admin.orders.packing-slip',
+            compact('order')
+        );
+    }
+    public function downloadPackingSlip(Order $order)
+    {
+        $order->load([
+            'user',
+            'items.product.images',
+            'items.variant',
+        ]);
+        $orderNumber = $order->order_number
+            ?: 'ORD-' . str_pad(
+                (string) $order->id,
+                6,
+                '0',
+                STR_PAD_LEFT
+            );
+        $safeOrderNumber = preg_replace(
+            '/[^A-Za-z0-9\\\\-\_]/',
+            '-',
+            $orderNumber
+        );
+        $pdf = Pdf::loadView(
+            'admin.orders.packing-slip-pdf',
+            compact('order')
+        );
+        $pdf->setPaper('a4', 'portrait');
+        $pdf->setOptions([
+            'isRemoteEnabled' => true,
+            'isHtml5ParserEnabled' => true,
+            'defaultFont' => 'DejaVu Sans',
+        ]);
+        return $pdf->download(
+            'Packing-Slip-' . $safeOrderNumber . '.pdf'
+        );
+    }
+    public function shippingLabel(Order $order): View
+    {
+        $order->load([
+            'user',
+            'items.product.images',
+            'items.variant',
+        ]);
+        [$barcodeBase64, $qrBase64] = $this->buildShippingLabelCodes($order);
+        return view('admin.orders.shipping-label', compact('order', 'barcodeBase64', 'qrBase64'));
+    }
+    public function downloadShippingLabel(Order $order)
+    {
+        $order->load(['user', 'items.product.images', 'items.variant']);
+        $orderNumber = $order->order_number ?: 'ORD-' . str_pad((string) $order->id, 6, '0', STR_PAD_LEFT);
+        $safeOrderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '-', $orderNumber);
+        [$barcodeBase64, $qrBase64] = $this->buildShippingLabelCodes($order);
+        $pdf = Pdf::loadView('admin.orders.shipping-label-pdf', compact('order', 'barcodeBase64', 'qrBase64'));
+        $pdf->setPaper([0, 0, 288, 432], 'portrait');
+        $pdf->setOptions(['isRemoteEnabled' => true, 'isHtml5ParserEnabled' => true, 'defaultFont' => 'DejaVu Sans']);
+        return $pdf->download('Shipping-Label-' . $safeOrderNumber . '.pdf');
+    }
+    private function buildShippingLabelCodes(Order $order): array
+    {
+        $orderNumber = $order->order_number ?: 'ORD-' . str_pad((string) $order->id, 6, '0', STR_PAD_LEFT);
+        $trackingNumber = filled($order->tracking_number) ? trim((string) $order->tracking_number) : $orderNumber;
+        $barcodeGenerator = new BarcodeGeneratorPNG();
+        $barcodeBase64 = base64_encode($barcodeGenerator->getBarcode($trackingNumber, $barcodeGenerator::TYPE_CODE_128, 2, 70));
+        $customerName = $order->shipping_name ?: $order->billing_name ?: $order->user?->name ?: 'Guest Customer';
+        $qrPayload = implode("\n", [
+            'Order: ' . $orderNumber,
+            'Arizona Tracking: ' . $trackingNumber,
+            'Courier Provider: ' . (filled($order->courier_provider) ? trim((string) $order->courier_provider) : 'Not assigned'),
+            'Courier Tracking: ' . (filled($order->courier) ? trim((string) $order->courier) : 'Not assigned'),
+            'Customer: ' . $customerName,
+        ]);
+        $qrBuilder = new QrCodeBuilder(
+            writer: new PngWriter(),
+            writerOptions: [],
+            validateResult: false,
+            data: $qrPayload,
+            encoding: new Encoding('UTF-8'),
+            errorCorrectionLevel: \Endroid\QrCode\ErrorCorrectionLevel::Medium,
+            size: 180,
+            margin: 5
+        );
+        $qrBase64 = base64_encode(
+            $qrBuilder->build()->getString()
+        );
+        return [$barcodeBase64, $qrBase64];
+    }
+    public function emailCustomer(
+        Request $request,
+        Order $order,
+        OrderActivityService $activityService
+    ): RedirectResponse {
+        $validated = $request->validate([
+            'subject' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+            'message' => [
+                'required',
+                'string',
+                'max:10000',
+            ],
+        ]);
+        $order->loadMissing('user');
+        $customerEmail = collect([
+            $order->billing_email,
+            $order->shipping_email,
+            $order->user?->email,
+        ])
+            ->filter(fn($email) => is_string($email) && trim($email) !== '')
+            ->map(fn($email) => trim($email))
+            ->first();
+        if (!$customerEmail) {
+            return back()->with(
+                'error',
+                'Customer email address is not available.'
+            );
+        }
+        $subject = trim($validated['subject']);
+        $messageText = trim($validated['message']);
+        $customerName = collect([
+            $order->billing_name,
+            $order->shipping_name,
+            $order->customer_name ?? null,
+            $order->user?->name,
+        ])
+            ->filter(fn($name) => is_string($name) && trim($name) !== '')
+            ->map(fn($name) => trim($name))
+            ->first()
+            ?? 'Customer';
+        try {
+            Mail::send(
+                'emails.orders.customer-message',
+                [
+                    'order' => $order,
+                    'subject' => $subject,
+                    'messageText' => $messageText,
+                    'customerName' => $customerName,
+                ],
+                function ($mail) use ($customerEmail, $subject) {
+                    $mail
+                        ->to($customerEmail)
+                        ->subject($subject);
+                }
+            );
+            $activityService->record(
+                order: $order,
+                type: OrderActivity::TYPE_EMAIL_SENT,
+                title: 'Customer email sent',
+                description: 'A custom email was sent to ' . $customerEmail . '.',
+                metadata: [
+                    'recipient_email' => $customerEmail,
+                    'subject' => $subject,
+                    'source' => 'admin_order',
+                ]
+            );
+        } catch (\Throwable $exception) {
+            report($exception);
+            return back()
+                ->withInput()
+                ->with(
+                    'error',
+                    'Customer email could not be sent. Check your mail/SMTP configuration and try again.'
+                );
+        }
+        return back()->with(
+            'success',
+            'Customer email sent successfully.'
+        );
+    }
+    public function emailInvoice(Order $order)
+    {
+        $order->load([
+            'user',
+            'items.product.images',
+        ]);
+        $customerEmail = $order->billing_email
+            ?: $order->shipping_email
+            ?: $order->user?->email;
+        if (!$customerEmail) {
+            return back()->with(
+                'error',
+                'Customer email address is not available.'
+            );
+        }
+        $orderNumber = $order->order_number
+            ?: 'ORD-' . str_pad(
+                (string) $order->id,
+                6,
+                '0',
+                STR_PAD_LEFT
+            );
+        $invoiceNumber = 'INV-' . str_pad(
+            (string) $order->id,
+            6,
+            '0',
+            STR_PAD_LEFT
+        );
+        $pdf = Pdf::loadView(
+            'admin.orders.invoice-pdf',
+            compact('order')
+        )->setPaper('a4');
+        Mail::send(
+            'emails.orders.invoice',
+            compact('order', 'orderNumber', 'invoiceNumber'),
+            function ($message) use (
+                $customerEmail,
+                $orderNumber,
+                $invoiceNumber,
+                $pdf
+            ) {
+                $message
+                    ->to($customerEmail)
+                    ->subject('Invoice for order ' . $orderNumber)
+                    ->attachData(
+                        $pdf->output(),
+                        $invoiceNumber . '.pdf',
+                        [
+                            'mime' => 'application/pdf',
+                        ]
+                    );
+            }
+        );
+        return back()->with(
+            'success',
+            'Invoice email sent successfully.'
+        );
+    }
+}

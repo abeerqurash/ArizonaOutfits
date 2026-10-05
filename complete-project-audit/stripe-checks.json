@@ -1,0 +1,112 @@
+[
+    {
+        "result": "PASS",
+        "check": "Forged signature denied",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Forgery changes neither payment nor stock",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Partial received payment rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Partial capture does not fulfill",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Wrong currency rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Different current PaymentIntent rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Valid signed full payment accepted",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Full payment marks order paid",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Full payment deducts one unit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Webhook replay accepted safely",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Replay does not double deduct",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Stock race fails closed for fulfillment",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Charge units GBP",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Charge units USD",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Charge units JPY",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Charge units UGX",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Charge units ISK",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Charge units HUF",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Charge units TWD",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe precision rejected UGX",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe precision rejected JPY",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe precision rejected BHD",
+        "detail": ""
+    }
+]

@@ -1,0 +1,26 @@
+XAMPP PHP OPcache setup — optional server optimization
+
+This is a SETTINGS GUIDE, not a replacement for your complete php.ini.
+The audit found the OPcache DLL already at C:\xampp\php\ext\php_opcache.dll, but the extension was not loaded. The isolated final Home/article test enables it without editing your configuration.
+
+1. Back up C:\xampp\php\php.ini.
+2. Open XAMPP Control Panel -> Apache -> Config -> PHP (php.ini).
+3. Search for the existing OPcache settings. Uncomment or update them to the values below. Do not add a second active zend_extension line for OPcache.
+
+zend_extension="C:\xampp\php\ext\php_opcache.dll"
+opcache.enable=1
+opcache.enable_cli=1
+opcache.memory_consumption=128
+opcache.max_accelerated_files=20000
+opcache.validate_timestamps=1
+opcache.revalidate_freq=0
+
+4. Save php.ini, stop Apache, then start Apache. If you use php artisan serve, stop and restart that terminal server too.
+5. Verify in a terminal:
+   C:\xampp\php\php.exe -r "var_export(extension_loaded('Zend OPcache'));"
+   It should print true.
+6. Visit the page normally once, then run Lighthouse Mobile and Desktop in a clean Chrome profile. PHP's compiled code cache warms as pages are requested; deployment startup and subsequent page loads can differ.
+
+The timestamp settings above keep local edits visible immediately. Do not disable timestamp validation while editing the project. This guide does not change the database or application code.
+
+OPcache addresses PHP compilation/rendering overhead. Image optimization and the replacement source files are still required. For Apache compression/cache rules use the existing public/.htaccess from the previous audit set. php artisan serve ignores Apache .htaccess, so its asset caching and compression may differ from the isolated preview and live hosting.

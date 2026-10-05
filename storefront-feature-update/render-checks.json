@@ -1,0 +1,42 @@
+{
+    "home": {
+        "bytes": 339712,
+        "title": true
+    },
+    "contact": {
+        "bytes": 178028,
+        "title": true
+    },
+    "shop": {
+        "bytes": 364731,
+        "title": true
+    },
+    "category": {
+        "bytes": 360505,
+        "title": true
+    },
+    "arizona-blog-system-test-3": {
+        "bytes": 194393,
+        "title": true
+    },
+    "arizona-blog-system-test": {
+        "bytes": 194381,
+        "title": true
+    },
+    "my-first-blog-post": {
+        "bytes": 197183,
+        "title": true
+    },
+    "my-first-business-blog": {
+        "bytes": 198685,
+        "title": true
+    },
+    "top-cybersecurity-trends-in-2026": {
+        "bytes": 198695,
+        "title": true
+    },
+    "product": {
+        "bytes": 228075,
+        "title": true
+    }
+}

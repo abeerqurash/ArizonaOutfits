@@ -1,0 +1,127 @@
+[
+  {
+    "replacement": "01_CartController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\CartController.php",
+    "sha256": "fa94ed78242d377d10b924102ff0e32dfb937eabaa1b52dcdbeb0455acd839f6"
+  },
+  {
+    "replacement": "02_CheckoutController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\CheckoutController.php",
+    "sha256": "531925066408f6fae5258da78c9b2bccb0f3114d8a1926770dff6c0e133ac10d"
+  },
+  {
+    "replacement": "03_CustomMeasurementsService.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\CustomMeasurementsService.php",
+    "sha256": "4d1aa712751756da07a71c7acc15e54fc7cc05a96b663134c7c6e808c7c42640"
+  },
+  {
+    "replacement": "04_measurement-summary.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\products\\partials\\measurement-summary.blade.php",
+    "sha256": "63e422e95c073f5a56816b6f9c96383b3d07050d9067db7804336f015db9b80c"
+  },
+  {
+    "replacement": "05_index.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\cart\\index.blade.php",
+    "sha256": "c7749f3656892fa282d405829e1746fc8e8a2aeea42bad74e34012410a9da259"
+  },
+  {
+    "replacement": "06_index.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\checkout\\index.blade.php",
+    "sha256": "211d5c7b8f7c3621ca12a85cd3d5ed6c3706ab5ee2fc6c8e0ca0a6d9b76f572e"
+  },
+  {
+    "replacement": "07_Product.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Models\\Product.php",
+    "sha256": "5f05b75e875356dc2b1d446dc575506c902413cfcab5ebeb4cc2b83913f69c91"
+  },
+  {
+    "replacement": "08_ProductController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\ProductController.php",
+    "sha256": "6d55dd93fad9f0bdd59a81e8a6cf9c93cb108c62508a63150dd68445dd1fdb62"
+  },
+  {
+    "replacement": "09_2026_10_05_000001_add_product_value_order.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\database\\migrations\\2026_10_05_000001_add_product_value_order.php",
+    "sha256": "bf995b0afcc70e4200ce95bc8d9d1726c82ec79a92c7c885b0586a68ffc6828a"
+  },
+  {
+    "replacement": "10_form.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\products\\partials\\form.blade.php",
+    "sha256": "d725c92e81ca5998fac408e0baafe4fc706c47751217c8dd7e7ee7d86d093c13"
+  },
+  {
+    "replacement": "11_value-order.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\products\\partials\\value-order.blade.php",
+    "sha256": "127a42839acc50ab9f49efdeac299872655942c01de25c567415cdef92eb7807"
+  },
+  {
+    "replacement": "12_show.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\products\\show.blade.php",
+    "sha256": "d781912a58a39ca0c5ad435f7d5cb654de380d9d4e15b23131348b86b700e223"
+  },
+  {
+    "replacement": "13_quick-view.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\products\\partials\\quick-view.blade.php",
+    "sha256": "46f2992e71ab988b69609b7ab64036dceef0b056009a0c25894e825c35f11013"
+  },
+  {
+    "replacement": "14_custom-measurements.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\products\\partials\\custom-measurements.blade.php",
+    "sha256": "8acb6e2d140f7f07e6e17fd1c97005d08c88d612f8944bed815cc88d7eaa2073"
+  },
+  {
+    "replacement": "15_size-chart.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\products\\partials\\size-chart.blade.php",
+    "sha256": "437e99a900cd11755e0089d81847d67fdf8af31a0ddec46f51689aabfefc67d0"
+  },
+  {
+    "replacement": "16_product.js.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\public\\asset\\js\\product.js",
+    "sha256": "8cf6e3eb5e04fcaa1df5755b6129f9f4d3e0b87da3376b58f8d434aa59b20f8a"
+  },
+  {
+    "replacement": "17_app.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\layouts\\app.blade.php",
+    "sha256": "157ac6e9b75a8c9ac81e25371d2b59101dfa0fcf2c9a75aa6c6a8ba65830d79d"
+  },
+  {
+    "replacement": "18_arizona-commerce-ui.css.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\public\\asset\\css\\arizona-commerce-ui.css",
+    "sha256": "e24c03b41f1376ffb165688d88b04e942ffcfa3acce221c350c7fe59da114b0e"
+  },
+  {
+    "replacement": "19_AdminBackupController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\AdminBackupController.php",
+    "sha256": "9612e0e59314e8a75d8715391c4d80ff021d3969728b9b855c26dd98f66c2337"
+  },
+  {
+    "replacement": "20_AdminBackupService.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\AdminBackupService.php",
+    "sha256": "f556e0e93a9d5010afd16d3c02484735e1f02291a851c7ebebaf1d905aeb0d69"
+  },
+  {
+    "replacement": "21_index.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\backups\\index.blade.php",
+    "sha256": "4cc43db301113db8d66a056c8a96f15d81d1b67445592c0aad63cc2f9ad86fda"
+  },
+  {
+    "replacement": "22_app.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\layouts\\app.blade.php",
+    "sha256": "9a29ecc1ba9be5405fad7d2b598979bcb1d9d0846c85efd5a8e68d842515f9d7"
+  },
+  {
+    "replacement": "23_arizona-admin-controls.css.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\public\\asset\\css\\arizona-admin-controls.css",
+    "sha256": "55de3765d7993e8781e72d955756ede9c2abbea0593f30ca52c2a587b3e467dc"
+  },
+  {
+    "replacement": "24_arizona-admin-controls.js.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\public\\asset\\js\\arizona-admin-controls.js",
+    "sha256": "887382cafc24b55c88614669f0d0a744bbe25dcc178fdb186e93c146d27a2d4b"
+  },
+  {
+    "replacement": "25_show.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\customer\\orders\\show.blade.php",
+    "sha256": "70ce8fd89fb1851d4e07155744c6f5f3e26b27a0c93dde46c64be0e8374226e6"
+  }
+]

@@ -1,0 +1,308 @@
+[
+  {
+    "file": "analytics.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 1,
+    "calendars": 2,
+    "errors": []
+  },
+  {
+    "file": "analytics.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 1,
+    "calendars": 2,
+    "errors": []
+  },
+  {
+    "file": "audit.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 3,
+    "calendars": 2,
+    "errors": []
+  },
+  {
+    "file": "audit.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 3,
+    "calendars": 2,
+    "errors": []
+  },
+  {
+    "file": "backups.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 1,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "backups.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 1,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "create-product.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "create-product.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "edit-product.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "uploadButtonPurple": true,
+    "uploadChoosesFile": true,
+    "uploadVisible": true,
+    "errors": []
+  },
+  {
+    "file": "edit-product.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "uploadButtonPurple": true,
+    "uploadChoosesFile": true,
+    "uploadVisible": true,
+    "errors": []
+  },
+  {
+    "file": "email-templates.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "email-templates.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "inventory-alerts.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "inventory-alerts.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "navigation.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 7,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "navigation.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 7,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "notifications.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "notifications.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "pages.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 1,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "pages.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 1,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "payments.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "payments.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "products.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "products.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "roles.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "roles.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "settings.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "settings.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 0,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "users.html",
+    "width": 1440,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  },
+  {
+    "file": "users.html",
+    "width": 390,
+    "banners": 1,
+    "visibleNative": 0,
+    "overflow": false,
+    "dropdowns": 2,
+    "calendars": 0,
+    "errors": []
+  }
+]

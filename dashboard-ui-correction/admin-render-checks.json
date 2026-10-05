@@ -1,0 +1,17 @@
+{
+    "pages": "rendered",
+    "navigation": "rendered",
+    "email-templates": "rendered",
+    "payments": "rendered",
+    "inventory-alerts": "rendered",
+    "settings": "rendered",
+    "analytics": "rendered",
+    "users": "rendered",
+    "roles": "rendered",
+    "notifications": "rendered",
+    "audit": "rendered",
+    "backups": "rendered",
+    "products": "rendered",
+    "create-product": "rendered",
+    "edit-product": "rendered"
+}

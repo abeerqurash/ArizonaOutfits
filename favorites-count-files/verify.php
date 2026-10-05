@@ -1,0 +1,8 @@
+<?php
+require __DIR__.'/../customer-dashboard-files/_checks/bootstrap.php';
+use App\Models\{Product,Favorite};use Illuminate\Support\Facades\Auth;
+app('view')->getFinder()->prependLocation(__DIR__.'/_staged/resources/views');
+$u=customerFixture();$other=customerFixture();foreach([['active',$u],['inactive',$u],['active',$other]]as $i=>[$status,$owner]){$p=Product::create(['title'=>'Fixture '.$i,'slug'=>'fav-count-'.$i,'status'=>$status,'regular_price'=>10]);Favorite::create(['product_id'=>$p->id,'user_id'=>$owner->id]);}
+customerRequest($u);Auth::shouldUse('admin');$html=view('partials.header-menu-links')->render();preg_match('/data-header-favorite-count\s*>\s*(\d+)/',$html,$m);$actual=(int)($m[1]??-1);if($actual!==1)throw new RuntimeException('Count mismatch: '.$actual);echo "PASS: only current web customer active favorite counted, even with admin default guard.\n";
+Favorite::where('user_id',$u->id)->delete();$html=view('partials.header-menu-links')->render();preg_match('/data-header-favorite-count\s*>\s*(\d+)/',$html,$m);if(($m[1]??null)!=='0')throw new RuntimeException('Empty count failed');echo "PASS: removing favorites updates count to zero.\n";
+Auth::guard('web')->forgetUser();$html=view('partials.header-menu-links')->render();if(str_contains($html,'data-header-favorite-count'))throw new RuntimeException('Guest leaked favorite badge');echo "PASS: guest gets login link without another account count.\n";

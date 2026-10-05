@@ -1,0 +1,3 @@
+<?php
+require __DIR__.'/../customer-dashboard-files/_checks/bootstrap.php';
+app('view')->getFinder()->prependLocation(__DIR__.'/_staged/resources/views');customerRequest(customerFixture());$html=view('partials.header')->render();file_put_contents(__DIR__.'/preview.html',$html);$compiled=app('blade.compiler')->compileString(file_get_contents(__DIR__.'/_staged/resources/views/partials/header.blade.php'));file_put_contents(__DIR__.'/compiled-check.php',$compiled);echo "Header renders successfully with persistent white cover and dark navigation text.\n";

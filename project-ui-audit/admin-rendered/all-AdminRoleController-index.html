@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Roles &amp; Permissions | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    <style>
+.roles-page{display:grid;gap:20px;color:#172033}.roles-header{display:flex;align-items:center;justify-content:space-between;padding:27px;border-radius:20px;background:linear-gradient(135deg,#111827,#7c3aed);color:#fff}.roles-header span{color:#ddd6fe;font-size:11px;font-weight:850;letter-spacing:.14em;text-transform:uppercase}.roles-header h1{margin:6px 0 0}.roles-header p{margin:7px 0 0;color:#ede9fe}.roles-header a{padding:10px 13px;border-radius:9px;background:#fff;color:#6d28d9;text-decoration:none;font-weight:800}.roles-alert{padding:14px 17px;border-radius:12px}.roles-alert.success{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}.roles-alert.error{background:#fff1f2;color:#be123c;border:1px solid #fecdd3}.roles-panel{overflow:hidden;border:1px solid #e2e8f0;border-radius:17px;background:#fff}.roles-heading{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid #e2e8f0}.roles-heading>span{display:grid;place-items:center;width:42px;height:42px;border-radius:11px;background:#ede9fe;color:#7c3aed}.roles-heading h2{margin:0;font-size:18px}.roles-heading p{margin:4px 0 0;color:#64748b;font-size:12px}.role-form{padding:20px}.role-form.compact{margin-top:12px;padding:15px;background:#f8fafc;border-radius:12px}.role-basics{display:grid;grid-template-columns:1fr 2fr;gap:14px}.field label{display:block;margin-bottom:6px;font-size:12px;font-weight:800}.field input{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:9px;padding:10px;font:inherit}.permissions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:17px}.permissions fieldset{margin:0;padding:12px;border:1px solid #e2e8f0;border-radius:11px}.permissions legend{padding:0 6px;color:#6d28d9;font-size:11px;font-weight:850}.permissions label{display:flex;align-items:flex-start;gap:8px;padding:7px 4px}.permissions strong,.permissions small{display:block}.permissions small{margin-top:2px;color:#94a3b8;font-size:9px}.role-form footer{display:flex;justify-content:flex-end;margin-top:16px}.role-form footer button{border:0;border-radius:9px;padding:10px 14px;background:#7c3aed;color:#fff;font:inherit;font-weight:800}.role-list{display:grid;gap:14px;padding:17px}.role-card{padding:16px;border:1px solid #e2e8f0;border-radius:13px}.role-card-header{display:flex;justify-content:space-between;gap:15px}.role-card-header h3{margin:0}.role-card-header h3 span{padding:4px 7px;border-radius:999px;background:#ede9fe;color:#6d28d9;font-size:9px}.role-card-header p{margin:5px 0 0;color:#64748b}.permission-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}.permission-tags span{padding:5px 8px;border-radius:999px;background:#f1f5f9;font-size:10px;font-weight:750}.role-card details{margin-top:14px}.role-card summary{color:#6d28d9;font-weight:800;cursor:pointer}.delete-role{margin-top:12px}.delete-role button{border:1px solid #fecdd3;border-radius:8px;padding:8px 11px;background:#fff1f2;color:#be123c;font-weight:800}
+@media(max-width:950px){.permissions{grid-template-columns:repeat(2,1fr)}}@media(max-width:680px){.roles-header{align-items:stretch;flex-direction:column;gap:15px}.role-basics,.permissions{grid-template-columns:1fr}.role-card-header{flex-direction:column}.roles-header a{text-align:center}}
+</style>
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Dashboard</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                <div class="roles-page">
+    <header class="roles-header"><div><span>Administration</span><h1>Roles & Permissions</h1><p>Control which dashboard areas each administrator can access.</p></div><a href="http://127.0.0.1:8000/admin/admin-users"><i class="fa-solid fa-users-gear"></i> Admin Team</a></header>
+            
+    <section class="roles-panel">
+        <div class="roles-heading"><span><i class="fa-solid fa-plus"></i></span><div><h2>Create custom role</h2><p>Select at least one permission.</p></div></div>
+        <form method="POST" action="http://127.0.0.1:8000/admin/admin-roles" class="role-form"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">            <div class="role-basics"><div class="field"><label>Role name</label><input name="name" value="" maxlength="100" required></div><div class="field"><label>Description</label><input name="description" value="" maxlength="2000"></div></div>
+            <div class="permissions"><fieldset><legend>Administration</legend><label><input type="checkbox" name="permission_ids[]" value="12" ><span><strong>Manage Admin Team</strong><small>admin-users.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="15" ><span><strong>Manage Backups</strong><small>backups.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="14" ><span><strong>Manage Notifications</strong><small>notifications.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="13" ><span><strong>View Audit Logs</strong><small>audit-logs.view</small></span></label></fieldset><fieldset><legend>Catalog</legend><label><input type="checkbox" name="permission_ids[]" value="4" ><span><strong>Manage Coupons</strong><small>coupons.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="3" ><span><strong>Manage Products</strong><small>products.manage</small></span></label></fieldset><fieldset><legend>Configuration</legend><label><input type="checkbox" name="permission_ids[]" value="11" ><span><strong>Manage Store Settings</strong><small>settings.manage</small></span></label></fieldset><fieldset><legend>Content</legend><label><input type="checkbox" name="permission_ids[]" value="10" ><span><strong>Manage Content</strong><small>content.manage</small></span></label></fieldset><fieldset><legend>Customers</legend><label><input type="checkbox" name="permission_ids[]" value="8" ><span><strong>Manage Customers</strong><small>customers.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="9" ><span><strong>Manage Reviews</strong><small>reviews.manage</small></span></label></fieldset><fieldset><legend>Dashboard</legend><label><input type="checkbox" name="permission_ids[]" value="1" ><span><strong>Dashboard</strong><small>dashboard.view</small></span></label></fieldset><fieldset><legend>Inventory</legend><label><input type="checkbox" name="permission_ids[]" value="5" ><span><strong>Manage Inventory</strong><small>inventory.manage</small></span></label></fieldset><fieldset><legend>Orders</legend><label><input type="checkbox" name="permission_ids[]" value="2" ><span><strong>Manage Orders</strong><small>orders.manage</small></span></label></fieldset><fieldset><legend>Purchasing</legend><label><input type="checkbox" name="permission_ids[]" value="6" ><span><strong>Manage Purchase Orders</strong><small>purchase-orders.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="7" ><span><strong>Manage Suppliers</strong><small>suppliers.manage</small></span></label></fieldset></div>
+            <footer><button type="submit"><i class="fa-solid fa-plus"></i> Create Role</button></footer>
+        </form>
+    </section>
+
+    <section class="roles-panel"><div class="roles-heading"><span><i class="fa-solid fa-user-shield"></i></span><div><h2>Existing roles</h2><p>System roles can be edited but cannot be deleted.</p></div></div>
+        <div class="role-list"><article class="role-card"><div class="role-card-header"><div><h3>Content Editor <span>System</span></h3><p>Manages products, reviews, and website content.</p></div><strong>0 users</strong></div>
+            <div class="permission-tags"><span>Dashboard</span><span>Manage Products</span><span>Manage Reviews</span><span>Manage Content</span></div>
+            <details><summary><i class="fa-regular fa-pen-to-square"></i> Edit role</summary><form method="POST" action="http://127.0.0.1:8000/admin/admin-roles/3" class="role-form compact"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"> <input type="hidden" name="_method" value="PUT"><div class="role-basics"><div class="field"><label>Name</label><input name="name" value="Content Editor" required maxlength="100"></div><div class="field"><label>Description</label><input name="description" value="Manages products, reviews, and website content." maxlength="2000"></div></div><div class="permissions"><fieldset><legend>Administration</legend><label><input type="checkbox" name="permission_ids[]" value="12" ><span><strong>Manage Admin Team</strong><small>admin-users.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="15" ><span><strong>Manage Backups</strong><small>backups.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="14" ><span><strong>Manage Notifications</strong><small>notifications.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="13" ><span><strong>View Audit Logs</strong><small>audit-logs.view</small></span></label></fieldset><fieldset><legend>Catalog</legend><label><input type="checkbox" name="permission_ids[]" value="4" ><span><strong>Manage Coupons</strong><small>coupons.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="3" checked><span><strong>Manage Products</strong><small>products.manage</small></span></label></fieldset><fieldset><legend>Configuration</legend><label><input type="checkbox" name="permission_ids[]" value="11" ><span><strong>Manage Store Settings</strong><small>settings.manage</small></span></label></fieldset><fieldset><legend>Content</legend><label><input type="checkbox" name="permission_ids[]" value="10" checked><span><strong>Manage Content</strong><small>content.manage</small></span></label></fieldset><fieldset><legend>Customers</legend><label><input type="checkbox" name="permission_ids[]" value="8" ><span><strong>Manage Customers</strong><small>customers.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="9" checked><span><strong>Manage Reviews</strong><small>reviews.manage</small></span></label></fieldset><fieldset><legend>Dashboard</legend><label><input type="checkbox" name="permission_ids[]" value="1" checked><span><strong>Dashboard</strong><small>dashboard.view</small></span></label></fieldset><fieldset><legend>Inventory</legend><label><input type="checkbox" name="permission_ids[]" value="5" ><span><strong>Manage Inventory</strong><small>inventory.manage</small></span></label></fieldset><fieldset><legend>Orders</legend><label><input type="checkbox" name="permission_ids[]" value="2" ><span><strong>Manage Orders</strong><small>orders.manage</small></span></label></fieldset><fieldset><legend>Purchasing</legend><label><input type="checkbox" name="permission_ids[]" value="6" ><span><strong>Manage Purchase Orders</strong><small>purchase-orders.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="7" ><span><strong>Manage Suppliers</strong><small>suppliers.manage</small></span></label></fieldset></div><footer><button type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Role</button></footer></form></details>
+                    </article><article class="role-card"><div class="role-card-header"><div><h3>Customer Support <span>System</span></h3><p>Manages orders, customers, and reviews.</p></div><strong>0 users</strong></div>
+            <div class="permission-tags"><span>Dashboard</span><span>Manage Orders</span><span>Manage Customers</span><span>Manage Reviews</span></div>
+            <details><summary><i class="fa-regular fa-pen-to-square"></i> Edit role</summary><form method="POST" action="http://127.0.0.1:8000/admin/admin-roles/4" class="role-form compact"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"> <input type="hidden" name="_method" value="PUT"><div class="role-basics"><div class="field"><label>Name</label><input name="name" value="Customer Support" required maxlength="100"></div><div class="field"><label>Description</label><input name="description" value="Manages orders, customers, and reviews." maxlength="2000"></div></div><div class="permissions"><fieldset><legend>Administration</legend><label><input type="checkbox" name="permission_ids[]" value="12" ><span><strong>Manage Admin Team</strong><small>admin-users.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="15" ><span><strong>Manage Backups</strong><small>backups.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="14" ><span><strong>Manage Notifications</strong><small>notifications.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="13" ><span><strong>View Audit Logs</strong><small>audit-logs.view</small></span></label></fieldset><fieldset><legend>Catalog</legend><label><input type="checkbox" name="permission_ids[]" value="4" ><span><strong>Manage Coupons</strong><small>coupons.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="3" ><span><strong>Manage Products</strong><small>products.manage</small></span></label></fieldset><fieldset><legend>Configuration</legend><label><input type="checkbox" name="permission_ids[]" value="11" ><span><strong>Manage Store Settings</strong><small>settings.manage</small></span></label></fieldset><fieldset><legend>Content</legend><label><input type="checkbox" name="permission_ids[]" value="10" ><span><strong>Manage Content</strong><small>content.manage</small></span></label></fieldset><fieldset><legend>Customers</legend><label><input type="checkbox" name="permission_ids[]" value="8" checked><span><strong>Manage Customers</strong><small>customers.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="9" checked><span><strong>Manage Reviews</strong><small>reviews.manage</small></span></label></fieldset><fieldset><legend>Dashboard</legend><label><input type="checkbox" name="permission_ids[]" value="1" checked><span><strong>Dashboard</strong><small>dashboard.view</small></span></label></fieldset><fieldset><legend>Inventory</legend><label><input type="checkbox" name="permission_ids[]" value="5" ><span><strong>Manage Inventory</strong><small>inventory.manage</small></span></label></fieldset><fieldset><legend>Orders</legend><label><input type="checkbox" name="permission_ids[]" value="2" checked><span><strong>Manage Orders</strong><small>orders.manage</small></span></label></fieldset><fieldset><legend>Purchasing</legend><label><input type="checkbox" name="permission_ids[]" value="6" ><span><strong>Manage Purchase Orders</strong><small>purchase-orders.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="7" ><span><strong>Manage Suppliers</strong><small>suppliers.manage</small></span></label></fieldset></div><footer><button type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Role</button></footer></form></details>
+                    </article><article class="role-card"><div class="role-card-header"><div><h3>Inventory Manager <span>System</span></h3><p>Manages inventory, purchase orders, and suppliers.</p></div><strong>0 users</strong></div>
+            <div class="permission-tags"><span>Dashboard</span><span>Manage Products</span><span>Manage Inventory</span><span>Manage Purchase Orders</span><span>Manage Suppliers</span></div>
+            <details><summary><i class="fa-regular fa-pen-to-square"></i> Edit role</summary><form method="POST" action="http://127.0.0.1:8000/admin/admin-roles/2" class="role-form compact"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"> <input type="hidden" name="_method" value="PUT"><div class="role-basics"><div class="field"><label>Name</label><input name="name" value="Inventory Manager" required maxlength="100"></div><div class="field"><label>Description</label><input name="description" value="Manages inventory, purchase orders, and suppliers." maxlength="2000"></div></div><div class="permissions"><fieldset><legend>Administration</legend><label><input type="checkbox" name="permission_ids[]" value="12" ><span><strong>Manage Admin Team</strong><small>admin-users.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="15" ><span><strong>Manage Backups</strong><small>backups.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="14" ><span><strong>Manage Notifications</strong><small>notifications.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="13" ><span><strong>View Audit Logs</strong><small>audit-logs.view</small></span></label></fieldset><fieldset><legend>Catalog</legend><label><input type="checkbox" name="permission_ids[]" value="4" ><span><strong>Manage Coupons</strong><small>coupons.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="3" checked><span><strong>Manage Products</strong><small>products.manage</small></span></label></fieldset><fieldset><legend>Configuration</legend><label><input type="checkbox" name="permission_ids[]" value="11" ><span><strong>Manage Store Settings</strong><small>settings.manage</small></span></label></fieldset><fieldset><legend>Content</legend><label><input type="checkbox" name="permission_ids[]" value="10" ><span><strong>Manage Content</strong><small>content.manage</small></span></label></fieldset><fieldset><legend>Customers</legend><label><input type="checkbox" name="permission_ids[]" value="8" ><span><strong>Manage Customers</strong><small>customers.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="9" ><span><strong>Manage Reviews</strong><small>reviews.manage</small></span></label></fieldset><fieldset><legend>Dashboard</legend><label><input type="checkbox" name="permission_ids[]" value="1" checked><span><strong>Dashboard</strong><small>dashboard.view</small></span></label></fieldset><fieldset><legend>Inventory</legend><label><input type="checkbox" name="permission_ids[]" value="5" checked><span><strong>Manage Inventory</strong><small>inventory.manage</small></span></label></fieldset><fieldset><legend>Orders</legend><label><input type="checkbox" name="permission_ids[]" value="2" ><span><strong>Manage Orders</strong><small>orders.manage</small></span></label></fieldset><fieldset><legend>Purchasing</legend><label><input type="checkbox" name="permission_ids[]" value="6" checked><span><strong>Manage Purchase Orders</strong><small>purchase-orders.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="7" checked><span><strong>Manage Suppliers</strong><small>suppliers.manage</small></span></label></fieldset></div><footer><button type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Role</button></footer></form></details>
+                    </article><article class="role-card"><div class="role-card-header"><div><h3>Store Manager <span>System</span></h3><p>Manages daily store operations without administrator access.</p></div><strong>0 users</strong></div>
+            <div class="permission-tags"><span>Dashboard</span><span>Manage Orders</span><span>Manage Products</span><span>Manage Coupons</span><span>Manage Inventory</span><span>Manage Purchase Orders</span><span>Manage Suppliers</span><span>Manage Customers</span><span>Manage Reviews</span><span>Manage Content</span><span>Manage Store Settings</span></div>
+            <details><summary><i class="fa-regular fa-pen-to-square"></i> Edit role</summary><form method="POST" action="http://127.0.0.1:8000/admin/admin-roles/1" class="role-form compact"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"> <input type="hidden" name="_method" value="PUT"><div class="role-basics"><div class="field"><label>Name</label><input name="name" value="Store Manager" required maxlength="100"></div><div class="field"><label>Description</label><input name="description" value="Manages daily store operations without administrator access." maxlength="2000"></div></div><div class="permissions"><fieldset><legend>Administration</legend><label><input type="checkbox" name="permission_ids[]" value="12" ><span><strong>Manage Admin Team</strong><small>admin-users.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="15" ><span><strong>Manage Backups</strong><small>backups.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="14" ><span><strong>Manage Notifications</strong><small>notifications.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="13" ><span><strong>View Audit Logs</strong><small>audit-logs.view</small></span></label></fieldset><fieldset><legend>Catalog</legend><label><input type="checkbox" name="permission_ids[]" value="4" checked><span><strong>Manage Coupons</strong><small>coupons.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="3" checked><span><strong>Manage Products</strong><small>products.manage</small></span></label></fieldset><fieldset><legend>Configuration</legend><label><input type="checkbox" name="permission_ids[]" value="11" checked><span><strong>Manage Store Settings</strong><small>settings.manage</small></span></label></fieldset><fieldset><legend>Content</legend><label><input type="checkbox" name="permission_ids[]" value="10" checked><span><strong>Manage Content</strong><small>content.manage</small></span></label></fieldset><fieldset><legend>Customers</legend><label><input type="checkbox" name="permission_ids[]" value="8" checked><span><strong>Manage Customers</strong><small>customers.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="9" checked><span><strong>Manage Reviews</strong><small>reviews.manage</small></span></label></fieldset><fieldset><legend>Dashboard</legend><label><input type="checkbox" name="permission_ids[]" value="1" checked><span><strong>Dashboard</strong><small>dashboard.view</small></span></label></fieldset><fieldset><legend>Inventory</legend><label><input type="checkbox" name="permission_ids[]" value="5" checked><span><strong>Manage Inventory</strong><small>inventory.manage</small></span></label></fieldset><fieldset><legend>Orders</legend><label><input type="checkbox" name="permission_ids[]" value="2" checked><span><strong>Manage Orders</strong><small>orders.manage</small></span></label></fieldset><fieldset><legend>Purchasing</legend><label><input type="checkbox" name="permission_ids[]" value="6" checked><span><strong>Manage Purchase Orders</strong><small>purchase-orders.manage</small></span></label><label><input type="checkbox" name="permission_ids[]" value="7" checked><span><strong>Manage Suppliers</strong><small>suppliers.manage</small></span></label></fieldset></div><footer><button type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Role</button></footer></form></details>
+                    </article></div>
+    </section>
+</div>
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+        <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

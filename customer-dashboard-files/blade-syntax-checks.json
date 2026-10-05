@@ -1,0 +1,177 @@
+[
+    {
+        "path": "resources\/views\/admin\/partials\/administration-links.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-f78c2e87c0689212b5ca3f971941d3d8.php"
+    },
+    {
+        "path": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-1a34e3c0d835e2783af1f587f56bdf98.php"
+    },
+    {
+        "path": "resources\/views\/admin\/email-templates\/edit.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-b112ff7f5d8231a3127a542def85e5e7.php"
+    },
+    {
+        "path": "resources\/views\/admin\/analytics\/index.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-13e9a8fc87845452799cd3212e2ba7a4.php"
+    },
+    {
+        "path": "resources\/views\/errors\/store-maintenance.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-5065beb02aa24b6809c29ba76dec5b30.php"
+    },
+    {
+        "path": "resources\/views\/admin\/settings\/edit.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-0bb93019d0817b06c988917e2c215c7d.php"
+    },
+    {
+        "path": "resources\/views\/checkout\/index.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-7534369b2d49a4fc0f00d5362141b756.php"
+    },
+    {
+        "path": "resources\/views\/products\/show.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-703b45055e6693518650fc1493db980c.php"
+    },
+    {
+        "path": "resources\/views\/products\/partials\/product-card.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-b75c25bc62fd7ce1bb31f7b03ecdfca7.php"
+    },
+    {
+        "path": "resources\/views\/products\/partials\/quick-view.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-21552b8ad22eb0fd4683087955fb77ec.php"
+    },
+    {
+        "path": "resources\/views\/cart\/index.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-d0f9a9171b9db972ad3951fc5cdd7d48.php"
+    },
+    {
+        "path": "resources\/views\/layouts\/app.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-95deffc861035dd317bda3606a66b63f.php"
+    },
+    {
+        "path": "resources\/views\/checkout\/thank-you.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-6d506541a7b45ed9fa6c66f41f35918d.php"
+    },
+    {
+        "path": "resources\/views\/emails\/orders\/customer-confirmation.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-f2e098de8d3145ac225d44c216e3885b.php"
+    },
+    {
+        "path": "resources\/views\/emails\/orders\/admin-new-order.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-2bb3bc0dd74271e69090f2d399e09130.php"
+    },
+    {
+        "path": "resources\/views\/emails\/orders\/dynamic-template.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-e834d38db09e3ff988673607c8b0224f.php"
+    },
+    {
+        "path": "resources\/views\/admin\/orders\/invoice.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-7365192821dfd10cdabc89b6e2c48bfc.php"
+    },
+    {
+        "path": "resources\/views\/admin\/orders\/invoice-pdf.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-cb01528b51f8a3ca8691b36bd383b03b.php"
+    },
+    {
+        "path": "resources\/views\/orders\/track.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-da16d3796d9597cf548d2bf9d2a72863.php"
+    },
+    {
+        "path": "resources\/views\/favorites\/index.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-03131e816c50bfe0ff1e6d196b33c1df.php"
+    },
+    {
+        "path": "resources\/views\/customer\/dashboard.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-68abbd5b8efb2382b86a2efcc0adf025.php"
+    },
+    {
+        "path": "resources\/views\/customer\/account\/security.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-093645af83b9b152d51cd1b0e84a5b65.php"
+    },
+    {
+        "path": "resources\/views\/customer\/account\/verify-phone.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-7eebe43cd293ab6740e39620c0071978.php"
+    },
+    {
+        "path": "resources\/views\/customer\/layouts\/app.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-382c0002da86d6a54f84c4fc1293d674.php"
+    },
+    {
+        "path": "resources\/views\/customer\/orders\/index.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-ea2d9d3cda80e3e3457c1d9a2e49558d.php"
+    },
+    {
+        "path": "resources\/views\/customer\/orders\/show.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-62d1b30da0539194d8b2903b56ab79a1.php"
+    },
+    {
+        "path": "resources\/views\/customer\/partials\/footer.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-fd851184e5684f98b12cc2c8defd2c28.php"
+    },
+    {
+        "path": "resources\/views\/customer\/partials\/navigation.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-79557b0ba203e87f5ec6cdab8a8f5e0d.php"
+    },
+    {
+        "path": "resources\/views\/customer\/partials\/sidebar.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-60c0e0e54b1bc8c9f27f7bb8c5062876.php"
+    },
+    {
+        "path": "resources\/views\/customer\/partials\/styles.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-ac2565ca2dd385a28911622aec50910e.php"
+    },
+    {
+        "path": "resources\/views\/customer\/partials\/topbar.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-a7f6b786bdd2e17abd318e5d15ec8652.php"
+    },
+    {
+        "path": "resources\/views\/profile\/edit.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-05043664ca92d981687b720ab0d5ab6f.php"
+    },
+    {
+        "path": "resources\/views\/profile\/partials\/delete-user-form.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-95086b44109bd87837e43f54bc0d3c75.php"
+    },
+    {
+        "path": "resources\/views\/profile\/partials\/update-password-form.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-20f31e57f158e24edaff6cefdb17877a.php"
+    },
+    {
+        "path": "resources\/views\/profile\/partials\/update-profile-information-form.blade.php",
+        "pass": true,
+        "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-dashboard-files\\_checks\/compiled\/syntax-4925750ef2204a5ad737adb4f20c051e.php"
+    }
+]

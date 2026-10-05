@@ -1,0 +1,15 @@
+VERIFICATION RESULTS - COMMERCE REPLACEMENT SET
+Date: 1 October 2026
+19 complete separate TXT source files; application source hashes unchanged.
+111 isolated assertions: PASS; no remaining reproduced-issue assertions.
+11 full page renders: PASS.
+56 related route endpoints: no route/action/view errors.
+87 literal view route references: all registered.
+17 PHP replacement files: syntax PASS. Two Blade replacements were rendered.
+Each delivered TXT is byte-identical to the corresponding staged test source.
+No live database writes, payment API calls or real charges.
+No new migration required. Existing roles/permissions and coupon ledger are used.
+
+Evidence: checks.json, page-render-checks.json, route-checks.json, manifest.json.
+Harness: _checks/verify.php, _checks/routes.php; staged source: _staged.
+See 00-READ-FIRST-INSTALLATION-GUIDE.txt for behavior, installation and limitations.

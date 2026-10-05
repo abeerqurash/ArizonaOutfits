@@ -1,0 +1,1260 @@
+@extends('admin.layouts.app')
+
+@section('title', 'Admin Dashboard')
+
+@section('page-heading', 'Dashboard')
+
+@section('content')
+<div id="dashboardLoadingOverlay" class="dashboard-loading-overlay d-none">
+    <div class="dashboard-loading-spinner"></div>
+    <span>Loading dashboard...</span>
+</div>
+<div class="admin-page-header">
+
+    <div>
+        <span class="admin-page-eyebrow">
+            Store overview
+        </span>
+
+        <h2>
+            Welcome back, {{ auth()->user()?->name ?? 'Administrator' }}
+        </h2>
+
+        <p>
+            Here is a live overview of your products, orders,
+            customers, reviews and paid revenue.
+        </p>
+    </div>
+
+
+    <div class="admin-page-actions">
+
+        <a
+            href="{{ route('admin.orders.index') }}"
+            class="admin-button admin-button-secondary">
+            <i class="fa-solid fa-bag-shopping"></i>
+            View Orders
+        </a>
+
+        <a
+            href="{{ route('admin.products.create') }}"
+            class="admin-button admin-button-primary">
+            <i class="fa-solid fa-plus"></i>
+            Add Product
+        </a>
+
+    </div>
+
+</div>
+<div id="dashboard-content">
+    @include('admin.dashboard.filter-bar')
+    {{-- Dashboard statistic cards --}}
+    <section class="admin-statistics-grid">
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-blue">
+                    <i class="fa-solid fa-box-open"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Total Products
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                {{ number_format($statistics['products']) }}
+            </strong>
+
+            <a href="{{ route('admin.products.index') }}">
+                Manage products
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-purple">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Total Orders
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                {{ number_format($statistics['orders']) }}
+            </strong>
+
+            <a href="{{ route('admin.orders.index') }}">
+                Manage orders
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-orange">
+                    <i class="fa-regular fa-clock"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Pending Orders
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                {{ number_format($statistics['pending_orders']) }}
+            </strong>
+
+            <a
+                href="{{ route('admin.orders.index', [
+                    'order_status' => 'pending',
+                ]) }}">
+                View pending orders
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-green">
+                    <i class="fa-solid fa-users"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Customers
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                {{ number_format($statistics['customers']) }}
+            </strong>
+
+            <a href="{{ route('admin.customers.index') }}">
+                Manage customers
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-yellow">
+                    <i class="fa-solid fa-star"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Pending Reviews
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                {{ number_format($statistics['pending_reviews']) }}
+            </strong>
+
+            <a
+                href="{{ route('admin.reviews.index', [
+                    'status' => 'pending',
+                ]) }}">
+                Moderate reviews
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+        <article class="admin-stat-card">
+
+            <div class="admin-stat-card-top">
+
+                <span class="admin-stat-icon admin-stat-icon-dark">
+                    <i class="fa-solid fa-dollar-sign"></i>
+                </span>
+
+                <span class="admin-stat-label">
+                    Paid Revenue
+                </span>
+
+            </div>
+
+            <strong class="admin-stat-value">
+                ${{ number_format(
+                    (float) $statistics['revenue'],
+                    2
+                ) }}
+            </strong>
+
+            <a href="{{ route('admin.orders.index') }}">
+                View paid orders
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </article>
+
+    </section>
+
+    @if(($activeInventoryAlerts ?? collect())->isNotEmpty())
+    @php
+        $dashboardInventoryAlerts = collect($activeInventoryAlerts);
+        $dashboardCriticalInventoryCount = $dashboardInventoryAlerts
+            ->filter(fn ($alert) => !$alert->isLowStock())
+            ->count();
+    @endphp
+
+    <section class="admin-panel dashboard-inventory-panel">
+
+        <div class="admin-panel-header dashboard-inventory-header">
+
+            <div>
+                <span class="admin-panel-eyebrow">
+                    Inventory health
+                </span>
+
+                <h3>
+                    Inventory Alerts
+                </h3>
+
+                <p class="dashboard-inventory-description">
+                    Products that need stock attention before availability
+                    affects customer orders.
+                </p>
+            </div>
+
+            <div class="dashboard-inventory-header-actions">
+
+                <div class="dashboard-inventory-summary">
+                    <span>
+                        {{ number_format($dashboardInventoryAlerts->count()) }}
+                        {{ \Illuminate\Support\Str::plural('alert', $dashboardInventoryAlerts->count()) }}
+                    </span>
+
+                    @if($dashboardCriticalInventoryCount > 0)
+                        <span class="is-critical">
+                            {{ number_format($dashboardCriticalInventoryCount) }}
+                            critical
+                        </span>
+                    @endif
+                </div>
+
+                <a
+                    href="{{ route('admin.inventory-alerts.index') }}"
+                    class="dashboard-inventory-view-all">
+                    View all
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="dashboard-inventory-list">
+
+            @foreach($dashboardInventoryAlerts as $alert)
+                @php
+                    $isLowStockAlert = $alert->isLowStock();
+                @endphp
+
+                <article class="dashboard-inventory-item">
+
+                    <span
+                        class="dashboard-inventory-icon {{ $isLowStockAlert ? 'is-warning' : 'is-critical' }}">
+                        <i class="fa-solid {{ $isLowStockAlert ? 'fa-triangle-exclamation' : 'fa-circle-exclamation' }}"></i>
+                    </span>
+
+                    <div class="dashboard-inventory-product">
+
+                        <strong>
+                            {{ $alert->item_name }}
+                        </strong>
+
+                        <span>
+                            {{ $isLowStockAlert ? 'Stock is running low' : 'Product is currently out of stock' }}
+                        </span>
+
+                    </div>
+
+                    <span
+                        class="dashboard-inventory-status {{ $isLowStockAlert ? 'is-warning' : 'is-critical' }}">
+                        {{ $isLowStockAlert ? 'Low stock' : 'Out of stock' }}
+                    </span>
+
+                    <div class="dashboard-inventory-stock">
+
+                        <small>
+                            Stock
+                        </small>
+
+                        <strong>
+                            {{ number_format((int) $alert->stock_level) }}
+                        </strong>
+
+                    </div>
+
+                    <a
+                        href="{{ route('admin.inventory-alerts.index') }}"
+                        class="dashboard-inventory-open"
+                        aria-label="Open inventory alert for {{ $alert->item_name }}">
+                        <span>Review</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </article>
+            @endforeach
+
+        </div>
+
+    </section>
+    @endif
+    <div id="dashboardAlertsContainer">
+        @include('admin.dashboard.dashboard-alerts', [
+        'dashboardAlerts' => $dashboardAlerts,
+        'dashboardAlertSummary' => $dashboardAlertSummary,
+        ])
+    </div>
+
+    <section class="admin-panel admin-sales-chart-panel">
+
+        <div class="admin-panel-header">
+
+            <div>
+                <span class="admin-panel-eyebrow">
+                    Sales performance
+                </span>
+
+                <h3>
+                    Revenue and Orders
+                </h3>
+
+                <p class="admin-chart-description">
+                    Monthly paid revenue and order activity during the
+                    last 12 months.
+                </p>
+            </div>
+
+            <div class="admin-chart-summary">
+
+                <div>
+                    <small>
+                        {{ $chartSummary['current_month'] }} revenue
+                    </small>
+
+                    <strong>
+                        ${{ number_format(
+                        (float) $chartSummary['revenue'],
+                        2
+                    ) }}
+                    </strong>
+                </div>
+
+                <div>
+                    <small>
+                        {{ $chartSummary['current_month'] }} orders
+                    </small>
+
+                    <strong>
+                        {{ number_format(
+                        $chartSummary['orders']
+                    ) }}
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="admin-chart-wrapper">
+
+            <canvas
+                id="adminSalesChart"
+                aria-label="Monthly revenue and orders chart"
+                role="img"></canvas>
+
+        </div>
+
+    </section>
+    @include('admin.dashboard.analytics-widgets')
+
+    <div id="customerAnalyticsContainer">
+        @include('admin.dashboard.customer-analytics', [
+        'customerAnalytics' => $customerAnalytics,
+        'topCustomers' => $topCustomers,
+        ])
+    </div>
+    {{-- Main dashboard columns --}}
+    <section class="admin-dashboard-layout">
+
+        <div class="admin-dashboard-main-column">
+
+            {{-- Recent orders --}}
+            <div class="admin-panel">
+
+                <div class="admin-panel-header">
+
+                    <div>
+                        <span class="admin-panel-eyebrow">
+                            Latest activity
+                        </span>
+
+                        <h3>
+                            Recent Orders
+                        </h3>
+                    </div>
+
+                    <a href="{{ route('admin.orders.index') }}">
+                        View all orders
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+                <div class="admin-table-wrapper">
+
+                    <table class="admin-table">
+
+                        <thead>
+                            <tr>
+                                <th>Order</th>
+                                <th>Customer</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="dashboardRecentOrdersBody">
+                            @include('admin.dashboard.recent-orders-rows', [
+                            'recentOrders' => $recentOrders,
+                            ])
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            {{-- Low-stock products --}}
+            <div id="lowStockProductsContainer">
+
+                @include('admin.dashboard.low-stock-products', [
+                'lowStockProducts' => $lowStockProducts,
+                'lowStockThreshold' => $lowStockThreshold,
+                ])
+
+            </div>
+
+            {{-- Latest reviews --}}
+            <div id="latestReviewsContainer">
+
+                @include('admin.dashboard.latest-reviews', [
+                'latestReviews' => $latestReviews
+                ])
+
+            </div>
+
+        </div>
+
+        <aside class="admin-dashboard-side-column">
+
+            {{-- Order overview --}}
+
+            <div id="orderOverviewContainer">
+
+                @include('admin.dashboard.order-overview', [
+                'orderStatusOverview' => $orderStatusOverview,
+                ])
+
+            </div>
+            {{-- Best-selling products --}}
+            <div id="bestSellersContainer">
+
+                @include('admin.dashboard.best-sellers', [
+                'bestSellingProducts' => $bestSellingProducts,
+                ])
+
+            </div>
+
+            {{-- Quick actions --}}
+            <div class="admin-panel">
+
+                <div class="admin-panel-header">
+
+                    <div>
+                        <span class="admin-panel-eyebrow">
+                            Shortcuts
+                        </span>
+
+                        <h3>
+                            Quick Actions
+                        </h3>
+                    </div>
+
+                </div>
+
+                <div class="admin-quick-actions">
+
+                    <a href="{{ route('admin.products.create') }}">
+
+                        <span class="admin-quick-action-icon">
+                            <i class="fa-solid fa-plus"></i>
+                        </span>
+
+                        <span>
+                            <strong>Add Product</strong>
+                            <small>Create a new store product</small>
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+                    <a href="{{ route('admin.orders.index') }}">
+
+                        <span class="admin-quick-action-icon">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </span>
+
+                        <span>
+                            <strong>Manage Orders</strong>
+                            <small>Process customer orders</small>
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+                    <a href="{{ route('admin.coupons.create') }}">
+
+                        <span class="admin-quick-action-icon">
+                            <i class="fa-solid fa-ticket"></i>
+                        </span>
+
+                        <span>
+                            <strong>Create Coupon</strong>
+                            <small>Add a discount coupon</small>
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+                    <a href="{{ route('admin.posts.create') }}">
+
+                        <span class="admin-quick-action-icon">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </span>
+
+                        <span>
+                            <strong>Create Blog Post</strong>
+                            <small>Publish new content</small>
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+                    <a href="{{ route('admin.settings.edit') }}">
+
+                        <span class="admin-quick-action-icon">
+                            <i class="fa-solid fa-gear"></i>
+                        </span>
+
+                        <span>
+                            <strong>Store Settings</strong>
+                            <small>Payments, shipping and tax</small>
+                        </span>
+
+                        <i class="fa-solid fa-chevron-right"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            {{-- Store sections --}}
+            <div class="admin-panel">
+
+                <div class="admin-panel-header">
+
+                    <div>
+                        <span class="admin-panel-eyebrow">
+                            Management
+                        </span>
+
+                        <h3>
+                            Store Sections
+                        </h3>
+                    </div>
+
+                </div>
+
+                <div class="admin-section-links">
+
+                    <a href="{{ route('admin.product-categories.index') }}">
+                        <i class="fa-solid fa-layer-group"></i>
+
+                        <span>Product Categories</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="{{ route('admin.product-tags.index') }}">
+                        <i class="fa-solid fa-tags"></i>
+
+                        <span>Product Tags</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="{{ route('admin.reviews.index') }}">
+                        <i class="fa-solid fa-star"></i>
+
+                        <span>Customer Reviews</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                    <a href="{{ route('admin.customers.index') }}">
+                        <i class="fa-solid fa-users"></i>
+
+                        <span>Customers</span>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </section>
+</div>
+<style>
+
+    /* ============================================================
+       DASHBOARD INVENTORY ALERTS
+    ============================================================ */
+
+    .dashboard-inventory-panel {
+        overflow: hidden;
+        margin: 18px 0;
+        border: 1px solid #e6eaf1;
+        border-radius: 11px;
+        background: #fff;
+        box-shadow: none;
+    }
+
+    .dashboard-inventory-header {
+        gap: 18px;
+        padding: 16px 18px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .dashboard-inventory-header h3 {
+        margin: 3px 0 0;
+        color: #172033;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .dashboard-inventory-header .admin-panel-eyebrow {
+        color: #635bff;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: .12em;
+    }
+
+    .dashboard-inventory-description {
+        max-width: 560px;
+        margin: 5px 0 0;
+        color: #8a93a4;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .dashboard-inventory-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .dashboard-inventory-summary {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .dashboard-inventory-summary span {
+        display: inline-flex;
+        align-items: center;
+        min-height: 25px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        background: #f3f5f8;
+        color: #586174;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-summary span.is-critical {
+        background: #ffeded;
+        color: #c13b3b;
+    }
+
+    .dashboard-inventory-view-all,
+    .dashboard-inventory-open {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        text-decoration: none;
+        transition:
+            border-color .18s ease,
+            background .18s ease,
+            color .18s ease,
+            transform .18s ease;
+    }
+
+    .dashboard-inventory-view-all {
+        min-height: 30px;
+        padding: 5px 10px;
+        border: 1px solid #e2e6ed;
+        border-radius: 999px;
+        background: #fff;
+        color: #5d57f4;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-view-all:hover {
+        border-color: #635bff;
+        background: #635bff;
+        color: #fff;
+    }
+
+    .dashboard-inventory-list {
+        padding: 6px 18px 12px;
+    }
+
+    .dashboard-inventory-item {
+        display: grid;
+        grid-template-columns: 34px minmax(180px, 1fr) auto 70px auto;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        padding: 11px 0;
+        border-bottom: 1px solid #f0f2f6;
+    }
+
+    .dashboard-inventory-item:last-child {
+        border-bottom: 0;
+    }
+
+    .dashboard-inventory-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        font-size: 12px;
+    }
+
+    .dashboard-inventory-icon.is-warning {
+        background: #fff4df;
+        color: #d88716;
+    }
+
+    .dashboard-inventory-icon.is-critical {
+        background: #ffeded;
+        color: #c13b3b;
+    }
+
+    .dashboard-inventory-product {
+        min-width: 0;
+    }
+
+    .dashboard-inventory-product strong,
+    .dashboard-inventory-product span {
+        display: block;
+    }
+
+    .dashboard-inventory-product strong {
+        overflow: hidden;
+        color: #172033;
+        font-size: 10px;
+        font-weight: 800;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-product span {
+        margin-top: 3px;
+        color: #929aaa;
+        font-size: 8px;
+    }
+
+    .dashboard-inventory-status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 23px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-status.is-warning {
+        background: #fff4dc;
+        color: #a86a00;
+    }
+
+    .dashboard-inventory-status.is-critical {
+        background: #ffeded;
+        color: #c13b3b;
+    }
+
+    .dashboard-inventory-stock {
+        text-align: center;
+    }
+
+    .dashboard-inventory-stock small,
+    .dashboard-inventory-stock strong {
+        display: block;
+    }
+
+    .dashboard-inventory-stock small {
+        color: #929aaa;
+        font-size: 7px;
+        font-weight: 700;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+    }
+
+    .dashboard-inventory-stock strong {
+        margin-top: 2px;
+        color: #172033;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .dashboard-inventory-open {
+        min-height: 29px;
+        padding: 5px 9px;
+        border: 1px solid #e2e6ed;
+        border-radius: 999px;
+        color: #5d57f4;
+        font-size: 8px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .dashboard-inventory-open:hover {
+        border-color: #635bff;
+        background: #635bff;
+        color: #fff;
+        transform: translateX(1px);
+    }
+
+    @media (max-width: 900px) {
+        .dashboard-inventory-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .dashboard-inventory-header-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .dashboard-inventory-item {
+            grid-template-columns: 34px minmax(0, 1fr) auto;
+        }
+
+        .dashboard-inventory-status {
+            grid-column: 2;
+            justify-self: start;
+        }
+
+        .dashboard-inventory-stock {
+            grid-column: 3;
+            grid-row: 1;
+        }
+
+        .dashboard-inventory-open {
+            grid-column: 3;
+            grid-row: 2;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .dashboard-inventory-panel {
+            border-radius: 10px;
+        }
+
+        .dashboard-inventory-header,
+        .dashboard-inventory-list {
+            padding-right: 14px;
+            padding-left: 14px;
+        }
+
+        .dashboard-inventory-header-actions {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .dashboard-inventory-summary {
+            flex-wrap: wrap;
+        }
+
+        .dashboard-inventory-view-all {
+            width: 100%;
+        }
+
+        .dashboard-inventory-item {
+            grid-template-columns: 34px minmax(0, 1fr);
+            gap: 9px 10px;
+            padding: 13px 0;
+        }
+
+        .dashboard-inventory-product {
+            grid-column: 2;
+        }
+
+        .dashboard-inventory-product strong {
+            white-space: normal;
+        }
+
+        .dashboard-inventory-status {
+            grid-column: 2;
+            grid-row: auto;
+        }
+
+        .dashboard-inventory-stock {
+            grid-column: 2;
+            grid-row: auto;
+            justify-self: start;
+            text-align: left;
+        }
+
+        .dashboard-inventory-stock small,
+        .dashboard-inventory-stock strong {
+            display: inline;
+        }
+
+        .dashboard-inventory-stock strong {
+            margin-left: 4px;
+        }
+
+        .dashboard-inventory-open {
+            grid-column: 2;
+            grid-row: auto;
+            width: max-content;
+        }
+    }
+
+    .admin-sales-chart-panel {
+        margin-bottom: 24px;
+    }
+
+    .admin-chart-description {
+        margin: 6px 0 0;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .admin-chart-summary {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+    }
+
+    .admin-chart-summary>div {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .admin-chart-summary small {
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .admin-chart-summary strong {
+        color: #0f172a;
+        font-size: 18px;
+    }
+
+    .admin-chart-wrapper {
+        position: relative;
+        width: 100%;
+        height: 390px;
+        padding: 20px 24px 24px;
+    }
+
+    @media (max-width: 900px) {
+        .admin-sales-chart-panel .admin-panel-header {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .admin-chart-summary {
+            width: 100%;
+            justify-content: flex-start;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .admin-chart-summary {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .admin-chart-summary>div {
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .admin-chart-wrapper {
+            height: 320px;
+            padding: 16px 12px 20px;
+        }
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script
+    type="application/json"
+    id="adminSalesChartData">
+    @json($chartData)
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chartCanvas = document.getElementById(
+            'adminSalesChart'
+        );
+
+        const chartDataElement = document.getElementById(
+            'adminSalesChartData'
+        );
+
+        if (
+            !chartCanvas ||
+            !chartDataElement ||
+            typeof Chart === 'undefined'
+        ) {
+            return;
+        }
+
+        let chartData;
+
+        try {
+            chartData = JSON.parse(
+                chartDataElement.textContent.trim()
+            );
+        } catch (error) {
+            console.error(
+                'Unable to parse dashboard chart data:',
+                error
+            );
+
+            return;
+        }
+
+        window.adminSalesChart = new Chart(chartCanvas, {
+            type: 'line',
+
+            data: {
+                labels: chartData.labels || [],
+
+                datasets: [{
+                        label: 'Paid Revenue',
+                        data: chartData.revenue || [],
+                        borderColor: '#111827',
+                        backgroundColor: 'rgba(17, 24, 39, 0.10)',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#111827',
+                        fill: true,
+                        tension: 0.35,
+                        yAxisID: 'revenueAxis'
+                    },
+                    {
+                        label: 'Orders',
+                        data: chartData.orders || [],
+                        borderColor: '#7c3aed',
+                        backgroundColor: 'rgba(124, 58, 237, 0.08)',
+                        borderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#7c3aed',
+                        fill: false,
+                        tension: 0.35,
+                        yAxisID: 'ordersAxis'
+                    }
+                ]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 8,
+                            boxHeight: 8,
+                            padding: 20,
+
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        }
+                    },
+
+                    tooltip: {
+                        padding: 12,
+                        displayColors: true,
+
+                        callbacks: {
+                            label: function(context) {
+                                if (
+                                    context.dataset.yAxisID ===
+                                    'revenueAxis'
+                                ) {
+                                    const revenue = Number(
+                                        context.parsed.y || 0
+                                    );
+
+                                    return (
+                                        'Paid Revenue: $' +
+                                        revenue.toLocaleString(
+                                            'en-US', {
+                                                minimumFractionDigits: 2,
+                                                maximumFractionDigits: 2
+                                            }
+                                        )
+                                    );
+                                }
+
+                                return (
+                                    'Orders: ' +
+                                    Number(
+                                        context.parsed.y || 0
+                                    ).toLocaleString('en-US')
+                                );
+                            }
+                        }
+                    }
+                },
+
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+
+                        ticks: {
+                            color: '#64748b',
+                            maxRotation: 0,
+                            autoSkip: true,
+                            maxTicksLimit: 12
+                        }
+                    },
+
+                    revenueAxis: {
+                        type: 'linear',
+                        position: 'left',
+                        beginAtZero: true,
+
+                        grid: {
+                            color: 'rgba(148, 163, 184, 0.18)'
+                        },
+
+                        ticks: {
+                            color: '#64748b',
+
+                            callback: function(value) {
+                                return (
+                                    '$' +
+                                    Number(value).toLocaleString(
+                                        'en-US'
+                                    )
+                                );
+                            }
+                        },
+
+                        title: {
+                            display: true,
+                            text: 'Paid Revenue'
+                        }
+                    },
+
+                    ordersAxis: {
+                        type: 'linear',
+                        position: 'right',
+                        beginAtZero: true,
+
+                        grid: {
+                            drawOnChartArea: false
+                        },
+
+                        ticks: {
+                            color: '#64748b',
+                            precision: 0
+                        },
+
+                        title: {
+                            display: true,
+                            text: 'Orders'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+@endsection

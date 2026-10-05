@@ -1,0 +1,71 @@
+NEXT BLOG STEP - PUBLIC ARTICLE VISIBILITY
+
+WHY THIS STEP IS NEEDED
+The homepage and shared latest-article lists could include unpublished
+articles. The old shared view loader also replaced lists prepared by the
+article controller. These replacements fix those public blog lists.
+The contact-style filter form stays as it is.
+
+1. BACK UP THESE TWO EXISTING FILES
+C:\xampp\htdocs\ArizonaOutfits\app\Providers\AppServiceProvider.php
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\HomeController.php
+
+2. INSTALL AppServiceProvider.txt
+Copy ALL contents of AppServiceProvider.txt into this existing file:
+C:\xampp\htdocs\ArizonaOutfits\app\Providers\AppServiceProvider.php
+Save it with the existing .php filename.
+
+3. INSTALL HomeController.txt
+Copy ALL contents of HomeController.txt into this existing file:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\HomeController.php
+Save it with the existing .php filename.
+Do not paste either file into BlogController.php or the admin controller.
+
+4. RUN THESE COMMANDS IN POWERSHELL, ONE AT A TIME
+Set-Location 'C:\xampp\htdocs\ArizonaOutfits'
+C:\xampp\php\php.exe -l app\Providers\AppServiceProvider.php
+C:\xampp\php\php.exe -l app\Http\Controllers\HomeController.php
+C:\xampp\php\php.exe artisan view:clear
+
+Both syntax checks should report No syntax errors detected.
+If a syntax check fails, restore the backed-up file and share the error.
+No database migration is required.
+
+5. CHECK YOUR EXISTING THREE ARTICLES
+Open your homepage and refresh with Ctrl+F5.
+The latest blog section should contain only published articles, ordered
+by publication date, newest first. Having fewer than six is fine.
+Open one article and check its latest/related article links.
+Open the blog listing and confirm your contact-style filter still works.
+Open About and confirm its public blog/category links still load.
+Check the homepage product sections still look as before.
+
+6. CHECK HIDDEN ARTICLES
+If you already have a draft article, verify it does not appear in the
+homepage or any latest-article lists.
+For a stronger check, create a temporary draft article in admin with a
+unique title such as VISIBILITY TEST DRAFT. Leave it as Draft.
+It must not appear on the homepage, blog listing, or latest-article lists.
+You do not need to create more published articles for this check.
+
+WHAT CHANGED
+- Homepage blog cards use the existing published visibility scope.
+- Shared latest article fallback is limited to three published articles.
+- Popular category ranking counts only published articles.
+- Controller-supplied article lists are preserved, including empty lists.
+- Shared fallback data is reused within a request, then refreshed on the
+  next request. Unrelated views do not run these fallback blog queries.
+- Existing authentication, admin, navigation, and product code is retained.
+
+VALIDATION
+Both replacement files passed PHP syntax checks.
+17 isolated checks passed with an in-memory fixture database.
+Checks covered publication visibility, counts, ordering, eager loading,
+controller data preservation, request reuse, new-request freshness, and
+existing homepage product queries with an empty product fixture.
+This does not replace live product or complete project testing.
+Your original source files have not been replaced automatically.
+
+Reply PASS after installing both files and checking the pages, or share
+any error. This confirms this step; remaining blog work is assessed
+separately before moving to the Product System phase.

@@ -1,0 +1,231 @@
+ARIZONA OUTFITS - INVENTORY AND PURCHASING AUDIT
+Date: 1 October 2026 (Asia/Karachi)
+Project: C:\xampp\htdocs\ArizonaOutfits
+Requested menus: Inventory Alerts, Inventory History, Inventory Reports,
+Stock Valuation, Reorder Dashboard, Purchase Orders, Suppliers.
+Connected checks: product inventory adjustments, receipts, corrections,
+supplier returns, supplier contacts/documents/ratings/pricing and email dispatch.
+
+RESULT
+All seven menu pages and six related screens rendered in the isolated fixtures.
+Their links resolve, but several business workflows require repairs. These
+modules should not yet be marked complete solely because the screens open.
+No application source or live database was changed. Local database metadata was
+read to verify current columns and foreign keys. All test mutations occurred
+only in an in-memory SQLite database. Mail and job dispatch were faked.
+
+VERIFICATION
+90 assertions: 55 PASS, 35 ISSUE, 0 unexpected test errors.
+35 ISSUE assertions overlap underlying defects; they are not 35 separate bugs.
+13 full Blade screens rendered successfully.
+53 related routes: no missing action/view or route matching errors.
+84 literal route references in related templates: all registered.
+17 relevant controllers/services: PHP syntax passed.
+Fixtures used actual installed controllers/services and project creation migrations.
+The ratings/document fixture schemas mirror the current local database metadata.
+Later receipt/return tests deliberately used an overlapping customer ID solely
+to exercise downstream behavior after reproducing the separate-admin FK failure.
+This overlap also demonstrated incorrect actor attribution; it is not a workaround.
+
+Evidence in this folder: checks.json, route-checks.json, page-render-checks.json,
+live-schema.json, inventory-report-fixture.csv. Harnesses: _checks/verify.php,
+_checks/extend.php, _checks/bootstrap.php and _checks/routes.php.
+
+1. INVENTORY ALERTS
+PASS: Low-stock creation, repeated-check deduplication and transition from low
+stock to out of stock work. Repeated checks did not send duplicate fake emails.
+PROBLEM: Alerts use config('inventory.low_stock_threshold') while reorder uses
+each product/variant reorder_point. Stock 8 with reorder point 10 needs reorder,
+but creates no alert when the global threshold is 5.
+PROBLEM: Purchase-order receiving updates stock without synchronizing alerts.
+A fixture was replenished from stock 2 to 6 while its active low-stock alert
+remained active. Both alert status and displayed stock can become stale.
+Repair: define one threshold policy and apply it consistently to alerts, reports,
+valuation and reorder. Synchronize affected product/variant alerts after committed
+receipts, corrections and supplier returns, as well as ordinary stock movements.
+Sources:
+C:\xampp\htdocs\ArizonaOutfits\app\Services\InventoryAlertService.php (synchronizeAlert, line 149)
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\PurchaseOrderReceivingController.php (adjustStock, line 698)
+
+2. INVENTORY HISTORY
+PASS: Receipt, correction and supplier-return movements are recorded. Customer
+order deductions are preserved in the ledger even after an order is archived.
+PROBLEM: InventoryHistory::order() excludes archived orders. Their order reference
+disappears from the history page and searching by archived order number misses
+the ledger entry. This conflicts with the recently repaired archive policy.
+PROBLEM: Search covers users but does not search the actual admin relationship.
+A movement by the fixture admin was not found when searching that admin's name.
+PROBLEM: Tracked receiving/correction/return writes user_id = Auth::id() and does
+not populate admin_id. With matching IDs this attributes activity to a customer;
+with different IDs its other legacy actor foreign keys can block the transaction.
+PROBLEM: Inventory CSV uses the parent SKU for variants and leaves the actor
+blank for correctly stored admin_id movements. Fixture expected VAR-1 but got
+PARENT. The admin column should use the same actor resolver as the history page.
+Sources:
+C:\xampp\htdocs\ArizonaOutfits\app\Models\InventoryHistory.php (order, line 132)
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\InventoryHistoryController.php (index)
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\PurchaseOrderReceivingController.php (recordMovement, line 763)
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\InventoryReportController.php (export)
+
+CONNECTED INVENTORY ADJUSTMENT BLOCKER
+InventoryAdjustmentService requires App\Models\User, but an authenticated admin
+is App\Models\Admin. The real service call reproduced a TypeError before stock
+could change. The controller catches it and returns the error. InventoryHistoryService
+also types its user actor as User. Fix actor handling throughout this call chain
+and keep admin_id/user_id distinct. Add business validation for stock removal
+against available quantity; the service currently calculates before - quantity
+without a stock-floor guard (database behavior may reject negative values).
+Sources:
+C:\xampp\htdocs\ArizonaOutfits\app\Services\InventoryAdjustmentService.php
+C:\xampp\htdocs\ArizonaOutfits\app\Services\InventoryHistoryService.php
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\InventoryAdjustmentController.php (update)
+
+3. INVENTORY REPORTS
+PROBLEM: totalProductStock includes variable parents and is added to all variant
+stock. Fixture simple stock 2 plus variants 3+4 should total 9; report returned
+109 because the variable parent also held stock 100.
+PROBLEM: Low/out-of-stock counts and lists examine parent products, use a fixed
+threshold 5 and omit equivalent variant-level health information.
+PROBLEM: Malformed custom dates reach Carbon::parse without validation and throw
+a parsing exception. A start date after the end date is accepted.
+PROBLEM: Period totals are filtered, but recentMovements ignores the selected
+period. An empty 1990 report still displayed current movements. Either apply the
+same period or clearly identify the section as independent recent activity.
+PASS: Movement totals respect a valid selected date range; CSV streaming executes.
+Sources:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\InventoryReportController.php (index, resolveDateRange, export)
+
+4. STOCK VALUATION
+PROBLEM: Valuation evaluates parent products only, ignoring variant quantities
+and variant selling prices. For the same 9-unit fixture it reported 102 units;
+cost was 1,020 instead of 90. This disagrees with both reports and reorder.
+PROBLEM: A valid zero sale price becomes the regular price in valuation and in
+the Excel export calculation. Fixture cart/model price was 0; valuation used 100.
+PROBLEM: Stock-health classifications use fixed 5 rather than the reorder policy.
+PASS: Page and filtered CSV execution work, but successful export does not make
+its underlying values correct.
+Repair: build one list of purchasable inventory items (simple products or variants),
+share its effective stock/cost/price rules across dashboard, CSV, Excel and PDF.
+Sources:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\StockValuationController.php (getValuationProducts, line 460; buildAnalytics, line 536)
+C:\xampp\htdocs\ArizonaOutfits\app\Exports\StockValuationExport.php (prepareProducts)
+
+5. REORDER DASHBOARD
+PASS: Variant products are represented by variant rows without a duplicate parent.
+The fixture correctly totaled 9 purchasable stock units. CSV streaming executes.
+PROBLEM: At stock == reorder_point with no configured reorder_quantity, the row
+says needs_reorder = true but suggested_quantity = 0. Purchase-order selection
+uses max(1, reorder_point - stock), so its next screen disagrees with this row.
+Repair: use the same positive suggestion calculation in dashboard, exports and
+purchase-order creation; show an explicit policy for replenishment targets.
+Sources:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\ReorderDashboardController.php (buildReorderItem)
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\PurchaseOrderController.php (buildProductItem, line 1696; buildVariantItem, line 1774)
+
+6. PURCHASE ORDERS, RECEIVING, CORRECTIONS AND RETURNS
+PASS: Purchase creation stores the actual admin creator, takes supplier snapshots
+and honors assigned supplier unit prices and minimum order quantities.
+Blocked/inactive suppliers cannot receive new purchase orders.
+PASS: After the actor FK blocker was isolated, tracked receipts incremented stock
+and created receipt rows. Over-receiving, foreign PO lines and draft receiving
+were rejected. Full receipt status, correction quantity limits, return stock
+deduction, cancellation restoration, repeat-cancel rejection and completed-return
+credit handling worked in the isolated scenarios.
+HIGH: Receipt received_by and supplier-return created_by/completed_by/cancelled_by
+still reference users, while the handlers write admin IDs. Actual local foreign
+keys confirm it. With admin 99 and no user 99 the receipt failed and rolled back.
+With unrelated user 99 present, receipt receiver became that customer.
+MEDIUM: Creation accepts duplicate product/variant identifiers and creates multiple
+identical lines. The draft update endpoint correctly requires distinct identifiers,
+so creating and editing the same PO follow different rules.
+MEDIUM: markOrdered checks an in-memory model, then saves without locking/rechecking
+the persisted state. A stale draft instance downgraded a partially received PO
+to ordered. This was a stale-object simulation, not a MariaDB concurrency test.
+MEDIUM: Draft optimistic locking compares updated_at timestamps at second precision.
+Two saves in the same second accepted the same old version; the second stale
+submission overwrote the first. Use a monotonic version/adequate precision with
+an atomic comparison, not merely a seconds timestamp.
+Receipts also need the alert synchronization described in section 1.
+
+IMPORTANT ROUTE DISTINCTION
+admin.purchase-orders.receive routes to PurchaseOrderReceivingController::store.
+The older PurchaseOrderController::receive method remains in source but is not
+the handler for the current UI route. The audit does not treat that unused
+method's lack of receipt rows as an active frontend defect.
+Sources:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\PurchaseOrderReceivingController.php (store, line 112; returns/correction methods)
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\PurchaseOrderController.php (store, line 348; markOrdered, line 856)
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\PurchaseOrderDraftController.php (update)
+C:\xampp\htdocs\ArizonaOutfits\database\migrations\2026_08_07_000005_create_receipts_and_supplier_returns_tables.php
+
+7. SUPPLIERS, CONTACTS, DOCUMENTS, RATINGS AND EMAILS
+PASS: Open purchase orders block supplier deletion; an unreferenced supplier is
+soft deleted. Primary-contact switching and cross-supplier contact/product/email
+ownership checks passed. Duplicate supplier product assignments and mismatched
+product/variant pairs were rejected. Supplier price/MOQ rules were applied.
+PASS: Document upload and expiry/original-name compatibility accessors work
+against the current table. The document alias fields are not a schema defect.
+HIGH: Supplier created_by, document uploaded_by, rating rated_by and delivery
+sent_by remain customer foreign keys. Their controllers use Auth::id() under
+admin authentication. Supplier creation failed for a separate admin ID; queued
+delivery's sentBy relation resolved to the unrelated overlapping customer.
+HIGH: The current supplier_ratings table lacks title, would_recommend and rated_at.
+The controller's create operation failed on would_recommend. The existing ratings
+migration only alters a table if it already exists; its required changes are not
+present in the local schema read during this audit.
+Fresh-install concern: no supplier_ratings CREATE migration was found. The document
+placeholder names 2026_08_07_000001_create_supplier_documents_table.php, but that
+file is absent. Existing imported document tables work; this is a separate
+schema reproducibility issue for deployment/fresh installs.
+Repair: supply a new non-destructive migration for missing ratings fields and
+distinct admin ownership fields. Preserve legacy customer columns and existing
+rows; do not rename/delete already recorded migrations or rebuild the database.
+Sources:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\SupplierController.php (store, line 313)
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\SupplierRatingController.php
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\SupplierDocumentController.php
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\SupplierPurchaseOrderDeliveryController.php
+C:\xampp\htdocs\ArizonaOutfits\database\migrations\2026_08_04_181153_create_supplier_ratings_table.php
+C:\xampp\htdocs\ArizonaOutfits\database\migrations\2026_08_04_181153_create_supplier_documents_table.php
+
+SHARED PERMISSION GAP - HIGH
+All seven modules permit an authenticated active admin without checking the
+existing inventory.manage / purchase-orders.manage / suppliers.manage permissions.
+Each fixture restricted admin received response 200 where its module required 403.
+Extend the new middleware and sidebar checks to these modules and nested actions.
+Do not rely only on hiding links. Product inventory adjustments need an explicit
+inventory permission policy rather than accidental classification by products.*.
+Source: C:\xampp\htdocs\ArizonaOutfits\app\Http\Middleware\AdminMiddleware.php
+
+SHARED CURRENCY GAP - MEDIUM
+Suppliers support GBP, USD, EUR, PKR, AED and CNY. Purchase rows, summaries and
+several Excel formats hard-code pounds. A fixture USD order of 100 rendered
+as GBP 100. Purchase/supplier aggregate queries sum differing currencies without
+grouping or conversion. Present per-currency totals or use an explicitly stored
+base-currency conversion policy. Align inventory labels with the chosen catalog
+currency; changing the symbol alone does not convert amounts.
+Sources:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\purchase-orders\index.blade.php
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\suppliers\index.blade.php
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\stock-valuation\index.blade.php
+C:\xampp\htdocs\ArizonaOutfits\app\Exports\PurchaseOrderExport.php
+
+REPAIR ORDER
+1. Fix admin actor types/foreign keys and missing ratings schema first.
+2. Enforce inventory, purchasing and supplier permissions for all nested actions.
+3. Unify physical stock, thresholds, valuation and zero-sale-price calculations.
+4. Synchronize alerts after receiving/corrections/returns and repair archive history.
+5. Make PO status transitions/version checks atomic and reject duplicate create lines.
+6. Correct reorder suggestions, report date validation, export identities and currency.
+7. Re-run isolated checks and the local browser create/update/receive/return workflows.
+
+LIMITATIONS AND DELIVERY
+This is a read-only audit of the installed application plus isolated fixture
+execution. It does not prove MariaDB concurrent writes, actual mail/queue delivery,
+browser JavaScript interactions or PDF/XLSX binary/layout output. CSV output and
+Excel calculation code were exercised. Supplier email jobs were faked, not sent.
+The uploaded fixture document is under this audit's _checks/files directory;
+no real supplier uploads or storage files were changed.
+This REPORT.txt is a report, not replacement PHP code. The next repair set needs
+complete PHP/Blade TXT files plus a non-destructive migration, because actor
+relationships and ratings cannot be fully repaired with controller files alone.

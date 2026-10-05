@@ -1,0 +1,1081 @@
+{
+    "menu_entries": 31,
+    "unique_destinations": 30,
+    "results": [
+        {
+            "label": "Brand / Dashboard",
+            "route": "admin.dashboard",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/dashboard",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/dashboard",
+            "action": "App\\Http\\Controllers\\Admin\\DashboardController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.dashboard",
+            "controller_exists": true,
+            "controller_line": 19,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\DashboardController.php",
+            "views": [
+                {
+                    "name": "admin.dashboard",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": []
+        },
+        {
+            "label": "Dashboard",
+            "route": "admin.dashboard",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/dashboard",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/dashboard",
+            "action": "App\\Http\\Controllers\\Admin\\DashboardController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.dashboard",
+            "controller_exists": true,
+            "controller_line": 19,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\DashboardController.php",
+            "views": [
+                {
+                    "name": "admin.dashboard",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.dashboard"
+            ]
+        },
+        {
+            "label": "Orders",
+            "route": "admin.orders.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/orders",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/orders",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.orders.index",
+            "controller_exists": true,
+            "controller_line": 263,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\OrderController.php",
+            "views": [
+                {
+                    "name": "admin.orders.partials.table",
+                    "exists": true
+                },
+                {
+                    "name": "admin.orders.partials.pagination",
+                    "exists": true
+                },
+                {
+                    "name": "admin.orders.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.orders.*"
+            ]
+        },
+        {
+            "label": "Archived Orders",
+            "route": "admin.orders.archived",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/orders/archived",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/orders/archived",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@archived",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.orders.archived",
+            "controller_exists": true,
+            "controller_line": 2761,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\OrderController.php",
+            "views": [
+                {
+                    "name": "admin.orders.archived",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.orders.archived",
+                "admin.orders.restore",
+                "admin.orders.bulk-restore"
+            ]
+        },
+        {
+            "label": "Payment Verifications",
+            "route": "admin.payment-verifications.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/payment-verifications",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/payment-verifications",
+            "action": "App\\Http\\Controllers\\Admin\\PaymentVerificationController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.payment-verifications.index",
+            "controller_exists": true,
+            "controller_line": 83,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\PaymentVerificationController.php",
+            "views": [
+                {
+                    "name": "admin.payment-verifications.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.payment-verifications.*"
+            ]
+        },
+        {
+            "label": "Products",
+            "route": "admin.products.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/products",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/products",
+            "action": "App\\Http\\Controllers\\Admin\\ProductController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.products.index",
+            "controller_exists": true,
+            "controller_line": 31,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\ProductController.php",
+            "views": [
+                {
+                    "name": "admin.products.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.products.*"
+            ]
+        },
+        {
+            "label": "Product Categories",
+            "route": "admin.product-categories.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/product-categories",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/product-categories",
+            "action": "App\\Http\\Controllers\\Admin\\ProductCategoryController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.product-categories.index",
+            "controller_exists": true,
+            "controller_line": 18,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\ProductCategoryController.php",
+            "views": [
+                {
+                    "name": "admin.product-categories.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.product-categories.*"
+            ]
+        },
+        {
+            "label": "Product Tags",
+            "route": "admin.product-tags.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/product-tags",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/product-tags",
+            "action": "App\\Http\\Controllers\\Admin\\ProductTagController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.product-tags.index",
+            "controller_exists": true,
+            "controller_line": 14,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\ProductTagController.php",
+            "views": [
+                {
+                    "name": "admin.product-tags.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.product-tags.*"
+            ]
+        },
+        {
+            "label": "Coupons",
+            "route": "admin.coupons.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/coupons",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/coupons",
+            "action": "App\\Http\\Controllers\\Admin\\CouponController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.coupons.index",
+            "controller_exists": true,
+            "controller_line": 20,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\CouponController.php",
+            "views": [
+                {
+                    "name": "admin.coupons.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.coupons.*"
+            ]
+        },
+        {
+            "label": "Inventory Alerts",
+            "route": "admin.inventory-alerts.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/inventory-alerts",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/inventory-alerts",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryAlertController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.inventory-alerts.index",
+            "controller_exists": true,
+            "controller_line": 15,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\InventoryAlertController.php",
+            "views": [
+                {
+                    "name": "admin.inventory-alerts.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.inventory-alerts.*"
+            ]
+        },
+        {
+            "label": "Inventory History",
+            "route": "admin.inventory-history.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/inventory-history",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/inventory-history",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryHistoryController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.inventory-history.index",
+            "controller_exists": true,
+            "controller_line": 14,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\InventoryHistoryController.php",
+            "views": [
+                {
+                    "name": "admin.inventory-history.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.inventory-history.*"
+            ]
+        },
+        {
+            "label": "Inventory Reports",
+            "route": "admin.inventory-reports.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/inventory-reports",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/inventory-reports",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryReportController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.inventory-reports.index",
+            "controller_exists": true,
+            "controller_line": 19,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\InventoryReportController.php",
+            "views": [
+                {
+                    "name": "admin.inventory-reports.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.inventory-reports.*"
+            ]
+        },
+        {
+            "label": "Stock Valuation",
+            "route": "admin.stock-valuation.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/stock-valuation",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/stock-valuation",
+            "action": "App\\Http\\Controllers\\Admin\\StockValuationController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.stock-valuation.index",
+            "controller_exists": true,
+            "controller_line": 21,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\StockValuationController.php",
+            "views": [
+                {
+                    "name": "admin.stock-valuation.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.stock-valuation.*"
+            ]
+        },
+        {
+            "label": "Reorder Dashboard",
+            "route": "admin.reorder-dashboard.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/reorder-dashboard",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/reorder-dashboard",
+            "action": "App\\Http\\Controllers\\Admin\\ReorderDashboardController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.reorder-dashboard.index",
+            "controller_exists": true,
+            "controller_line": 19,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\ReorderDashboardController.php",
+            "views": [
+                {
+                    "name": "admin.reorder-dashboard.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.reorder-dashboard.*"
+            ]
+        },
+        {
+            "label": "Purchase Orders",
+            "route": "admin.purchase-orders.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/purchase-orders",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/purchase-orders",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.purchase-orders.index",
+            "controller_exists": true,
+            "controller_line": 143,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\PurchaseOrderController.php",
+            "views": [
+                {
+                    "name": "admin.purchase-orders.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.purchase-orders.*"
+            ]
+        },
+        {
+            "label": "Suppliers",
+            "route": "admin.suppliers.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/suppliers",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/suppliers",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.suppliers.index",
+            "controller_exists": true,
+            "controller_line": 18,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\SupplierController.php",
+            "views": [
+                {
+                    "name": "admin.suppliers.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.suppliers.*"
+            ]
+        },
+        {
+            "label": "Customers",
+            "route": "admin.customers.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/customers",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/customers",
+            "action": "App\\Http\\Controllers\\Admin\\CustomerController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.customers.index",
+            "controller_exists": true,
+            "controller_line": 14,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\CustomerController.php",
+            "views": [
+                {
+                    "name": "admin.customers.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.customers.*"
+            ]
+        },
+        {
+            "label": "Reviews",
+            "route": "admin.reviews.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/reviews",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/reviews",
+            "action": "App\\Http\\Controllers\\Admin\\ReviewController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.reviews.index",
+            "controller_exists": true,
+            "controller_line": 14,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\ReviewController.php",
+            "views": [
+                {
+                    "name": "admin.reviews.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.reviews.*"
+            ]
+        },
+        {
+            "label": "Blog Posts",
+            "route": "admin.posts.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/posts",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/posts",
+            "action": "App\\Http\\Controllers\\Admin\\PostController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.posts.index",
+            "controller_exists": true,
+            "controller_line": 31,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\PostController.php",
+            "views": [
+                {
+                    "name": "admin.posts.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.posts.*"
+            ]
+        },
+        {
+            "label": "Blog Categories",
+            "route": "admin.categories.index",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/categories",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/categories",
+            "action": "App\\Http\\Controllers\\Admin\\CategoryController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.categories.index",
+            "controller_exists": true,
+            "controller_line": 15,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\CategoryController.php",
+            "views": [
+                {
+                    "name": "admin.categories.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.categories.*"
+            ]
+        },
+        {
+            "label": "Store Settings",
+            "route": "admin.settings.edit",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "admin/ecommerce-settings",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/ecommerce-settings",
+            "action": "App\\Http\\Controllers\\Admin\\EcommerceSettingController@edit",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.settings.edit",
+            "controller_exists": true,
+            "controller_line": 12,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\EcommerceSettingController.php",
+            "views": [
+                {
+                    "name": "admin.settings.edit",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.settings.*"
+            ]
+        },
+        {
+            "label": "View Website",
+            "route": "home-page",
+            "source": "resources/views/admin/partials/sidebar.blade.php",
+            "exists": true,
+            "uri": "/",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000",
+            "action": "App\\Http\\Controllers\\HomeController@index",
+            "middleware": [
+                "web"
+            ],
+            "matched_route": "home-page",
+            "controller_exists": true,
+            "controller_line": 10,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\HomeController.php",
+            "views": [
+                {
+                    "name": "home",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": []
+        },
+        {
+            "label": "CMS Pages",
+            "route": "admin.pages.index",
+            "source": "resources/views/admin/partials/administration-links.blade.php",
+            "exists": true,
+            "uri": "admin/pages",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/pages",
+            "action": "App\\Http\\Controllers\\Admin\\AdminPageController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.pages.index",
+            "controller_exists": true,
+            "controller_line": 17,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\AdminPageController.php",
+            "views": [
+                {
+                    "name": "admin.pages.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.pages.*"
+            ]
+        },
+        {
+            "label": "Menu Builder",
+            "route": "admin.navigation-menus.index",
+            "source": "resources/views/admin/partials/administration-links.blade.php",
+            "exists": true,
+            "uri": "admin/navigation-menus",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/navigation-menus",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNavigationMenuController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.navigation-menus.index",
+            "controller_exists": true,
+            "controller_line": 13,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\AdminNavigationMenuController.php",
+            "views": [
+                {
+                    "name": "admin.navigation-menus.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.navigation-menus.*"
+            ]
+        },
+        {
+            "label": "Global Analytics",
+            "route": "admin.analytics.index",
+            "source": "resources/views/admin/partials/administration-links.blade.php",
+            "exists": true,
+            "uri": "admin/analytics",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/analytics",
+            "action": "App\\Http\\Controllers\\Admin\\AdminAnalyticsController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.analytics.index",
+            "controller_exists": true,
+            "controller_line": 20,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\AdminAnalyticsController.php",
+            "views": [
+                {
+                    "name": "admin.analytics.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.analytics.*"
+            ]
+        },
+        {
+            "label": "Admin Team",
+            "route": "admin.admin-users.index",
+            "source": "resources/views/admin/partials/administration-links.blade.php",
+            "exists": true,
+            "uri": "admin/admin-users",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/admin-users",
+            "action": "App\\Http\\Controllers\\Admin\\AdminUserController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.admin-users.index",
+            "controller_exists": true,
+            "controller_line": 18,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\AdminUserController.php",
+            "views": [
+                {
+                    "name": "admin.admin-users.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.admin-users.*"
+            ]
+        },
+        {
+            "label": "Roles & Permissions",
+            "route": "admin.admin-roles.index",
+            "source": "resources/views/admin/partials/administration-links.blade.php",
+            "exists": true,
+            "uri": "admin/admin-roles",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/admin-roles",
+            "action": "App\\Http\\Controllers\\Admin\\AdminRoleController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.admin-roles.index",
+            "controller_exists": true,
+            "controller_line": 16,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\AdminRoleController.php",
+            "views": [
+                {
+                    "name": "admin.admin-roles.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.admin-roles.*"
+            ]
+        },
+        {
+            "label": "Notification Center",
+            "route": "admin.notifications.index",
+            "source": "resources/views/admin/partials/administration-links.blade.php",
+            "exists": true,
+            "uri": "admin/notifications",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/notifications",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNotificationController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.notifications.index",
+            "controller_exists": true,
+            "controller_line": 17,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\AdminNotificationController.php",
+            "views": [
+                {
+                    "name": "admin.notifications.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.notifications.*"
+            ]
+        },
+        {
+            "label": "Audit Logs",
+            "route": "admin.audit-logs.index",
+            "source": "resources/views/admin/partials/administration-links.blade.php",
+            "exists": true,
+            "uri": "admin/audit-logs",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/audit-logs",
+            "action": "App\\Http\\Controllers\\Admin\\AdminAuditLogController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.audit-logs.index",
+            "controller_exists": true,
+            "controller_line": 15,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\AdminAuditLogController.php",
+            "views": [
+                {
+                    "name": "admin.audit-logs.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.audit-logs.*"
+            ]
+        },
+        {
+            "label": "Backups",
+            "route": "admin.backups.index",
+            "source": "resources/views/admin/partials/administration-links.blade.php",
+            "exists": true,
+            "uri": "admin/backups",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/backups",
+            "action": "App\\Http\\Controllers\\Admin\\AdminBackupController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.backups.index",
+            "controller_exists": true,
+            "controller_line": 18,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\AdminBackupController.php",
+            "views": [
+                {
+                    "name": "admin.backups.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.backups.*"
+            ]
+        },
+        {
+            "label": "Email Templates",
+            "route": "admin.email-templates.index",
+            "source": "resources/views/admin/partials/administration-links.blade.php",
+            "exists": true,
+            "uri": "admin/email-templates",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "url": "http://127.0.0.1:8000/admin/email-templates",
+            "action": "App\\Http\\Controllers\\Admin\\AdminEmailTemplateController@index",
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "matched_route": "admin.email-templates.index",
+            "controller_exists": true,
+            "controller_line": 15,
+            "controller_file": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\AdminEmailTemplateController.php",
+            "views": [
+                {
+                    "name": "admin.email-templates.index",
+                    "exists": true
+                }
+            ],
+            "explicit_permission_check": false,
+            "active_patterns": [
+                "admin.email-templates.*"
+            ]
+        }
+    ],
+    "logout": {
+        "name": "admin.logout",
+        "exists": true,
+        "methods": [
+            "POST"
+        ],
+        "action": "App\\Http\\Controllers\\Admin\\Auth\\AdminAuthenticatedSessionController@destroy"
+    },
+    "broken_targets": [],
+    "active_overlaps": {
+        "admin.orders.archived": [
+            "Orders",
+            "Archived Orders"
+        ]
+    },
+    "index_routes_without_direct_sidebar_entry": [
+        "admin.purchase-orders.receiving.index",
+        "admin.suppliers.products.index"
+    ]
+}

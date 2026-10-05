@@ -1,0 +1,129 @@
+ARIZONAOUTFITS CUSTOMER / ADMIN SYNCHRONIZATION AUDIT
+Date: 3 October 2026 (Asia/Karachi)
+Project: C:\xampp\htdocs\ArizonaOutfits
+Verdict: MOST CORE FLOWS PASS, BUT NOT FULLY SYNCHRONIZED.
+
+SCOPE AND METHOD
+Reviewed current installed customer controllers, authentication routes, models,
+admin customer/order behavior and shared Store Settings. Executed controller and
+render checks against isolated SQLite fixtures, using current installed classes.
+Mail, notifications and jobs were faked. No production customer/order records
+were changed, no payment was charged, and no replacement was installed.
+This is an application audit, not a complete browser or live-provider acceptance test.
+
+RESULTS
+- Customer/account checks: 51 total; 41 PASS, 10 ISSUE, 0 test errors.
+  These 10 failed assertions overlap across the findings below.
+- Checkout/settings checks: 54 PASS, 0 failures.
+- Eight customer pages rendered: overview, order list, order detail, invoice,
+  profile, login/security, favorites and public tracking.
+- 65 customer/storefront/auth routes point to existing controller methods.
+  This does not establish that every route has passed an end-to-end browser test.
+
+CONFIRMED ISSUES
+
+1. HIGH: Verified email change does not update the email login identity.
+File: app/Http/Controllers/Customer/AccountSecurityController.php
+Method: verifyEmailChange
+The users.email field changes, but the connected custom CustomerEmailIdentity
+retains the previous email and normalized_email. Reproduction confirmed that
+login with the new verified address fails while login with the previous address
+continues to succeed. Admin/contact records therefore disagree with login.
+Required correction: atomically synchronize the custom identity with the verified
+email, checking identity uniqueness and preserving the verification state.
+
+2. MEDIUM: Two password-change routes enforce different security rules.
+File: app/Http/Controllers/Auth/PasswordController.php
+Route: PUT /password
+This route updates only the password hash. Unlike the account security password
+route, it does not record password history. A password changed here can then be
+reused through the account security route. The fixture test reproduced both steps.
+Required correction: use the same PasswordSecurityService and account checks in
+both password-change paths, including the same history and session-token policy.
+
+3. HIGH: Customer self-deletion bypasses admin order-history protection.
+File: app/Http/Controllers/ProfileController.php
+Method: destroy
+Admin CustomerController refuses to delete customers with current or archived
+orders. The customer self-delete path checks the password and deletes the user
+without that history check. The fixture test deleted a user with an archived paid
+order. Production foreign-key consequences were not tested: this report does not
+claim that production order records were deleted.
+Required correction: share the admin retention check and locking with self-delete.
+
+4. MEDIUM: Customer self-deletion clears the independent admin session.
+File: app/Http/Controllers/ProfileController.php
+Method: destroy
+The method invalidates the whole shared session. A concurrent admin guard login
+is lost. Ordinary customer logout and blocked-customer middleware passed the
+separate-guard test; self-delete is inconsistent with those implementations.
+Required correction: log out and clear the customer guard/session state while
+preserving the independent admin session.
+
+5. LOW: Archived order confirmation URL returns not found.
+File: app/Http/Controllers/CheckoutController.php
+Method: thankYou
+My Orders, order detail, invoice and tracking can retrieve archived orders, but
+thankYou uses the default non-trashed query. The same archived order is accessible
+in My Orders but its confirmation URL fails. Either align the lookup while
+retaining owner/guest authorization, or explicitly define that URL as temporary.
+
+INSTALLED ADMIN DEPENDENCIES NEED ATTENTION
+
+6. app/Services/AdminAccessPolicy.php is missing.
+Installed AdminUserController and AdminRoleController call this service. Team/role
+mutations that reach those calls cannot resolve the class. This is an installation
+gap, not a failed customer order-ownership check.
+Prepared replacement: administration-fixes/20_AdminAccessPolicy.php.txt
+See the previous administration manifest for the exact numbered replacement.
+
+7. app/Models/PurchaseOrderReceipt.php lacks receiverAdmin().
+The installed model lacks the updated administrator attribution relation expected
+by the newer purchasing implementation. Receipt attribution/display must be
+aligned before declaring the entire admin and inventory set synchronized.
+Use the prepared PurchaseOrderReceipt replacement listed in the admin manifest.
+
+WORKING SYNCHRONIZATION VERIFIED
+- Customer order lists, counts and paid spend match admin data, including archives.
+- Another customer's detail/invoice/PDF requests are denied.
+- Private admin notes, admin_notes and internal-only activities are not displayed
+  in the customer order view; permitted order/payment updates are displayed.
+- Admin name/status changes propagate to the customer account.
+- Blocked customers are denied and customer-only logout preserves admin login.
+- Tracking requires the order number plus a matching order email.
+- Favorites are isolated per customer; approved review scope excludes pending and
+  rejected reviews. This is not a claim of exhaustive review form browser testing.
+- Saved currency, prefix, shipping, tax, free-shipping threshold and checkout
+  notices are reflected in checkout and order snapshots.
+- COD starts unpaid and reserves stock once; cancellation restores once.
+- Bank transfer waits for verification. COD collection records payment/coupon use
+  once and cannot be silently reset to pending.
+- Stock-management policy remains consistent for existing order snapshots after
+  Store Settings change.
+- Maintenance mode and guest-checkout settings are applied; payment-return and
+  webhook paths remain reachable under the maintenance policy.
+
+LIVE SERVICES / LIMITS
+- Stripe charging/webhook signatures require the planned live-server test.
+- Account-security phone verification currently delivers OTPs through local
+  development logs only. deliverDevelopmentOtp rejects non-local environments
+  because an SMS provider is not configured. Live SMS is not verified.
+- Google/Facebook provider callbacks and real email delivery were not tested
+  against external accounts in this audit.
+- Fixture tests validate installed application behavior, not production database
+  schema completeness, email transport, deployment configuration or all UI clicks.
+
+EVIDENCE FILES
+checks.json: individual customer checks and failures.
+checkout-checks.json: 54 shared settings/checkout checks.
+page-checks.json: eight page render results.
+routes.json: controller-action and middleware inventory.
+installed-set.json: normalized comparison against the prepared admin set.
+source-integrity.json: application source unchanged during the audit.
+
+NEXT WORK
+Correct the account email/password/deletion mismatches, then complete the missing
+admin dependencies and rerun the same checks. Do not mark all customer/admin
+menus passed based on successful page rendering alone.
+
+Source integrity: 429 application source files checked; 0 changed.

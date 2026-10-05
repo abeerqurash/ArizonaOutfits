@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Product Tags | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    <style>
+.tag-index-header{margin-bottom:18px}.tag-index-header h2{margin:4px 0;color:#0f172a;font-size:24px;font-weight:800}.tag-index-header p{color:#7b8497;font-size:12px}
+.tag-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.tag-stat-grid .admin-stat-card{display:flex;align-items:center;gap:12px;min-height:100px;padding:16px;border:1px solid #e6eaf1;border-radius:11px;background:#fff;box-shadow:none}
+.tag-stat-grid .admin-stat-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:#eeedff;color:#635bff}
+.tag-stat-grid span{display:block;color:#7b8497;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}.tag-stat-grid strong{display:block;margin-top:4px;color:#172033;font-size:20px}
+.tag-filter-panel,.tag-list-panel{border:1px solid #e6eaf1!important;border-radius:11px!important;background:#fff!important;box-shadow:none!important}.tag-filter-panel{padding:14px;margin-bottom:16px}
+.tag-filter-form{display:flex;align-items:center;gap:9px}.tag-search{position:relative;flex:1}.tag-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#98a2b3;font-size:10px}.tag-search input{width:100%;min-height:40px;padding:0 12px 0 33px;border:1px solid #e0e5ed;border-radius:7px;font-size:11px}.tag-search input:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.10);outline:none}
+.tag-list-panel{overflow:hidden}.tag-panel-top{display:flex;align-items:center;justify-content:space-between;padding:17px 18px;border-bottom:1px solid #edf0f4}.tag-panel-top h3{margin:3px 0 0;color:#172033;font-size:14px}.tag-result-count{padding:5px 8px;border-radius:999px;background:#f3f4f7;color:#667085;font-size:9px;font-weight:700}
+.tag-table-wrap{overflow-x:auto}.tag-table{width:100%;border-collapse:collapse}.tag-table th{padding:10px 14px;border-bottom:1px solid #edf0f4;background:#fafbfc;color:#7b8497;font-size:8px;font-weight:800;letter-spacing:.07em;text-align:left;text-transform:uppercase}.tag-table td{padding:12px 14px;border-bottom:1px solid #f0f2f5;color:#667085;font-size:10px}.tag-table tr:last-child td{border-bottom:0}.tag-name-cell{display:flex;align-items:center;gap:10px}.tag-name-cell strong{display:block;color:#172033;font-size:11px}.tag-name-cell small{display:block;margin-top:2px;color:#98a2b3;font-size:8px}.tag-icon{display:flex;align-items:center;justify-content:center;width:31px;height:31px;border-radius:7px;background:#f3f2ff;color:#635bff}.tag-table code{padding:4px 6px;border-radius:5px;background:#f7f8fa;color:#596273;font-size:9px}
+.tag-count-pill{display:inline-flex;padding:5px 8px;border-radius:999px;font-size:8px;font-weight:800}.tag-count-pill.is-used{background:#eaf8f1;color:#13875b}.tag-count-pill.is-unused{background:#f2f4f7;color:#667085}
+.tag-actions-head{text-align:right!important}.tag-actions{display:flex;justify-content:flex-end;gap:6px}.tag-action-button{display:inline-flex;align-items:center;justify-content:center;width:31px;height:31px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#667085;cursor:pointer}.tag-action-button:hover{border-color:#c9c6ff;background:#f5f4ff;color:#635bff}.tag-action-danger:hover{border-color:#fecaca;background:#fff5f5;color:#d14343}
+.tag-empty{padding:55px 20px;text-align:center}.tag-empty>span{display:flex;align-items:center;justify-content:center;width:50px;height:50px;margin:0 auto 12px;border-radius:12px;background:#f3f2ff;color:#635bff}.tag-empty h3{margin:0;color:#172033;font-size:14px}.tag-empty p{margin:6px 0 0;color:#98a2b3;font-size:10px}.tag-pagination{padding:14px 18px;border-top:1px solid #edf0f4}
+.tag-popup[hidden]{display:none!important}.tag-popup{position:fixed;inset:0;z-index:13000;display:flex;align-items:center;justify-content:center;padding:20px}.tag-popup-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}.tag-popup-dialog{position:relative;z-index:2;width:100%;max-width:440px;padding:30px;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.24);text-align:center}.tag-popup-x{position:absolute;top:12px;right:12px;width:32px;height:32px;border:0;border-radius:7px;background:#f3f5f8;color:#687386;cursor:pointer}.tag-popup-icon{display:flex;align-items:center;justify-content:center;width:58px;height:58px;margin:0 auto 15px;border-radius:50%;font-size:20px}.tag-popup-icon-success{background:#eaf8f1;color:#13875b}.tag-popup-icon-warning{background:#fff4df;color:#d88716}.tag-popup-dialog h3{margin:5px 0 8px;color:#172033;font-size:18px}.tag-popup-dialog p{margin:0;color:#687386;font-size:11px;line-height:1.6}.tag-popup-actions{display:flex;justify-content:center;gap:8px;margin-top:20px}.tag-delete-confirm{border:1px solid #d14343;background:#d14343;color:#fff}
+@media(max-width:850px){.tag-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.tag-stat-grid{grid-template-columns:1fr}.tag-filter-form{align-items:stretch;flex-direction:column}.tag-popup-actions{flex-direction:column}.tag-popup-actions>*{width:100%}}
+</style>
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Product Tags</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                
+<div class="admin-page-header tag-index-header">
+    <div>
+        <span class="admin-page-eyebrow">Catalog organization</span>
+        <h2>Product Tags</h2>
+        <p>Create and manage reusable product labels without losing visibility of where each tag is used.</p>
+    </div>
+    <div class="admin-page-actions">
+        <a href="http://127.0.0.1:8000/admin/product-tags/create" class="admin-button admin-button-primary">
+            <i class="fa-solid fa-plus"></i>
+            Create Tag
+        </a>
+    </div>
+</div>
+
+<div class="tag-stat-grid">
+    <div class="admin-stat-card"><div class="admin-stat-icon"><i class="fa-solid fa-tags"></i></div><div><span>Total Tags</span><strong>0</strong></div></div>
+    <div class="admin-stat-card"><div class="admin-stat-icon"><i class="fa-solid fa-link"></i></div><div><span>Tags In Use</span><strong>0</strong></div></div>
+    <div class="admin-stat-card"><div class="admin-stat-icon"><i class="fa-solid fa-tag"></i></div><div><span>Unused Tags</span><strong>0</strong></div></div>
+    <div class="admin-stat-card"><div class="admin-stat-icon"><i class="fa-solid fa-boxes-stacked"></i></div><div><span>Assignments</span><strong>0</strong></div></div>
+</div>
+
+<section class="admin-panel tag-filter-panel">
+    <form method="GET" action="http://127.0.0.1:8000/admin/product-tags" class="tag-filter-form">
+        <div class="tag-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" name="search" value="" placeholder="Search title or slug...">
+        </div>
+        <button type="submit" class="admin-button admin-button-primary"><i class="fa-solid fa-filter"></i> Filter</button>
+            </form>
+</section>
+
+<section class="admin-panel tag-list-panel">
+    <div class="tag-panel-top">
+        <div>
+            <span class="admin-page-eyebrow">Tag directory</span>
+            <h3>All Product Tags</h3>
+        </div>
+        <span class="tag-result-count">0 results</span>
+    </div>
+
+            <div class="tag-empty"><span><i class="fa-solid fa-tags"></i></span><h3>No product tags found</h3><p>Create your first tag to start organizing products.</p></div>
+    </section>
+
+<div class="tag-popup" id="tagDeletePopup" hidden role="dialog" aria-modal="true">
+    <div class="tag-popup-backdrop" data-delete-close></div>
+    <div class="tag-popup-dialog">
+        <button type="button" class="tag-popup-x" data-delete-close aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+        <div class="tag-popup-icon tag-popup-icon-warning"><i class="fa-solid fa-trash"></i></div>
+        <span class="admin-page-eyebrow">Delete product tag</span>
+        <h3 id="tagDeleteTitle">Delete this tag?</h3>
+        <p id="tagDeleteMessage">This action cannot be undone.</p>
+        <div class="tag-popup-actions">
+            <button type="button" class="admin-button admin-button-secondary" data-delete-close>Cancel</button>
+            <form method="POST" id="tagDeleteForm"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"> <input type="hidden" name="_method" value="DELETE"><button type="submit" class="admin-button tag-delete-confirm"><i class="fa-solid fa-trash"></i> Delete Tag</button></form>
+        </div>
+    </div>
+</div>
+
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+    <script>
+'use strict';
+document.addEventListener('DOMContentLoaded', function () {
+    const deletePopup = document.getElementById('tagDeletePopup');
+    const deleteForm = document.getElementById('tagDeleteForm');
+    const deleteTitle = document.getElementById('tagDeleteTitle');
+    const deleteMessage = document.getElementById('tagDeleteMessage');
+
+    document.querySelectorAll('[data-delete-tag]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const count = Number(button.dataset.productCount || 0);
+            const title = button.dataset.tagTitle || 'this tag';
+
+            deleteTitle.textContent = count > 0 ? 'Tag is currently in use' : 'Delete “' + title + '”?';
+            deleteMessage.textContent = count > 0
+                ? 'This tag is assigned to ' + count + ' product' + (count === 1 ? '' : 's') + '. Remove it from those products before deleting.'
+                : 'This action permanently deletes the tag. It cannot be undone.';
+
+            deleteForm.action = button.dataset.deleteUrl;
+            deleteForm.style.display = count > 0 ? 'none' : '';
+            deletePopup.hidden = false;
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    function closeDelete() {
+        if (!deletePopup) return;
+        deletePopup.hidden = true;
+        document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-delete-close]').forEach(function (button) {
+        button.addEventListener('click', closeDelete);
+    });
+
+    const feedback = document.getElementById('tagFeedbackPopup');
+
+    if (feedback) {
+        document.body.style.overflow = 'hidden';
+        feedback.querySelectorAll('[data-feedback-close]').forEach(function (button) {
+            button.addEventListener('click', function () {
+                feedback.remove();
+                document.body.style.overflow = '';
+            });
+        });
+    }
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            closeDelete();
+        }
+    });
+});
+</script>
+    <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

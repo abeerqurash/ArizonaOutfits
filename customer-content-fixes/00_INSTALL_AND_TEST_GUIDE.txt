@@ -1,0 +1,112 @@
+CUSTOMERS, REVIEWS, BLOG POSTS AND BLOG CATEGORIES
+13 separate complete TXT files. Prepared 1 October 2026.
+
+WHAT CHANGED
+- Module permissions protect both sidebar links and direct/admin action URLs.
+- Customers retain current and archived order history; either prevents deletion.
+- Spending counts paid purchases only, excluding cancelled/refunded orders.
+  Different currencies are shown separately, with no exchange conversion.
+- Blocking/deactivating a customer removes access on the next web request,
+  including an already logged-in customer. Administrator sessions stay separate.
+- Reviews use the actual customer login; blocked customers and inactive products
+  cannot receive submissions. Phone customers without email can enter a review
+  contact email without changing their account's login or verification state.
+- Published/scheduled articles require their custom Blade file to exist. Drafts
+  can still be saved before the Blade file is created. Unsafe template names are
+  rejected; the existing manual article architecture is retained.
+- Category image cleanup preserves files shared by other categories.
+- Existing review moderation and post revision/slug redirects are preserved.
+
+INSTALLATION
+1. Back up your project files first. Open FILES.html or the list below.
+2. Replace ALL destination file contents with the corresponding complete TXT.
+   Create files marked NEW at the listed path. Keep the destination .php or
+   .blade.php extension; do not save installed files as .txt.
+3. Install all 13 files together. Two destinations have the name show.blade.php;
+   one is the customer admin page and one is the public product page.
+   ReviewController here is the PUBLIC controller, not Admin/ReviewController.
+4. Open PowerShell in the project folder and run:
+
+Set-Location 'C:\xampp\htdocs\ArizonaOutfits'
+& 'C:\xampp\php\php.exe' artisan optimize:clear
+
+5. Refresh your browser with Ctrl+F5. No migration is needed for this phase.
+   Existing database schema was checked read-only and supports these files.
+6. Ignore _staged, build.py, deliver.py and JSON files; they are preparation/test
+   evidence and should not be copied into the application.
+
+WHAT TO TEST
+Customers:
+- Search by name/email/phone, filter status, open details and update a name.
+- Confirm archived orders appear and prevent deleting their customer.
+- Confirm unpaid orders do not increase spending; currency codes are accurate.
+- Block a customer who is logged in using another browser/session. Their next
+  account request should return them to login. Unblock to allow login again.
+Reviews:
+- Submit a product review, approve it, then reject it: public visibility follows
+  the approved status. Try search, rating filter and delete a disposable review.
+- Verify phone-only customer can supply a contact email for the review.
+Blog Posts:
+- Create/edit a draft with categories and a primary category.
+- Before publishing/scheduling, create the corresponding custom article file:
+  resources/views/blogs/posts/YOUR-TEMPLATE-NAME.blade.php
+  Enter YOUR-TEMPLATE-NAME in the Template Name field, without .blade.php.
+  A missing article file now produces a validation message; save as Draft until
+  it exists. Database content still does not replace your custom article body.
+- Update title/slug, verify revision history, restore a revision, and check that
+  the old public URL redirects. Confirm drafts/archived articles stay private.
+Blog Categories:
+- Create/edit/delete an unused category, add a child, and test category search.
+- A category used by posts or containing children must refuse deletion.
+- A category cannot be its own parent or use a descendant as its parent.
+Permissions:
+- Super administrator keeps access. Limited roles require customers.manage,
+  reviews.manage and content.manage for the relevant menus and actions.
+
+VERIFIED BEFORE DELIVERY
+85 isolated behavioral checks passed, including 9 admin page renders and the
+public product page for a phone customer. PHP syntax checks passed.
+Tests used SQLite memory and fixture storage; no customer records, live orders,
+live database data, actual uploaded files or application source were changed.
+Browser checks after you install remain necessary.
+
+EXACT FILE DESTINATIONS
+
+01_AdminMiddleware.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\app\Http\Middleware\AdminMiddleware.php
+
+02_sidebar.blade.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\partials\sidebar.blade.php
+
+03_CustomerSpendService.php.txt
+CREATE NEW: C:\xampp\htdocs\ArizonaOutfits\app\Services\CustomerSpendService.php
+
+04_CustomerController.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\CustomerController.php
+
+05_index.blade.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\customers\index.blade.php
+
+06_show.blade.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\customers\show.blade.php
+
+07_ReviewController.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\ReviewController.php
+
+08_show.blade.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\resources\views\products\show.blade.php
+
+09_CustomerAccountStatus.php.txt
+CREATE NEW: C:\xampp\htdocs\ArizonaOutfits\app\Http\Middleware\CustomerAccountStatus.php
+
+10_app.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\bootstrap\app.php
+
+11_PostController.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\PostController.php
+
+12_CategoryController.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\CategoryController.php
+
+13__form.blade.php.txt
+REPLACE COMPLETE FILE: C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\posts\_form.blade.php

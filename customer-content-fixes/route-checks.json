@@ -1,0 +1,541 @@
+{
+    "endpoints": [
+        {
+            "route": "admin.customers.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/customers",
+            "action": "App\\Http\\Controllers\\Admin\\CustomerController@index",
+            "views": [
+                "admin.customers.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.customers.show",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/customers/{customer}",
+            "action": "App\\Http\\Controllers\\Admin\\CustomerController@show",
+            "views": [
+                "admin.customers.show"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.customers.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/customers/{customer}",
+            "action": "App\\Http\\Controllers\\Admin\\CustomerController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.customers.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/customers/{customer}",
+            "action": "App\\Http\\Controllers\\Admin\\CustomerController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.reviews.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/reviews",
+            "action": "App\\Http\\Controllers\\Admin\\ReviewController@index",
+            "views": [
+                "admin.reviews.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.reviews.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/reviews/{review}",
+            "action": "App\\Http\\Controllers\\Admin\\ReviewController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.reviews.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/reviews/{review}",
+            "action": "App\\Http\\Controllers\\Admin\\ReviewController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.posts.revisions.restore",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/posts/{post}/revisions/{revision}/restore",
+            "action": "App\\Http\\Controllers\\Admin\\PostController@restoreRevision",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.posts.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/posts",
+            "action": "App\\Http\\Controllers\\Admin\\PostController@index",
+            "views": [
+                "admin.posts.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.posts.create",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/posts/create",
+            "action": "App\\Http\\Controllers\\Admin\\PostController@create",
+            "views": [
+                "admin.posts.create"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.posts.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/posts",
+            "action": "App\\Http\\Controllers\\Admin\\PostController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.posts.show",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/posts/{post}",
+            "action": "App\\Http\\Controllers\\Admin\\PostController@show",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.posts.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/posts/{post}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\PostController@edit",
+            "views": [
+                "admin.posts.edit"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.posts.update",
+            "methods": [
+                "PUT",
+                "PATCH"
+            ],
+            "uri": "admin/posts/{post}",
+            "action": "App\\Http\\Controllers\\Admin\\PostController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.posts.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/posts/{post}",
+            "action": "App\\Http\\Controllers\\Admin\\PostController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.categories.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/categories",
+            "action": "App\\Http\\Controllers\\Admin\\CategoryController@index",
+            "views": [
+                "admin.categories.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.categories.create",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/categories/create",
+            "action": "App\\Http\\Controllers\\Admin\\CategoryController@create",
+            "views": [
+                "admin.categories.create"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.categories.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/categories",
+            "action": "App\\Http\\Controllers\\Admin\\CategoryController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.categories.show",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/categories/{category}",
+            "action": "App\\Http\\Controllers\\Admin\\CategoryController@show",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.categories.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/categories/{category}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\CategoryController@edit",
+            "views": [
+                "admin.categories.edit"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.categories.update",
+            "methods": [
+                "PUT",
+                "PATCH"
+            ],
+            "uri": "admin/categories/{category}",
+            "action": "App\\Http\\Controllers\\Admin\\CategoryController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.categories.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/categories/{category}",
+            "action": "App\\Http\\Controllers\\Admin\\CategoryController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        }
+    ],
+    "literal_view_route_references": [
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/customers/index.blade.php",
+            "route": "admin.dashboard",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/customers/index.blade.php",
+            "route": "admin.customers.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/customers/index.blade.php",
+            "route": "admin.customers.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/customers/show.blade.php",
+            "route": "admin.customers.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/customers/show.blade.php",
+            "route": "admin.customers.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/customers/show.blade.php",
+            "route": "admin.orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/customers/show.blade.php",
+            "route": "admin.customers.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/reviews/index.blade.php",
+            "route": "admin.dashboard",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/reviews/index.blade.php",
+            "route": "admin.reviews.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/reviews/index.blade.php",
+            "route": "admin.reviews.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/reviews/index.blade.php",
+            "route": "admin.reviews.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/posts/edit.blade.php",
+            "route": "admin.posts.revisions.restore",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/posts/index.blade.php",
+            "route": "admin.posts.create",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/posts/index.blade.php",
+            "route": "admin.posts.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/posts/index.blade.php",
+            "route": "admin.posts.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/posts/index.blade.php",
+            "route": "admin.posts.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/posts/_form.blade.php",
+            "route": "admin.posts.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/posts/_form.blade.php",
+            "route": "admin.posts.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/posts/_form.blade.php",
+            "route": "admin.posts.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/categories/index.blade.php",
+            "route": "admin.categories.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/categories/index.blade.php",
+            "route": "admin.categories.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/categories/index.blade.php",
+            "route": "admin.categories.create",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/categories/index.blade.php",
+            "route": "admin.categories.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/categories/_form.blade.php",
+            "route": "admin.categories.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/categories/_form.blade.php",
+            "route": "admin.categories.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/customer-content-audit/_checks/../../resources/views/admin/categories/_form.blade.php",
+            "route": "admin.categories.store",
+            "registered": true
+        }
+    ]
+}

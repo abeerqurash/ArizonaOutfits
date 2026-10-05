@@ -1,0 +1,43 @@
+ARIZONA PRODUCT AND DASHBOARD UI UPDATE
+
+These are full replacement .txt files. No live application sources or live database
+were changed by this package. FILES.md lists every exact destination.
+
+1. Back up your current source and database.
+2. Replace all files listed in FILES.md, removing only the final .txt extension.
+   Create the new assets, partial and migration at their listed destination paths.
+3. In C:\xampp\htdocs\ArizonaOutfits run:
+   C:\xampp\php\php.exe artisan optimize:clear
+   C:\xampp\php\php.exe artisan migrate --force
+4. Refresh using Ctrl+F5 so the updated product and admin scripts load.
+
+VALUE ORDER
+In Product Create/Edit, use the up/down buttons beside the attribute values.
+Save the product. Each product stores its own order; shared values stay unchanged.
+The product page and quick view use the same order.
+
+CUSTOM SIZING
+Use attribute name Size with a Custom value. Generate the Custom variant and give
+it a price and available stock. Select Custom to reveal its measurement fields
+below the full size-button row. Fields are required only for Custom.
+Measurements appear in cart and checkout and are saved as order-item options.
+Admin order details/invoices already show those options; this package also adds
+them to the customer order details page. Old orders that never saved measurements
+cannot be reconstructed automatically; the complete flow applies to new orders.
+
+DASHBOARD CONTROLS
+Shared styling applies across the dashboard, including products, store settings,
+analytics, admin users/roles, notification center, audit logs and backups.
+Visible native single selects gain searchable dropdowns. Existing custom product
+selects are preserved. Date and datetime fields have a styled calendar button;
+typed dates remain available, and submitted values retain their original format.
+
+BACKUPS
+Backup Center now has Database, Full Store (database/uploads), and Complete Website.
+Complete Website includes database, application code, vendor, configuration/.env,
+public assets and private uploads. Excludes existing backups, Git, node_modules,
+runtime logs/cache and symlinks. Download remains authenticated/private.
+The archive includes credentials and private customer files. Keep it private.
+On restoration, create writable storage/framework and bootstrap/cache directories,
+import the database, verify .env settings, and recreate public/storage with
+artisan storage:link. Test restoration on a separate installation first.

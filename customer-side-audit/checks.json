@@ -1,0 +1,257 @@
+[
+    {
+        "result": "PASS",
+        "check": "Customer overview counts own active and archived orders",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Overview does not count another customer order",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer order list includes archived purchase",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Order search matches tracking number",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Invalid order filter rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cross-customer access denied: show",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cross-customer access denied: invoice",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cross-customer access denied: downloadInvoice",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Archived customer order detail remains accessible",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin and customer order counts agree",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin spending includes archived paid total",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer reads current admin payment\/order states",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer sees allowed status\/payment history",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Internal activity excluded",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Only customer-visible admin notes returned",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer order HTML hides admin\/private notes",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Visible admin note appears in customer HTML",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Tracking refuses wrong customer email",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Public tracking accepts matching order plus email",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Tracking hides internal activity and notes",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Other customer cannot open thank-you page",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Owner can open current order thank-you page",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Archived order thank-you remains consistent with My Orders",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin name update reaches customer profile",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin-blocked customer is denied next request",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Blocked customer loses only customer login",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Normal customer logout preserves admin session",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Favorite added for current customer",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Another customer cannot see favorites",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Favorite toggle removes only own item",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Pending customer review hidden publicly",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin approval publishes same customer review",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin rejection hides review again",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Verified email updates admin customer contact",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Verified email updates custom login identity",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "New verified email can sign in",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Previous email can no longer sign in",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Standard password route records password history",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Security route blocks previous password after standard password update",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer deletion respects archived order history like admin deletion",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer deletion preserves independent admin session",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin\/customer synchronization dependency AdminAccessPolicy exists",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Receipt administrator relation is installed",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Installed customer page renders: Overview",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Installed customer page renders: My Orders",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Installed customer page renders: Order Detail",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Installed customer page renders: Invoice",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Installed customer page renders: Profile",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Installed customer page renders: Login and Security",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Installed customer page renders: Favorites",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Installed customer page renders: Public Tracking",
+        "detail": ""
+    }
+]

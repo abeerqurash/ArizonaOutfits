@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="csrf-token"
+        content="7Ieggubzg7qGmjLBtHYB9UcPrX5yxvnuh8zma3aF"
+    >
+
+    <meta
+        name="robots"
+        content="noindex, nofollow"
+    >
+
+    <title>
+        My Profile | Arizona Outfits
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" media="print" onload="this.media='all'"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    >
+
+    <link
+        rel="stylesheet"
+        href="http://127.0.0.1:8123/asset/css/admin-dashboard.css?v=1790523448-24897"
+    >
+
+    <link
+        rel="stylesheet"
+        href="http://127.0.0.1:8123/asset/css/admin-hardening.css?v=1786227637-1868"
+    >
+
+    <style>
+.customer-dashboard-body{color:#172033}.customer-dashboard-content{min-height:calc(100vh - 142px)}
+.customer-page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}.customer-page-heading>div:first-child>span,.customer-panel-heading>div>span,.customer-form-card>header>span{display:block;margin-bottom:6px;color:#0f766e;font-size:11px;font-weight:900;letter-spacing:.11em;text-transform:uppercase}.customer-page-heading h2{margin:0;color:#172033;font-size:30px;line-height:1.2}.customer-page-heading p{margin:7px 0 0;color:#64748b;font-size:14px;line-height:1.6}
+.customer-primary-button,.customer-heading-actions a{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border-radius:9px;background:#172033;color:#fff;font-size:13px;font-weight:850;text-decoration:none}.customer-heading-actions{display:flex;flex-wrap:wrap;gap:9px}.customer-heading-actions a.secondary{border:1px solid #cbd5e1;background:#fff;color:#334155}
+.customer-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:22px}.customer-stat-card{display:flex;align-items:center;gap:15px;padding:20px;border:1px solid #e5eaf1;border-radius:14px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.04)}.customer-stat-icon{display:grid;flex:0 0 46px;width:46px;height:46px;place-items:center;border-radius:12px;background:#dbeafe;color:#1d4ed8;font-size:18px}.customer-stat-icon.amber{background:#fef3c7;color:#b45309}.customer-stat-icon.violet{background:#ede9fe;color:#7c3aed}.customer-stat-icon.green{background:#d1fae5;color:#047857}.customer-stat-card small,.customer-stat-card strong,.customer-stat-card p{display:block}.customer-stat-card small{color:#64748b;font-size:11px;font-weight:800;text-transform:uppercase}.customer-stat-card strong{margin-top:2px;color:#172033;font-size:25px}.customer-stat-card p{margin:2px 0 0;color:#94a3b8;font-size:11px}
+.customer-panel{overflow:hidden;border:1px solid #e5eaf1;border-radius:14px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.035)}.customer-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid #edf0f5}.customer-panel-heading h3{margin:0;color:#172033;font-size:17px}.customer-panel-heading a{color:#0f766e;font-size:12px;font-weight:850;text-decoration:none}.customer-table-wrap{overflow-x:auto}.customer-table{width:100%;min-width:760px;border-collapse:collapse}.customer-table th{padding:11px 16px;background:#f8fafc;color:#64748b;font-size:10px;font-weight:850;letter-spacing:.08em;text-align:left;text-transform:uppercase}.customer-table td{padding:15px 16px;border-top:1px solid #edf0f5;color:#475569;font-size:13px}.customer-table tbody tr:hover{background:#fafcfe}.customer-table td strong,.customer-table td small{display:block}.customer-table td strong{color:#172033}.customer-table td small{margin-top:4px;color:#94a3b8}.customer-status{display:inline-flex;padding:6px 9px;border-radius:999px;background:#f1f5f9;color:#475569;font-size:9px;font-weight:900;letter-spacing:.03em;text-transform:uppercase}.customer-status.processing,.customer-status.shipped{background:#dbeafe;color:#1d4ed8}.customer-status.completed,.customer-status.delivered,.customer-status.paid,.customer-status.succeeded{background:#d1fae5;color:#047857}.customer-status.cancelled,.customer-status.refunded,.customer-status.failed{background:#ffe4e6;color:#be123c}.customer-row-action{display:inline-flex;align-items:center;gap:7px;color:#0f766e;font-size:12px;font-weight:850;text-decoration:none}.customer-empty{padding:55px 20px;text-align:center}.customer-empty>span{display:grid;width:54px;height:54px;margin:auto;place-items:center;border-radius:15px;background:#f1f5f9;color:#64748b;font-size:22px}.customer-empty h3{margin:13px 0 5px}.customer-empty p{margin:0 0 15px;color:#64748b}.customer-empty a{color:#0f766e;font-weight:850;text-decoration:none}
+.customer-filters{display:flex;align-items:flex-end;gap:10px;padding:18px 20px;border-bottom:1px solid #edf0f5}.customer-filters label{display:grid;flex:1;gap:6px}.customer-filters label span,.customer-field>span{color:#475569;font-size:11px;font-weight:850}.customer-filters input,.customer-filters select,.customer-field input{width:100%;min-height:42px;box-sizing:border-box;padding:9px 11px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#172033;font:inherit}.customer-filters button,.customer-filters>a{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:0 14px;border:0;border-radius:8px;background:#172033;color:#fff;font-size:12px;font-weight:850;text-decoration:none;cursor:pointer}.customer-filters>a{background:#f1f5f9;color:#475569}.customer-pagination{padding:16px 20px}
+.customer-order-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,1fr);gap:18px}.customer-totals{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:18px}.customer-totals>div{padding:13px;border-radius:10px;background:#f8fafc}.customer-totals small,.customer-totals strong{display:block}.customer-totals small{color:#64748b;font-size:11px}.customer-totals strong{margin-top:4px;font-size:13px}.customer-totals .grand-total{background:#172033;color:#fff}.customer-totals .grand-total small{color:#cbd5e1}.customer-delivery-card{align-self:start}.customer-address{display:flex;gap:12px;padding:20px;border-bottom:1px solid #edf0f5}.customer-address-icon{display:grid;flex:0 0 38px;width:38px;height:38px;place-items:center;border-radius:10px;background:#ecfdf5;color:#047857}.customer-address p{margin:0;color:#64748b;font-size:13px;line-height:1.7}.customer-address strong{color:#172033}.customer-detail-list{margin:0;padding:8px 20px}.customer-detail-list>div{display:flex;justify-content:space-between;gap:15px;padding:11px 0;border-bottom:1px solid #edf0f5}.customer-detail-list dt{color:#64748b;font-size:12px}.customer-detail-list dd{margin:0;color:#172033;font-size:12px;font-weight:800;text-align:right}.customer-order-updates{padding:5px 20px 18px}.customer-order-updates h4{margin:12px 0}.customer-order-updates p{padding:10px;border-radius:8px;background:#f8fafc;color:#64748b;font-size:12px;line-height:1.6}
+.customer-profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.customer-form-card{padding:22px}.customer-form-card.danger{grid-column:1/-1}.customer-form-card>header{margin-bottom:18px}.customer-form-card h3{margin:0;font-size:18px}.customer-form-card header p{margin:6px 0 0;color:#64748b;font-size:13px;line-height:1.6}.customer-field{display:grid;gap:6px;margin-bottom:14px}.customer-field small{color:#be123c;font-size:11px}.customer-form-actions{display:flex;align-items:center;gap:12px}.customer-form-actions button,.customer-delete-account button{min-height:41px;padding:0 14px;border:0;border-radius:8px;background:#172033;color:#fff;font-weight:850;cursor:pointer}.customer-form-actions em{color:#047857;font-size:12px;font-style:normal;font-weight:800}.customer-delete-account summary{display:inline-flex;padding:10px 14px;border-radius:8px;background:#ffe4e6;color:#be123c;font-size:12px;font-weight:850;cursor:pointer}.customer-delete-account form{max-width:520px;margin-top:16px;padding:16px;border-radius:10px;background:#fff7f7}.customer-delete-account form p{color:#64748b;font-size:13px}.customer-delete-account button{background:#be123c}
+@media(max-width:1100px){.customer-stat-grid{grid-template-columns:repeat(2,1fr)}.customer-order-grid{grid-template-columns:1fr}.customer-delivery-card{align-self:stretch}}@media(max-width:760px){.customer-page-heading{align-items:flex-start;flex-direction:column}.customer-stat-grid,.customer-profile-grid{grid-template-columns:1fr}.customer-form-card.danger{grid-column:auto}.customer-filters{align-items:stretch;flex-direction:column}.customer-filters label,.customer-filters button,.customer-filters>a{width:100%}.customer-totals{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.customer-stat-grid,.customer-totals{grid-template-columns:1fr}.customer-heading-actions{width:100%}.customer-heading-actions a{flex:1}}
+.customer-payment-summary{margin-bottom:22px}.customer-summary-body{display:flex;flex-wrap:wrap;align-items:center;gap:20px;padding:20px}.customer-summary-body small,.customer-summary-body strong{display:block}.customer-summary-body small{color:#64748b;font-size:11px}.customer-summary-body strong{font-size:21px}.customer-summary-body>a{margin-left:auto;color:#0f766e;font-size:13px}.customer-status.out_for_delivery{background:#dbeafe;color:#1d4ed8}.customer-filters{flex-wrap:wrap}
+@media(max-width:760px){.customer-summary-body{align-items:flex-start;flex-direction:column}.customer-summary-body>a{margin-left:0}}
+</style>
+
+    <style>
+@font-face{font-family:"Font Awesome 7 Brands";font-style:normal;font-weight:400;font-display:swap;src:url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/webfonts/fa-brands-400.woff2") format("woff2")}
+@font-face{font-family:"Font Awesome 7 Free";font-style:normal;font-weight:400;font-display:swap;src:url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/webfonts/fa-regular-400.woff2") format("woff2")}
+@font-face{font-family:"Font Awesome 7 Free";font-style:normal;font-weight:900;font-display:swap;src:url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/webfonts/fa-solid-900.woff2") format("woff2")}
+</style>    
+<style>
+.customer-dashboard-body{color:#172033}.customer-dashboard-content{min-height:calc(100vh - 142px)}
+.customer-page-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}.customer-page-heading>div:first-child>span,.customer-panel-heading>div>span,.customer-form-card>header>span{display:block;margin-bottom:6px;color:#0f766e;font-size:11px;font-weight:900;letter-spacing:.11em;text-transform:uppercase}.customer-page-heading h2{margin:0;color:#172033;font-size:30px;line-height:1.2}.customer-page-heading p{margin:7px 0 0;color:#64748b;font-size:14px;line-height:1.6}
+.customer-primary-button,.customer-heading-actions a{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 15px;border-radius:9px;background:#172033;color:#fff;font-size:13px;font-weight:850;text-decoration:none}.customer-heading-actions{display:flex;flex-wrap:wrap;gap:9px}.customer-heading-actions a.secondary{border:1px solid #cbd5e1;background:#fff;color:#334155}
+.customer-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:22px}.customer-stat-card{display:flex;align-items:center;gap:15px;padding:20px;border:1px solid #e5eaf1;border-radius:14px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.04)}.customer-stat-icon{display:grid;flex:0 0 46px;width:46px;height:46px;place-items:center;border-radius:12px;background:#dbeafe;color:#1d4ed8;font-size:18px}.customer-stat-icon.amber{background:#fef3c7;color:#b45309}.customer-stat-icon.violet{background:#ede9fe;color:#7c3aed}.customer-stat-icon.green{background:#d1fae5;color:#047857}.customer-stat-card small,.customer-stat-card strong,.customer-stat-card p{display:block}.customer-stat-card small{color:#64748b;font-size:11px;font-weight:800;text-transform:uppercase}.customer-stat-card strong{margin-top:2px;color:#172033;font-size:25px}.customer-stat-card p{margin:2px 0 0;color:#94a3b8;font-size:11px}
+.customer-panel{overflow:hidden;border:1px solid #e5eaf1;border-radius:14px;background:#fff;box-shadow:0 8px 24px rgba(15,23,42,.035)}.customer-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid #edf0f5}.customer-panel-heading h3{margin:0;color:#172033;font-size:17px}.customer-panel-heading a{color:#0f766e;font-size:12px;font-weight:850;text-decoration:none}.customer-table-wrap{overflow-x:auto}.customer-table{width:100%;min-width:760px;border-collapse:collapse}.customer-table th{padding:11px 16px;background:#f8fafc;color:#64748b;font-size:10px;font-weight:850;letter-spacing:.08em;text-align:left;text-transform:uppercase}.customer-table td{padding:15px 16px;border-top:1px solid #edf0f5;color:#475569;font-size:13px}.customer-table tbody tr:hover{background:#fafcfe}.customer-table td strong,.customer-table td small{display:block}.customer-table td strong{color:#172033}.customer-table td small{margin-top:4px;color:#94a3b8}.customer-status{display:inline-flex;padding:6px 9px;border-radius:999px;background:#f1f5f9;color:#475569;font-size:9px;font-weight:900;letter-spacing:.03em;text-transform:uppercase}.customer-status.processing,.customer-status.shipped{background:#dbeafe;color:#1d4ed8}.customer-status.completed,.customer-status.delivered,.customer-status.paid,.customer-status.succeeded{background:#d1fae5;color:#047857}.customer-status.cancelled,.customer-status.refunded,.customer-status.failed{background:#ffe4e6;color:#be123c}.customer-row-action{display:inline-flex;align-items:center;gap:7px;color:#0f766e;font-size:12px;font-weight:850;text-decoration:none}.customer-empty{padding:55px 20px;text-align:center}.customer-empty>span{display:grid;width:54px;height:54px;margin:auto;place-items:center;border-radius:15px;background:#f1f5f9;color:#64748b;font-size:22px}.customer-empty h3{margin:13px 0 5px}.customer-empty p{margin:0 0 15px;color:#64748b}.customer-empty a{color:#0f766e;font-weight:850;text-decoration:none}
+.customer-filters{display:flex;align-items:flex-end;gap:10px;padding:18px 20px;border-bottom:1px solid #edf0f5}.customer-filters label{display:grid;flex:1;gap:6px}.customer-filters label span,.customer-field>span{color:#475569;font-size:11px;font-weight:850}.customer-filters input,.customer-filters select,.customer-field input{width:100%;min-height:42px;box-sizing:border-box;padding:9px 11px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#172033;font:inherit}.customer-filters button,.customer-filters>a{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:0 14px;border:0;border-radius:8px;background:#172033;color:#fff;font-size:12px;font-weight:850;text-decoration:none;cursor:pointer}.customer-filters>a{background:#f1f5f9;color:#475569}.customer-pagination{padding:16px 20px}
+.customer-order-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(300px,1fr);gap:18px}.customer-totals{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:18px}.customer-totals>div{padding:13px;border-radius:10px;background:#f8fafc}.customer-totals small,.customer-totals strong{display:block}.customer-totals small{color:#64748b;font-size:11px}.customer-totals strong{margin-top:4px;font-size:13px}.customer-totals .grand-total{background:#172033;color:#fff}.customer-totals .grand-total small{color:#cbd5e1}.customer-delivery-card{align-self:start}.customer-address{display:flex;gap:12px;padding:20px;border-bottom:1px solid #edf0f5}.customer-address-icon{display:grid;flex:0 0 38px;width:38px;height:38px;place-items:center;border-radius:10px;background:#ecfdf5;color:#047857}.customer-address p{margin:0;color:#64748b;font-size:13px;line-height:1.7}.customer-address strong{color:#172033}.customer-detail-list{margin:0;padding:8px 20px}.customer-detail-list>div{display:flex;justify-content:space-between;gap:15px;padding:11px 0;border-bottom:1px solid #edf0f5}.customer-detail-list dt{color:#64748b;font-size:12px}.customer-detail-list dd{margin:0;color:#172033;font-size:12px;font-weight:800;text-align:right}.customer-order-updates{padding:5px 20px 18px}.customer-order-updates h4{margin:12px 0}.customer-order-updates p{padding:10px;border-radius:8px;background:#f8fafc;color:#64748b;font-size:12px;line-height:1.6}
+.customer-profile-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.customer-form-card{padding:22px}.customer-form-card.danger{grid-column:1/-1}.customer-form-card>header{margin-bottom:18px}.customer-form-card h3{margin:0;font-size:18px}.customer-form-card header p{margin:6px 0 0;color:#64748b;font-size:13px;line-height:1.6}.customer-field{display:grid;gap:6px;margin-bottom:14px}.customer-field small{color:#be123c;font-size:11px}.customer-form-actions{display:flex;align-items:center;gap:12px}.customer-form-actions button,.customer-delete-account button{min-height:41px;padding:0 14px;border:0;border-radius:8px;background:#172033;color:#fff;font-weight:850;cursor:pointer}.customer-form-actions em{color:#047857;font-size:12px;font-style:normal;font-weight:800}.customer-delete-account summary{display:inline-flex;padding:10px 14px;border-radius:8px;background:#ffe4e6;color:#be123c;font-size:12px;font-weight:850;cursor:pointer}.customer-delete-account form{max-width:520px;margin-top:16px;padding:16px;border-radius:10px;background:#fff7f7}.customer-delete-account form p{color:#64748b;font-size:13px}.customer-delete-account button{background:#be123c}
+@media(max-width:1100px){.customer-stat-grid{grid-template-columns:repeat(2,1fr)}.customer-order-grid{grid-template-columns:1fr}.customer-delivery-card{align-self:stretch}}@media(max-width:760px){.customer-page-heading{align-items:flex-start;flex-direction:column}.customer-stat-grid,.customer-profile-grid{grid-template-columns:1fr}.customer-form-card.danger{grid-column:auto}.customer-filters{align-items:stretch;flex-direction:column}.customer-filters label,.customer-filters button,.customer-filters>a{width:100%}.customer-totals{grid-template-columns:repeat(2,1fr)}}@media(max-width:480px){.customer-stat-grid,.customer-totals{grid-template-columns:1fr}.customer-heading-actions{width:100%}.customer-heading-actions a{flex:1}}
+.customer-payment-summary{margin-bottom:22px}.customer-summary-body{display:flex;flex-wrap:wrap;align-items:center;gap:20px;padding:20px}.customer-summary-body small,.customer-summary-body strong{display:block}.customer-summary-body small{color:#64748b;font-size:11px}.customer-summary-body strong{font-size:21px}.customer-summary-body>a{margin-left:auto;color:#0f766e;font-size:13px}.customer-status.out_for_delivery{background:#dbeafe;color:#1d4ed8}.customer-filters{flex-wrap:wrap}
+@media(max-width:760px){.customer-summary-body{align-items:flex-start;flex-direction:column}.customer-summary-body>a{margin-left:0}}
+</style>
+
+<style>
+.profile-security-card{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:20px;
+    padding:18px 20px;
+}
+
+.profile-security-main{
+    display:flex;
+    align-items:center;
+    min-width:0;
+    gap:14px;
+}
+
+.profile-security-icon{
+    display:grid;
+    flex:0 0 44px;
+    width:44px;
+    height:44px;
+    place-items:center;
+    border-radius:11px;
+    background:#ecfdf5;
+    color:#047857;
+    font-size:16px;
+}
+
+.profile-security-copy{
+    min-width:0;
+}
+
+.profile-security-copy>span{
+    display:block;
+    margin-bottom:4px;
+    color:#0f766e;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+}
+
+.profile-security-copy h3{
+    margin:0;
+    color:#172033;
+    font-size:16px;
+    line-height:1.3;
+}
+
+.profile-security-copy p{
+    margin:5px 0 0;
+    color:#64748b;
+    font-size:12px;
+    line-height:1.55;
+}
+
+.profile-security-features{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:9px;
+}
+
+.profile-security-feature{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:5px 7px;
+    border-radius:999px;
+    background:#f1f5f9;
+    color:#475569;
+    font-size:9px;
+    font-weight:800;
+}
+
+.profile-security-feature i{
+    color:#0f766e;
+    font-size:9px;
+}
+
+.profile-security-button{
+    display:inline-flex;
+    flex:0 0 auto;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    min-height:40px;
+    padding:0 14px;
+    border-radius:8px;
+    background:#172033;
+    color:#fff;
+    font-size:11px;
+    font-weight:850;
+    text-decoration:none;
+    transition:
+        transform .18s ease,
+        background .18s ease,
+        box-shadow .18s ease;
+}
+
+.profile-security-button:hover{
+    background:#0f172a;
+    color:#fff;
+    transform:translateY(-1px);
+    box-shadow:0 7px 16px rgba(15,23,42,.12);
+}
+
+.profile-security-button i:last-child{
+    font-size:9px;
+    opacity:.7;
+}
+
+@media(max-width:760px){
+    .profile-security-card{
+        align-items:stretch;
+        flex-direction:column;
+    }
+
+    .profile-security-button{
+        width:100%;
+        box-sizing:border-box;
+    }
+}
+
+@media(max-width:480px){
+    .profile-security-main{
+        align-items:flex-start;
+    }
+
+    .profile-security-features{
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+
+    .profile-security-feature{
+        justify-content:center;
+        border-radius:7px;
+        text-align:center;
+    }
+}
+</style>
+
+<style>.admin-main,.customer-dashboard-content,.customer-panel{min-width:0}.customer-panel table{width:100%}.customer-dashboard-body .customer-page-heading p,.customer-dashboard-body .customer-stat-card p,.customer-dashboard-body .customer-stat-card small,.customer-dashboard-body .customer-panel small{color:#526077}.customer-heading-actions a{overflow-wrap:anywhere}@media(max-width:600px){.customer-panel-heading{flex-wrap:wrap}.customer-page-heading h2{font-size:25px}.customer-dashboard-content input,.customer-dashboard-content select{max-width:100%}}</style>
+
+    <style>
+        .customer-security-popup-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 42px;
+            margin-top: 18px;
+            padding: 10px 18px;
+            border: 0;
+            border-radius: 9px;
+            background: #172033;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 850;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .customer-security-popup-action:focus-visible {
+            outline: 3px solid rgba(15, 118, 110, .22);
+            outline-offset: 3px;
+        }
+
+        .customer-feedback-popup.is-security .customer-feedback-popup-icon {
+            background: #ecfdf5;
+            color: #0f766e;
+        }
+
+        .customer-feedback-popup {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .customer-feedback-popup[hidden] {
+            display: none;
+        }
+
+        .customer-feedback-popup-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, .58);
+            backdrop-filter: blur(2px);
+        }
+
+        .customer-feedback-popup-dialog {
+            position: relative;
+            z-index: 1;
+            width: min(100%, 430px);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            padding: 30px 28px 26px;
+            border: 1px solid #e5eaf1;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, .22);
+            text-align: center;
+        }
+
+        .customer-feedback-popup-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .customer-feedback-popup-close:hover {
+            background: #e2e8f0;
+            color: #172033;
+        }
+
+        .customer-feedback-popup-close:focus-visible {
+            outline: 3px solid rgba(15, 118, 110, .22);
+            outline-offset: 2px;
+        }
+
+        .customer-feedback-popup-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 58px;
+            height: 58px;
+            margin-bottom: 16px;
+            border-radius: 50%;
+            font-size: 24px;
+        }
+
+        .customer-feedback-popup.is-success .customer-feedback-popup-icon {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .customer-feedback-popup.is-error .customer-feedback-popup-icon {
+            background: #ffe4e6;
+            color: #be123c;
+        }
+
+        .customer-feedback-popup-title {
+            margin: 0 0 8px;
+            color: #172033;
+            font-size: 20px;
+            line-height: 1.3;
+        }
+
+        .customer-feedback-popup-message {
+            margin: 0;
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .customer-feedback-popup-errors {
+            margin: 14px 0 0;
+            padding: 12px 14px;
+            border: 1px solid #fecdd3;
+            border-radius: 10px;
+            background: #fff7f7;
+            color: #9f1239;
+            font-size: 12px;
+            line-height: 1.55;
+            list-style-position: inside;
+            text-align: center;
+        }
+
+        .customer-feedback-popup-errors li + li {
+            margin-top: 5px;
+        }
+
+        body.customer-feedback-popup-open {
+            overflow: hidden;
+        }
+
+        @media (max-width: 480px) {
+            .customer-feedback-popup {
+                padding: 14px;
+            }
+
+            .customer-feedback-popup-dialog {
+                max-height: calc(100vh - 28px);
+                padding: 28px 20px 22px;
+                border-radius: 14px;
+            }
+
+            .customer-feedback-popup-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+
+</head>
+
+<body class="admin-body customer-dashboard-body">
+
+    <div class="admin-layout">
+
+        <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-header">
+        <a href="http://127.0.0.1:8123/account" class="admin-brand">
+            <span class="admin-brand-icon"><i class="fa-solid fa-shirt"></i></span>
+            <span class="admin-brand-content"><strong>Arizona Outfits</strong><small>Customer Account</small></span>
+        </a>
+        <button type="button" class="admin-sidebar-close" id="adminSidebarClose" aria-label="Close account sidebar"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="admin-sidebar-content">
+        <div class="admin-menu-section">
+            <span class="admin-menu-heading">My Account</span>
+            <nav class="admin-menu" aria-label="Customer account navigation">
+                <a href="http://127.0.0.1:8123/account" class="admin-menu-link ">
+                    <span class="admin-menu-icon"><i class="fa-solid fa-chart-pie"></i></span><span class="admin-menu-text">Overview</span>
+                </a>
+                <a href="http://127.0.0.1:8123/account/orders" class="admin-menu-link ">
+                    <span class="admin-menu-icon"><i class="fa-solid fa-box"></i></span><span class="admin-menu-text">My Orders</span>
+                </a>
+                <a href="http://127.0.0.1:8123/profile" class="admin-menu-link active">
+                    <span class="admin-menu-icon"><i class="fa-solid fa-user-pen"></i></span><span class="admin-menu-text">Profile</span>
+                </a>
+                <a href="http://127.0.0.1:8123/account/security" class="admin-menu-link "><span class="admin-menu-icon"><i class="fa-solid fa-shield-halved"></i></span><span class="admin-menu-text">Login & Security</span></a>
+                <a href="http://127.0.0.1:8123/favorites" class="admin-menu-link "><span class="admin-menu-icon"><i class="fa-regular fa-heart"></i></span><span class="admin-menu-text">My Favorites</span></a>
+            </nav>
+        </div>
+
+        <div class="admin-menu-section">
+            <span class="admin-menu-heading">Shopping</span>
+            <nav class="admin-menu">
+                <a href="http://127.0.0.1:8123/products" class="admin-menu-link">
+                    <span class="admin-menu-icon"><i class="fa-solid fa-bag-shopping"></i></span><span class="admin-menu-text">Continue Shopping</span>
+                </a>
+                <a href="http://127.0.0.1:8123" class="admin-menu-link">
+                    <span class="admin-menu-icon"><i class="fa-solid fa-house"></i></span><span class="admin-menu-text">Store Home</span>
+                </a>
+            </nav>
+        </div>
+    </div>
+
+    <div class="admin-sidebar-footer">
+        <a href="http://127.0.0.1:8123" class="admin-menu-link" target="_blank" rel="noopener">
+            <span class="admin-menu-icon"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span class="admin-menu-text">View Website</span>
+        </a>
+        <form action="http://127.0.0.1:8123/logout" method="POST"><input type="hidden" name="_token" value="7Ieggubzg7qGmjLBtHYB9UcPrX5yxvnuh8zma3aF" autocomplete="off">            <button type="submit" class="admin-menu-link admin-logout-button"><span class="admin-menu-icon"><i class="fa-solid fa-right-from-bracket"></i></span><span class="admin-menu-text">Logout</span></button>
+        </form>
+    </div>
+</aside>
+
+        <div
+            class="admin-sidebar-overlay"
+            id="adminSidebarOverlay"
+        ></div>
+
+        <div class="admin-main">
+
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button
+            type="button"
+            class="admin-mobile-menu-button"
+            id="adminMobileMenuButton"
+            aria-label="Open account sidebar"
+        >
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="admin-topbar-title">
+            <span class="admin-topbar-eyebrow">Customer Account</span>
+            <h1>Profile &amp; Security</h1>
+        </div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a
+            href="http://127.0.0.1:8123/products"
+            class="admin-topbar-action"
+            title="Continue shopping"
+        >
+            <i class="fa-solid fa-store"></i>
+        </a>
+
+        <div class="admin-profile-wrapper">
+            <button
+                type="button"
+                class="admin-profile-button"
+                id="adminProfileButton"
+                aria-expanded="false"
+            >
+                <span class="admin-profile-avatar">
+                    S
+                </span>
+
+                <span class="admin-profile-details">
+                    <strong>Sync customer 1</strong>
+                    <small>Customer</small>
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+            <div
+                class="admin-dropdown admin-profile-dropdown"
+                id="adminProfileDropdown"
+            >
+                <div class="admin-profile-dropdown-header">
+                    <strong>Sync customer 1</strong>
+
+                                            <span>sync1@example.test</span>
+                                    </div>
+
+                <a href="http://127.0.0.1:8123/profile">
+                    <i class="fa-regular fa-user"></i>
+                    Edit Profile
+                </a>
+
+                <a href="http://127.0.0.1:8123/account/orders">
+                    <i class="fa-solid fa-box"></i>
+                    My Orders
+                </a>
+
+                <a href="http://127.0.0.1:8123/account/security"><i class="fa-solid fa-shield-halved"></i>Login & Security</a>
+                <a href="http://127.0.0.1:8123/favorites"><i class="fa-regular fa-heart"></i>My Favorites</a>
+                <a href="http://127.0.0.1:8123">
+                    <i class="fa-solid fa-store"></i>
+                    View Store
+                </a>
+
+                <form action="http://127.0.0.1:8123/logout" method="POST">
+                    <input type="hidden" name="_token" value="7Ieggubzg7qGmjLBtHYB9UcPrX5yxvnuh8zma3aF" autocomplete="off">
+                    <button type="submit">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+
+            <main
+                class="admin-content customer-dashboard-content"
+                id="mainContent"
+            >
+
+                
+                
+
+                
+
+                
+                
+                
+<header class="customer-page-heading">
+
+    <div>
+
+        <span>
+            Account settings
+        </span>
+
+        <h2>
+            My profile
+        </h2>
+
+        <p>
+            Manage your personal information and account security.
+        </p>
+
+    </div>
+
+</header>
+
+
+
+    <section class="customer-panel profile-security-card">
+
+        <div class="profile-security-main">
+
+            <div class="profile-security-icon" aria-hidden="true">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div class="profile-security-copy">
+
+                <span>
+                    Account protection
+                </span>
+
+                <h3>
+                    Login &amp; Security
+                </h3>
+
+                <p>
+                    Manage your verified contact details, password
+                    and connected sign-in methods.
+                </p>
+
+                <div class="profile-security-features">
+
+                    <span class="profile-security-feature">
+                        <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+                        Email
+                    </span>
+
+                    <span class="profile-security-feature">
+                        <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                        Phone
+                    </span>
+
+                    <span class="profile-security-feature">
+                        <i class="fa-solid fa-key" aria-hidden="true"></i>
+                        Password
+                    </span>
+
+                    <span class="profile-security-feature">
+                        <i class="fa-solid fa-link" aria-hidden="true"></i>
+                        Connected accounts
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <a
+            href="http://127.0.0.1:8123/account/security"
+            class="profile-security-button"
+        >
+            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+
+            Manage Security
+
+            <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+        </a>
+
+    </section>
+
+
+
+<div class="customer-profile-grid">
+
+    <section class="customer-panel customer-form-card">
+
+        <header class="customer-profile-card-header">
+    <div class="customer-profile-card-icon" aria-hidden="true">
+        <i class="fa-solid fa-user"></i>
+    </div>
+
+    <div>
+        <span>Personal details</span>
+
+        <h3>Profile information</h3>
+
+        <p>
+            Keep your personal details up to date. Email and phone changes
+            are protected through Login &amp; Security.
+        </p>
+    </div>
+</header>
+
+<form method="POST" action="http://127.0.0.1:8123/profile">
+    <input type="hidden" name="_token" value="7Ieggubzg7qGmjLBtHYB9UcPrX5yxvnuh8zma3aF" autocomplete="off">    <input type="hidden" name="_method" value="PATCH">
+    <label class="customer-field">
+        <span>Full name</span>
+
+        <input
+            type="text"
+            name="name"
+            value="Sync customer 1"
+            required
+            maxlength="255"
+            autocomplete="name"
+        >
+
+            </label>
+
+    <div class="customer-security-field">
+        <div class="customer-security-field-heading">
+            <span>Email address</span>
+
+                            <span class="customer-security-badge">
+                    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                    Security managed
+                </span>
+                    </div>
+
+        <div class="customer-locked-input">
+            <i class="fa-regular fa-envelope" aria-hidden="true"></i>
+
+            <input
+                type="email"
+                value="sync1@example.test"
+                placeholder="No email address added"
+                autocomplete="email"
+                readonly
+                aria-readonly="true"
+            >
+
+            <i class="fa-solid fa-lock customer-locked-input-lock" aria-hidden="true"></i>
+        </div>
+
+        <small class="customer-field-help">
+            Change and verify your email from Login &amp; Security.
+        </small>
+    </div>
+
+    <div class="customer-security-field">
+        <div class="customer-security-field-heading">
+            <span>Phone number</span>
+
+                    </div>
+
+        <div class="customer-locked-input">
+            <i class="fa-solid fa-phone" aria-hidden="true"></i>
+
+            <input
+                type="tel"
+                value=""
+                placeholder="No phone number added"
+                autocomplete="tel"
+                readonly
+                aria-readonly="true"
+            >
+
+            <i class="fa-solid fa-lock customer-locked-input-lock" aria-hidden="true"></i>
+        </div>
+
+        <small class="customer-field-help">
+            Change and verify your phone number from Login &amp; Security.
+        </small>
+    </div>
+
+            <a
+            href="http://127.0.0.1:8123/account/security"
+            class="customer-security-action"
+        >
+            <span class="customer-security-action-icon">
+                <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+            </span>
+
+            <span class="customer-security-action-copy">
+                <strong>Manage Login &amp; Security</strong>
+                <small>
+                    Change email, phone number, password and connected sign-in methods.
+                </small>
+            </span>
+
+            <i class="fa-solid fa-chevron-right customer-security-action-arrow" aria-hidden="true"></i>
+        </a>
+    
+    <div class="customer-form-actions customer-profile-form-actions">
+        <button type="submit">
+            <i class="fa-solid fa-check" aria-hidden="true"></i>
+            Save profile
+        </button>
+
+            </div>
+</form>
+
+<style>
+.customer-profile-card-header{
+    display:flex;
+    align-items:flex-start;
+    gap:13px;
+}
+
+.customer-profile-card-icon{
+    display:grid;
+    flex:0 0 40px;
+    width:40px;
+    height:40px;
+    place-items:center;
+    border-radius:10px;
+    background:#dbeafe;
+    color:#1d4ed8;
+    font-size:15px;
+}
+
+.customer-security-field{
+    display:grid;
+    gap:6px;
+    margin-bottom:14px;
+}
+
+.customer-security-field-heading{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.customer-security-field-heading>span:first-child{
+    color:#475569;
+    font-size:11px;
+    font-weight:850;
+}
+
+.customer-security-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:4px 7px;
+    border-radius:999px;
+    background:#ecfdf5;
+    color:#047857;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+}
+
+.customer-locked-input{
+    position:relative;
+    display:flex;
+    align-items:center;
+}
+
+.customer-locked-input>i:first-child{
+    position:absolute;
+    left:12px;
+    z-index:1;
+    color:#94a3b8;
+    font-size:13px;
+    pointer-events:none;
+}
+
+.customer-locked-input input{
+    width:100%;
+    min-height:42px;
+    box-sizing:border-box;
+    padding:9px 38px 9px 35px;
+    border:1px solid #e2e8f0;
+    border-radius:8px;
+    outline:0;
+    background:#f8fafc;
+    color:#475569;
+    font:inherit;
+    cursor:default;
+}
+
+.customer-locked-input input::placeholder{
+    color:#94a3b8;
+}
+
+.customer-locked-input-lock{
+    position:absolute;
+    right:12px;
+    color:#94a3b8;
+    font-size:11px;
+    pointer-events:none;
+}
+
+.customer-field-help{
+    color:#94a3b8;
+    font-size:10px;
+    line-height:1.5;
+}
+
+.customer-security-action{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    margin:18px 0;
+    padding:12px;
+    border:1px solid #e5eaf1;
+    border-radius:10px;
+    background:#f8fafc;
+    color:#172033;
+    text-decoration:none;
+    transition:
+        border-color .18s ease,
+        background .18s ease,
+        transform .18s ease;
+}
+
+.customer-security-action:hover{
+    border-color:#cbd5e1;
+    background:#fff;
+    transform:translateY(-1px);
+}
+
+.customer-security-action-icon{
+    display:grid;
+    flex:0 0 36px;
+    width:36px;
+    height:36px;
+    place-items:center;
+    border-radius:9px;
+    background:#ecfdf5;
+    color:#047857;
+    font-size:13px;
+}
+
+.customer-security-action-copy{
+    display:block;
+    min-width:0;
+    flex:1;
+}
+
+.customer-security-action-copy strong,
+.customer-security-action-copy small{
+    display:block;
+}
+
+.customer-security-action-copy strong{
+    color:#172033;
+    font-size:12px;
+    font-weight:850;
+}
+
+.customer-security-action-copy small{
+    margin-top:3px;
+    color:#64748b;
+    font-size:10px;
+    line-height:1.45;
+}
+
+.customer-security-action-arrow{
+    color:#94a3b8;
+    font-size:10px;
+}
+
+.customer-profile-form-actions{
+    padding-top:4px;
+}
+
+.customer-profile-form-actions button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+}
+
+.customer-profile-form-actions em{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+}
+
+@media(max-width:480px){
+    .customer-security-field-heading{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:5px;
+    }
+
+    .customer-security-action{
+        align-items:flex-start;
+    }
+
+    .customer-security-action-arrow{
+        margin-top:12px;
+    }
+
+    .customer-profile-form-actions{
+        align-items:stretch;
+        flex-direction:column;
+    }
+
+    .customer-profile-form-actions button{
+        width:100%;
+    }
+}
+</style>
+
+    </section>
+
+
+    
+        <section class="customer-panel customer-form-card">
+
+            <header class="customer-password-header">
+    <div class="customer-password-header-icon" aria-hidden="true">
+        <i class="fa-solid fa-key"></i>
+    </div>
+
+    <div>
+        <span>Password</span>
+
+        <h3>Update password</h3>
+
+        <p>
+            Choose a strong, unique password that you do not use on another account.
+        </p>
+    </div>
+</header>
+
+<form
+    method="POST"
+    action="http://127.0.0.1:8123/password"
+    class="customer-password-form"
+    data-password-form
+>
+    <input type="hidden" name="_token" value="7Ieggubzg7qGmjLBtHYB9UcPrX5yxvnuh8zma3aF" autocomplete="off">    <input type="hidden" name="_method" value="PUT">
+    <label class="customer-field">
+        <span>Current password</span>
+
+        <div class="customer-password-input">
+            <input
+                name="current_password"
+                type="password"
+                autocomplete="current-password"
+                required
+                data-password-input
+            >
+
+            <button
+                type="button"
+                class="customer-password-toggle"
+                aria-label="Show current password"
+                aria-pressed="false"
+                data-password-toggle
+            >
+                <i class="fa-regular fa-eye" aria-hidden="true"></i>
+            </button>
+        </div>
+
+            </label>
+
+    <label class="customer-field">
+        <span>New password</span>
+
+        <div class="customer-password-input">
+            <input
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                required
+                data-new-password
+                data-password-input
+            >
+
+            <button
+                type="button"
+                class="customer-password-toggle"
+                aria-label="Show new password"
+                aria-pressed="false"
+                data-password-toggle
+            >
+                <i class="fa-regular fa-eye" aria-hidden="true"></i>
+            </button>
+        </div>
+
+            </label>
+
+    <div
+        class="customer-password-guide"
+        aria-live="polite"
+    >
+        <div class="customer-password-strength">
+            <div>
+                <span>Password strength</span>
+                <strong data-password-strength-label>Not entered</strong>
+            </div>
+
+            <div
+                class="customer-password-strength-track"
+                aria-hidden="true"
+            >
+                <span data-password-strength-bar></span>
+            </div>
+        </div>
+
+        <p class="customer-password-guide-title">
+            For a strong, protected password:
+        </p>
+
+        <div class="customer-password-rules">
+            <span data-password-rule="length">
+                <i class="fa-regular fa-circle" aria-hidden="true"></i>
+                Use at least 8 characters
+            </span>
+
+            <span data-password-rule="lower">
+                <i class="fa-regular fa-circle" aria-hidden="true"></i>
+                Add a lowercase letter
+            </span>
+
+            <span data-password-rule="upper">
+                <i class="fa-regular fa-circle" aria-hidden="true"></i>
+                Add an uppercase letter
+            </span>
+
+            <span data-password-rule="number">
+                <i class="fa-regular fa-circle" aria-hidden="true"></i>
+                Add a number
+            </span>
+
+            <span data-password-rule="symbol">
+                <i class="fa-regular fa-circle" aria-hidden="true"></i>
+                Add a symbol
+            </span>
+        </div>
+
+        <p class="customer-password-guide-note">
+            Avoid names, birthdays, common words and passwords you already use elsewhere.
+        </p>
+    </div>
+
+    <label class="customer-field">
+        <span>Confirm new password</span>
+
+        <div class="customer-password-input">
+            <input
+                name="password_confirmation"
+                type="password"
+                autocomplete="new-password"
+                required
+                data-password-confirmation
+                data-password-input
+            >
+
+            <button
+                type="button"
+                class="customer-password-toggle"
+                aria-label="Show password confirmation"
+                aria-pressed="false"
+                data-password-toggle
+            >
+                <i class="fa-regular fa-eye" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <small
+            class="customer-password-match"
+            data-password-match
+            hidden
+        ></small>
+
+            </label>
+
+    <div class="customer-form-actions customer-password-actions">
+        <button type="submit">
+            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+            Save password
+        </button>
+
+            </div>
+</form>
+
+<style>
+.customer-password-header{
+    display:flex;
+    align-items:flex-start;
+    gap:13px;
+}
+
+.customer-password-header-icon{
+    display:grid;
+    flex:0 0 40px;
+    width:40px;
+    height:40px;
+    place-items:center;
+    border-radius:10px;
+    background:#ede9fe;
+    color:#7c3aed;
+    font-size:14px;
+}
+
+.customer-password-form .customer-field>span{
+    display:block;
+}
+
+.customer-password-input{
+    position:relative;
+}
+
+.customer-password-input input{
+    padding-right:44px;
+}
+
+.customer-password-toggle{
+    position:absolute;
+    top:50%;
+    right:7px;
+    display:grid;
+    width:32px;
+    height:32px;
+    padding:0;
+    border:0;
+    border-radius:7px;
+    place-items:center;
+    background:transparent;
+    color:#64748b;
+    cursor:pointer;
+    transform:translateY(-50%);
+}
+
+.customer-password-toggle:hover,
+.customer-password-toggle:focus-visible{
+    background:#f1f5f9;
+    color:#172033;
+    outline:none;
+}
+
+.customer-password-guide{
+    margin:-2px 0 15px;
+    padding:13px;
+    border:1px solid #e5eaf1;
+    border-radius:10px;
+    background:#f8fafc;
+}
+
+.customer-password-strength>div:first-child{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+}
+
+.customer-password-strength span{
+    color:#64748b;
+    font-size:10px;
+    font-weight:800;
+}
+
+.customer-password-strength strong{
+    color:#64748b;
+    font-size:10px;
+    font-weight:900;
+}
+
+.customer-password-strength-track{
+    overflow:hidden;
+    height:5px;
+    margin-top:7px;
+    border-radius:999px;
+    background:#e2e8f0;
+}
+
+.customer-password-strength-track span{
+    display:block;
+    width:0;
+    height:100%;
+    border-radius:inherit;
+    background:#94a3b8;
+    transition:
+        width .2s ease,
+        background .2s ease;
+}
+
+.customer-password-guide-title{
+    margin:12px 0 8px;
+    color:#475569;
+    font-size:10px;
+    font-weight:900;
+}
+
+.customer-password-rules{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:7px 10px;
+}
+
+.customer-password-rules span{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:#64748b;
+    font-size:10px;
+    line-height:1.4;
+}
+
+.customer-password-rules span i{
+    flex:0 0 auto;
+    color:#94a3b8;
+    font-size:9px;
+}
+
+.customer-password-rules span.is-valid{
+    color:#047857;
+}
+
+.customer-password-rules span.is-valid i{
+    color:#047857;
+}
+
+.customer-password-guide-note{
+    margin:10px 0 0;
+    color:#94a3b8;
+    font-size:9px;
+    line-height:1.5;
+}
+
+.customer-password-match{
+    margin-top:0;
+    color:#be123c !important;
+}
+
+.customer-password-match.is-valid{
+    color:#047857 !important;
+}
+
+.customer-password-actions button,
+.customer-password-actions em{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+}
+
+@media(max-width:480px){
+    .customer-password-rules{
+        grid-template-columns:1fr;
+    }
+
+    .customer-password-actions{
+        align-items:stretch;
+        flex-direction:column;
+    }
+
+    .customer-password-actions button{
+        width:100%;
+        justify-content:center;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+
+    const form = document.querySelector('[data-password-form]');
+
+    if (!form) {
+        return;
+    }
+
+    form.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const wrapper = button.closest('.customer-password-input');
+            const input = wrapper ? wrapper.querySelector('[data-password-input]') : null;
+            const icon = button.querySelector('i');
+
+            if (!input) {
+                return;
+            }
+
+            const showPassword = input.type === 'password';
+
+            input.type = showPassword ? 'text' : 'password';
+            button.setAttribute('aria-pressed', showPassword ? 'true' : 'false');
+            button.setAttribute(
+                'aria-label',
+                showPassword ? 'Hide password' : 'Show password'
+            );
+
+            if (icon) {
+                icon.classList.toggle('fa-eye', !showPassword);
+                icon.classList.toggle('fa-eye-slash', showPassword);
+            }
+        });
+    });
+
+    const password = form.querySelector('[data-new-password]');
+    const confirmation = form.querySelector('[data-password-confirmation]');
+    const strengthLabel = form.querySelector('[data-password-strength-label]');
+    const strengthBar = form.querySelector('[data-password-strength-bar]');
+    const matchMessage = form.querySelector('[data-password-match]');
+
+    const rules = {
+        length: form.querySelector('[data-password-rule="length"]'),
+        lower: form.querySelector('[data-password-rule="lower"]'),
+        upper: form.querySelector('[data-password-rule="upper"]'),
+        number: form.querySelector('[data-password-rule="number"]'),
+        symbol: form.querySelector('[data-password-rule="symbol"]')
+    };
+
+    function setRuleState(element, passed) {
+        if (!element) {
+            return;
+        }
+
+        const icon = element.querySelector('i');
+
+        element.classList.toggle('is-valid', passed);
+
+        if (icon) {
+            icon.className = passed
+                ? 'fa-solid fa-circle-check'
+                : 'fa-regular fa-circle';
+        }
+    }
+
+    function updatePasswordGuide() {
+        if (!password) {
+            return;
+        }
+
+        const value = password.value;
+
+        const checks = {
+            length: value.length >= 8,
+            lower: /[a-z]/.test(value),
+            upper: /[A-Z]/.test(value),
+            number: /[0-9]/.test(value),
+            symbol: /[^A-Za-z0-9]/.test(value)
+        };
+
+        Object.keys(checks).forEach(function (key) {
+            setRuleState(rules[key], checks[key]);
+        });
+
+        const score = Object.values(checks).filter(Boolean).length;
+
+        if (!strengthLabel || !strengthBar) {
+            return;
+        }
+
+        let label = 'Not entered';
+        let width = '0%';
+        let color = '#94a3b8';
+
+        if (value.length > 0) {
+            if (score <= 2) {
+                label = 'Weak';
+                width = '25%';
+                color = '#be123c';
+            } else if (score === 3) {
+                label = 'Fair';
+                width = '50%';
+                color = '#b45309';
+            } else if (score === 4) {
+                label = 'Good';
+                width = '75%';
+                color = '#1d4ed8';
+            } else {
+                label = 'Strong';
+                width = '100%';
+                color = '#047857';
+            }
+        }
+
+        strengthLabel.textContent = label;
+        strengthLabel.style.color = color;
+        strengthBar.style.width = width;
+        strengthBar.style.background = color;
+
+        updateConfirmation();
+    }
+
+    function updateConfirmation() {
+        if (!password || !confirmation || !matchMessage) {
+            return;
+        }
+
+        if (confirmation.value === '') {
+            matchMessage.hidden = true;
+            matchMessage.textContent = '';
+            matchMessage.classList.remove('is-valid');
+            return;
+        }
+
+        const matches = password.value === confirmation.value;
+
+        matchMessage.hidden = false;
+        matchMessage.textContent = matches
+            ? 'Passwords match.'
+            : 'Passwords do not match.';
+        matchMessage.classList.toggle('is-valid', matches);
+    }
+
+    if (password) {
+        password.addEventListener('input', updatePasswordGuide);
+    }
+
+    if (confirmation) {
+        confirmation.addEventListener('input', updateConfirmation);
+    }
+
+    updatePasswordGuide();
+});
+</script>
+
+        </section>
+
+    
+
+    <section
+        class="customer-panel customer-form-card danger"
+    >
+
+        <header class="customer-danger-header">
+    <div class="customer-danger-header-icon" aria-hidden="true">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+
+    <div>
+        <span>Danger zone</span>
+        <h3>Delete account</h3>
+        <p>
+            Permanently delete your ArizonaOutfits account.
+            This action cannot be undone.
+        </p>
+    </div>
+</header>
+
+
+<div class="customer-danger-notice">
+    <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+    <p>
+        Your profile will be permanently removed. Completed order records
+        may still be retained where required for legal or accounting purposes.
+    </p>
+</div>
+
+<details class="customer-delete-account">
+    <summary>
+        <span class="customer-delete-summary-icon" aria-hidden="true">
+            <i class="fa-regular fa-trash-can"></i>
+        </span>
+
+        <span class="customer-delete-summary-copy">
+            <strong>Delete my account</strong>
+            <small>Review the permanent deletion details.</small>
+        </span>
+
+        <i
+            class="fa-solid fa-chevron-down customer-delete-summary-arrow"
+            aria-hidden="true"></i>
+    </summary>
+
+    <div class="customer-delete-expanded">
+        <div class="customer-delete-explainer">
+            <div class="customer-delete-explainer-icon" aria-hidden="true">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+                <strong>Before you continue</strong>
+                <p>
+                    Account deletion is permanent. To protect your account,
+                    your current password is required before the request can be submitted.
+                </p>
+            </div>
+        </div>
+
+        <form
+            method="POST"
+            action="http://127.0.0.1:8123/profile"
+            class="customer-delete-confirmation">
+            <input type="hidden" name="_token" value="7Ieggubzg7qGmjLBtHYB9UcPrX5yxvnuh8zma3aF" autocomplete="off">            <input type="hidden" name="_method" value="DELETE">
+            <label class="customer-field customer-delete-password-field">
+                <span>Current password</span>
+
+                <div class="customer-delete-password-input">
+                    <input
+                        name="password"
+                        type="password"
+                        autocomplete="current-password"
+                        required
+                        placeholder="Enter your current password"
+                        data-delete-password>
+
+                    <button
+                        type="button"
+                        class="customer-delete-password-toggle"
+                        aria-label="Show password"
+                        aria-pressed="false"
+                        data-delete-password-toggle>
+                        <i class="fa-regular fa-eye" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                            </label>
+
+            <div class="customer-delete-footer">
+                <div class="customer-delete-final-warning">
+                    <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+                    <span>
+                        Permanent action. You will be signed out immediately.
+                    </span>
+                </div>
+
+                <button
+                    type="submit"
+                    class="customer-delete-submit">
+                    <i class="fa-regular fa-trash-can" aria-hidden="true"></i>
+                    Permanently delete account
+                </button>
+            </div>
+        </form>
+    </div>
+</details>
+
+
+<style>
+    .customer-form-card.danger {
+        border-color: #f3d6dc;
+        background: #fff;
+    }
+
+    .customer-danger-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+    }
+
+    .customer-danger-header>div:last-child>span {
+        color: #be123c !important;
+    }
+
+    .customer-danger-header-icon {
+        display: grid;
+        flex: 0 0 40px;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border-radius: 10px;
+        background: #fff1f2;
+        color: #be123c;
+        font-size: 14px;
+    }
+
+    .customer-danger-notice {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 14px;
+        padding: 9px 11px;
+        border-left: 3px solid #e11d48;
+        border-radius: 7px;
+        background: #fff7f8;
+        color: #9f1239;
+    }
+
+    .customer-danger-notice>i {
+        margin-top: 3px;
+        font-size: 10px;
+    }
+
+    .customer-danger-notice p {
+        margin: 0;
+        color: #881337;
+        font-size: 10px;
+        line-height: 1.55;
+    }
+
+    .customer-delete-account {
+        width: 100%;
+    }
+
+    .customer-delete-account>summary {
+        display: flex;
+        width: 100%;
+        box-sizing: border-box;
+        align-items: center;
+        gap: 11px;
+        padding: 11px 12px;
+        border: 1px solid #e5eaf1;
+        border-radius: 9px;
+        background: #fff;
+        color: #172033;
+        list-style: none;
+        cursor: pointer;
+        transition:
+            border-color .18s ease,
+            background .18s ease,
+            box-shadow .18s ease;
+    }
+
+    .customer-delete-account>summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .customer-delete-account>summary:hover {
+        border-color: #fecdd3;
+        background: #fffafa;
+    }
+
+    .customer-delete-account[open]>summary {
+        border-color: #fecdd3;
+        border-radius: 9px 9px 0 0;
+        background: #fffafa;
+        box-shadow: 0 4px 12px rgba(190, 18, 60, .035);
+    }
+
+    .customer-delete-summary-icon {
+        display: grid;
+        flex: 0 0 34px;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border-radius: 8px;
+        background: #fff1f2;
+        color: #be123c;
+        font-size: 12px;
+    }
+
+    .customer-delete-summary-copy {
+        display: block;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .customer-delete-summary-copy strong,
+    .customer-delete-summary-copy small {
+        display: block;
+    }
+
+    .customer-delete-summary-copy strong {
+        color: #172033;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .customer-delete-summary-copy small {
+        margin-top: 2px;
+        color: #64748b;
+        font-size: 9px;
+        line-height: 1.4;
+    }
+
+    .customer-delete-summary-arrow {
+        color: #94a3b8;
+        font-size: 9px;
+        transition: transform .18s ease;
+    }
+
+    .customer-delete-account[open] .customer-delete-summary-arrow {
+        color: #be123c;
+        transform: rotate(180deg);
+    }
+
+    .customer-delete-expanded {
+        padding: 14px;
+        border: 1px solid #fecdd3;
+        border-top: 0;
+        border-radius: 0 0 9px 9px;
+        background: #fff;
+    }
+
+    .customer-delete-explainer {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 14px;
+        padding-bottom: 13px;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .customer-delete-explainer-icon {
+        display: grid;
+        flex: 0 0 32px;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border-radius: 8px;
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 11px;
+    }
+
+    .customer-delete-explainer strong {
+        display: block;
+        color: #172033;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .customer-delete-explainer p {
+        max-width: 680px;
+        margin: 3px 0 0 !important;
+        color: #64748b !important;
+        font-size: 10px !important;
+        line-height: 1.55 !important;
+    }
+
+    .customer-delete-account .customer-delete-confirmation {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+    }
+
+    .customer-delete-password-field {
+        max-width: 620px;
+        margin-bottom: 13px;
+    }
+
+    .customer-delete-password-input {
+        position: relative;
+    }
+
+    .customer-delete-password-input input {
+        padding-right: 44px;
+    }
+
+    .customer-delete-password-input input::placeholder {
+        color: #94a3b8;
+    }
+
+    .customer-delete-password-toggle {
+        position: absolute;
+        top: 50%;
+        right: 7px;
+        display: grid;
+        width: 32px;
+        height: 32px;
+        min-height: 32px !important;
+        padding: 0 !important;
+        border: 0 !important;
+        border-radius: 7px !important;
+        place-items: center;
+        background: transparent !important;
+        color: #64748b !important;
+        font-size: 12px !important;
+        box-shadow: none !important;
+        cursor: pointer;
+        transform: translateY(-50%);
+    }
+
+    .customer-delete-password-toggle:hover,
+    .customer-delete-password-toggle:focus-visible {
+        background: #f1f5f9 !important;
+        color: #172033 !important;
+        outline: none;
+    }
+
+    .customer-delete-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #edf0f5;
+    }
+
+    .customer-delete-final-warning {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #9f1239;
+        font-size: 9px;
+        font-weight: 800;
+        line-height: 1.45;
+    }
+
+    .customer-delete-final-warning i {
+        flex: 0 0 auto;
+    }
+
+    .customer-delete-account .customer-delete-submit {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 38px;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 8px;
+        background: #be123c;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 850;
+        cursor: pointer;
+        transition:
+            background .18s ease,
+            transform .18s ease;
+    }
+
+    .customer-delete-account .customer-delete-submit:hover {
+        background: #9f1239;
+        transform: translateY(-1px);
+    }
+
+    .customer-delete-security-required {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px;
+        border: 1px solid #fde68a;
+        border-radius: 10px;
+        background: #fffbeb;
+    }
+
+    .customer-delete-security-icon {
+        display: grid;
+        flex: 0 0 38px;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border-radius: 9px;
+        background: #fef3c7;
+        color: #b45309;
+        font-size: 13px;
+    }
+
+    .customer-delete-security-copy {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .customer-delete-security-copy strong {
+        display: block;
+        color: #92400e;
+        font-size: 11px;
+        font-weight: 900;
+    }
+
+    .customer-delete-security-copy p {
+        margin: 3px 0 0 !important;
+        color: #a16207 !important;
+        font-size: 10px !important;
+        line-height: 1.5 !important;
+    }
+
+    .customer-delete-security-action {
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 36px;
+        padding: 0 11px;
+        border-radius: 8px;
+        background: #172033;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 850;
+        text-decoration: none;
+    }
+
+    .customer-delete-security-action:hover {
+        color: #fff;
+        background: #0f172a;
+    }
+
+    .customer-delete-security-action i {
+        font-size: 8px;
+    }
+
+    @media(max-width:760px) {
+        .customer-delete-footer {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .customer-delete-account .customer-delete-submit {
+            width: 100%;
+        }
+
+        .customer-delete-security-required {
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .customer-delete-security-action {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        'use strict';
+
+        const passwordInput =
+            document.querySelector('[data-delete-password]');
+
+        const toggle =
+            document.querySelector('[data-delete-password-toggle]');
+
+        if (!passwordInput || !toggle) {
+            return;
+        }
+
+        toggle.addEventListener('click', function() {
+            const showPassword =
+                passwordInput.type === 'password';
+
+            passwordInput.type =
+                showPassword ? 'text' : 'password';
+
+            toggle.setAttribute(
+                'aria-pressed',
+                showPassword ? 'true' : 'false'
+            );
+
+            toggle.setAttribute(
+                'aria-label',
+                showPassword ?
+                'Hide password' :
+                'Show password'
+            );
+
+            const icon = toggle.querySelector('i');
+
+            if (icon) {
+                icon.classList.toggle(
+                    'fa-eye',
+                    !showPassword
+                );
+
+                icon.classList.toggle(
+                    'fa-eye-slash',
+                    showPassword
+                );
+            }
+        });
+    });
+</script>
+
+    </section>
+
+</div>
+
+
+            </main>
+
+            <footer class="admin-footer">
+    <p>&copy; 2026 Arizona Outfits. All rights reserved.</p>
+    <span>Customer Account</span>
+</footer>
+
+        </div>
+
+    </div>
+
+    <script
+        src="http://127.0.0.1:8123/asset/js/admin-dashboard.js"
+    ></script>
+
+    <script>
+        (() => {
+            'use strict';
+
+            const feedbackPopup =
+                document.getElementById('customerFeedbackPopup');
+
+            const securityPopup =
+                document.getElementById('customerSecurityReminderPopup');
+
+            let activePopup = null;
+            let previouslyFocusedElement = null;
+
+            const getDialog = (popup) =>
+                popup?.querySelector('.customer-feedback-popup-dialog');
+
+            const getCloseButton = (popup) =>
+                popup?.querySelector('.customer-feedback-popup-close');
+
+            const showPopup = (popup) => {
+                if (!popup) {
+                    return;
+                }
+
+                if (!previouslyFocusedElement) {
+                    previouslyFocusedElement = document.activeElement;
+                }
+
+                popup.hidden = false;
+                activePopup = popup;
+                document.body.classList.add('customer-feedback-popup-open');
+
+                const closeButton = getCloseButton(popup);
+
+                if (closeButton) {
+                    closeButton.focus();
+                }
+            };
+
+            const restorePageFocus = () => {
+                document.body.classList.remove('customer-feedback-popup-open');
+
+                if (
+                    previouslyFocusedElement
+                    && typeof previouslyFocusedElement.focus === 'function'
+                ) {
+                    previouslyFocusedElement.focus();
+                }
+
+                previouslyFocusedElement = null;
+            };
+
+            const closePopup = (popup) => {
+                if (!popup) {
+                    return;
+                }
+
+                popup.hidden = true;
+
+                if (
+                    popup === feedbackPopup
+                    && securityPopup
+                    && securityPopup.hidden
+                ) {
+                    activePopup = null;
+                    showPopup(securityPopup);
+                    return;
+                }
+
+                activePopup = null;
+                restorePageFocus();
+            };
+
+            if (feedbackPopup) {
+                feedbackPopup
+                    .querySelectorAll('[data-customer-feedback-close]')
+                    .forEach((trigger) => {
+                        trigger.addEventListener(
+                            'click',
+                            () => closePopup(feedbackPopup)
+                        );
+                    });
+            }
+
+            if (securityPopup) {
+                securityPopup
+                    .querySelectorAll('[data-customer-security-close]')
+                    .forEach((trigger) => {
+                        trigger.addEventListener(
+                            'click',
+                            () => closePopup(securityPopup)
+                        );
+                    });
+            }
+
+            document.addEventListener('keydown', (event) => {
+                if (!activePopup || activePopup.hidden) {
+                    return;
+                }
+
+                if (event.key === 'Escape') {
+                    closePopup(activePopup);
+                    return;
+                }
+
+                if (event.key !== 'Tab') {
+                    return;
+                }
+
+                const dialog = getDialog(activePopup);
+
+                if (!dialog) {
+                    return;
+                }
+
+                const focusableElements = dialog.querySelectorAll(
+                    'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+                );
+
+                if (!focusableElements.length) {
+                    event.preventDefault();
+                    return;
+                }
+
+                const firstFocusable = focusableElements[0];
+                const lastFocusable =
+                    focusableElements[focusableElements.length - 1];
+
+                if (
+                    event.shiftKey
+                    && document.activeElement === firstFocusable
+                ) {
+                    event.preventDefault();
+                    lastFocusable.focus();
+                } else if (
+                    !event.shiftKey
+                    && document.activeElement === lastFocusable
+                ) {
+                    event.preventDefault();
+                    firstFocusable.focus();
+                }
+            });
+
+            if (feedbackPopup) {
+                showPopup(feedbackPopup);
+            } else if (securityPopup) {
+                showPopup(securityPopup);
+            }
+        })();
+    </script>
+
+    
+</body>
+
+</html>

@@ -1,0 +1,3403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta name="csrf-token" content="eiKCSOA4XjfmZbcTQ1LF6rscRtf1d0rnMovTCFj1">
+
+    
+    
+        <title>
+            Checkout        </title>
+
+                    <meta
+                name="description"
+                content="Review your order, enter your billing and shipping details, and complete your purchase."
+            >
+        
+    
+    <meta
+        name="robots"
+        content="index, follow"
+    >
+
+    
+    
+    <link
+        rel="stylesheet"
+        href="http://arizona.test/asset/css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/css/intlTelInput.css"
+    >
+
+    
+</head>
+
+<body
+    data-currency-symbol="£"
+    id="page"
+    class=""
+>
+
+    <div class="preloader">
+    <div class="preloader-middle">
+        <div class="left-preloader"></div>
+        <div class="middle-preloader">
+            <div class="stripe-preloader left"></div>
+            <div class="stripe-preloader middle"></div>
+            <div class="stripe-preloader right"></div>
+        </div>
+        <div class="right-preloader"></div>
+    </div>
+</div>
+<div class="navbar">
+    <div class="navbar-wrapper">
+        <div class="left-navbar">
+            <a href="/" class="logo">Arizona Outfits</a>
+            <div class="menu-button" onclick="toggleMenu()">
+                <span class="line line-1"></span>
+                <span class="line line-2"></span>
+                <span class="line line-3"></span>
+            </div>
+        </div>
+        <div class="menu-wrapper">
+            <div class="navigaiton">
+                <div class="navigation-links">
+                    <a href="http://arizona.test/about" class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header"><div class="button-text text-uppercase letter-space-3px">About Us</div></a>
+<a href="http://arizona.test/blogs" class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header"><div class="button-text text-uppercase letter-space-3px">Blogs</div></a>
+<a href="http://arizona.test/products" class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header"><div class="button-text text-uppercase letter-space-3px">Shop</div></a>
+<a href="http://arizona.test/contact" class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header"><div class="button-text text-uppercase letter-space-3px">Contact</div></a>
+
+
+    <a
+        href="http://arizona.test/favorites"
+        class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header header-commerce-nav-link"
+        aria-label="View favourites"
+    >
+        <div class="button-text text-uppercase letter-space-3px header-commerce-nav-text">
+            <i class="fa-regular fa-heart" aria-hidden="true"></i>
+            <span>Favourites</span>
+
+            <span
+                class="header-commerce-nav-count is-empty"
+                data-header-favorite-count
+            >
+                0
+            </span>
+        </div>
+    </a>
+
+<a
+    href="http://arizona.test/cart"
+    class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header header-commerce-nav-link"
+    aria-label="View cart"
+    data-header-cart-trigger
+>
+    <div class="button-text text-uppercase letter-space-3px header-commerce-nav-text">
+        <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i>
+        <span>Cart</span>
+
+        <span
+            class="header-commerce-nav-count "
+            data-header-cart-count
+        >
+            2
+        </span>
+    </div>
+</a>
+
+    <a href="http://arizona.test/account" class="btn-style-3 fs-12 text-color-white justify-self-start nav-links-header">
+        <div class="button-text text-uppercase letter-space-3px">My Account</div>
+    </a>
+
+
+
+<div
+    class="header-cart-drawer"
+    data-cart-drawer
+    aria-hidden="true"
+>
+    <button
+        type="button"
+        class="header-cart-drawer-backdrop"
+        data-cart-drawer-close
+        aria-label="Close shopping cart"
+        tabindex="-1"
+    ></button>
+
+    <aside
+        class="header-cart-drawer-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="header-cart-drawer-title"
+    >
+        <header class="header-cart-drawer-header">
+            <div>
+                <span class="header-cart-drawer-eyebrow text-uppercase letter-space-3px">
+                    Your Bag
+                </span>
+
+                <h2
+                    id="header-cart-drawer-title"
+                    class="header-cart-drawer-title"
+                >
+                    Shopping Cart
+                </h2>
+            </div>
+
+            <button
+                type="button"
+                class="header-cart-drawer-close"
+                data-cart-drawer-close
+                aria-label="Close shopping cart"
+            >
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+            </button>
+        </header>
+
+        <div class="header-cart-drawer-body" data-cart-drawer-body>
+                            
+                <article
+                    class="header-cart-drawer-item"
+                    data-cart-drawer-item
+                    data-cart-key="p1"
+                >
+                    <a
+                        href="http://arizona.test/product/sync-product"
+                        class="header-cart-drawer-image"
+                        aria-label="View Sync product"
+                    >
+                        <img
+                            src="http://arizona.test/storage/asset/images/no-image.jpg"
+                            alt="Sync product"
+                            width="112"
+                            height="132"
+                            loading="lazy"
+                        >
+                    </a>
+
+                    <div class="header-cart-drawer-item-content">
+                        <div class="header-cart-drawer-item-top">
+                            <div>
+                                <h3 class="header-cart-drawer-item-title">
+                                    <a href="http://arizona.test/product/sync-product">
+                                        Sync product
+                                    </a>
+                                </h3>
+
+                                                                    <div class="header-cart-drawer-sku">
+                                        SKU: SYNC-1
+                                    </div>
+                                                            </div>
+
+                            <form
+                                action="http://arizona.test/cart/remove"
+                                method="POST"
+                                class="header-cart-drawer-remove-form"
+                            >
+                                <input type="hidden" name="_token" value="eiKCSOA4XjfmZbcTQ1LF6rscRtf1d0rnMovTCFj1" autocomplete="off">
+                                <input
+                                    type="hidden"
+                                    name="cart_key"
+                                    value="p1"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="header-cart-drawer-remove btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                                    data-drawer-remove
+                                    data-cart-key="p1"
+                                    data-ajax="true"
+                                    aria-label="Remove Sync product from cart"
+                                >
+                                    <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">
+                                        Remove
+                                    </div>
+                                </button>
+                            </form>
+                        </div>
+
+                        
+                        <div class="header-cart-drawer-meta">
+                            <div
+                                class="header-cart-drawer-quantity"
+                                data-drawer-quantity
+                            >
+                                <button
+                                    type="button"
+                                    class="header-cart-drawer-quantity-button btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                                    data-drawer-quantity-minus
+                                    aria-label="Decrease quantity of Sync product"
+                                                                    >
+                                    <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">−</div>
+                                </button>
+
+                                <input
+                                    type="number"
+                                    class="header-cart-drawer-quantity-input fs-16 text-uppercase letter-space-4px"
+                                    value="2"
+                                    min="1"
+                                                                            max="10"
+                                                                        inputmode="numeric"
+                                    data-drawer-quantity-input
+                                    data-cart-key="p1"
+                                    data-update-url="http://arizona.test/cart/update"
+                                    aria-label="Quantity of Sync product"
+                                >
+
+                                <button
+                                    type="button"
+                                    class="header-cart-drawer-quantity-button btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                                    data-drawer-quantity-plus
+                                    aria-label="Increase quantity of Sync product"
+                                                                    >
+                                    <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">+</div>
+                                </button>
+                            </div>
+
+                                                            <span class="is-in-stock">
+                                    In Stock
+                                </span>
+                                                    </div>
+
+                        <div class="header-cart-drawer-price">
+                            <strong>
+                                $100.00
+                            </strong>
+
+                                                    </div>
+                    </div>
+                </article>
+                    </div>
+
+                    <footer class="header-cart-drawer-footer">
+                <div class="header-cart-drawer-summary">
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong data-header-cart-subtotal>
+                        $200.00
+                    </strong>
+                </div>
+
+                <p class="header-cart-drawer-note">
+                    Shipping, discounts and taxes are calculated during checkout.
+                </p>
+
+                <div class="header-cart-drawer-actions">
+                    <a
+                        href="http://arizona.test/cart"
+                        class="header-cart-drawer-button secondary btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                    >
+                        <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">
+                            View Cart
+                        </div>
+                    </a>
+
+                    <a
+                        href="http://arizona.test/checkout"
+                        class="header-cart-drawer-button primary btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                    >
+                        <div class="button-text text-uppercase letter-space-3px" style="transform: translate3d(0px, 0px, 0px) scale(1);">
+                            Checkout
+                        </div>
+                    </a>
+                </div>
+            </footer>
+            </aside>
+</div>
+
+<style>
+    /*
+    |--------------------------------------------------------------------------
+    | Header Cart + Favourites
+    |--------------------------------------------------------------------------
+    | Use the SAME nav-link/button system as Contact/Login.
+    | Default: plain menu item.
+    | Hover/focus: existing btn-style-3 hover treatment.
+    */
+
+    .header-commerce-nav-link {
+        position: relative;
+    }
+
+    .header-commerce-nav-text {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+    }
+
+    .header-commerce-nav-text > i {
+        font-size: 12px;
+        line-height: 1;
+        flex: 0 0 auto;
+    }
+
+    .header-commerce-nav-count {
+        min-width: 16px;
+        height: 16px;
+        padding: 0 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        background: #ffffff;
+        color: #111111;
+        font-size: 8px;
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: 0;
+    }
+
+    .header-commerce-nav-count.is-empty {
+        display: none;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Header Cart Drawer
+    |--------------------------------------------------------------------------
+    */
+
+    html.header-cart-drawer-open,
+    body.header-cart-drawer-open {
+        overflow: hidden;
+    }
+
+    .header-cart-drawer {
+        position: fixed;
+        inset: 0;
+        z-index: 100050;
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .header-cart-drawer.is-open {
+        visibility: visible;
+        pointer-events: auto;
+    }
+
+    .header-cart-drawer-backdrop {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        border: 0;
+        background: rgba(9, 13, 22, 0.62);
+        opacity: 0;
+        cursor: pointer;
+        transition: opacity 220ms ease;
+    }
+
+    .header-cart-drawer.is-open .header-cart-drawer-backdrop {
+        opacity: 1;
+    }
+
+    .header-cart-drawer-panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: min(50vw, 760px);
+        min-width: 520px;
+        height: 100dvh;
+        display: grid;
+        grid-template-rows: auto minmax(0, 1fr) auto;
+        background: #ffffff;
+        color: #172033;
+        box-shadow: -20px 0 60px rgba(9, 13, 22, 0.18);
+        transform: translateX(100%);
+        transition: transform 260ms ease;
+        overflow: hidden;
+    }
+
+    .header-cart-drawer.is-open .header-cart-drawer-panel {
+        transform: translateX(0);
+    }
+
+    .header-cart-drawer-header {
+        min-height: 92px;
+        padding: 22px 26px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid #e5eaf1;
+    }
+
+    .header-cart-drawer-eyebrow {
+        display: block;
+        margin-bottom: 5px;
+        color: #635bff;
+        font-size: 9px;
+        font-weight: 800;
+    }
+
+    .header-cart-drawer-title {
+        margin: 0;
+        color: #172033;
+        font-size: clamp(24px, 2vw, 32px);
+        line-height: 1.1;
+        font-weight: 800;
+    }
+
+    .header-cart-drawer-close {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e5eaf1;
+        border-radius: 10px;
+        background: #f7f8fb;
+        color: #172033;
+        font-size: 17px;
+        cursor: pointer;
+        transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .header-cart-drawer-close:hover,
+    .header-cart-drawer-close:focus-visible {
+        background: #eef1f6;
+        transform: translateY(-1px);
+        outline: none;
+    }
+
+    .header-cart-drawer-body {
+        min-height: 0;
+        padding: 8px 26px 24px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .header-cart-drawer-item {
+        display: grid;
+        grid-template-columns: 112px minmax(0, 1fr);
+        gap: 18px;
+        padding: 20px 0;
+        border-bottom: 1px solid #e5eaf1;
+    }
+
+    .header-cart-drawer-image {
+        display: block;
+        width: 112px;
+        height: 132px;
+        overflow: hidden;
+        border-radius: 10px;
+        background: #f3f5f8;
+    }
+
+    .header-cart-drawer-image img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .header-cart-drawer-item-content {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .header-cart-drawer-item-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+    }
+
+    .header-cart-drawer-item-title {
+        margin: 0 0 5px;
+        font-size: 16px;
+        line-height: 1.35;
+        font-weight: 800;
+    }
+
+    .header-cart-drawer-item-title a {
+        color: #172033;
+        text-decoration: none;
+    }
+
+    .header-cart-drawer-sku {
+        color: #6b7280;
+        font-size: 10px;
+        line-height: 1.4;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    .header-cart-drawer-remove-form {
+        margin: 0;
+    }
+
+    .header-cart-drawer-remove {
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #e5eaf1;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #be123c;
+        cursor: pointer;
+    }
+
+    .header-cart-drawer-remove:hover,
+    .header-cart-drawer-remove:focus-visible {
+        background: #fff1f2;
+        outline: none;
+    }
+
+    .header-cart-drawer-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .header-cart-drawer-options span {
+        padding: 5px 8px;
+        border: 1px solid #e5eaf1;
+        border-radius: 999px;
+        background: #f7f8fb;
+        color: #4b5563;
+        font-size: 10px;
+        line-height: 1.2;
+    }
+
+    .header-cart-drawer-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        color: #6b7280;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .header-cart-drawer-quantity {
+        display: grid;
+        grid-template-columns: 44px 54px 44px;
+        align-items: stretch;
+        min-height: 44px;
+        overflow: hidden;
+        border: 1px solid #dfe3eb;
+        background: #ffffff;
+    }
+
+    .header-cart-drawer-quantity-button {
+        position: relative;
+        width: 44px;
+        min-width: 44px;
+        height: 44px;
+        min-height: 44px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: #080d20;
+        color: #ffffff;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .header-cart-drawer-quantity-button .button-text {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+
+    .header-cart-drawer-quantity-button:disabled {
+        background: #858994;
+        opacity: .55;
+        cursor: not-allowed;
+    }
+
+    .header-cart-drawer-quantity-input {
+        width: 54px;
+        height: 44px;
+        min-height: 44px;
+        padding: 0 4px;
+        border: 0;
+        border-left: 8px solid #ffffff;
+        border-right: 8px solid #ffffff;
+        background: #f2f5fb;
+        color: #080d20;
+        font-weight: 700;
+        text-align: center;
+        outline: none;
+        appearance: textfield;
+        -moz-appearance: textfield;
+    }
+
+    .header-cart-drawer-quantity-input::-webkit-inner-spin-button,
+    .header-cart-drawer-quantity-input::-webkit-outer-spin-button {
+        margin: 0;
+        -webkit-appearance: none;
+    }
+
+    .header-cart-drawer-remove {
+        position: relative;
+        width: auto;
+        min-width: 84px;
+        height: 36px;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 0;
+        background: #080d20;
+        color: #ffffff;
+        overflow: hidden;
+    }
+
+    .header-cart-drawer-remove .button-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+        pointer-events: none;
+    }
+
+    .header-cart-drawer-item.is-updating,
+    .header-cart-drawer-item.is-removing {
+        opacity: .58;
+        pointer-events: none;
+    }
+
+    .header-cart-drawer-meta .is-in-stock {
+        color: #047857;
+    }
+
+    .header-cart-drawer-meta .is-out-of-stock {
+        color: #be123c;
+    }
+
+    .header-cart-drawer-price {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: auto;
+        font-size: 14px;
+    }
+
+    .header-cart-drawer-price strong {
+        color: #172033;
+    }
+
+    .header-cart-drawer-price del {
+        color: #8a94a6;
+    }
+
+    .header-cart-drawer-empty {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .header-cart-drawer-empty-icon {
+        width: 62px;
+        height: 62px;
+        margin-bottom: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: #f0efff;
+        color: #635bff;
+        font-size: 22px;
+    }
+
+    .header-cart-drawer-empty h3 {
+        margin: 0 0 8px;
+        font-size: 20px;
+    }
+
+    .header-cart-drawer-empty p {
+        margin: 0 0 20px;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .header-cart-drawer-shop,
+    .header-cart-drawer-button {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 18px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        text-decoration: none;
+    }
+
+    .header-cart-drawer-shop,
+    .header-cart-drawer-button.primary {
+        background: #172033;
+        color: #ffffff;
+    }
+
+    .header-cart-drawer-button.secondary {
+        border: 1px solid #cbd5e1;
+        background: #ffffff;
+        color: #172033;
+    }
+
+    .header-cart-drawer-shop,
+    .header-cart-drawer-button,
+    .header-cart-drawer-button.secondary,
+    .header-cart-drawer-button.primary {
+        position: relative;
+        min-height: 48px;
+        border: 0;
+        border-radius: 0;
+        background: #080d20;
+        color: #ffffff;
+        overflow: hidden;
+    }
+
+    .header-cart-drawer-shop .button-text,
+    .header-cart-drawer-button .button-text {
+        width: 100%;
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+
+    .header-cart-drawer-footer {
+        padding: 20px 26px 24px;
+        border-top: 1px solid #e5eaf1;
+        background: #ffffff;
+    }
+
+    .header-cart-drawer-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 7px;
+        font-size: 15px;
+    }
+
+    .header-cart-drawer-summary strong {
+        font-size: 18px;
+    }
+
+    .header-cart-drawer-note {
+        margin: 0 0 16px;
+        color: #6b7280;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .header-cart-drawer-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    @media (max-width: 900px) {
+        .header-cart-drawer-panel {
+            width: 100%;
+            min-width: 0;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .header-cart-drawer-header {
+            min-height: 78px;
+            padding: 18px;
+        }
+
+        .header-cart-drawer-body {
+            padding: 4px 18px 20px;
+        }
+
+        .header-cart-drawer-item {
+            grid-template-columns: 88px minmax(0, 1fr);
+            gap: 13px;
+            padding: 16px 0;
+        }
+
+        .header-cart-drawer-image {
+            width: 88px;
+            height: 108px;
+        }
+
+        .header-cart-drawer-footer {
+            padding: 16px 18px 18px;
+        }
+
+        .header-cart-drawer-actions {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .header-cart-drawer-backdrop,
+        .header-cart-drawer-panel {
+            transition: none;
+        }
+    }
+
+</style>
+
+
+<script>
+(() => {
+    "use strict";
+
+    const drawer = document.querySelector("[data-cart-drawer]");
+    const trigger = document.querySelector("[data-header-cart-trigger]");
+
+    if (!drawer || !trigger) {
+        return;
+    }
+
+    const panel = drawer.querySelector(".header-cart-drawer-panel");
+    const closeButtons = drawer.querySelectorAll("[data-cart-drawer-close]");
+    let lastFocusedElement = null;
+
+    function openCartDrawer() {
+        lastFocusedElement = document.activeElement;
+
+        drawer.classList.add("is-open");
+        drawer.setAttribute("aria-hidden", "false");
+
+        document.documentElement.classList.add("header-cart-drawer-open");
+        document.body.classList.add("header-cart-drawer-open");
+
+        window.requestAnimationFrame(function () {
+            drawer.querySelector(".header-cart-drawer-close")?.focus();
+        });
+    }
+
+    function closeCartDrawer() {
+        drawer.classList.remove("is-open");
+        drawer.setAttribute("aria-hidden", "true");
+
+        document.documentElement.classList.remove("header-cart-drawer-open");
+        document.body.classList.remove("header-cart-drawer-open");
+
+        if (
+            lastFocusedElement
+            && typeof lastFocusedElement.focus === "function"
+        ) {
+            lastFocusedElement.focus();
+        }
+    }
+
+    function bindDrawerMovingButtons() {
+        drawer.querySelectorAll(
+            ".header-cart-drawer-quantity-button, " +
+            ".header-cart-drawer-remove, " +
+            ".header-cart-drawer-shop, " +
+            ".header-cart-drawer-button"
+        ).forEach(function (button) {
+            if (button.dataset.drawerMotionBound === "true") {
+                return;
+            }
+
+            const buttonText = button.querySelector(".button-text");
+
+            if (!buttonText) {
+                return;
+            }
+
+            button.dataset.drawerMotionBound = "true";
+
+            button.addEventListener("mousemove", function (event) {
+                if (button.disabled) {
+                    return;
+                }
+
+                const rect = button.getBoundingClientRect();
+                const x = event.clientX - rect.left - rect.width / 2;
+                const y = event.clientY - rect.top - rect.height / 2;
+
+                buttonText.style.transform =
+                    "translate3d(" +
+                    (x / 5) +
+                    "px, " +
+                    (y / 5) +
+                    "px, 0) scale(1)";
+            });
+
+            button.addEventListener("mouseleave", function () {
+                buttonText.style.transform =
+                    "translate3d(0px, 0px, 0px) scale(1)";
+            });
+        });
+    }
+
+    bindDrawerMovingButtons();
+
+    trigger.addEventListener("click", function (event) {
+        if (
+            event.button !== 0
+            || event.ctrlKey
+            || event.metaKey
+            || event.shiftKey
+            || event.altKey
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+        openCartDrawer();
+    });
+
+    closeButtons.forEach(function (button) {
+        button.addEventListener("click", closeCartDrawer);
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (
+            event.key === "Escape"
+            && drawer.classList.contains("is-open")
+        ) {
+            closeCartDrawer();
+        }
+    });
+
+    drawer.addEventListener("keydown", function (event) {
+        if (
+            event.key !== "Tab"
+            || !drawer.classList.contains("is-open")
+            || !panel
+        ) {
+            return;
+        }
+
+        const focusable = Array.from(
+            panel.querySelectorAll(
+                'a[href], button:not([disabled]), input:not([disabled]), ' +
+                'select:not([disabled]), textarea:not([disabled]), ' +
+                '[tabindex]:not([tabindex="-1"])'
+            )
+        ).filter(function (element) {
+            return element.offsetParent !== null;
+        });
+
+        if (!focusable.length) {
+            return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (
+            !event.shiftKey
+            && document.activeElement === last
+        ) {
+            event.preventDefault();
+            first.focus();
+        }
+    });
+})();
+</script>
+                </div>
+            </div>
+            <div class="navigation-cover">
+
+            </div>
+        </div>
+        <div class="mega-menu">
+            <div class="mega-menu-wrapper">
+                <div class="project-socials">
+                    <div class="social-wrapper">
+                        <div class="social-media">
+                            <a href="#" class="icon-and-title text-decoration-none">
+                                <i class="fa-brands fa-facebook-f text-color-dark"></i>
+                            </a>
+                            <a href="#" class="icon-and-title text-decoration-none">
+                                <i class="fa-brands fa-instagram text-color-dark"></i>
+                            </a>
+                            <a href="#" class="icon-and-title text-decoration-none">
+                                <i class="fa-brands fa-x-twitter text-color-dark"></i>
+                            </a>
+                            <a href="#" class="icon-and-title text-decoration-none">
+                                <i class="fa-brands fa-linkedin text-color-dark"></i>
+                            </a>
+                            <a href="#" class="icon-and-title text-decoration-none">
+                                <i class="fa-brands fa-youtube text-color-dark"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="categories-wrapper">
+                    <div class="categories-description">
+                        <div class="title">Categories</div>
+                        <a href="/category" class="btn-style-2 fs-12 text-color-white justify-self-end">
+                            <div class="button-text text-uppercase letter-space-3px">View All Categories</div>
+                        </a>
+                    </div>
+                    <div class="category-list">
+                        <div class="list-collection">
+                            <div class="list-item"><a href="/category/ai-machine-learning" class="list"><div class="list-description"><div class="list-item-text">AI Machine Learning</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/cybersecurity-data-privacy" class="list"><div class="list-description"><div class="list-item-text">Cybersecurity Data Privacy</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/fintech-digital-banking" class="list"><div class="list-description"><div class="list-item-text">Fintech Digital Banking</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/climate-tech-green-energy" class="list"><div class="list-description"><div class="list-item-text">Climate Tech Green Energy</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/health-tech-digital-wellness" class="list"><div class="list-description"><div class="list-item-text">Health Tech Digital Wellness</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/cryptocurrency-web3" class="list"><div class="list-description"><div class="list-item-text">Cryptocurrency Web3</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/e-commerce-retail-tech" class="list"><div class="list-description"><div class="list-item-text">E-Commerce Retail Tech</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/remote-work-future-of-work" class="list"><div class="list-description"><div class="list-item-text">Remote Work Future Of Work</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                            <div class="list-item"><a href="/category/edtech-online-learning" class="list"><div class="list-description"><div class="list-item-text">EDTech Online Learning</div></div><i class="fa-solid fa-arrow-right-long right-arrow-icon"></i></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <main>
+        
+
+<div class="wrapper" role="note" style="padding:16px">Fixture checkout notice</div><div
+    class="page-wrapper checkout-page"
+    data-shipping-quote-url="http://arizona.test/checkout/shipping-quote"
+    data-stripe-key="pk_test_51Qo3bvBBtWcz0bduGkmE8NBpmadrhMZbvd57aVVpMA3n9LTGQz5uxFQsBMigGSLZRP4FxCg0Fp3jc7witIzMYwOe00RUOkivFi"
+    data-stripe-intent-url="http://arizona.test/stripe/create-intent"
+    data-old-billing-country=""
+    data-old-billing-state=""
+    data-old-billing-city=""
+    data-old-shipping-country=""
+    data-old-shipping-state=""
+    data-old-shipping-city=""
+>
+    <div class="strip-wrapper">
+        <div class="wrapper">
+            <div class="strip-container">
+                <div class="pinstrip"></div>
+                <div class="pinstrip"></div>
+                <div class="pinstrip"></div>
+                <div class="pinstrip"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="services">
+        <div class="service-wrapper">
+            <div class="container">
+
+                <ul
+                    class="bread-crumbs list-style-none fs-12 text-uppercase letter-space-4px mb-10px d-flex gap-10px"
+                >
+                    <li>
+                        <a
+                            href="http://arizona.test"
+                            class="text-decoration-none text-color-dark"
+                        >
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            href="http://arizona.test/cart"
+                            class="text-decoration-none text-color-dark"
+                        >
+                            Cart
+                        </a>
+                    </li>
+
+                    <li aria-current="page">
+                        Checkout
+                    </li>
+                </ul>
+
+                <div class="checkout-page-header mb-30px">
+                    <h1 class="fs-48 text-color-dark mb-10px">
+                        Checkout
+                    </h1>
+
+                    <p class="fs-14 text-color-body mb-10px">
+                        Review your order and enter your delivery details.
+                    </p>
+                </div>
+
+                
+                
+                
+                
+                <div
+                    id="checkout-location-error"
+                    class="checkout-location-error"
+                    hidden
+                ></div>
+
+                <div class="checkout-layout">
+
+                    <div class="checkout-left">
+
+                        <form
+                            action="http://arizona.test/checkout/place-order"
+                            method="POST"
+                            id="checkout-form"
+                            class="checkout-form"
+                        >
+                            <input type="hidden" name="_token" value="eiKCSOA4XjfmZbcTQ1LF6rscRtf1d0rnMovTCFj1" autocomplete="off">
+                            <section
+                                class="checkout-section billing-section mb-20px"
+                            >
+                                <h2 class="fs-24 text-color-dark mb-20px">
+                                    Billing Details
+                                </h2>
+
+                                <div class="checkout-fields-grid">
+
+                                    <div
+                                        class="checkout-field checkout-field-full d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_name"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            Full name
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            name="billing_name"
+                                            id="billing_name"
+                                            value="Fixture customer"
+                                            placeholder="Full name"
+                                            autocomplete="name"
+                                            required
+                                        >
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_email"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            Email address
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <input
+                                            type="email"
+                                            name="billing_email"
+                                            id="billing_email"
+                                            value="customer@example.test"
+                                            placeholder="Email address"
+                                            autocomplete="email"
+                                            required
+                                        >
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_phone"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            Phone number
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <input
+                                            type="tel"
+                                            name="billing_phone"
+                                            id="billing_phone"
+                                            value=""
+                                            placeholder="Phone number"
+                                            autocomplete="tel"
+                                            required
+                                        
+                                            inputmode="tel"
+                                            maxlength="30"
+                                            pattern="[0-9+() .-]{7,30}"
+                                            title="Enter a valid phone number using digits and, where needed, +, spaces, brackets, dots or hyphens."
+                                            oninput="this.value = this.value.replace(/[^0-9+() .-]/g, '')"
+                                        >
+                                    </div>
+
+                                    <div
+                                        class="checkout-field checkout-field-full d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_address"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            Street address
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <textarea
+                                            name="billing_address"
+                                            id="billing_address"
+                                            rows="3"
+                                            placeholder="House number and street address"
+                                            autocomplete="street-address"
+                                            required
+                                        ></textarea>
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_country"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            Country
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <div class="checkout-select-wrapper">
+                                            <span
+                                                class="checkout-select-flag"
+                                                data-flag-for="billing_country"
+                                            ></span>
+
+                                            <select
+                                                name="billing_country"
+                                                id="billing_country"
+                                                class="checkout-location-select"
+                                                data-location-country
+                                                required
+                                            >
+                                                <option value="">
+                                                    Loading countries...
+                                                </option>
+                                            </select>
+
+                                            <i
+                                                class="fa-solid fa-chevron-down"
+                                            ></i>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_state"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            State / Province
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <div class="checkout-select-wrapper">
+                                            <select
+                                                name="billing_state"
+                                                id="billing_state"
+                                                class="checkout-location-select"
+                                                data-location-state
+                                                disabled
+                                                required
+                                            >
+                                                <option value="">
+                                                    Select country first
+                                                </option>
+                                            </select>
+
+                                            <i
+                                                class="fa-solid fa-chevron-down"
+                                            ></i>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_city"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            City
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <div class="checkout-select-wrapper">
+                                            <select
+                                                name="billing_city"
+                                                id="billing_city"
+                                                class="checkout-location-select"
+                                                data-location-city
+                                                disabled
+                                                required
+                                            >
+                                                <option value="">
+                                                    Select state first
+                                                </option>
+                                            </select>
+
+                                            <i
+                                                class="fa-solid fa-chevron-down"
+                                            ></i>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_zip"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            ZIP / Postal code
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            name="billing_zip"
+                                            id="billing_zip"
+                                            value=""
+                                            placeholder="ZIP or postal code"
+                                            autocomplete="postal-code"
+                                            required
+                                        >
+                                    </div>
+
+                                </div>
+                            </section>
+
+                            <section
+                                class="checkout-section shipping-section mb-20px"
+                            >
+                                <label
+                                    for="different-shipping"
+                                    class="different-shipping-label text-decoration-none fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        name="ship_to_different_address"
+                                        id="different-shipping"
+                                        value="1"
+                                                                            >
+
+                                    <span>
+                                        Ship to a different address?
+                                    </span>
+                                </label>
+
+                                <div
+                                    id="shipping-fields"
+                                    class="shipping-fields mt-20px"
+                                                                            hidden
+                                                                    >
+                                    <h2
+                                        class="fs-24 text-color-dark mb-20px"
+                                    >
+                                        Shipping Details
+                                    </h2>
+
+                                    <div class="checkout-fields-grid">
+
+                                        <div
+                                            class="checkout-field checkout-field-full d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_name"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                Full name
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                name="shipping_name"
+                                                id="shipping_name"
+                                                value=""
+                                                placeholder="Full name"
+                                                autocomplete="shipping name"
+                                                data-shipping-required
+                                            >
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_email"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                Email address
+                                            </label>
+
+                                            <input
+                                                type="email"
+                                                name="shipping_email"
+                                                id="shipping_email"
+                                                value=""
+                                                placeholder="Email address"
+                                                autocomplete="shipping email"
+                                            >
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_phone"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                Phone number
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                type="tel"
+                                                name="shipping_phone"
+                                                id="shipping_phone"
+                                                value=""
+                                                placeholder="Phone number"
+                                                autocomplete="shipping tel"
+                                                data-shipping-required
+                                            
+                                            inputmode="tel"
+                                            maxlength="30"
+                                            pattern="[0-9+() .-]{7,30}"
+                                            title="Enter a valid phone number using digits and, where needed, +, spaces, brackets, dots or hyphens."
+                                            oninput="this.value = this.value.replace(/[^0-9+() .-]/g, '')"
+                                        >
+                                        </div>
+
+                                        <div
+                                            class="checkout-field checkout-field-full d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_address"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                Street address
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <textarea
+                                                name="shipping_address"
+                                                id="shipping_address"
+                                                rows="3"
+                                                placeholder="House number and street address"
+                                                autocomplete="shipping street-address"
+                                                data-shipping-required
+                                            ></textarea>
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_country"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                Country
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <div
+                                                class="checkout-select-wrapper"
+                                            >
+                                                <span
+                                                    class="checkout-select-flag"
+                                                    data-flag-for="shipping_country"
+                                                ></span>
+
+                                                <select
+                                                    name="shipping_country"
+                                                    id="shipping_country"
+                                                    class="checkout-location-select"
+                                                    data-location-country
+                                                    data-shipping-required
+                                                >
+                                                    <option value="">
+                                                        Loading countries...
+                                                    </option>
+                                                </select>
+
+                                                <i
+                                                    class="fa-solid fa-chevron-down"
+                                                ></i>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_state"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                State / Province
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <div
+                                                class="checkout-select-wrapper"
+                                            >
+                                                <select
+                                                    name="shipping_state"
+                                                    id="shipping_state"
+                                                    class="checkout-location-select"
+                                                    data-location-state
+                                                    data-shipping-required
+                                                    disabled
+                                                >
+                                                    <option value="">
+                                                        Select country first
+                                                    </option>
+                                                </select>
+
+                                                <i
+                                                    class="fa-solid fa-chevron-down"
+                                                ></i>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_city"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                City
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <div
+                                                class="checkout-select-wrapper"
+                                            >
+                                                <select
+                                                    name="shipping_city"
+                                                    id="shipping_city"
+                                                    class="checkout-location-select"
+                                                    data-location-city
+                                                    data-shipping-required
+                                                    disabled
+                                                >
+                                                    <option value="">
+                                                        Select state first
+                                                    </option>
+                                                </select>
+
+                                                <i
+                                                    class="fa-solid fa-chevron-down"
+                                                ></i>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_zip"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                ZIP / Postal code
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                name="shipping_zip"
+                                                id="shipping_zip"
+                                                value=""
+                                                placeholder="ZIP or postal code"
+                                                autocomplete="shipping postal-code"
+                                                data-shipping-required
+                                            >
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section
+                                class="checkout-section shipping-method-section mb-20px"
+                            >
+                                <h2
+                                    class="fs-24 text-color-dark mb-20px"
+                                >
+                                    Shipping Method
+                                </h2>
+
+                                <div
+                                    class="checkout-shipping-methods d-flex flex-column gap-5px"
+                                >
+                                                                            <label
+                                            class="checkout-payment-option shipping-method-option"
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="shipping_method"
+                                                value="economy"
+                                                data-price="12"
+                                                data-delivery="5–8 business days"
+                                                                                                required
+                                            >
+
+                                            <span
+                                                class="checkout-payment-option-content text-decoration-none fs-16 text-uppercase letter-space-2px"
+                                            >
+                                                <strong>
+                                                    Economy Shipping
+                                                </strong>
+
+                                                                                                    <small
+                                                        class="fs-12 text-uppercase letter-space-3px"
+                                                    >
+                                                        Affordable delivery for non-urgent orders.
+                                                    </small>
+                                                
+                                                <small
+                                                    class="fs-12 text-uppercase letter-space-3px"
+                                                >
+                                                    Estimated delivery:
+                                                    5–8 business days
+                                                </small>
+                                            </span>
+
+                                            <strong
+                                                class="shipping-price"
+                                            >
+                                                £12.00
+                                            </strong>
+                                        </label>
+                                                                            <label
+                                            class="checkout-payment-option shipping-method-option"
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="shipping_method"
+                                                value="standard"
+                                                data-price="17"
+                                                data-delivery="3–5 business days"
+                                                checked                                                required
+                                            >
+
+                                            <span
+                                                class="checkout-payment-option-content text-decoration-none fs-16 text-uppercase letter-space-2px"
+                                            >
+                                                <strong>
+                                                    Standard Shipping
+                                                </strong>
+
+                                                                                                    <small
+                                                        class="fs-12 text-uppercase letter-space-3px"
+                                                    >
+                                                        Reliable standard delivery.
+                                                    </small>
+                                                
+                                                <small
+                                                    class="fs-12 text-uppercase letter-space-3px"
+                                                >
+                                                    Estimated delivery:
+                                                    3–5 business days
+                                                </small>
+                                            </span>
+
+                                            <strong
+                                                class="shipping-price"
+                                            >
+                                                £17.00
+                                            </strong>
+                                        </label>
+                                                                            <label
+                                            class="checkout-payment-option shipping-method-option"
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="shipping_method"
+                                                value="express"
+                                                data-price="27"
+                                                data-delivery="1–2 business days"
+                                                                                                required
+                                            >
+
+                                            <span
+                                                class="checkout-payment-option-content text-decoration-none fs-16 text-uppercase letter-space-2px"
+                                            >
+                                                <strong>
+                                                    Express Shipping
+                                                </strong>
+
+                                                                                                    <small
+                                                        class="fs-12 text-uppercase letter-space-3px"
+                                                    >
+                                                        Fast delivery for urgent orders.
+                                                    </small>
+                                                
+                                                <small
+                                                    class="fs-12 text-uppercase letter-space-3px"
+                                                >
+                                                    Estimated delivery:
+                                                    1–2 business days
+                                                </small>
+                                            </span>
+
+                                            <strong
+                                                class="shipping-price"
+                                            >
+                                                £27.00
+                                            </strong>
+                                        </label>
+                                                                    </div>
+
+                                <p
+                                    id="checkout-shipping-method-status"
+                                    class="fs-12 text-uppercase letter-space-3px mt-10px"
+                                    aria-live="polite"
+                                ></p>
+                            </section>
+
+                            <section
+                                class="checkout-section order-notes-section mb-20px"
+                            >
+                                <h2
+                                    class="fs-24 text-color-dark mb-20px"
+                                >
+                                    Additional Information
+                                </h2>
+
+                                <div
+                                    class="checkout-field checkout-field-full d-flex flex-column gap-10px"
+                                >
+                                    <label for="order_notes">
+                                        Order notes
+                                    </label>
+
+                                    <textarea
+                                        name="order_notes"
+                                        id="order_notes"
+                                        rows="4"
+                                        placeholder="Delivery instructions or other information"
+                                    ></textarea>
+                                </div>
+                            </section>
+
+                            <section
+                                class="checkout-section payment-section mt-30px"
+                            >
+                                <h2
+                                    class="fs-24 text-color-dark mb-20px"
+                                >
+                                    Payment Method
+                                </h2>
+
+                                <div
+                                    class="checkout-payment-methods d-flex flex-column gap-5px"
+                                >
+                                                                        <label class="checkout-payment-option"><input type="radio" name="payment_method" value="cash_on_delivery"  required><span class="checkout-payment-option-content"><strong>Cash on delivery</strong><small>Pay when your order arrives.</small></span></label>
+                                                                                                                <label
+                                            class="checkout-payment-option"
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="payment_method"
+                                                value="stripe"
+                                                checked                                                required
+                                            >
+
+                                            <span
+                                                class="checkout-payment-option-content text-decoration-none fs-16 text-uppercase letter-space-2px"
+                                            >
+                                                <strong>
+                                                    Credit or debit card
+                                                </strong>
+
+                                                <small
+                                                    class="text-decoration-none fs-12 text-uppercase letter-space-3px"
+                                                >
+                                                    Card, Apple Pay, Google Pay
+                                                    and supported wallets
+                                                </small>
+                                            </span>
+                                        </label>
+
+                                        <div
+                                            id="stripe-payment-container"
+                                            class="online-payment-container"
+                                        >
+                                            <div
+                                                id="stripe-payment-element"
+                                            ></div>
+
+                                            <p
+                                                id="stripe-payment-error"
+                                                class="payment-error"
+                                                hidden
+                                            ></p>
+                                        </div>
+                                    
+                                                                            <label
+                                            class="checkout-payment-option mb-20px"
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="payment_method"
+                                                value="bank_transfer"
+                                                                                                required
+                                            >
+
+                                            <span
+                                                class="checkout-payment-option-content text-decoration-none fs-16 text-uppercase letter-space-2px"
+                                            >
+                                                <strong>
+                                                    Direct bank transfer
+                                                </strong>
+
+                                                <small
+                                                    class="fs-12 text-uppercase letter-space-3px"
+                                                >
+                                                    Your order will remain
+                                                    pending until payment is
+                                                    verified
+                                                </small>
+                                            </span>
+                                        </label>
+
+                                        <div
+                                            id="bank-transfer-details"
+                                            class="online-payment-container"
+                                            hidden
+                                        >
+                                            <h3
+                                                class="fs-24 text-color-dark mb-20px"
+                                            >
+                                                Bank transfer instructions
+                                            </h3>
+
+                                            <p
+                                                class="fs-14 text-color-body mb-10px"
+                                            >
+                                                Place your order first, then
+                                                transfer the exact order total
+                                                to the bank account below.
+                                                Your order will remain pending
+                                                until the payment has been
+                                                verified.
+                                            </p>
+
+                                            <div
+                                                class="bank-transfer-information text-decoration-none fs-16 text-uppercase"
+                                            >
+                                                <p>
+                                                    <strong>
+                                                        Bank name:
+                                                    </strong>
+
+                                                    Meezan Bank-Babar Market Branch Karachi
+                                                </p>
+
+                                                <p>
+                                                    <strong>
+                                                        Account title:
+                                                    </strong>
+
+                                                    MUHAMMAD ABEER
+                                                </p>
+
+                                                <p>
+                                                    <strong>
+                                                        Account number:
+                                                    </strong>
+
+                                                    01460110415070
+                                                </p>
+
+                                                                                                    <p>
+                                                        <strong>
+                                                            IBAN:
+                                                        </strong>
+
+                                                        PK53MEZN0001460110415070
+                                                    </p>
+                                                
+                                                                                                    <p>
+                                                        <strong>
+                                                            SWIFT/BIC:
+                                                        </strong>
+
+                                                        MEZN000
+                                                    </p>
+                                                                                            </div>
+
+                                            <div
+                                                class="bank-transfer-notice mt-10px text-decoration-none fs-16"
+                                            >
+                                                <p>
+                                                    <strong
+                                                        class="text-uppercase"
+                                                    >
+                                                        Payment reference:
+                                                    </strong>
+
+                                                    Your order number will be
+                                                    provided after placing the
+                                                    order.
+                                                </p>
+
+                                                <p>
+                                                    Please include the order
+                                                    number in your bank
+                                                    transfer reference so the
+                                                    payment can be matched
+                                                    with your order.
+                                                </p>
+                                            </div>
+                                        </div>
+                                                                    </div>
+                            </section>
+
+                            <section
+                                class="checkout-section terms-section mt-20px"
+                            >
+                                <label
+                                    class="checkout-terms-label fs-12 text-uppercase letter-space-3px d-flex align-items-center"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        name="terms"
+                                        value="1"
+                                                                                required
+                                    >
+
+                                    <span>
+                                        I agree to the
+
+                                        <a
+                                            href="http://arizona.test/terms-and-conditions"
+                                            target="_blank"
+                                            rel="noopener"
+                                            class="text-color-body text-decoration-none"
+                                        >
+                                            terms and conditions
+                                        </a>.
+                                    </span>
+                                </label>
+                            </section>
+
+                        </form>
+                    </div>
+
+                    <aside class="checkout-right">
+                        <div class="checkout-order-review">
+
+                            <div
+                                class="checkout-order-heading mb-20px"
+                            >
+                                <div class="mb-10px">
+                                    <h2
+                                        class="fs-24 text-color-dark mb-20px"
+                                    >
+                                        Review Your Order
+                                    </h2>
+
+                                    <p
+                                        class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                    >
+                                        2
+
+                                        items
+                                    </p>
+                                </div>
+
+                                <a
+                                    href="http://arizona.test/cart"
+                                    class="checkout-edit-cart-link text-decoration-none fs-12 text-uppercase letter-space-4px text-color-body"
+                                >
+                                    Edit cart
+                                </a>
+                            </div>
+
+                            <div class="checkout-products">
+                                                                    
+                                    <article
+                                        class="checkout-product-item"
+                                    >
+                                        <div
+                                            class="checkout-product-details"
+                                        >
+                                            <div
+                                                class="checkout-product-title-row mb-10px d-flex justify-content-between"
+                                            >
+                                                <h3
+                                                    class="fs-18 text-color-dark text-capitalize"
+                                                >
+                                                    Sync product
+                                                </h3>
+
+                                                <strong
+                                                    class="checkout-product-total"
+                                                >
+                                                    £200.00
+                                                </strong>
+                                            </div>
+
+                                                                                            <p
+                                                    class="checkout-product-sku fs-12 letter-space-3px text-uppercase mb-10px"
+                                                >
+                                                    SKU: SYNC-1
+                                                </p>
+                                            
+                                            
+                                            <p
+                                                class="checkout-product-price fs-12 letter-space-3px text-uppercase mb-10px"
+                                            >
+                                                2
+                                                ×
+                                                £100.00
+                                            </p>
+                                        </div>
+                                    </article>
+                                                            </div>
+
+                            <div
+                                class="checkout-coupon-section mb-20px"
+                            >
+                                <h3
+                                    class="fs-16 text-color-dark letter-space-3px text-uppercase mb-10px"
+                                >
+                                    Coupon code
+                                </h3>
+
+                                                                    <form
+                                        action="http://arizona.test/cart/coupon"
+                                        method="POST"
+                                        class="checkout-coupon-form"
+                                    >
+                                        <input type="hidden" name="_token" value="eiKCSOA4XjfmZbcTQ1LF6rscRtf1d0rnMovTCFj1" autocomplete="off">
+                                        <input
+                                            type="text"
+                                            name="coupon_code"
+                                            value=""
+                                            placeholder="Enter coupon code"
+                                            maxlength="100"
+                                            autocomplete="off"
+                                            class="mb-10px"
+                                            required
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="apply-coupon-button btn-style-2 fs-12 text-color-white cursor-pointer w-100"
+                                        >
+                                            <div
+                                                class="button-text text-uppercase letter-space-3px"
+                                            >
+                                                Apply
+                                            </div>
+                                        </button>
+                                    </form>
+                                                            </div>
+
+                            <div class="checkout-summary-lines">
+
+                                <div
+                                    class="checkout-summary-row d-flex justify-content-between fs-12 letter-space-3px text-uppercase mb-10px"
+                                >
+                                    <span>
+                                        Cart items
+                                    </span>
+
+                                    <strong>
+                                        2
+                                    </strong>
+                                </div>
+
+                                <div
+                                    class="checkout-summary-row d-flex justify-content-between fs-12 letter-space-3px text-uppercase mb-10px"
+                                >
+                                    <span>
+                                        Subtotal
+                                    </span>
+
+                                    <strong>
+                                        £200.00
+                                    </strong>
+                                </div>
+
+                                
+                                <div
+                                    class="checkout-summary-row d-flex justify-content-between fs-12 letter-space-3px text-uppercase mb-10px"
+                                >
+                                    <span>
+                                        Shipping
+                                    </span>
+
+                                    <strong
+                                        id="checkout-shipping-amount"
+                                    >
+                                        £17.00
+                                    </strong>
+                                </div>
+
+                                <div class="checkout-summary-row d-flex justify-content-between"><span>Tax</span><strong id="checkout-tax-amount">£20.00</strong></div>
+                                <div
+                                    id="checkout-selected-shipping"
+                                    class="fs-12 letter-space-3px text-uppercase mb-15px"
+                                >
+                                    Standard Shipping
+
+                                    •
+
+                                    3–5 business days
+                                </div>
+
+                                <div
+                                    class="checkout-summary-row checkout-summary-total d-flex justify-content-between fs-16 letter-space-3px text-uppercase mb-10px"
+                                >
+                                    <span>
+                                        Total
+                                    </span>
+
+                                    <strong
+                                        id="checkout-total-amount"
+                                    >
+                                        £237.00
+                                    </strong>
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                form="checkout-form"
+                                class="checkout-place-order-button mb-10px btn-style-2 fs-12 text-color-white cursor-pointer w-100"
+                                id="checkout-place-order-button"
+                            >
+                                <div
+                                    class="button-text text-uppercase letter-space-3px"
+                                >
+                                    Place Order
+                                </div>
+                            </button>
+
+                            <div
+                                class="checkout-security-note fs-14 letter-space-3px text-uppercase mb-10px"
+                            >
+                                <i class="fa-solid fa-lock"></i>
+
+                                <span>
+                                    Secure checkout
+                                </span>
+                            </div>
+                        </div>
+                    </aside>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </main>
+
+    <div class="footer-section">
+    <div class="wrapper">
+        <div class="footer-wrapper">
+            <div class="footer-logo-heading">
+                <a href="/" class="text-decoration-none"><h1 class="text-color-white">ARIZONA OUTFITS</h1></a>
+            </div>
+            <div class="follow-social">
+                <div class="subtitle">Follow Us</div>
+                <div class="social-link-list">
+                    <a href="" class="list-item"><div class="social-link-icon"><i class="fa-brands fa-facebook-f text-color-dark"></i></div><div class="social-link-text">Facebook</div><i class="fa-solid fa-arrow-right-long social-right-arrow"></i></a>
+                    <a href="" class="list-item"><div class="social-link-icon"><i class="fa-brands fa-instagram text-color-dark"></i></div><div class="social-link-text">Instagram</div><i class="fa-solid fa-arrow-right-long social-right-arrow"></i></a>
+                    <a href="" class="list-item"><div class="social-link-icon"><i class="fa-brands fa-linkedin text-color-dark"></i></div><div class="social-link-text">Linkdin</div><i class="fa-solid fa-arrow-right-long social-right-arrow"></i></a>
+                    <a href="" class="list-item"><div class="social-link-icon"><i class="fa-brands fa-youtube text-color-dark"></i></div><div class="social-link-text">Youtube</div><i class="fa-solid fa-arrow-right-long social-right-arrow"></i></a>
+                    <a href="" class="list-item"><div class="social-link-icon"><i class="fa-brands fa-x-twitter text-color-dark"></i></div><div class="social-link-text">X</div><i class="fa-solid fa-arrow-right-long social-right-arrow"></i></a>
+                </div>
+            </div>
+            <div class="navigation-link">
+                <div class="subtitle">Navigation</div>
+                <div class="navigation-wrapper">
+                    <a href="/about" class="footer-nav-link"><div class="link-item-text">About</div><i class="fa-solid fa-arrow-right-long footer-nav-right-arrow"></i></a>
+    <a href="/projects" class="footer-nav-link"><div class="link-item-text">Projects</div><i class="fa-solid fa-arrow-right-long footer-nav-right-arrow"></i></a>
+    <a href="/services" class="footer-nav-link"><div class="link-item-text">Services</div><i class="fa-solid fa-arrow-right-long footer-nav-right-arrow"></i></a>
+    <a href="/blogs" class="footer-nav-link"><div class="link-item-text">Blogs</div><i class="fa-solid fa-arrow-right-long footer-nav-right-arrow"></i></a>
+    <a href="/contact" class="footer-nav-link"><div class="link-item-text">Contact</div><i class="fa-solid fa-arrow-right-long footer-nav-right-arrow"></i></a>
+    <a href="/category" class="footer-nav-link"><div class="link-item-text">Categories</div><i class="fa-solid fa-arrow-right-long footer-nav-right-arrow"></i></a>
+    <a href="/privacy-policy" class="footer-nav-link"><div class="link-item-text">Privacy Policy</div><i class="fa-solid fa-arrow-right-long footer-nav-right-arrow"></i></a>
+    <a href="/terms-and-conditions" class="footer-nav-link"><div class="link-item-text">Terms &amp; Conditions</div><i class="fa-solid fa-arrow-right-long footer-nav-right-arrow"></i></a>
+                </div>
+            </div>
+            <div class="about-description">
+                <h3>About</h3>
+                <p class="about-para">Look — nobody has time to scroll through ten different websites just to figure out what is going on in the world. That is honestly why this place exists. We talk about everything — tech, health, money, culture, travel, weird trends, big ideas — whatever is worth a conversation. Some of it will surprise you. Some of it you probably needed to hear. We are not trying to be the biggest website on the internet, just the one you actually enjoy coming back to. Grab a coffee, stay a while, and find something that sparks your curiosity today.</p>
+            </div>
+            <div class="footer-copyright">
+                <div>© 2026 Abeer Khan. All rights reserved.</div>
+            </div>
+        </div>
+    </div>
+    <div class="strip-wrapper">
+        <div class="wrapper">
+            <div class="strip-container">
+                <div class="pinstrip"></div>
+                <div class="pinstrip"></div>
+                <div class="pinstrip"></div>
+                <div class="pinstrip"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/intlTelInput.min.js"
+    ></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.2.1/build/js/utils.js"
+    ></script>
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+            <script src="http://arizona.test/asset/js/product.js"></script>
+    
+    
+<script>
+    document.addEventListener(
+        'DOMContentLoaded',
+        function () {
+            'use strict';
+
+            const checkoutPage =
+                document.querySelector(
+                    '.checkout-page'
+                );
+
+            if (!checkoutPage) {
+                return;
+            }
+
+            const locationsApi =
+                'https://countriesnow.space/api/v0.1/countries';
+
+            const shippingQuoteUrl =
+                checkoutPage.dataset
+                    .shippingQuoteUrl || '';
+
+            const csrfToken =
+                document.querySelector(
+                    'meta[name="csrf-token"]'
+                )?.getAttribute('content') || '';
+
+            const differentShippingCheckbox =
+                document.getElementById(
+                    'different-shipping'
+                );
+
+            const shippingFields =
+                document.getElementById(
+                    'shipping-fields'
+                );
+
+            const shippingAmount =
+                document.getElementById(
+                    'checkout-shipping-amount'
+                );
+
+            const totalAmount =
+                document.getElementById(
+                    'checkout-total-amount'
+                );
+
+            const selectedShippingText =
+                document.getElementById(
+                    'checkout-selected-shipping'
+                );
+
+            const shippingMethodStatus =
+                document.getElementById(
+                    'checkout-shipping-method-status'
+                );
+
+            const locationError =
+                document.getElementById(
+                    'checkout-location-error'
+                );
+
+            const placeOrderButton =
+                document.getElementById(
+                    'checkout-place-order-button'
+                );
+
+            const shippingRadios =
+                document.querySelectorAll(
+                    'input[name="shipping_method"]'
+                );
+
+            const locationGroups = {
+                billing: {
+                    country:
+                        document.getElementById(
+                            'billing_country'
+                        ),
+
+                    state:
+                        document.getElementById(
+                            'billing_state'
+                        ),
+
+                    city:
+                        document.getElementById(
+                            'billing_city'
+                        ),
+
+                    oldCountry:
+                        checkoutPage.dataset
+                            .oldBillingCountry || '',
+
+                    oldState:
+                        checkoutPage.dataset
+                            .oldBillingState || '',
+
+                    oldCity:
+                        checkoutPage.dataset
+                            .oldBillingCity || '',
+                },
+
+                shipping: {
+                    country:
+                        document.getElementById(
+                            'shipping_country'
+                        ),
+
+                    state:
+                        document.getElementById(
+                            'shipping_state'
+                        ),
+
+                    city:
+                        document.getElementById(
+                            'shipping_city'
+                        ),
+
+                    oldCountry:
+                        checkoutPage.dataset
+                            .oldShippingCountry || '',
+
+                    oldState:
+                        checkoutPage.dataset
+                            .oldShippingState || '',
+
+                    oldCity:
+                        checkoutPage.dataset
+                            .oldShippingCity || '',
+                },
+            };
+
+            let countries = [];
+            let shippingRequestController = null;
+
+            function showLocationError(
+                message
+            ) {
+                if (!locationError) {
+                    return;
+                }
+
+                locationError.textContent =
+                    message;
+
+                locationError.hidden =
+                    false;
+            }
+
+            function clearLocationError() {
+                if (!locationError) {
+                    return;
+                }
+
+                locationError.textContent =
+                    '';
+
+                locationError.hidden =
+                    true;
+            }
+
+            function flagFromCode(
+                countryCode
+            ) {
+                if (!countryCode) {
+                    return '';
+                }
+
+                return countryCode
+                    .toUpperCase()
+                    .split('')
+                    .map(function (letter) {
+                        return String.fromCodePoint(
+                            127397 +
+                            letter.charCodeAt()
+                        );
+                    })
+                    .join('');
+            }
+
+            function updateFlag(select) {
+                if (!select) {
+                    return;
+                }
+
+                const flagElement =
+                    document.querySelector(
+                        '[data-flag-for="' +
+                        select.id +
+                        '"]'
+                    );
+
+                if (!flagElement) {
+                    return;
+                }
+
+                flagElement.textContent =
+                    flagFromCode(
+                        select.value
+                    );
+            }
+
+            function setSelectMessage(
+                select,
+                message,
+                disabled = true
+            ) {
+                if (!select) {
+                    return;
+                }
+
+                select.innerHTML = '';
+
+                const option =
+                    document.createElement(
+                        'option'
+                    );
+
+                option.value = '';
+                option.textContent =
+                    message;
+
+                select.appendChild(
+                    option
+                );
+
+                select.disabled =
+                    disabled;
+            }
+
+            function appendOption(
+                select,
+                value,
+                label,
+                selectedValue = ''
+            ) {
+                if (!select) {
+                    return;
+                }
+
+                const option =
+                    document.createElement(
+                        'option'
+                    );
+
+                option.value = value;
+                option.textContent =
+                    label;
+
+                if (
+                    String(value) ===
+                    String(selectedValue)
+                ) {
+                    option.selected =
+                        true;
+                }
+
+                select.appendChild(
+                    option
+                );
+            }
+
+            function sortByName(items) {
+                return [...items].sort(
+                    function (
+                        first,
+                        second
+                    ) {
+                        return String(
+                            first.name
+                        ).localeCompare(
+                            String(
+                                second.name
+                            )
+                        );
+                    }
+                );
+            }
+
+            function getSelectedCountryName(
+                select
+            ) {
+                return select
+                    ?.selectedOptions?.[0]
+                    ?.dataset?.countryName ||
+                    '';
+            }
+
+            function populateCountries(
+                group,
+                selectedCountry = ''
+            ) {
+                const countrySelect =
+                    group.country;
+
+                if (!countrySelect) {
+                    return;
+                }
+
+                countrySelect.innerHTML =
+                    '';
+
+                appendOption(
+                    countrySelect,
+                    '',
+                    'Select country'
+                );
+
+                sortByName(
+                    countries
+                ).forEach(
+                    function (country) {
+                        const option =
+                            document.createElement(
+                                'option'
+                            );
+
+                        const countryCode =
+                            String(
+                                country.iso2
+                                || ''
+                            ).toUpperCase();
+
+                        option.value =
+                            countryCode;
+
+                        option.dataset
+                            .countryName =
+                            country.name;
+
+                        option.textContent =
+                            flagFromCode(
+                                countryCode
+                            )
+                            + ' '
+                            + country.name;
+
+                        if (
+                            countryCode ===
+                            String(
+                                selectedCountry
+                            ).toUpperCase()
+                        ) {
+                            option.selected =
+                                true;
+                        }
+
+                        countrySelect
+                            .appendChild(
+                                option
+                            );
+                    }
+                );
+
+                countrySelect.disabled =
+                    false;
+
+                updateFlag(
+                    countrySelect
+                );
+            }
+
+            function findCountry(
+                countryCode
+            ) {
+                return countries.find(
+                    function (country) {
+                        return String(
+                            country.iso2
+                            || ''
+                        ).toUpperCase() ===
+                            String(
+                                countryCode
+                                || ''
+                            ).toUpperCase();
+                    }
+                );
+            }
+
+            function populateStates(
+                group,
+                selectedState = ''
+            ) {
+                if (
+                    !group.country ||
+                    !group.state ||
+                    !group.city
+                ) {
+                    return;
+                }
+
+                const selectedCountry =
+                    findCountry(
+                        group.country
+                            .value
+                    );
+
+                if (
+                    !selectedCountry ||
+                    !Array.isArray(
+                        selectedCountry
+                            .states
+                    )
+                ) {
+                    setSelectMessage(
+                        group.state,
+                        'No states available',
+                        false
+                    );
+
+                    setSelectMessage(
+                        group.city,
+                        'Select state first'
+                    );
+
+                    return;
+                }
+
+                group.state.innerHTML =
+                    '';
+
+                appendOption(
+                    group.state,
+                    '',
+                    'Select state / province'
+                );
+
+                sortByName(
+                    selectedCountry
+                        .states
+                ).forEach(
+                    function (state) {
+                        appendOption(
+                            group.state,
+                            state.name,
+                            state.name,
+                            selectedState
+                        );
+                    }
+                );
+
+                group.state.disabled =
+                    false;
+
+                setSelectMessage(
+                    group.city,
+                    'Select state first'
+                );
+            }
+
+            async function populateCities(
+                group,
+                selectedCity = ''
+            ) {
+                if (
+                    !group.country ||
+                    !group.state ||
+                    !group.city
+                ) {
+                    return;
+                }
+
+                const countryName =
+                    getSelectedCountryName(
+                        group.country
+                    );
+
+                const stateName =
+                    group.state.value;
+
+                if (
+                    !countryName ||
+                    !stateName
+                ) {
+                    setSelectMessage(
+                        group.city,
+                        'Select state first'
+                    );
+
+                    return;
+                }
+
+                setSelectMessage(
+                    group.city,
+                    'Loading cities...'
+                );
+
+                try {
+                    const response =
+                        await fetch(
+                            locationsApi +
+                            '/state/cities',
+                            {
+                                method:
+                                    'POST',
+
+                                headers: {
+                                    'Content-Type':
+                                        'application/json',
+
+                                    Accept:
+                                        'application/json',
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        {
+                                            country:
+                                                countryName,
+
+                                            state:
+                                                stateName,
+                                        }
+                                    ),
+                            }
+                        );
+
+                    if (!response.ok) {
+                        throw new Error(
+                            'Unable to load cities.'
+                        );
+                    }
+
+                    const payload =
+                        await response
+                            .json();
+
+                    const cities =
+                        Array.isArray(
+                            payload.data
+                        )
+                            ? payload.data
+                            : [];
+
+                    group.city.innerHTML =
+                        '';
+
+                    appendOption(
+                        group.city,
+                        '',
+                        cities.length
+                            ? 'Select city'
+                            : 'No cities available'
+                    );
+
+                    [...cities]
+                        .sort(
+                            function (
+                                first,
+                                second
+                            ) {
+                                return String(
+                                    first
+                                ).localeCompare(
+                                    String(
+                                        second
+                                    )
+                                );
+                            }
+                        )
+                        .forEach(
+                            function (city) {
+                                appendOption(
+                                    group.city,
+                                    city,
+                                    city,
+                                    selectedCity
+                                );
+                            }
+                        );
+
+                    group.city.disabled =
+                        false;
+                } catch (error) {
+                    console.error(
+                        error
+                    );
+
+                    setSelectMessage(
+                        group.city,
+                        'Unable to load cities',
+                        false
+                    );
+
+                    showLocationError(
+                        'Cities could not be loaded. Please refresh the page and try again.'
+                    );
+                }
+            }
+
+            async function initialiseGroup(
+                group
+            ) {
+                populateCountries(
+                    group,
+                    group.oldCountry
+                );
+
+                if (!group.oldCountry) {
+                    return;
+                }
+
+                populateStates(
+                    group,
+                    group.oldState
+                );
+
+                if (
+                    group.oldState &&
+                    group.state?.value
+                ) {
+                    await populateCities(
+                        group,
+                        group.oldCity
+                    );
+                }
+            }
+
+            function updateShippingFields() {
+                const isDifferent =
+                    Boolean(
+                        differentShippingCheckbox
+                            ?.checked
+                    );
+
+                if (shippingFields) {
+                    shippingFields.hidden =
+                        !isDifferent;
+
+                    shippingFields
+                        .querySelectorAll(
+                            '[data-shipping-required]'
+                        )
+                        .forEach(
+                            function (field) {
+                                field.required =
+                                    isDifferent;
+                            }
+                        );
+                }
+            }
+
+            async function loadCountries() {
+                clearLocationError();
+
+                Object.values(
+                    locationGroups
+                ).forEach(
+                    function (group) {
+                        setSelectMessage(
+                            group.country,
+                            'Loading countries...'
+                        );
+                    }
+                );
+
+                try {
+                    const response =
+                        await fetch(
+                            locationsApi +
+                            '/states',
+                            {
+                                method:
+                                    'GET',
+
+                                headers: {
+                                    Accept:
+                                        'application/json',
+                                },
+                            }
+                        );
+
+                    if (!response.ok) {
+                        throw new Error(
+                            'Unable to load countries.'
+                        );
+                    }
+
+                    const payload =
+                        await response
+                            .json();
+
+                    countries =
+                        Array.isArray(
+                            payload.data
+                        )
+                            ? payload.data
+                            : [];
+
+                    if (!countries.length) {
+                        throw new Error(
+                            'No country data was returned.'
+                        );
+                    }
+
+                    await initialiseGroup(
+                        locationGroups.billing
+                    );
+
+                    await initialiseGroup(
+                        locationGroups.shipping
+                    );
+                } catch (error) {
+                    console.error(
+                        error
+                    );
+
+                    Object.values(
+                        locationGroups
+                    ).forEach(
+                        function (group) {
+                            setSelectMessage(
+                                group.country,
+                                'Unable to load countries',
+                                false
+                            );
+                        }
+                    );
+
+                    showLocationError(
+                        'Countries could not be loaded. Check your internet connection and refresh the page.'
+                    );
+                }
+            }
+
+            async function updateShippingMethod() {
+                const selectedRadio =
+                    document.querySelector(
+                        'input[name="shipping_method"]:checked'
+                    );
+
+                if (
+                    !selectedRadio ||
+                    !shippingQuoteUrl
+                ) {
+                    return;
+                }
+
+                if (
+                    shippingRequestController
+                ) {
+                    shippingRequestController
+                        .abort();
+                }
+
+                shippingRequestController =
+                    new AbortController();
+
+                if (
+                    shippingMethodStatus
+                ) {
+                    shippingMethodStatus
+                        .textContent =
+                        'Updating shipping method...';
+                }
+
+                if (placeOrderButton) {
+                    placeOrderButton
+                        .disabled = true;
+                }
+
+                shippingRadios.forEach(
+                    function (radio) {
+                        radio.disabled =
+                            true;
+                    }
+                );
+
+                try {
+                    const response =
+                        await fetch(
+                            shippingQuoteUrl,
+                            {
+                                method:
+                                    'POST',
+
+                                headers: {
+                                    'Content-Type':
+                                        'application/json',
+
+                                    Accept:
+                                        'application/json',
+
+                                    'X-CSRF-TOKEN':
+                                        csrfToken,
+
+                                    'X-Requested-With':
+                                        'XMLHttpRequest',
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        {
+                                            shipping_method:
+                                                selectedRadio
+                                                    .value,
+                                        }
+                                    ),
+
+                                signal:
+                                    shippingRequestController
+                                        .signal,
+                            }
+                        );
+
+                    const payload =
+                        await response
+                            .json();
+
+                    if (
+                        !response.ok ||
+                        !payload.success
+                    ) {
+                        throw new Error(
+                            payload.message
+                            || 'Shipping could not be updated.'
+                        );
+                    }
+
+                    if (shippingAmount) {
+                        shippingAmount
+                            .textContent =
+                            payload
+                                .formatted_shipping;
+                    }
+
+                    if (totalAmount) {
+                        totalAmount
+                            .textContent =
+                            payload
+                                .formatted_total;
+                        const taxAmount=document.getElementById("checkout-tax-amount");if(taxAmount)taxAmount.textContent=(payload.currency || "")+" "+Number(payload.tax || 0).toFixed(2);
+                    }
+
+                    if (
+                        selectedShippingText
+                    ) {
+                        selectedShippingText
+                            .textContent =
+                            payload.shipping_name
+                            + ' • '
+                            + payload.delivery_time;
+                    }
+
+                    if (
+                        shippingMethodStatus
+                    ) {
+                        shippingMethodStatus
+                            .textContent =
+                            payload.message
+                            || 'Shipping method updated.';
+                    }
+
+                    /*
+                     * Let the Stripe integration know
+                     * that the order total has changed.
+                     */
+                    document.dispatchEvent(
+                        new CustomEvent(
+                            'checkout:shipping-updated',
+                            {
+                                detail: {
+                                    shippingMethod:
+                                        payload
+                                            .shipping_method,
+
+                                    shipping:
+                                        payload.shipping,
+
+                                    total:
+                                        payload.total,
+                                },
+                            }
+                        )
+                    );
+                } catch (error) {
+                    if (
+                        error.name ===
+                        'AbortError'
+                    ) {
+                        return;
+                    }
+
+                    console.error(
+                        error
+                    );
+
+                    if (
+                        shippingMethodStatus
+                    ) {
+                        shippingMethodStatus
+                            .textContent =
+                            error.message
+                            || 'Shipping could not be updated. Please try again.';
+                    }
+                } finally {
+                    shippingRadios
+                        .forEach(
+                            function (radio) {
+                                radio.disabled =
+                                    false;
+                            }
+                        );
+
+                    if (
+                        placeOrderButton
+                    ) {
+                        placeOrderButton
+                            .disabled =
+                            false;
+                    }
+                }
+            }
+
+            Object.values(
+                locationGroups
+            ).forEach(
+                function (group) {
+                    group.country
+                        ?.addEventListener(
+                            'change',
+                            function () {
+                                updateFlag(
+                                    group.country
+                                );
+
+                                populateStates(
+                                    group
+                                );
+                            }
+                        );
+
+                    group.state
+                        ?.addEventListener(
+                            'change',
+                            function () {
+                                populateCities(
+                                    group
+                                );
+                            }
+                        );
+                }
+            );
+
+            differentShippingCheckbox
+                ?.addEventListener(
+                    'change',
+                    updateShippingFields
+                );
+
+            shippingRadios.forEach(
+                function (radio) {
+                    radio.addEventListener(
+                        'change',
+                        updateShippingMethod
+                    );
+                }
+            );
+
+            updateShippingFields();
+            loadCountries();
+
+            /*
+             * The initial values are already calculated
+             * by Laravel. A new server request is not
+             * required until the customer changes the
+             * selected shipping method.
+             */
+        }
+    );
+</script>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+    document.addEventListener(
+        'DOMContentLoaded',
+        function () {
+            'use strict';
+
+            const paymentRadios =
+                document.querySelectorAll(
+                    'input[name="payment_method"]'
+                );
+
+            const stripeContainer =
+                document.getElementById(
+                    'stripe-payment-container'
+                );
+
+            const bankTransferContainer =
+                document.getElementById(
+                    'bank-transfer-details'
+                );
+
+            function updatePaymentMethodDisplay() {
+                const selected =
+                    document.querySelector(
+                        'input[name="payment_method"]:checked'
+                    )?.value || '';
+
+                if (stripeContainer) {
+                    stripeContainer.hidden =
+                        selected !== 'stripe';
+                }
+
+                if (
+                    bankTransferContainer
+                ) {
+                    bankTransferContainer
+                        .hidden =
+                        selected !==
+                        'bank_transfer';
+                }
+
+                if (
+                    selected === 'stripe'
+                ) {
+                    document.dispatchEvent(
+                        new CustomEvent(
+                            'checkout:stripe-selected'
+                        )
+                    );
+                }
+            }
+
+            paymentRadios.forEach(
+                function (radio) {
+                    radio.addEventListener(
+                        'change',
+                        updatePaymentMethodDisplay
+                    );
+                }
+            );
+
+            updatePaymentMethodDisplay();
+        }
+    );
+</script>
+
+<script
+    src="http://arizona.test/asset/js/checkout-stripe.js"
+></script>
+
+
+</body>
+
+</html>

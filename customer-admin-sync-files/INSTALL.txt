@@ -1,0 +1,208 @@
+ARIZONAOUTFITS COMPLETE ADMIN + CUSTOMER SYNC SET
+54 separate replacement text files. No ZIP.
+Prepared 3 October 2026. The installed application has NOT been changed.
+
+INSTALLATION
+1. Make a copy of your ArizonaOutfits project folder and back up your database.
+2. Stop php artisan serve while replacing files.
+3. Open each numbered .txt file and copy ALL its contents.
+4. Open its destination below, replace ALL contents, and save.
+   If the destination file does not exist, create it in the listed folder.
+   Save real PHP files as .php and Blade files as .blade.php, not .txt.
+5. Install ALL 54 files together, including the new AdminAccessPolicy service.
+   Files 01-51 repeat the complete prepared admin set, with CheckoutController
+   updated for archived customer confirmations. Files 52-54 fix customer accounts.
+6. No new database migration is included in this package. Keep the migrations
+   already supplied in the earlier inventory/customer phases installed.
+
+Run these commands in a terminal opened in C:\xampp\htdocs\ArizonaOutfits:
+C:\xampp\php\php.exe artisan optimize:clear
+C:\xampp\php\php.exe artisan serve
+
+Then refresh your browser with Ctrl+F5.
+
+IMPORTANT CUSTOMER TESTS
+- Change email through Login & Security, open the verification email, sign out,
+  and confirm the new address logs in. The old address must stop logging in.
+- Change password through profile and through Login & Security. Both must reject
+  the current and immediately previous password.
+- Account deletion must refuse users with current OR archived orders.
+- A disposable customer without orders can delete their account; a simultaneous
+  admin login in that browser must remain active.
+- Archived order detail, invoice and authorized confirmation must open.
+
+ADMIN CHECKS AFTER INSTALLATION
+Recheck Store Settings, CMS Pages, Menu Builder, Global Analytics, Admin Team,
+Roles & Permissions, Notification Center, Audit Logs, Backups, Email Templates,
+Customers, Reviews, Blog Posts, Blog Categories and inventory/purchasing menus.
+Also recheck your existing customer orders, archived orders, payment verification,
+products, product categories/tags and coupons with normal fixture data.
+Automated regressions cover shared settings/order/stock behavior and previous
+admin/content/inventory modules; they do not replace all browser acceptance tests.
+
+Live Stripe, Google/Facebook delivery and SMS are not certified by these tests.
+Phone verification remains local development only until an SMS provider is added.
+
+FILE MAPPING (source .txt -> destination)
+
+01_SafeContentUrl.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Services\SafeContentUrl.php
+
+02_HtmlContentSanitizer.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Services\HtmlContentSanitizer.php
+
+03_CmsContentSanitizer.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Services\CmsContentSanitizer.php
+
+04_EmailTemplateService.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Services\EmailTemplateService.php
+
+05_AdminMiddleware.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Middleware\AdminMiddleware.php
+
+06_administration-links.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\partials\administration-links.blade.php
+
+07_sidebar.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\partials\sidebar.blade.php
+
+08_web.php.txt
+C:\xampp\htdocs\ArizonaOutfits\routes\web.php
+
+09_AdminPageController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminPageController.php
+
+10_NavigationMenuItem.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Models\NavigationMenuItem.php
+
+11_AdminNavigationMenuController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminNavigationMenuController.php
+
+12_AdminNotificationController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminNotificationController.php
+
+13_AdminEmailTemplateController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminEmailTemplateController.php
+
+14_edit.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\email-templates\edit.blade.php
+
+15_AdminAuditMiddleware.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Middleware\AdminAuditMiddleware.php
+
+16_AdminBackupService.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Services\AdminBackupService.php
+
+17_AdminBackupController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminBackupController.php
+
+18_AdminAnalyticsController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminAnalyticsController.php
+
+19_index.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\analytics\index.blade.php
+
+20_AdminAccessPolicy.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Services\AdminAccessPolicy.php
+
+21_AdminRoleController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminRoleController.php
+
+22_AdminUserController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminUserController.php
+
+23_StoreSettingsService.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Services\StoreSettingsService.php
+
+24_StorePolicyMiddleware.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Middleware\StorePolicyMiddleware.php
+
+25_store-maintenance.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\errors\store-maintenance.blade.php
+
+26_app.php.txt
+C:\xampp\htdocs\ArizonaOutfits\bootstrap\app.php
+
+27_InventoryCatalogService.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Services\InventoryCatalogService.php
+
+28_EcommerceSettingController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\EcommerceSettingController.php
+
+29_edit.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\settings\edit.blade.php
+
+30_Order.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Models\Order.php
+
+31_InventoryService.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Services\InventoryService.php
+
+32_CheckoutController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\CheckoutController.php
+
+33_StripePaymentController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Payment\StripePaymentController.php
+
+34_CartController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\CartController.php
+
+35_PurchaseOrderReceipt.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Models\PurchaseOrderReceipt.php
+
+36_index.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\checkout\index.blade.php
+
+37_checkout-stripe.js.txt
+C:\xampp\htdocs\ArizonaOutfits\public\asset\js\checkout-stripe.js
+
+38_show.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\products\show.blade.php
+
+39_product-card.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\products\partials\product-card.blade.php
+
+40_quick-view.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\products\partials\quick-view.blade.php
+
+41_index.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\cart\index.blade.php
+
+42_app.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\layouts\app.blade.php
+
+43_thank-you.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\checkout\thank-you.blade.php
+
+44_ShopController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\ShopController.php
+
+45_CustomerOrderConfirmationMail.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Mail\CustomerOrderConfirmationMail.php
+
+46_AdminNewOrderMail.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Mail\AdminNewOrderMail.php
+
+47_customer-confirmation.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\emails\orders\customer-confirmation.blade.php
+
+48_admin-new-order.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\emails\orders\admin-new-order.blade.php
+
+49_dynamic-template.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\emails\orders\dynamic-template.blade.php
+
+50_AdminAuditLogController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminAuditLogController.php
+
+51_OrderController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\OrderController.php
+
+52_AccountSecurityController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Customer\AccountSecurityController.php
+
+53_PasswordController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Auth\PasswordController.php
+
+54_ProfileController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\ProfileController.php

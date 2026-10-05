@@ -1,0 +1,287 @@
+[
+    {
+        "result": "PASS",
+        "check": "Standard shipping uses saved fee",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Economy keeps method difference",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Express keeps method difference",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Tax uses merchandise after discounts",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Tax cannot become negative",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Free shipping inclusive threshold",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Below free threshold still charged",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Saved currency and symbol agree",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Saved prefix used for new numbers",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Per-item stock threshold remains override",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Checkout page totals use saved pricing",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Checkout view renders notice and COD option",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Checkout view renders tax row",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Shipping quote includes same tax and currency",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "COD saves an unpaid order",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "COD persists same pricing and prefix",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "COD reserves physical inventory once",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Repeated deduction remains idempotent",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "COD cancellation restores exactly once",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Bank transfer still waits for verification",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Non-managed checkout allows zero physical stock",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Non-managed order snapshot records disabled policy",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Non-managed order has no physical deduction",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Metadata replacement preserves original policy",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Later setting change never fabricates stock",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Existing managed order still deducts after setting disabled",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Existing managed order restores after setting disabled",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Collected COD records paid timestamp",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "COD cash collection records coupon usage",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Repeated collection never deducts or redeems twice",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Collected cash cannot be reset to pending",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Maintenance blocks public storefront",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Maintenance preserves payment return",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Maintenance preserves signed webhook endpoint",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Maintenance keeps admin accessible",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Guest checkout denied: checkout.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Guest checkout denied: checkout.shipping-quote",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Guest checkout denied: checkout.place",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Guest checkout denied: checkout.stripe.intent",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Request config follows saved currency",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Signed-in customer can checkout",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Runtime config restored after response",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe link rejected: \"javascript:alert(1)\"",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe link rejected: \"java&#x73;cript:alert(1)\"",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe link rejected: \"\\\/\\\\evil.test\"",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe link rejected: \"\\\/\\\/evil.test\"",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe link rejected: \"https:\\\/\\\/user:password@arizona.test\\\/path\"",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe link rejected: \"ftp:\\\/\\\/arizona.test\\\/path\"",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unsafe link rejected: \"\\\/bad\\npath\"",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Internal HTTP same-origin accepted",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Different port rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Sanitizer keeps formatting",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Sanitizer strips executable URL and attributes",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Spaced placeholders render and unknown placeholders disappear",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Delegated manager cannot grant super access",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Delegated manager cannot grant missing permissions",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Delegated manager can grant held permissions",
+        "detail": ""
+    }
+]

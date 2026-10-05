@@ -1,0 +1,66 @@
+ADMIN BELL — FOUR SEPARATE FILES
+Install AFTER the previous 54-file admin/customer synchronization set.
+The installed application has not been changed by this task.
+
+1. Back up the project folder. Stop php artisan serve during replacement.
+2. Create the two NEW files listed below. Create app\Observers if it is missing.
+3. Replace both existing files with the complete contents of their .txt files.
+   Use the actual .php names at the destination, not .php.txt.
+4. Do not overwrite this new AppServiceProvider/AdminBackupController later with
+   older copies from previous packages. Install this package LAST.
+5. Run these commands from C:\xampp\htdocs\ArizonaOutfits:
+C:\xampp\php\php.exe artisan optimize:clear
+C:\xampp\php\php.exe artisan serve
+6. Refresh the admin page using Ctrl+F5. No new database migration is required.
+
+FILES
+
+NEW: 01_AdminBellService.php.txt
+Destination: C:\xampp\htdocs\ArizonaOutfits\app\Services\AdminBellService.php
+
+NEW: 02_AdminBellObserver.php.txt
+Destination: C:\xampp\htdocs\ArizonaOutfits\app\Observers\AdminBellObserver.php
+
+REPLACE: 03_AppServiceProvider.php.txt
+Destination: C:\xampp\htdocs\ArizonaOutfits\app\Providers\AppServiceProvider.php
+
+REPLACE: 04_AdminBackupController.php.txt
+Destination: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminBackupController.php
+
+WHAT IS CONNECTED
+- New orders, payment/status/tracking changes, archived/restored orders.
+- Low/out-of-stock alerts, resolved alerts and recorded inventory movements.
+  Reports, valuation and reorder dashboard use these underlying inventory events.
+- Customer registration/detail/status changes and deletion.
+- New reviews, moderation and deletion.
+- Successful admin edits for products, categories, tags, coupons, blog posts and
+  blog categories, Store Settings, CMS, Menu Builder, Admin Team, roles, email
+  templates, purchase orders and suppliers, through existing audit middleware.
+- Backup completion/failure, including service-driven backups.
+- Existing manual Notification Center messages continue to work.
+- Global analytics and audit-log browsing do not create alerts; order/change
+  events cover the underlying activity. Reading alerts never creates more alerts.
+
+RECIPIENTS AND DISPLAY
+Super admins receive all connected events. Staff require BOTH the relevant menu
+permission and notifications.manage. Disabled admins are excluded.
+The dropdown still shows the latest six; View all shows the full list.
+Refresh the page to fetch new alerts. This package does not add live polling.
+Only future recorded events are notified; existing historical orders/stock alerts
+are not imported into the bell. A stock alert already active before installation
+will notify on a subsequent state change, not every repeated scan.
+No bell notification sends SMS or email; existing email flows remain separate.
+Direct SQL/bulk query updates that bypass model events and admin audit middleware
+do not generate alerts. Successful edits need the existing admin.audit middleware.
+
+TEST THIS AFTER INSTALLATION
+A. Create a test order; refresh admin, check the bell and View all.
+B. Mark its payment paid/change shipment status; check the new event.
+C. Adjust test stock below its reorder point; look for low/out-of-stock and movement.
+D. Repeat the same alert check: no repeated low-stock notification. Restock it:
+   look for alert resolution and movement.
+E. Submit a test review and approve it. Check both bell events.
+F. Save a product/CMS/menu/settings change; check the corresponding menu alert.
+G. Create a backup; check one completion alert, not two.
+H. Click an unread item: the unread count must decrease.
+I. Test a limited staff account to confirm unrelated menu alerts are excluded.

@@ -1,0 +1,15 @@
+FAVORITES COUNT FIX
+
+Replace the complete contents of:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\header-menu-links.blade.php
+
+With all contents of 01_header-menu-links.blade.php.txt.
+Save as header-menu-links.blade.php (not .txt).
+
+From the project folder run:
+C:\xampp\php\php.exe artisan optimize:clear
+
+Refresh with Ctrl+F5. Add/remove a favorite to check the count.
+The number counts active saved products for the web customer only,
+matching the Favorites page. It updates when the page reloads after toggling.
+Guests see the login link. Unavailable products are not counted.

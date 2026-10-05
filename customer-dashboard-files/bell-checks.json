@@ -1,0 +1,257 @@
+[
+    {
+        "result": "PASS",
+        "check": "New order creates unread administrator bell notification",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "New order notification links to orders",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unchanged order save creates no duplicate",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Payment verification creates payment event",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Payment event points to verification menu",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Status and tracking in one save create one event",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Order archival produces bell event",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Order restoration produces bell event",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Order notification waits for commit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Rolled back order emits no notification",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Committed order emits notification",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Inner commit does not publish early",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Outer commit publishes once",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Low stock warning reaches bell",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Same active alert stock\/email updates do not repeat bell",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Resolved stock alert reaches bell",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Out of stock danger reaches bell",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Inventory movement reaches bell",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer registration reaches bell",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin customer status reaches bell",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer review submission reaches bell",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Review moderation reaches bell",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Review deletion reaches bell",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful products action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful product-categories action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful product-tags action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful coupons action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful posts action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful categories action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful settings action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful pages action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful navigation-menus action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful admin-users action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful admin-roles action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful email-templates action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful purchase-orders action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful suppliers action notifies with valid link",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Failed validation does not announce successful edit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Read\/send\/audit operations do not recurse or duplicate model events",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Processing backup is not falsely completed",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Backup completion broadcasts exactly once",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unchanged completion creates no duplicate",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Failed backup reaches bell without exception details",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Repeated event delivered once per recipient",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Disabled administrators excluded",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Staff cannot receive unauthorized inventory details",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Recipients require access to notification center",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Real audit middleware publishes successful admin change",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Notification excludes sensitive request payload",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Existing bell renders new module notification and unread count",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Reading automatic notification changes count without new notification",
+        "detail": ""
+    }
+]

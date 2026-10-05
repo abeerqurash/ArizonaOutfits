@@ -1,0 +1,15 @@
+SHOP FILTERS ABOVE PRODUCTS + 15 PRODUCTS PER PAGE
+
+Replace these two files with the complete corresponding .txt contents:
+01_index.blade.php.txt -> C:\xampp\htdocs\ArizonaOutfits\resources\views\products\index.blade.php
+02_ShopController.php.txt -> C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\ShopController.php
+
+Run from the project folder:
+C:\xampp\php\php.exe artisan optimize:clear
+
+Refresh with Ctrl+F5.
+Filters appear above the cards with the pale blog-filter panel, spaced labels,
+square fields and rounded buttons. Existing dropdown searches and filters stay.
+There are 15 products per page, displayed in 3 columns / 5 rows on desktop when
+at least 15 match. Tablet uses 2 columns and mobile 1. No dummy cards are added.
+The removed Shop by Category cards remain removed.

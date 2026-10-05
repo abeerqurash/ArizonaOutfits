@@ -1,0 +1,230 @@
+[
+    {
+        "result": "PASS",
+        "check": "Customer list excludes another customer and guest orders"
+    },
+    {
+        "result": "PASS",
+        "check": "Customer cannot open another customer order"
+    },
+    {
+        "result": "PASS",
+        "check": "Customer cannot open another customer invoice"
+    },
+    {
+        "result": "PASS",
+        "check": "Customer detail excludes internal notes"
+    },
+    {
+        "result": "PASS",
+        "check": "Order display uses saved item title and price snapshots"
+    },
+    {
+        "result": "PASS",
+        "check": "Archive soft-deletes order and preserves order items"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Admin archiving removes order from customer history"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Archived customer invoice becomes inaccessible"
+    },
+    {
+        "result": "PASS",
+        "check": "Restoring archive restores customer order visibility"
+    },
+    {
+        "result": "PASS",
+        "check": "Archive\/restore does not deduct or restore inventory"
+    },
+    {
+        "result": "PASS",
+        "check": "Normal bank verification marks paid and deducts stock once"
+    },
+    {
+        "result": "PASS",
+        "check": "Repeated bank verification does not deduct stock twice"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Bank verification does not populate customer payment-status activity timeline"
+    },
+    {
+        "result": "PASS",
+        "check": "Paid bank transfer cannot be rejected"
+    },
+    {
+        "result": "PASS",
+        "check": "Pending bank transfer rejection records failed payment"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Cancelled bank order can be verified into paid\/cancelled state"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Refunded bank order can become paid\/refunded without re-deducting stock"
+    },
+    {
+        "result": "PASS",
+        "check": "Inventory restoration is idempotent across repeated calls"
+    },
+    {
+        "result": "PASS",
+        "check": "Bulk update cannot mark payment paid"
+    },
+    {
+        "result": "PASS",
+        "check": "Bulk update cannot ship unpaid order"
+    },
+    {
+        "result": "PASS",
+        "check": "Assigned product category deletion is blocked"
+    },
+    {
+        "result": "PASS",
+        "check": "Category with children cannot be deleted"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Category validation permits parent to point to its descendant"
+    },
+    {
+        "result": "PASS",
+        "check": "Assigned tag deletion is blocked"
+    },
+    {
+        "result": "PASS",
+        "check": "Unused tag can be deleted"
+    },
+    {
+        "result": "PASS",
+        "check": "Product referenced by historical order items is protected against deletion"
+    },
+    {
+        "result": "PASS",
+        "check": "Product Step 2 inherited-price fix is installed in current controller"
+    },
+    {
+        "result": "PASS",
+        "check": "Storefront quick-view rejects draft product"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Storefront featured filter is ignored when no search term is provided"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Zero sale price differs between model\/cart pricing and shop SQL"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Shop reports variable product in stock based on parent stock despite sold-out variants"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Shop sale filter misses discounted variant with inherited regular price"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Price range can match different parent\/variant prices with no price inside the requested range"
+    },
+    {
+        "result": "PASS",
+        "check": "Percentage coupon calculates eligible discount"
+    },
+    {
+        "result": "PASS",
+        "check": "Coupon discount respects maximum cap and subtotal"
+    },
+    {
+        "result": "PASS",
+        "check": "Inactive coupon rejected"
+    },
+    {
+        "result": "PASS",
+        "check": "Parent-category coupon includes child-category products"
+    },
+    {
+        "result": "PASS",
+        "check": "Per-customer coupon requires login"
+    },
+    {
+        "result": "PASS",
+        "check": "Paid coupon redemption records once per order"
+    },
+    {
+        "result": "PASS",
+        "check": "Paid coupon blocks repeat use before archiving"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Archiving paid coupon order lets same customer bypass per-user usage check"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Deleting coupon used by pending order prevents payment finalization"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Stripe webhook calls a coupon service that is not declared\/injected"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Offline successful-Stripe handler reproduces service error and rolls back payment\/stock"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Archived Stripe order is invisible to webhook order lookup"
+    },
+    {
+        "result": "REPRODUCED ISSUE",
+        "check": "Stripe Pakistan shipping differs from configured standard shipping"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Admin Orders"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Archived Orders"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Payment Verifications"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Payment Verification detail"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Products"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Product Categories"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Product Tags"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Coupons"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Customer order list"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Customer order detail"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Customer invoice"
+    }
+]

@@ -1,0 +1,316 @@
+{
+    "advisories": {
+        "laravel/framework": [
+            {
+                "advisoryId": "PKSA-d5tc-s1qs-h781",
+                "packageName": "laravel/framework",
+                "affectedVersions": ">=13.0.0,<13.30.0|<12.69.0",
+                "title": "Laravel: XSS in Debug Page Information",
+                "cve": "CVE-2026-102279",
+                "link": "https://github.com/advisories/GHSA-jh5r-qr3c-85q8",
+                "reportedAt": "2026-09-29T18:24:25+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jh5r-qr3c-85q8"
+                    }
+                ],
+                "severity": "low"
+            }
+        ],
+        "league/commonmark": [
+            {
+                "advisoryId": "PKSA-m2dq-1fhr-29b1",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=1.3.0,<=2.10.1",
+                "title": "league/commonmark: DisallowedRawHtml bypassed when a disallowed tag name ends the raw-HTML literal",
+                "cve": null,
+                "link": "https://github.com/advisories/GHSA-97jj-33gv-5xf9",
+                "reportedAt": "2026-09-30T15:36:33+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-97jj-33gv-5xf9"
+                    }
+                ],
+                "severity": "medium"
+            },
+            {
+                "advisoryId": "PKSA-m4t9-vsgq-8khn",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=2.0.0,<=2.10.1",
+                "title": "league/commonmark: Quadratic-time denial of service in the GitHub Flavored Markdown Table extension block-start scan",
+                "cve": null,
+                "link": "https://github.com/advisories/GHSA-3q6v-r5mr-hxv8",
+                "reportedAt": "2026-09-30T15:36:13+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-3q6v-r5mr-hxv8"
+                    }
+                ],
+                "severity": "high"
+            },
+            {
+                "advisoryId": "PKSA-zyf5-hrxv-hrd7",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=1.5.0,<2.10.0",
+                "title": "league/commonmark: Denial of service via distinctly-named attributes in the Attributes extension",
+                "cve": null,
+                "link": "https://github.com/advisories/GHSA-8rr7-cvq3-gmfh",
+                "reportedAt": "2026-09-01T20:28:40+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-8rr7-cvq3-gmfh"
+                    }
+                ],
+                "severity": "high"
+            },
+            {
+                "advisoryId": "PKSA-nv44-1b4d-6gjg",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=1.5.0,<2.9.1",
+                "title": "league/commonmark: Denial of service in the SmartPunct and Attributes extensions",
+                "cve": null,
+                "link": "https://github.com/advisories/GHSA-jjv6-8j6v-6j52",
+                "reportedAt": "2026-09-01T20:21:45+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jjv6-8j6v-6j52"
+                    }
+                ],
+                "severity": "high"
+            },
+            {
+                "advisoryId": "PKSA-kr3s-894t-g5w2",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=2.7.0,<2.9.1",
+                "title": "league/commonmark XSS: `on*` event-handler filter in `AttributesExtension` bypassed with a U+000C form feed",
+                "cve": null,
+                "link": "https://github.com/advisories/GHSA-f8fg-pg57-v4j8",
+                "reportedAt": "2026-09-01T20:18:29+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-f8fg-pg57-v4j8"
+                    }
+                ],
+                "severity": "high"
+            },
+            {
+                "advisoryId": "PKSA-9q1p-3s19-bp1q",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=0.6.0,<2.9.1",
+                "title": "league/commonmark: Denial of service via crafted code fences, reference links, and emphasis delimiters",
+                "cve": null,
+                "link": "https://github.com/advisories/GHSA-j8pm-gj4c-rq4x",
+                "reportedAt": "2026-09-01T20:17:59+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-j8pm-gj4c-rq4x"
+                    }
+                ],
+                "severity": "high"
+            },
+            {
+                "advisoryId": "PKSA-5mzr-szzf-z6cn",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=2.0.0,<2.9.0",
+                "title": "league/commonmark: Denial of service via deeply nested XML output",
+                "cve": null,
+                "link": "https://github.com/advisories/GHSA-mj63-m3rc-8ppr",
+                "reportedAt": "2026-08-06T20:42:54+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-mj63-m3rc-8ppr"
+                    }
+                ],
+                "severity": "medium"
+            },
+            {
+                "advisoryId": "PKSA-cqd6-fg4n-nxpf",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=2.0.0,<2.9.0",
+                "title": "league/commonmark: Denial of service via colliding heading slugs",
+                "cve": null,
+                "link": "https://github.com/advisories/GHSA-mh25-x5hq-wrqp",
+                "reportedAt": "2026-08-06T20:41:45+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-mh25-x5hq-wrqp"
+                    }
+                ],
+                "severity": "high"
+            },
+            {
+                "advisoryId": "PKSA-1q6p-sqkj-8mmj",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=1.5.0,<2.9.0",
+                "title": "league/commonmark:  Denial of service via duplicate footnote definitions",
+                "cve": null,
+                "link": "https://github.com/advisories/GHSA-jfm3-95jq-q3rf",
+                "reportedAt": "2026-08-06T20:40:53+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-jfm3-95jq-q3rf"
+                    }
+                ],
+                "severity": "high"
+            },
+            {
+                "advisoryId": "PKSA-mc58-w91n-f5gv",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=1.5.0,<2.9.0",
+                "title": "league/commonmark: Denial of service via adjacent inline attribute blocks",
+                "cve": null,
+                "link": "https://github.com/advisories/GHSA-g2gp-3wwq-f4ph",
+                "reportedAt": "2026-08-06T20:39:52+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-g2gp-3wwq-f4ph"
+                    }
+                ],
+                "severity": "high"
+            },
+            {
+                "advisoryId": "PKSA-t21r-vtr5-3mdz",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=0.6.0,<2.9.0",
+                "title": "league/commonmark: Quadratic-time denial of service when parsing crafted Markdown",
+                "cve": "CVE-2026-71488",
+                "link": "https://github.com/advisories/GHSA-2q4p-g7hv-5rgv",
+                "reportedAt": "2026-08-06T20:37:20+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-2q4p-g7hv-5rgv"
+                    }
+                ],
+                "severity": "high"
+            },
+            {
+                "advisoryId": "PKSA-scnn-p8mm-jbft",
+                "packageName": "league/commonmark",
+                "affectedVersions": ">=1.5.0,<=2.8.3",
+                "title": "league/commonmark: AttributesExtension href/src unsafe-link filter bypass via embedded control bytes",
+                "cve": "CVE-2026-71478",
+                "link": "https://github.com/advisories/GHSA-29pj-957v-52mc",
+                "reportedAt": "2026-08-06T20:30:39+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-29pj-957v-52mc"
+                    }
+                ],
+                "severity": "medium"
+            }
+        ],
+        "league/flysystem": [
+            {
+                "advisoryId": "PKSA-w9tt-7782-78jx",
+                "packageName": "league/flysystem",
+                "affectedVersions": "<=3.35.2",
+                "title": "Flysystem: WhitespacePathNormalizer's control-character (CorruptedPathDetected) check is bypassed by malformed UTF-8 in the path, affecting every adapter",
+                "cve": "CVE-2026-102601",
+                "link": "https://github.com/advisories/GHSA-cxf4-7mrp-vvpr",
+                "reportedAt": "2026-09-29T18:10:14+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-cxf4-7mrp-vvpr"
+                    }
+                ],
+                "severity": "low"
+            }
+        ],
+        "maatwebsite/excel": [
+            {
+                "advisoryId": "PKSA-xgss-dh88-nswy",
+                "packageName": "maatwebsite/excel",
+                "affectedVersions": ">=3.1.8,<3.1.70",
+                "title": "Laravel Excel writes exports outside the configured filesystem disk when given a caller-controlled path",
+                "cve": "CVE-2026-84374",
+                "link": "https://github.com/advisories/GHSA-c7r6-vx3h-w5g2",
+                "reportedAt": "2026-09-08T20:40:47+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-c7r6-vx3h-w5g2"
+                    }
+                ],
+                "severity": "high"
+            }
+        ],
+        "symfony/yaml": [
+            {
+                "advisoryId": "PKSA-v5yj-8nmz-sk2q",
+                "packageName": "symfony/yaml",
+                "affectedVersions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.52|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.40|>=7.0.0,<7.1.0|>=7.1.0,<7.2.0|>=7.2.0,<7.3.0|>=7.3.0,<7.4.0|>=7.4.0,<7.4.12|>=8.0.0,<8.0.12",
+                "title": "CVE-2026-45304: YAML Parser Exponential Memory Allocation via Recursive Collection-Alias Expansion (\"Billion Laughs\")",
+                "cve": "CVE-2026-45304",
+                "link": "https://symfony.com/cve-2026-45304",
+                "reportedAt": "2026-05-20T08:00:00+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-4qpc-3hr4-r2p4"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/yaml/CVE-2026-45304.yaml"
+                    }
+                ],
+                "severity": "low"
+            },
+            {
+                "advisoryId": "PKSA-ft77-7h5f-p3r6",
+                "packageName": "symfony/yaml",
+                "affectedVersions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.52|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.40|>=7.0.0,<7.1.0|>=7.1.0,<7.2.0|>=7.2.0,<7.3.0|>=7.3.0,<7.4.0|>=7.4.0,<7.4.12|>=8.0.0,<8.0.12",
+                "title": "CVE-2026-45305: YAML Parser ReDoS via Catastrophic Backtracking in Parser::cleanup() Regex",
+                "cve": "CVE-2026-45305",
+                "link": "https://symfony.com/cve-2026-45305",
+                "reportedAt": "2026-05-20T08:00:00+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-9frc-8383-795m"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/yaml/CVE-2026-45305.yaml"
+                    }
+                ],
+                "severity": "low"
+            },
+            {
+                "advisoryId": "PKSA-b14r-zh1d-vdrc",
+                "packageName": "symfony/yaml",
+                "affectedVersions": ">=2.0.0,<3.0.0|>=3.0.0,<4.0.0|>=4.0.0,<5.0.0|>=5.0.0,<5.1.0|>=5.1.0,<5.2.0|>=5.2.0,<5.3.0|>=5.3.0,<5.4.0|>=5.4.0,<5.4.52|>=6.0.0,<6.1.0|>=6.1.0,<6.2.0|>=6.2.0,<6.3.0|>=6.3.0,<6.4.0|>=6.4.0,<6.4.40|>=7.0.0,<7.1.0|>=7.1.0,<7.2.0|>=7.2.0,<7.3.0|>=7.3.0,<7.4.0|>=7.4.0,<7.4.12|>=8.0.0,<8.0.12",
+                "title": "CVE-2026-45133: YAML Parser Stack Exhaustion via Unbounded Recursion in Nested Blocks, Sequences, and Mappings",
+                "cve": "CVE-2026-45133",
+                "link": "https://symfony.com/cve-2026-45133",
+                "reportedAt": "2026-05-20T08:00:00+00:00",
+                "sources": [
+                    {
+                        "name": "GitHub",
+                        "remoteId": "GHSA-c2p3-7m5p-cv8x"
+                    },
+                    {
+                        "name": "FriendsOfPHP/security-advisories",
+                        "remoteId": "symfony/yaml/CVE-2026-45133.yaml"
+                    }
+                ],
+                "severity": "low"
+            }
+        ]
+    },
+    "abandoned": [],
+    "filter": []
+}

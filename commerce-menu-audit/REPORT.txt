@@ -1,0 +1,100 @@
+ARIZONA OUTFITS - COMMERCE MENU AUDIT
+Date: 1 October 2026 (Asia/Karachi)
+Project: C:\xampp\htdocs\ArizonaOutfits
+Scope: Orders/customer orders, Archived Orders, Payment Verifications, Products, Product Categories, Product Tags, Coupons; related storefront/cart/payment code.
+
+RESULT
+The seven menu destinations exist and their index pages render with isolated fixtures. This does not mean the connected commerce workflow is ready: the problems below require repair. No application source files were edited, no live database was changed, and no Stripe API/payment was called.
+
+EVIDENCE
+57 isolated assertions: 40 PASS and 17 reproduced-issue assertions. Some issue assertions describe the same underlying defect, so 17 is not a count of independent bugs.
+11 full Blade page renders: all passed (seven menu pages, payment detail, customer list/detail/invoice).
+59 related route endpoints inspected: three have missing controller actions.
+87 literal named-route references in related views: all names registered.
+12 relevant PHP source files: syntax checks passed.
+Tests ran actual controllers/services against an in-memory SQLite database. Mail and inventory-alert delivery were mocked. SQLite used a GREATEST adapter and integer price-filter bindings. This validates demonstrated behavior, not MariaDB locking/concurrency, external delivery, browser interaction, PDF export, or live payment integration.
+Evidence files beside this report: checks.json, page-render-checks.json, route-checks.json. Reproduction harness: _checks\verify.php; route inspection: _checks\routes.php.
+
+MENU-BY-MENU FINDINGS
+
+1. ORDERS AND CUSTOMER ORDERS
+PASS: Ownership checks prevent opening another customer's order or invoice. Customer lists exclude other customers and guests. Internal notes are excluded. Item titles/prices use stored snapshots. Bulk updates cannot mark an order paid or ship an unpaid order. Inventory restoration is idempotent.
+PROBLEM: Bank verification bypasses the normal order-state protections (see section 3).
+PROBLEM: Archive changes customer history and invoice availability (see section 2).
+PROBLEM: Verified bank payments update the order but do not create the payment-status activity expected by the customer timeline.
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\CustomerDashboardController.php (orders/show/invoice/customerOrder)
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\OrderController.php (update/bulkUpdate/destroy/restore)
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\PaymentVerificationController.php (verifyBankTransfer)
+
+2. ARCHIVED ORDERS
+PASS: Archive preserves order items; restoring returns customer visibility. Archive/restore itself does not change stock.
+HIGH: Soft-deleting an order removes it from customer history and makes its customer invoice inaccessible. This is the current behavior; confirm the intended archive policy when repairing it.
+HIGH: Archived Stripe orders cannot be found by the webhook lookup. A payment that completes after archiving cannot be finalized through that lookup.
+HIGH: Archiving a paid coupon order bypasses the checkout per-customer usage check. Reproduced using a freshly loaded coupon with global limit 10 and per-customer limit 1. Before archive the second use is rejected; after archive it is accepted. Redemption history still exists, so the later redemption service can disagree with checkout.
+Recommendation: Separate admin archive visibility from the durable customer/payment order record; consistently account for archived purchases in coupon limits.
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Models\Order.php (SoftDeletes)
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Services\CouponService.php (paid-order usage queries, around lines 155-159)
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Webhooks\StripeWebhookController.php (findAndLockOrder, around line 1004)
+
+3. PAYMENT VERIFICATIONS
+PASS: Normal pending bank verification marks paid/processing and deducts stock once. Repeating verification does not deduct again. A paid bank transfer cannot be rejected; a pending transfer can be rejected into failed payment.
+HIGH: A cancelled bank order can become paid/cancelled and deduct stock.
+HIGH: A refunded bank order can become paid/refunded while restored inventory remains undeducted.
+MEDIUM: Payment verification does not add payment-status activity to the customer timeline.
+Recommendation: Reject terminal/invalid transitions under the same transaction and locked order used for payment/inventory changes; add activity records atomically.
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\PaymentVerificationController.php (verifyBankTransfer, around lines 363-719)
+
+STRIPE BLOCKER - REPAIR BEFORE HOSTED PAYMENT TESTING
+HIGH: StripeWebhookController calls $this->couponRedemptionService without declaring/injecting it. The offline successful-payment handler reproduced the error and rolled back local payment/stock changes. This path can fail even for an order without a coupon because the call is unconditional.
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Webhooks\StripeWebhookController.php (constructor around line 44; call around line 506)
+HIGH: Stripe shipping uses a separate hard-coded country calculation. For subtotal 100 and country PK, it returns 5 while configured standard shipping is 9.99. Bank checkout uses selected configured shipping methods. Pricing must be consistent before payment tests.
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Payment\StripePaymentController.php (calculateShipping, around line 3542)
+Location: C:\xampp\htdocs\ArizonaOutfits\config\shipping.php
+Stripe network calls, signed webhook delivery, capture, provider refunds, and real payments remain untested. See the separate hosted-server checklist.
+
+4. PRODUCTS
+PASS: The previously supplied inherited variant-price validation fix is present. Historical order references protect products from deletion. Draft product quick-view is rejected.
+MEDIUM: Storefront featured filtering is ignored without a search term. The featured block is incorrectly nested in the search closure and refers to variables not captured by that closure.
+MEDIUM: A zero sale price becomes 0 in model/cart pricing but regular price in storefront SQL.
+MEDIUM: Sale filtering misses a discounted variant whose regular price inherits from its parent.
+MEDIUM: A product whose variants are sold out can appear in stock because parent stock is positive.
+MEDIUM: A price range can match parent and variant prices independently: parent 10 and variant 100 match range 40-60 although neither price is within that range.
+Recommendation: Use consistent effective-price and purchasable-stock rules across listing, filters, cart and checkout; test range conditions against the same purchasable item.
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\ShopController.php (applyFilters around lines 402-759; price SQL around lines 1160-1176)
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Models\Product.php (final_price)
+
+5. PRODUCT CATEGORIES
+PASS: Deleting an assigned category is blocked. Deleting a parent with children is blocked.
+MEDIUM: Category validation rejects itself as parent but permits its descendant as parent. The normal UI restricts choices, but a crafted admin request passes validation and can create a cycle. The fixture tested validation acceptance, not a saved cycle.
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\ProductCategoryController.php (validateCategory, around lines 266-289)
+The registered admin.product-categories.show route has no show method. Remove the unused route or implement the intended action.
+
+6. PRODUCT TAGS
+PASS: Assigned-tag deletion is blocked; unused-tag deletion succeeds. Index page renders.
+The registered admin.product-tags.show route has no show method. This affects direct detail requests; the index menu destination works.
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\ProductTagController.php
+
+7. COUPONS
+PASS: Percentage discounts, maximum caps, inactive-coupon rejection, descendant-category targeting, login requirements and one redemption per order behaved as expected.
+HIGH: Archive makes per-customer checkout usage incorrect (section 2).
+HIGH: Coupon deletion is unrestricted even while a pending order stores that code. Reproduced: delete coupon, then attempt paid-order redemption; finalization fails because the coupon no longer exists. Editing the code also conflicts with orders that retain the old code. The redemption foreign key cascades coupon deletion, so deletion can erase redemption history.
+Recommendation: Preserve historical identifiers and redemption records; prevent unsafe deletion/code changes while referenced by orders, or resolve orders through a durable snapshot/identifier.
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\CouponController.php (update/destroy, around lines 123-134)
+Location: C:\xampp\htdocs\ArizonaOutfits\app\Services\CouponRedemptionService.php
+The registered admin.coupons.show route has no show method.
+
+SHARED MENU ISSUES
+Related admin routes require admin authentication, but these module routes do not enforce per-module permissions server-side. Hiding sidebar links is insufficient if restricted admin roles are intended.
+The earlier sidebar audit also found: Orders and Archived Orders can both appear active; the reorder badge composer targets a different sidebar view; the inventory-alert controller boot method does not automatically register the badge composer.
+Previous detailed report: C:\xampp\htdocs\ArizonaOutfits\admin-sidebar-audit\REPORT.txt
+
+REPAIR ORDER
+1. Stripe missing service dependency; prevent bank verification of cancelled/refunded orders.
+2. Set archive policy consistently for customers, webhooks and coupon usage.
+3. Protect coupon history and pending-order references; unify shipping totals.
+4. Repair storefront price/stock/featured filters and category descendant validation.
+5. Add payment timeline activities, repair three unused detail routes, enforce intended role permissions, and correct sidebar badges/active state.
+6. Repeat isolated checks, then run hosted-server Stripe test mode and customer/admin end-to-end checks.
+
+DELIVERY NOTE
+These are audit documents only. Do not rename this report to .php or replace application files with it. Future repairs can be supplied as separate complete .txt source files with exact replacement paths, following your existing workflow.

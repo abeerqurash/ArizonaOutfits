@@ -1,0 +1,18 @@
+SHARED MEGA MENU FIX
+
+Replace ALL contents of:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\header.blade.php
+
+With 01_header.blade.php.txt. Save as header.blade.php (not .txt).
+This version includes the previous white-cover design.
+
+From the project folder run:
+C:\xampp\php\php.exe artisan optimize:clear
+
+Refresh with Ctrl+F5. Test Home, Shop and Favorites:
+- Click bars: panel opens and icon becomes a cross.
+- Click cross: panel closes and icon becomes bars.
+- Escape or clicking outside closes it.
+- Keyboard Enter/Space also works through the native button.
+- White navigation cover remains stable on scroll.
+No change to the header-menu-links partial or favorites/cart counts.

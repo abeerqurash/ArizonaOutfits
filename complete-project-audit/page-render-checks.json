@@ -1,0 +1,58 @@
+{
+    "Store Settings": {
+        "result": "PASS",
+        "bytes": 58414
+    },
+    "CMS Pages": {
+        "result": "PASS",
+        "bytes": 29619
+    },
+    "CMS create": {
+        "result": "PASS",
+        "bytes": 30883
+    },
+    "CMS edit": {
+        "result": "PASS",
+        "bytes": 30983
+    },
+    "Menu Builder": {
+        "result": "PASS",
+        "bytes": 35678
+    },
+    "Global Analytics": {
+        "result": "PASS",
+        "bytes": 36853
+    },
+    "Admin Team": {
+        "result": "PASS",
+        "bytes": 38037
+    },
+    "Admin edit": {
+        "result": "PASS",
+        "bytes": 30978
+    },
+    "Roles": {
+        "result": "PASS",
+        "bytes": 52370
+    },
+    "Notifications": {
+        "result": "PASS",
+        "bytes": 44950
+    },
+    "Audit logs": {
+        "result": "PASS",
+        "bytes": 34725
+    },
+    "Backups": {
+        "result": "PASS",
+        "bytes": 36441
+    },
+    "Email Templates": {
+        "result": "PASS",
+        "bytes": 30876
+    },
+    "Email edit": {
+        "result": "PASS",
+        "bytes": 38557
+    }
+}

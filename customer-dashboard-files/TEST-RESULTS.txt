@@ -1,0 +1,53 @@
+CUSTOMER DASHBOARD + UPDATED ADMIN/BELL VERIFICATION
+3 October 2026 (Asia/Karachi)
+
+COMBINED SET
+92 separate replacement text files. Includes the preceding 54-file
+admin/customer synchronization set, the four bell updates (newest versions win),
+and customer dashboard, order/profile/security/favorites/tracking dependencies.
+
+RESULTS
+dashboard-checks.json: 16 checks, 0 failures.
+customer-checks.json: 51 checks, 0 failures.
+admin-checks.json: 78 checks, 0 failures.
+bell-checks.json: 51 checks, 0 failures.
+integration-checks.json: 57 checks, 0 failures.
+customer-content-regression-checks.json: 65 checks, 0 failures.
+inventory-purchasing-regression-checks.json: 89 checks, 0 failures.
+inventory-extra-regression-checks.json: 26 checks, 0 failures.
+TOTAL: 433 behavioral checks; 0 failures.
+35 Blade files compiled, 0 errors.
+56 PHP replacement files passed syntax checks.
+129 literal named-route references, 0 unresolved.
+Current source differs in 7 files from the EARLIER audit snapshot.
+This preparation wrote replacement artifacts only, not live application sources.
+
+CHANGES
+- Preparation and transit statistics exclude archived orders. Out-for-delivery
+  orders appear in transit rather than preparation. Historical orders stay visible
+  in My Orders, total order count, invoices and the historical paid-spend calculation.
+- Dashboard paid spending uses the same CustomerSpendService as admin Customers.
+  Each currency is shown separately; cancelled/refunded purchases are excluded.
+- Recent orders show payment status; My Orders filters payment/status/search.
+- Awaiting-full-payment summary and its link use the exact same active-order rule.
+- Customer navigation now exposes Login & Security and My Favorites.
+- Dashboard and favorite ownership explicitly use the customer web guard.
+- Previous verified-email, password-history, deletion-retention, independent admin
+  session and archived confirmation fixes are retained.
+- The latest bell observers/provider/backups controller are retained.
+
+METHOD AND LIMITS
+Tests loaded the exact _staged replacement classes and views, with isolated SQLite
+fixtures. External mail/notifications/jobs were faked where appropriate; bell
+database notifications were exercised directly. No production orders, charges or
+customer records were changed. The installed application was not replaced.
+The inherited customer runner console footer says installed source; these runs
+explicitly load replacement classes before the installed files.
+
+This is not a claim of fresh browser CRUD tests for every product/tag/coupon menu.
+Real Stripe processing, real OAuth providers, SMS, email transport, production
+database schema and restoration remain separate deployment acceptance checks.
+Phone security verification remains local-only until an SMS provider is configured.
+The admin bell fetches updates on page reload and only notifies future events.
+Earlier inventory/customer migrations are still prerequisites; no new migration
+is introduced by this package.

@@ -1,0 +1,10 @@
+Date,Product,Variant,SKU,Movement,Before,Change,After,User,Reason,Order
+"2026-10-03 17:44","Simple fixture",,SIMPLE,restock,2,1,3,"Fixture admin","Audit adjustment",
+"2026-10-03 17:44","Simple fixture",,SIMPLE,purchase_order_receipt,3,1,4,"Fixture admin","Purchase order inventory received",
+"2026-10-03 17:44","Simple fixture",,SIMPLE,purchase_order_receipt,4,2,6,"Fixture admin","Purchase order inventory received",
+"2026-10-03 17:44","Simple fixture",,SIMPLE,purchase_order_receipt,6,2,8,"Fixture admin","Purchase order inventory received",
+"2026-10-03 17:44","Simple fixture",,SIMPLE,inventory_correction,8,-1,7,"Fixture admin","Purchase order receiving correction",
+"2026-10-03 17:44","Simple fixture",,SIMPLE,supplier_return,7,-1,6,"Fixture admin","Inventory returned to supplier",
+"2026-10-03 17:44","Simple fixture",,SIMPLE,supplier_return_cancelled,6,1,7,"Fixture admin","Supplier return cancelled; stock restored",
+"2026-10-03 17:44","Simple fixture",,SIMPLE,order_deduction,5,-1,4,"Fixture admin","Audit archived order",ARCHIVED-AUDIT
+"2026-10-03 17:44","Variable fixture","Size: Small",VAR-1,restock,2,1,3,"Fixture admin","Variant export fixture",

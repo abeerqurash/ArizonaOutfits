@@ -1,0 +1,111 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/",
+    "bytes": 149963,
+    "error_page": false
+  },
+  {
+    "path": "/about",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/about",
+    "bytes": 68377,
+    "error_page": false
+  },
+  {
+    "path": "/blogs",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/blogs",
+    "bytes": 55660,
+    "error_page": false
+  },
+  {
+    "path": "/category",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/category",
+    "bytes": 40480,
+    "error_page": false
+  },
+  {
+    "path": "/product-categories",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/product-categories",
+    "bytes": 38803,
+    "error_page": false
+  },
+  {
+    "path": "/products",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/products",
+    "bytes": 131885,
+    "error_page": false
+  },
+  {
+    "path": "/product-category/test",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/product-category/test",
+    "bytes": 113607,
+    "error_page": false
+  },
+  {
+    "path": "/privacy-policy",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/privacy-policy",
+    "bytes": 81241,
+    "error_page": false
+  },
+  {
+    "path": "/terms-and-conditions",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/terms-and-conditions",
+    "bytes": 81384,
+    "error_page": false
+  },
+  {
+    "path": "/login",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/login",
+    "bytes": 58576,
+    "error_page": false
+  },
+  {
+    "path": "/register",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/register",
+    "bytes": 64643,
+    "error_page": false
+  },
+  {
+    "path": "/cart",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/cart",
+    "bytes": 51298,
+    "error_page": false
+  },
+  {
+    "path": "/favorites",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/login",
+    "bytes": 58576,
+    "error_page": false
+  },
+  {
+    "path": "/admin/login",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/admin/login",
+    "bytes": 55391,
+    "error_page": false
+  },
+  {
+    "path": "/asset/images/product-placeholder.svg",
+    "status": 404
+  },
+  {
+    "path": "/asset/media/product-placeholder.svg",
+    "status": 200,
+    "final_url": "http://127.0.0.1:8000/asset/media/product-placeholder.svg",
+    "bytes": 366,
+    "error_page": false
+  }
+]

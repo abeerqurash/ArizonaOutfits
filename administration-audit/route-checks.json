@@ -1,0 +1,1025 @@
+{
+    "endpoints": [
+        {
+            "route": "admin.analytics.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/analytics",
+            "action": "App\\Http\\Controllers\\Admin\\AdminAnalyticsController@index",
+            "views": [
+                "admin.analytics.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.analytics.export",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/analytics/export",
+            "action": "App\\Http\\Controllers\\Admin\\AdminAnalyticsController@export",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.settings.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/ecommerce-settings",
+            "action": "App\\Http\\Controllers\\Admin\\EcommerceSettingController@edit",
+            "views": [
+                "admin.settings.edit"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.settings.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/ecommerce-settings",
+            "action": "App\\Http\\Controllers\\Admin\\EcommerceSettingController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.admin-users.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/admin-users",
+            "action": "App\\Http\\Controllers\\Admin\\AdminUserController@index",
+            "views": [
+                "admin.admin-users.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.admin-users.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/admin-users",
+            "action": "App\\Http\\Controllers\\Admin\\AdminUserController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.admin-users.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/admin-users/{adminUser}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\AdminUserController@edit",
+            "views": [
+                "admin.admin-users.edit"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.admin-users.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/admin-users/{adminUser}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminUserController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.admin-users.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/admin-users/{adminUser}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminUserController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.admin-roles.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/admin-roles",
+            "action": "App\\Http\\Controllers\\Admin\\AdminRoleController@index",
+            "views": [
+                "admin.admin-roles.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.admin-roles.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/admin-roles",
+            "action": "App\\Http\\Controllers\\Admin\\AdminRoleController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.admin-roles.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/admin-roles/{adminRole}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminRoleController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.admin-roles.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/admin-roles/{adminRole}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminRoleController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.audit-logs.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/audit-logs",
+            "action": "App\\Http\\Controllers\\Admin\\AdminAuditLogController@index",
+            "views": [
+                "admin.audit-logs.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.audit-logs.export",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/audit-logs/export",
+            "action": "App\\Http\\Controllers\\Admin\\AdminAuditLogController@export",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.notifications.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/notifications",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNotificationController@index",
+            "views": [
+                "admin.notifications.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.notifications.send",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/notifications/send",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNotificationController@send",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.notifications.read-all",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/notifications/read-all",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNotificationController@markAllAsRead",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.notifications.clear-read",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/notifications/read",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNotificationController@clearRead",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.notifications.read",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/notifications/{notification}/read",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNotificationController@markAsRead",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.notifications.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/notifications/{notification}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNotificationController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.backups.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/backups",
+            "action": "App\\Http\\Controllers\\Admin\\AdminBackupController@index",
+            "views": [
+                "admin.backups.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.backups.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/backups",
+            "action": "App\\Http\\Controllers\\Admin\\AdminBackupController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.backups.cleanup",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/backups/cleanup",
+            "action": "App\\Http\\Controllers\\Admin\\AdminBackupController@cleanup",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.backups.download",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/backups/{backup}/download",
+            "action": "App\\Http\\Controllers\\Admin\\AdminBackupController@download",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.backups.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/backups/{backup}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminBackupController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.email-templates.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/email-templates",
+            "action": "App\\Http\\Controllers\\Admin\\AdminEmailTemplateController@index",
+            "views": [
+                "admin.email-templates.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.email-templates.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/email-templates/{emailTemplate}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\AdminEmailTemplateController@edit",
+            "views": [
+                "admin.email-templates.edit"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.email-templates.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/email-templates/{emailTemplate}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminEmailTemplateController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.email-templates.preview",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/email-templates/{emailTemplate}/preview",
+            "action": "App\\Http\\Controllers\\Admin\\AdminEmailTemplateController@preview",
+            "views": [
+                "emails.dynamic-template"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.email-templates.test",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/email-templates/{emailTemplate}/test",
+            "action": "App\\Http\\Controllers\\Admin\\AdminEmailTemplateController@sendTest",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.pages.custom",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/pages/custom",
+            "action": "Closure",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.pages.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/pages",
+            "action": "App\\Http\\Controllers\\Admin\\AdminPageController@index",
+            "views": [
+                "admin.pages.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.pages.create",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/pages/create",
+            "action": "App\\Http\\Controllers\\Admin\\AdminPageController@create",
+            "views": [
+                "admin.pages.create"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.pages.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/pages",
+            "action": "App\\Http\\Controllers\\Admin\\AdminPageController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.pages.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/pages/{page}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\AdminPageController@edit",
+            "views": [
+                "admin.pages.edit"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.pages.update",
+            "methods": [
+                "PUT",
+                "PATCH"
+            ],
+            "uri": "admin/pages/{page}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminPageController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.pages.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/pages/{page}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminPageController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.navigation-menus.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/navigation-menus",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNavigationMenuController@index",
+            "views": [
+                "admin.navigation-menus.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.navigation-menus.items.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/navigation-menus/{menu}/items",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNavigationMenuController@storeItem",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.navigation-menus.items.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/navigation-menu-items/{item}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNavigationMenuController@updateItem",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.navigation-menus.items.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/navigation-menu-items/{item}",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNavigationMenuController@destroyItem",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.navigation-menus.reorder",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/navigation-menus/{menu}/reorder",
+            "action": "App\\Http\\Controllers\\Admin\\AdminNavigationMenuController@reorder",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "pages.show",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "page/{slug}",
+            "action": "App\\Http\\Controllers\\CmsPageController@show",
+            "views": [
+                "pages.show"
+            ],
+            "middleware": [
+                "web"
+            ],
+            "errors": [
+                "The route page/fixture could not be found."
+            ]
+        }
+    ],
+    "literal_view_route_references": [
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/settings/edit.blade.php",
+            "route": "admin.dashboard",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/settings/edit.blade.php",
+            "route": "admin.settings.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/pages/create.blade.php",
+            "route": "admin.pages.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/pages/edit.blade.php",
+            "route": "admin.pages.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/pages/index.blade.php",
+            "route": "admin.pages.create",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/pages/index.blade.php",
+            "route": "admin.pages.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/pages/index.blade.php",
+            "route": "admin.pages.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/pages/index.blade.php",
+            "route": "admin.pages.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/pages/_form.blade.php",
+            "route": "admin.pages.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/pages/_form.blade.php",
+            "route": "admin.pages.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/pages/_form.blade.php",
+            "route": "admin.pages.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/navigation-menus/index.blade.php",
+            "route": "admin.navigation-menus.reorder",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/navigation-menus/index.blade.php",
+            "route": "admin.navigation-menus.items.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/navigation-menus/index.blade.php",
+            "route": "admin.navigation-menus.items.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/navigation-menus/index.blade.php",
+            "route": "admin.navigation-menus.items.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/analytics/index.blade.php",
+            "route": "admin.analytics.export",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/analytics/index.blade.php",
+            "route": "admin.analytics.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-users/edit.blade.php",
+            "route": "admin.admin-users.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-users/edit.blade.php",
+            "route": "admin.admin-users.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-users/index.blade.php",
+            "route": "admin.admin-roles.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-users/index.blade.php",
+            "route": "admin.admin-users.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-users/index.blade.php",
+            "route": "admin.admin-users.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-users/index.blade.php",
+            "route": "admin.admin-users.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-users/index.blade.php",
+            "route": "admin.admin-users.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-roles/index.blade.php",
+            "route": "admin.admin-users.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-roles/index.blade.php",
+            "route": "admin.admin-roles.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-roles/index.blade.php",
+            "route": "admin.admin-roles.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/admin-roles/index.blade.php",
+            "route": "admin.admin-roles.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/notifications/index.blade.php",
+            "route": "admin.notifications.read-all",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/notifications/index.blade.php",
+            "route": "admin.notifications.clear-read",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/notifications/index.blade.php",
+            "route": "admin.notifications.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/notifications/index.blade.php",
+            "route": "admin.notifications.read",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/notifications/index.blade.php",
+            "route": "admin.notifications.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/notifications/index.blade.php",
+            "route": "admin.notifications.send",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/audit-logs/index.blade.php",
+            "route": "admin.audit-logs.export",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/audit-logs/index.blade.php",
+            "route": "admin.audit-logs.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/backups/index.blade.php",
+            "route": "admin.backups.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/backups/index.blade.php",
+            "route": "admin.backups.cleanup",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/backups/index.blade.php",
+            "route": "admin.backups.download",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/backups/index.blade.php",
+            "route": "admin.backups.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/email-templates/edit.blade.php",
+            "route": "admin.email-templates.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/email-templates/edit.blade.php",
+            "route": "admin.email-templates.preview",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/email-templates/index.blade.php",
+            "route": "admin.email-templates.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/administration-audit/_checks/../../resources/views/admin/email-templates/index.blade.php",
+            "route": "admin.email-templates.preview",
+            "registered": true
+        }
+    ]
+}

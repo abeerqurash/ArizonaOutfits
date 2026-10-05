@@ -1,0 +1,25 @@
+ADMIN BELL NOTIFICATION VERIFICATION
+3 October 2026
+
+checks.json: 51 checks; 0 failures.
+admin-checks.json: 78 checks; 0 failures.
+customer-checks.json: 51 checks; 0 failures.
+customer-content-regression-checks.json: 65 checks; 0 failures.
+integration-checks.json: 57 checks; 0 failures.
+inventory-extra-regression-checks.json: 26 checks; 0 failures.
+inventory-purchasing-regression-checks.json: 89 checks; 0 failures.
+
+Total: 417 behavioral checks; 0 failures.
+Four replacement PHP files: 4 syntax passes.
+
+The new bell files were tested together with the preceding 54-file admin/customer
+set using isolated SQLite fixtures. The actual provider registrations, event
+observers, database notifications, existing topbar rendering and read action were
+used. Existing application files were not replaced. No real emails or payments
+were sent. Audit-only menu checks include fixture audit rows plus the actual
+audit middleware. These are not browser CRUD tests for every menu.
+
+Checks include commit/rollback (including nested transactions), unread display,
+permission isolation, duplicate publication, order/payment/archive events, active
+and resolved inventory alerts, stock movements, customers/reviews, all configured
+editable admin menu groups and backup completion/failure.

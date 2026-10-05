@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="RtEmsS5GLfrGLmOKe4puYfN4qX1LXcuhmStvNku1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Notification Center | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    <style>
+.notification-page{display:grid;gap:19px;color:#172033}.notification-hero{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:27px;border-radius:20px;background:linear-gradient(135deg,#172554,#1d4ed8);color:#fff}.notification-hero>div>span{color:#bfdbfe;font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase}.notification-hero h2{margin:6px 0 0;font-size:30px}.notification-hero p{margin:7px 0 0;color:#dbeafe}.hero-actions{display:flex;flex-wrap:wrap;gap:8px}.hero-actions button{padding:10px 13px;border:0;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:800;cursor:pointer}.hero-actions button.secondary{background:#dbeafe}.notification-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.notification-stats a{padding:16px;border:1px solid #e2e8f0;border-radius:14px;background:#fff;color:inherit;text-decoration:none}.notification-stats a.active{border-color:#60a5fa;box-shadow:0 0 0 3px #dbeafe}.notification-stats small,.notification-stats strong{display:block}.notification-stats small{color:#64748b}.notification-stats strong{margin-top:5px;font-size:23px}.notification-layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(310px,.8fr);align-items:start;gap:17px}.notification-panel{overflow:hidden;border:1px solid #e2e8f0;border-radius:17px;background:#fff}.panel-heading{padding:17px 19px;border-bottom:1px solid #e2e8f0}.panel-heading h3{margin:0;font-size:17px}.panel-heading p{margin:4px 0 0;color:#64748b;font-size:12px}.notification-item{display:grid;grid-template-columns:42px 1fr auto;gap:13px;padding:17px 19px;border-bottom:1px solid #edf0f5}.notification-item.unread{background:#f0f9ff}.feed-icon{display:grid;width:40px;height:40px;place-items:center;border-radius:11px;background:#e0f2fe;color:#0369a1}.feed-icon.success{background:#d1fae5;color:#047857}.feed-icon.warning{background:#fef3c7;color:#b45309}.feed-icon.danger{background:#ffe4e6;color:#be123c}.feed-title{display:flex;align-items:center;gap:7px}.feed-title h4{margin:0;font-size:14px}.feed-title span{padding:3px 6px;border-radius:999px;background:#2563eb;color:#fff;font-size:8px;font-weight:900;text-transform:uppercase}.feed-content p{margin:6px 0;color:#475569;font-size:12px;line-height:1.6}.feed-content time{color:#94a3b8;font-size:10px}.feed-actions{display:flex;align-items:center;gap:6px}.feed-actions button{border:0;cursor:pointer}.open-button{padding:8px 10px;border-radius:8px!important;background:#dbeafe;color:#1d4ed8;font-weight:800}.delete-button{display:grid;width:33px;height:33px;place-items:center;border-radius:8px;background:#fff1f2;color:#be123c}.notification-empty{padding:55px 20px;text-align:center;color:#64748b}.notification-empty i{font-size:36px;color:#cbd5e1}.notification-empty h3{margin:12px 0 4px;color:#334155}.notification-empty p{margin:0}.notification-pagination{padding:15px 18px}.compose-form{display:grid;gap:14px;padding:18px}.compose-form>label,.specific-admins>span{display:block;color:#334155;font-size:11px;font-weight:800}.compose-form label small{color:#94a3b8;font-weight:500}.compose-form input,.compose-form select,.compose-form textarea{width:100%;box-sizing:border-box;margin-top:6px;padding:10px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;font:inherit}.compose-form textarea{resize:vertical}.specific-admins{display:none;max-height:220px;overflow-y:auto;padding:10px;border:1px solid #e2e8f0;border-radius:10px}.specific-admins.visible{display:block}.admin-choice{display:flex!important;align-items:center;gap:9px;margin-top:9px;font-weight:500!important}.admin-choice input{width:auto;margin:0}.admin-choice strong,.admin-choice small{display:block}.admin-choice small{margin-top:2px}.send-button{padding:11px;border:0;border-radius:9px;background:#1d4ed8;color:#fff;font-weight:850;cursor:pointer}
+@media(max-width:1000px){.notification-layout{grid-template-columns:1fr}}@media(max-width:680px){.notification-hero{align-items:stretch;flex-direction:column}.notification-stats{grid-template-columns:1fr}.notification-item{grid-template-columns:38px 1fr}.feed-actions{grid-column:2;justify-content:flex-start}.hero-actions{flex-direction:column}.hero-actions button{width:100%}}
+</style>
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="RtEmsS5GLfrGLmOKe4puYfN4qX1LXcuhmStvNku1" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Notification Center</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="RtEmsS5GLfrGLmOKe4puYfN4qX1LXcuhmStvNku1" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                <div class="notification-page">
+    <header class="notification-hero">
+        <div><span>Administration</span><h2>Notification Center</h2><p>Review store updates and send important messages to your administrator team.</p></div>
+        <div class="hero-actions">
+                                </div>
+    </header>
+
+    <section class="notification-stats">
+        <a href="http://127.0.0.1:8000/admin/notifications" class="active"><small>All notifications</small><strong>0</strong></a>
+        <a href="http://127.0.0.1:8000/admin/notifications?status=unread" class=""><small>Unread</small><strong>0</strong></a>
+        <a href="http://127.0.0.1:8000/admin/notifications?status=read" class=""><small>Read</small><strong>0</strong></a>
+    </section>
+
+    <div class="notification-layout">
+        <section class="notification-panel feed-panel">
+            <div class="panel-heading"><div><h3>All notifications</h3><p>0 matching update(s)</p></div></div>
+
+            <div class="notification-feed">
+                                    <div class="notification-empty"><i class="fa-regular fa-bell-slash"></i><h3>No notifications found</h3><p>New store and team updates will appear here.</p></div>
+                            </div>
+
+                    </section>
+
+        <aside class="notification-panel compose-panel">
+            <div class="panel-heading"><div><h3>Send team notification</h3><p>Deliver an update to active administrators.</p></div></div>
+            <form method="POST" action="http://127.0.0.1:8000/admin/notifications/send" class="compose-form">
+                <input type="hidden" name="_token" value="RtEmsS5GLfrGLmOKe4puYfN4qX1LXcuhmStvNku1" autocomplete="off">                <label>Recipients<select name="recipient" id="notificationRecipient"><option value="all" selected>All active administrators</option><option value="specific" >Selected administrators</option></select></label>
+                <div id="specificAdminFields" class="specific-admins">
+                    <span>Select administrators</span>
+                                            <label class="admin-choice"><input type="checkbox" name="user_ids[]" value="1" ><span><strong>Fixture administrator</strong><small>admin-fixture@example.test</small></span></label>
+                                    </div>
+                <label>Title<input name="title" value="" maxlength="120" required placeholder="Example: Scheduled maintenance"></label>
+                <label>Message<textarea name="message" rows="5" maxlength="1000" required placeholder="Write the administrator update here..."></textarea></label>
+                <label>Importance<select name="level"><option value="info" >Information</option><option value="success" >Success</option><option value="warning" >Warning</option><option value="danger" >Urgent</option></select></label>
+                <label>Internal action URL <small>Optional</small><input name="action_url" value="" placeholder="/admin/orders"></label>
+                <label>Action label <small>Optional</small><input name="action_label" value="" maxlength="60" placeholder="View orders"></label>
+                <button type="submit" class="send-button"><i class="fa-regular fa-paper-plane"></i> Send notification</button>
+            </form>
+        </aside>
+    </div>
+</div>
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const recipient = document.getElementById('notificationRecipient');
+    const fields = document.getElementById('specificAdminFields');
+    function toggleRecipients() { fields.classList.toggle('visible', recipient.value === 'specific'); }
+    recipient.addEventListener('change', toggleRecipients);
+    toggleRecipients();
+});
+</script>
+    <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js"></script>
+</body>
+</html>

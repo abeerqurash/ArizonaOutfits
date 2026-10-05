@@ -1,0 +1,93 @@
+[
+  {
+    "txt": "01_AdminMiddleware.php.txt",
+    "relative": "app/Http/Middleware/AdminMiddleware.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Middleware\\AdminMiddleware.php",
+    "new": false,
+    "original_sha256": "593d57dbaf13e8e35e5138b5e55da49c7ff196a7e018d7db41c71e683a027ffe"
+  },
+  {
+    "txt": "02_sidebar.blade.php.txt",
+    "relative": "resources/views/admin/partials/sidebar.blade.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\partials\\sidebar.blade.php",
+    "new": false,
+    "original_sha256": "47d98d8396f05ca114f86f5a0b20e4c6436449e2af3d69c9e45db2d8a085c14a"
+  },
+  {
+    "txt": "03_CustomerSpendService.php.txt",
+    "relative": "app/Services/CustomerSpendService.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\CustomerSpendService.php",
+    "new": true,
+    "original_sha256": null
+  },
+  {
+    "txt": "04_CustomerController.php.txt",
+    "relative": "app/Http/Controllers/Admin/CustomerController.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\CustomerController.php",
+    "new": false,
+    "original_sha256": "b3cad10a7f7d3d474b37c8c169dfd29df7ef41839d74f9627e1bcce236265077"
+  },
+  {
+    "txt": "05_index.blade.php.txt",
+    "relative": "resources/views/admin/customers/index.blade.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\customers\\index.blade.php",
+    "new": false,
+    "original_sha256": "fcf1bf38e9930ef49c228b58eef27a62069a44ee153702a341f928bfcc9f59ca"
+  },
+  {
+    "txt": "06_show.blade.php.txt",
+    "relative": "resources/views/admin/customers/show.blade.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\customers\\show.blade.php",
+    "new": false,
+    "original_sha256": "cf792d7f8f13ef9b14b5f13b675234166f3328e5a7e01764ec48ee819b5caf5a"
+  },
+  {
+    "txt": "07_ReviewController.php.txt",
+    "relative": "app/Http/Controllers/ReviewController.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\ReviewController.php",
+    "new": false,
+    "original_sha256": "f1b0aff75ca825c05c68c71a79c1d58b66ecb553c19b6be8cbcd016a694263a1"
+  },
+  {
+    "txt": "08_show.blade.php.txt",
+    "relative": "resources/views/products/show.blade.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\products\\show.blade.php",
+    "new": false,
+    "original_sha256": "44e1d1874a3d337f5f84d8cc8aec409e8c10c07ecc9a30e45fb9ff8bbca44085"
+  },
+  {
+    "txt": "09_CustomerAccountStatus.php.txt",
+    "relative": "app/Http/Middleware/CustomerAccountStatus.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Middleware\\CustomerAccountStatus.php",
+    "new": true,
+    "original_sha256": null
+  },
+  {
+    "txt": "10_app.php.txt",
+    "relative": "bootstrap/app.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\bootstrap\\app.php",
+    "new": false,
+    "original_sha256": "1908069d462001f9eb3ba544694b08271ec27e435765fe03caa03ab1e6184bf7"
+  },
+  {
+    "txt": "11_PostController.php.txt",
+    "relative": "app/Http/Controllers/Admin/PostController.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\PostController.php",
+    "new": false,
+    "original_sha256": "6bede2de7b39e054e568a8c095a30499f91cfed31ebc8c6d5174293262c9e39c"
+  },
+  {
+    "txt": "12_CategoryController.php.txt",
+    "relative": "app/Http/Controllers/Admin/CategoryController.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\CategoryController.php",
+    "new": false,
+    "original_sha256": "8c90863ecd475ee1dead9b09b3922e4960e8af6744e9677a8c24fbd3c0b5b7e6"
+  },
+  {
+    "txt": "13__form.blade.php.txt",
+    "relative": "resources/views/admin/posts/_form.blade.php",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\posts\\_form.blade.php",
+    "new": false,
+    "original_sha256": "386320a04d119f2ee31a5a3cf36dae9c4329926f0c0a29263f42bd05c1f136f0"
+  }
+]

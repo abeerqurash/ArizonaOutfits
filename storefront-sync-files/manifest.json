@@ -1,0 +1,98 @@
+[
+  {
+    "file": "01_article-reviews.blade.php.txt",
+    "destination": "resources/views/blogs/partials/article-reviews.blade.php"
+  },
+  {
+    "file": "02_home.blade.php.txt",
+    "destination": "resources/views/home.blade.php"
+  },
+  {
+    "file": "03_privacy-policy.blade.php.txt",
+    "destination": "resources/views/privacy-policy.blade.php"
+  },
+  {
+    "file": "04_terms-and-conditions.blade.php.txt",
+    "destination": "resources/views/terms-and-conditions.blade.php"
+  },
+  {
+    "file": "05_HomeController.php.txt",
+    "destination": "app/Http/Controllers/HomeController.php"
+  },
+  {
+    "file": "06_about.blade.php.txt",
+    "destination": "resources/views/about.blade.php"
+  },
+  {
+    "file": "07_index.blade.php.txt",
+    "destination": "resources/views/blogs/index.blade.php"
+  },
+  {
+    "file": "08_web.php.txt",
+    "destination": "routes/web.php"
+  },
+  {
+    "file": "09_categories.blade.php.txt",
+    "destination": "resources/views/products/categories.blade.php"
+  },
+  {
+    "file": "10_PublicMediaService.php.txt",
+    "destination": "app/Services/PublicMediaService.php"
+  },
+  {
+    "file": "11_product-placeholder.svg.txt",
+    "destination": "public/asset/images/product-placeholder.svg"
+  },
+  {
+    "file": "12_product-card.blade.php.txt",
+    "destination": "resources/views/products/partials/product-card.blade.php"
+  },
+  {
+    "file": "13_form.blade.php.txt",
+    "destination": "resources/views/admin/products/partials/form.blade.php"
+  },
+  {
+    "file": "14_EcommerceSetting.php.txt",
+    "destination": "app/Models/EcommerceSetting.php"
+  },
+  {
+    "file": "15_EcommerceSettingController.php.txt",
+    "destination": "app/Http/Controllers/Admin/EcommerceSettingController.php"
+  },
+  {
+    "file": "16_edit.blade.php.txt",
+    "destination": "resources/views/admin/settings/edit.blade.php"
+  },
+  {
+    "file": "17_2026_10_03_000001_add_storefront_footer_settings.php.txt",
+    "destination": "database/migrations/2026_10_03_000001_add_storefront_footer_settings.php"
+  },
+  {
+    "file": "18_footer.blade.php.txt",
+    "destination": "resources/views/partials/footer.blade.php"
+  },
+  {
+    "file": "19_latest-posts.blade.php.txt",
+    "destination": "resources/views/partials/latest-posts.blade.php"
+  },
+  {
+    "file": "20_blog-author-card-info.blade.php.txt",
+    "destination": "resources/views/partials/blog-author-card-info.blade.php"
+  },
+  {
+    "file": "21_show.blade.php.txt",
+    "destination": "resources/views/products/show.blade.php"
+  },
+  {
+    "file": "22_header.blade.php.txt",
+    "destination": "resources/views/partials/header.blade.php"
+  },
+  {
+    "file": "23_category-product-card.blade.php.txt",
+    "destination": "resources/views/products/partials/category-product-card.blade.php"
+  },
+  {
+    "file": "24_index.blade.php.txt",
+    "destination": "resources/views/products/index.blade.php"
+  }
+]

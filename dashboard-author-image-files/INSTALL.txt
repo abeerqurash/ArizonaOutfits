@@ -1,0 +1,16 @@
+01_EcommerceSetting.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Models\EcommerceSetting.php
+
+02_EcommerceSettingController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\EcommerceSettingController.php
+
+03_edit.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\settings\edit.blade.php
+
+04_blog-author-card-info.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\blog-author-card-info.blade.php
+
+05_2026_10_03_000002_add_author_card_image_to_store_settings.php.txt
+C:\xampp\htdocs\ArizonaOutfits\database\migrations\2026_10_03_000002_add_author_card_image_to_store_settings.php
+
+Copy full contents. Run php artisan migrate and php artisan optimize:clear. Open Store Settings > Author Card Image, upload and Save Settings. If public/storage is missing run php artisan storage:link.

@@ -1,0 +1,310 @@
+[
+  {
+    "txt": "01_Supplier.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Models\\Supplier.php",
+    "relative": "app/Models/Supplier.php",
+    "new": false,
+    "original_sha256": "f7c0323e796fb7a0ac0c209f85760db93a9e96f208a2c4bf41cd738814ec5dd2"
+  },
+  {
+    "txt": "02_PurchaseOrderReceipt.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Models\\PurchaseOrderReceipt.php",
+    "relative": "app/Models/PurchaseOrderReceipt.php",
+    "new": false,
+    "original_sha256": "1329a760f7c2831ed21b46749bc84b0ee543b40496afa1f6e2fb483140d9830e"
+  },
+  {
+    "txt": "03_SupplierReturn.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Models\\SupplierReturn.php",
+    "relative": "app/Models/SupplierReturn.php",
+    "new": false,
+    "original_sha256": "e8db4888341fbcdacb0efce1dce47f928890672f6dfa1e800f252860c6ae11a3"
+  },
+  {
+    "txt": "04_SupplierDocument.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Models\\SupplierDocument.php",
+    "relative": "app/Models/SupplierDocument.php",
+    "new": false,
+    "original_sha256": "226ed810e612845bdd068ab90c621fc9ca5530bb2c3fffcef8fbfa5bc95a8df9"
+  },
+  {
+    "txt": "05_SupplierRating.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Models\\SupplierRating.php",
+    "relative": "app/Models/SupplierRating.php",
+    "new": false,
+    "original_sha256": "039aa412ab56d5213965870fe4c4ae1f53652fde4946cb828d798b32ec60425b"
+  },
+  {
+    "txt": "06_SupplierPurchaseOrderDelivery.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Models\\SupplierPurchaseOrderDelivery.php",
+    "relative": "app/Models/SupplierPurchaseOrderDelivery.php",
+    "new": false,
+    "original_sha256": "d6f5acbaeec4bd3522fdb24df1151d30248d62cfc8556102d4465969796cad64"
+  },
+  {
+    "txt": "07_SupplierController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\SupplierController.php",
+    "relative": "app/Http/Controllers/Admin/SupplierController.php",
+    "new": false,
+    "original_sha256": "183120407b3f05b35bc5b21bf0b7c3e79f45bd42b0f262cf0f0c8eb203335c60"
+  },
+  {
+    "txt": "08_SupplierDocumentController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\SupplierDocumentController.php",
+    "relative": "app/Http/Controllers/Admin/SupplierDocumentController.php",
+    "new": false,
+    "original_sha256": "64cf0b3abda41ffc6ca2f81bfc5f69383f972d39ad204e94e780e170beece14d"
+  },
+  {
+    "txt": "09_SupplierRatingController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\SupplierRatingController.php",
+    "relative": "app/Http/Controllers/Admin/SupplierRatingController.php",
+    "new": false,
+    "original_sha256": "62cfba74de152337c3b38e0b1831f0745ee5a2909669e524f795f22b26777262"
+  },
+  {
+    "txt": "10_SupplierPurchaseOrderDeliveryController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\SupplierPurchaseOrderDeliveryController.php",
+    "relative": "app/Http/Controllers/Admin/SupplierPurchaseOrderDeliveryController.php",
+    "new": false,
+    "original_sha256": "e328f5836e64e495777d641557cf9e01ef2629b3a0f6fee60bea2abc419bcf33"
+  },
+  {
+    "txt": "11_PurchaseOrderReceivingController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\PurchaseOrderReceivingController.php",
+    "relative": "app/Http/Controllers/Admin/PurchaseOrderReceivingController.php",
+    "new": false,
+    "original_sha256": "5ac20c297ab1bfb898d18f368b036c49f92ed64b34c062988b503a9f6a8e1d85"
+  },
+  {
+    "txt": "12_show.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\suppliers\\show.blade.php",
+    "relative": "resources/views/admin/suppliers/show.blade.php",
+    "new": false,
+    "original_sha256": "5a00ba6bde6a95af591931af6a2ae081b950f5b451e0b122a9697fead67c136c"
+  },
+  {
+    "txt": "13_receiving.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\purchase-orders\\receiving.blade.php",
+    "relative": "resources/views/admin/purchase-orders/receiving.blade.php",
+    "new": false,
+    "original_sha256": "44d5630611e58144bb955909af0278a7e62f9bd5856da83651929f932ca2cce5"
+  },
+  {
+    "txt": "14_InventoryHistoryService.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\InventoryHistoryService.php",
+    "relative": "app/Services/InventoryHistoryService.php",
+    "new": false,
+    "original_sha256": "caf16d13e020c96ed71f1c1a29dc808b1717ba283803ab8d4a8f9e1b15171cbb"
+  },
+  {
+    "txt": "15_InventoryAdjustmentService.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\InventoryAdjustmentService.php",
+    "relative": "app/Services/InventoryAdjustmentService.php",
+    "new": false,
+    "original_sha256": "34b059dbcff77dd31ef25866345c84b9a14a822a6c2c9a453e293a0ce8531941"
+  },
+  {
+    "txt": "16_InventoryHistory.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Models\\InventoryHistory.php",
+    "relative": "app/Models/InventoryHistory.php",
+    "new": false,
+    "original_sha256": "19e03c12dc8c272034b6d0ccddcab535a4cd98439034d50bee5f14eb40dda9ca"
+  },
+  {
+    "txt": "17_InventoryHistoryController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\InventoryHistoryController.php",
+    "relative": "app/Http/Controllers/Admin/InventoryHistoryController.php",
+    "new": false,
+    "original_sha256": "777d7b5cb5803aa98aef59e8b50bed1f8a3e73374bf875483d6fb5b27ff0ca37"
+  },
+  {
+    "txt": "18_index.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\inventory-history\\index.blade.php",
+    "relative": "resources/views/admin/inventory-history/index.blade.php",
+    "new": false,
+    "original_sha256": "1e8296ecaed331a261a96a5e495abbd6f79bab4ec63f39bd838a94c3b570dcba"
+  },
+  {
+    "txt": "19_AdminMiddleware.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Middleware\\AdminMiddleware.php",
+    "relative": "app/Http/Middleware/AdminMiddleware.php",
+    "new": false,
+    "original_sha256": "778ff57423231dafbe4fb062f2e2bcbf7a78002e9af47bd440fa145fa4378b6d"
+  },
+  {
+    "txt": "20_sidebar.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\partials\\sidebar.blade.php",
+    "relative": "resources/views/admin/partials/sidebar.blade.php",
+    "new": false,
+    "original_sha256": "a2e9710537085fc9d5f3532c4cf503fe9e9455e71429043ca6b7d5162137970b"
+  },
+  {
+    "txt": "21_PurchaseOrder.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Models\\PurchaseOrder.php",
+    "relative": "app/Models/PurchaseOrder.php",
+    "new": false,
+    "original_sha256": "26d9dadd6869866b2f2e1115e7a9d25b9e0a0df18a1da129dc297e5cb96fbf82"
+  },
+  {
+    "txt": "22_PurchaseOrderDraftController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\PurchaseOrderDraftController.php",
+    "relative": "app/Http/Controllers/Admin/PurchaseOrderDraftController.php",
+    "new": false,
+    "original_sha256": "dc69c5eeb16fc9c72240f7bee1a11198ad7f42be45388b6dfa09b5c5e5167e41"
+  },
+  {
+    "txt": "23_edit.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\purchase-orders\\edit.blade.php",
+    "relative": "resources/views/admin/purchase-orders/edit.blade.php",
+    "new": false,
+    "original_sha256": "785d671ac2118f2b44e90d21367305ff88505db639abc91f56bc1e3d1f89fc61"
+  },
+  {
+    "txt": "24_PurchaseOrderController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\PurchaseOrderController.php",
+    "relative": "app/Http/Controllers/Admin/PurchaseOrderController.php",
+    "new": false,
+    "original_sha256": "4136261b6c28f86b26b2e9a79b49dc0b6cacb5c84dbe98d644e99bece8371179"
+  },
+  {
+    "txt": "25_InventoryCatalogService.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\InventoryCatalogService.php",
+    "relative": "app/Services/InventoryCatalogService.php",
+    "new": true,
+    "original_sha256": null
+  },
+  {
+    "txt": "26_InventoryAlertService.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\InventoryAlertService.php",
+    "relative": "app/Services/InventoryAlertService.php",
+    "new": false,
+    "original_sha256": "a78aff7b6c8ca2cc7692360631f446ab538cbd61b37161bc63fb0c3d208241f7"
+  },
+  {
+    "txt": "27_ReorderDashboardController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\ReorderDashboardController.php",
+    "relative": "app/Http/Controllers/Admin/ReorderDashboardController.php",
+    "new": false,
+    "original_sha256": "778c06ed49b5d4e1a9a7051f4179b67c32c9206db36a789750d46c5d16d09670"
+  },
+  {
+    "txt": "28_StockValuationController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\StockValuationController.php",
+    "relative": "app/Http/Controllers/Admin/StockValuationController.php",
+    "new": false,
+    "original_sha256": "5b6fad6e2edcaf0bcd3f8ab755b4cdd25c4e79ff570c5e94bc506530766e3a99"
+  },
+  {
+    "txt": "29_StockValuationExport.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Exports\\StockValuationExport.php",
+    "relative": "app/Exports/StockValuationExport.php",
+    "new": false,
+    "original_sha256": "108068e00a5f24b3a1997a64d6f15ae2ae78c6b8e68de004c9b09d7f3e7dfc3e"
+  },
+  {
+    "txt": "30_InventoryReportController.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\InventoryReportController.php",
+    "relative": "app/Http/Controllers/Admin/InventoryReportController.php",
+    "new": false,
+    "original_sha256": "59d463d58be00a72e979f138b765580978ad31eab4f1159ace832516f6e58be7"
+  },
+  {
+    "txt": "31_index.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\stock-valuation\\index.blade.php",
+    "relative": "resources/views/admin/stock-valuation/index.blade.php",
+    "new": false,
+    "original_sha256": "62ee773fac7cfc2d978f20992358c474dd8ed446985bf706cb14edbe5e95ac64"
+  },
+  {
+    "txt": "32_pdf.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\stock-valuation\\pdf.blade.php",
+    "relative": "resources/views/admin/stock-valuation/pdf.blade.php",
+    "new": false,
+    "original_sha256": "0c5dbdb86a15a3eb0eebde1b55bbe6de510a50264202817d3805ae22f6e6a0c7"
+  },
+  {
+    "txt": "33_PurchasingCurrencyService.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\PurchasingCurrencyService.php",
+    "relative": "app/Services/PurchasingCurrencyService.php",
+    "new": true,
+    "original_sha256": null
+  },
+  {
+    "txt": "34_inventory.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\config\\inventory.php",
+    "relative": "config/inventory.php",
+    "new": false,
+    "original_sha256": "6ab9123221a899d6f82136ce1af1ec9de75f15455a3f0272f97bdddac175a2e5"
+  },
+  {
+    "txt": "35_index.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\purchase-orders\\index.blade.php",
+    "relative": "resources/views/admin/purchase-orders/index.blade.php",
+    "new": false,
+    "original_sha256": "d0ac15732522807e5e08a64213a29ec0adb15b0c611cbb07093f62606f62dfdc"
+  },
+  {
+    "txt": "36_index.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\suppliers\\index.blade.php",
+    "relative": "resources/views/admin/suppliers/index.blade.php",
+    "new": false,
+    "original_sha256": "8405ffc7d458684b57506ca57c67457dc701ae19067edc3d0f73132f91ef52b1"
+  },
+  {
+    "txt": "37_show.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\purchase-orders\\show.blade.php",
+    "relative": "resources/views/admin/purchase-orders/show.blade.php",
+    "new": false,
+    "original_sha256": "31d11ea6def65b996200767301e6ec9a5857463d9cc0d0f4ec7e945341c8ef7f"
+  },
+  {
+    "txt": "38_pdf.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\purchase-orders\\pdf.blade.php",
+    "relative": "resources/views/admin/purchase-orders/pdf.blade.php",
+    "new": false,
+    "original_sha256": "177eeb922a2c26834c82bb76cd9dd931a670fe1df922a5b3be95a7ce908f020e"
+  },
+  {
+    "txt": "39_create.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\purchase-orders\\create.blade.php",
+    "relative": "resources/views/admin/purchase-orders/create.blade.php",
+    "new": false,
+    "original_sha256": "ea6e966fb3a8a6b4faa2b70c4b1d18f700189193793b0e033d9119cd1eb05bb7"
+  },
+  {
+    "txt": "40_analytics-card.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\stock-valuation\\partials\\analytics-card.blade.php",
+    "relative": "resources/views/admin/stock-valuation/partials/analytics-card.blade.php",
+    "new": false,
+    "original_sha256": "bc9cac2b562bacd0325135bbf48a0e0958821f767adaf4ff318480e1f42ef818"
+  },
+  {
+    "txt": "41_index.blade.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\reorder-dashboard\\index.blade.php",
+    "relative": "resources/views/admin/reorder-dashboard/index.blade.php",
+    "new": false,
+    "original_sha256": "f2218e78cdd19771cd7c50037c89ae3c9ab5a8a0eccbe57f3e08ab90008d8dcb"
+  },
+  {
+    "txt": "42_PurchaseOrderExport.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Exports\\PurchaseOrderExport.php",
+    "relative": "app/Exports/PurchaseOrderExport.php",
+    "new": false,
+    "original_sha256": "d6359a6a73ad1ac3f9555b5d84ecc2d69ae2efb2769ef96187d6dc834448f3cb"
+  },
+  {
+    "txt": "43_ReorderDashboardExport.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Exports\\ReorderDashboardExport.php",
+    "relative": "app/Exports/ReorderDashboardExport.php",
+    "new": false,
+    "original_sha256": "63220afd70ce570e5a1f9f3b97d9fdd337820af49bf885d4c12fc0a493cc43d5"
+  },
+  {
+    "txt": "44_2026_10_01_000001_repair_inventory_purchasing_schema.php.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\database\\migrations\\2026_10_01_000001_repair_inventory_purchasing_schema.php",
+    "relative": "database/migrations/2026_10_01_000001_repair_inventory_purchasing_schema.php",
+    "new": true,
+    "original_sha256": null
+  }
+]

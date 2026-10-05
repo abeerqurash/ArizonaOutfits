@@ -1,0 +1,2 @@
+from pathlib import Path
+r=Path(r'C:\xampp\htdocs\ArizonaOutfits');p=r/'resources/views/layouts/app.blade.php';s=p.read_text();s=s.replace("            'terms-and-conditions-page'\n        )\n    )", "            'terms-and-conditions-page'\n        )\n        || (isset($page) && in_array($page->slug, ['privacy-policy', 'terms-and-conditions'], true))\n    )",1);o=r/'policy-script-files';o.mkdir(exist_ok=True);(o/'01_app.blade.php.txt').write_text(s,encoding='utf-8');(o/'app.blade.php').write_text(s,encoding='utf-8')

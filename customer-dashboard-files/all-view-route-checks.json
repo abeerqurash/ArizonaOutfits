@@ -1,0 +1,647 @@
+[
+    {
+        "file": "resources\/views\/admin\/partials\/administration-links.blade.php",
+        "route": "admin.pages.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/administration-links.blade.php",
+        "route": "admin.navigation-menus.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/administration-links.blade.php",
+        "route": "admin.analytics.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/administration-links.blade.php",
+        "route": "admin.admin-users.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/administration-links.blade.php",
+        "route": "admin.admin-roles.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/administration-links.blade.php",
+        "route": "admin.notifications.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/administration-links.blade.php",
+        "route": "admin.audit-logs.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/administration-links.blade.php",
+        "route": "admin.backups.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/administration-links.blade.php",
+        "route": "admin.email-templates.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.dashboard",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.orders.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.orders.archived",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.payment-verifications.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.products.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.product-categories.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.product-tags.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.coupons.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.inventory-alerts.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.inventory-history.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.inventory-reports.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.stock-valuation.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.reorder-dashboard.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.purchase-orders.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.suppliers.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.customers.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.reviews.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.posts.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.categories.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.settings.edit",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "home-page",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/partials\/sidebar.blade.php",
+        "route": "admin.logout",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/email-templates\/edit.blade.php",
+        "route": "admin.email-templates.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/email-templates\/edit.blade.php",
+        "route": "admin.email-templates.update",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/email-templates\/edit.blade.php",
+        "route": "admin.email-templates.preview",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/email-templates\/edit.blade.php",
+        "route": "admin.email-templates.test",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/analytics\/index.blade.php",
+        "route": "admin.analytics.export",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/analytics\/index.blade.php",
+        "route": "admin.analytics.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/settings\/edit.blade.php",
+        "route": "admin.dashboard",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/settings\/edit.blade.php",
+        "route": "admin.settings.update",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/index.blade.php",
+        "route": "checkout.shipping-quote",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/index.blade.php",
+        "route": "checkout.stripe.intent",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/index.blade.php",
+        "route": "home-page",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/index.blade.php",
+        "route": "cart.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/index.blade.php",
+        "route": "login",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/index.blade.php",
+        "route": "checkout.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/index.blade.php",
+        "route": "checkout.place",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/index.blade.php",
+        "route": "terms-and-conditions-page",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/index.blade.php",
+        "route": "cart.coupon.remove",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/index.blade.php",
+        "route": "cart.coupon.apply",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/show.blade.php",
+        "route": "home-page",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/show.blade.php",
+        "route": "products.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/show.blade.php",
+        "route": "products.category",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/show.blade.php",
+        "route": "cart.add",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/show.blade.php",
+        "route": "favorite.toggle",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/show.blade.php",
+        "route": "login",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/show.blade.php",
+        "route": "reviews.store",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/partials\/product-card.blade.php",
+        "route": "products.show",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/partials\/product-card.blade.php",
+        "route": "products.quick-view",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/partials\/product-card.blade.php",
+        "route": "cart.add",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/partials\/product-card.blade.php",
+        "route": "favorite.toggle",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/partials\/product-card.blade.php",
+        "route": "login",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/partials\/quick-view.blade.php",
+        "route": "cart.add",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/products\/partials\/quick-view.blade.php",
+        "route": "products.show",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/cart\/index.blade.php",
+        "route": "home-page",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/cart\/index.blade.php",
+        "route": "cart.update",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/cart\/index.blade.php",
+        "route": "products.show",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/cart\/index.blade.php",
+        "route": "products.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/cart\/index.blade.php",
+        "route": "cart.remove",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/cart\/index.blade.php",
+        "route": "cart.coupon.remove",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/cart\/index.blade.php",
+        "route": "cart.coupon.apply",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/cart\/index.blade.php",
+        "route": "checkout.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/thank-you.blade.php",
+        "route": "home-page",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/thank-you.blade.php",
+        "route": "checkout.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/checkout\/thank-you.blade.php",
+        "route": "products.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/emails\/orders\/admin-new-order.blade.php",
+        "route": "admin.orders.show",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/orders\/invoice.blade.php",
+        "route": "customer.orders.show",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/orders\/invoice.blade.php",
+        "route": "admin.orders.show",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/orders\/invoice.blade.php",
+        "route": "customer.orders.invoice.download",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/admin\/orders\/invoice.blade.php",
+        "route": "admin.orders.invoice.download",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/orders\/track.blade.php",
+        "route": "orders.track.lookup",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/dashboard.blade.php",
+        "route": "products.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/dashboard.blade.php",
+        "route": "customer.orders.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/dashboard.blade.php",
+        "route": "customer.orders.show",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "verification.send",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "customer.security.email.change.cancel",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "customer.security.email.change",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "customer.security.email",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "customer.security.password.update",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "customer.security.password.recovery",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "customer.security.phone.remove",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "customer.security.phone.send",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "customer.security.social.disconnect",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "customer.security.social.connect",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/security.blade.php",
+        "route": "customer.dashboard",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/verify-phone.blade.php",
+        "route": "customer.security.phone.verify.store",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/account\/verify-phone.blade.php",
+        "route": "customer.security",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/layouts\/app.blade.php",
+        "route": "customer.security",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/orders\/index.blade.php",
+        "route": "customer.orders.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/orders\/index.blade.php",
+        "route": "products.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/orders\/index.blade.php",
+        "route": "customer.orders.show",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/orders\/show.blade.php",
+        "route": "customer.orders.invoice",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/orders\/show.blade.php",
+        "route": "customer.orders.invoice.download",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/navigation.blade.php",
+        "route": "customer.dashboard",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/navigation.blade.php",
+        "route": "customer.orders.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/navigation.blade.php",
+        "route": "profile.edit",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/navigation.blade.php",
+        "route": "customer.security",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/navigation.blade.php",
+        "route": "favorites.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/navigation.blade.php",
+        "route": "logout",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/sidebar.blade.php",
+        "route": "customer.dashboard",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/sidebar.blade.php",
+        "route": "customer.orders.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/sidebar.blade.php",
+        "route": "profile.edit",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/sidebar.blade.php",
+        "route": "customer.security",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/sidebar.blade.php",
+        "route": "favorites.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/sidebar.blade.php",
+        "route": "products.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/sidebar.blade.php",
+        "route": "home-page",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/sidebar.blade.php",
+        "route": "logout",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/topbar.blade.php",
+        "route": "products.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/topbar.blade.php",
+        "route": "profile.edit",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/topbar.blade.php",
+        "route": "customer.orders.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/topbar.blade.php",
+        "route": "customer.security",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/topbar.blade.php",
+        "route": "favorites.index",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/topbar.blade.php",
+        "route": "home-page",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/customer\/partials\/topbar.blade.php",
+        "route": "logout",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/profile\/edit.blade.php",
+        "route": "customer.security",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/profile\/partials\/delete-user-form.blade.php",
+        "route": "profile.destroy",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/profile\/partials\/delete-user-form.blade.php",
+        "route": "customer.security",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/profile\/partials\/update-password-form.blade.php",
+        "route": "password.update",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/profile\/partials\/update-profile-information-form.blade.php",
+        "route": "profile.update",
+        "pass": true
+    },
+    {
+        "file": "resources\/views\/profile\/partials\/update-profile-information-form.blade.php",
+        "route": "customer.security",
+        "pass": true
+    }
+]

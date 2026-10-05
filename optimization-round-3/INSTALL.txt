@@ -1,0 +1,43 @@
+Arizona Outfits — optimization round 3
+
+Install this AFTER optimization round 2. These are separate full replacement files.
+Open FILES.md and use the exact destination listed beside each file.
+Blade files stay .blade.php. The icon stylesheet stays .css. Do not turn it into PHP.
+The three .woff2 downloads are binary fonts: copy them directly to the listed font paths.
+Keep the included FontAwesome-LICENSE.txt beside them.
+Back up existing destination files before replacing them.
+
+Then run from C:\xampp\htdocs\ArizonaOutfits:
+C:\xampp\php\php.exe artisan optimize:clear
+C:\xampp\php\php.exe artisan view:cache
+
+Refresh with Ctrl+F5. Check the navigation open/close and Escape, icon display,
+Contact arrow link, About social links, shop filters, and login.
+The closed mega menu now uses inert so keyboard focus cannot enter hidden links.
+Login's visible brand link is accessible. These changes retain private-page noindex.
+
+The storefront icon stylesheet includes Font Awesome base rules, font declarations
+and icons referenced in the project at packaging time. The font files are local
+and subset to those glyphs. If future frontend code adds a new icon, regenerate
+the stylesheet AND fonts, or restore the original full Font Awesome link in
+layouts/app.blade.php and the round-2 icon-font-display partial.
+Admin and customer layouts continue using their existing icon stylesheets.
+
+SERVER SETTINGS:
+Your screenshots test php artisan serve on port 8000. That server ignores .htaccess.
+The measured original Contact HTML transferred about 170 KB without compression.
+The isolated preview compresses HTML. To reproduce compression in XAMPP, back up
+C:\xampp\php\php.ini and update its existing zlib.output_compression setting:
+zlib.output_compression = On
+output_handler must remain empty (it is currently empty in your PHP configuration).
+Do not add duplicate active settings. Restart Apache and php artisan serve.
+In DevTools Network, check the document response for Content-Encoding: gzip.
+If hosting already compresses responses, use its existing compression settings.
+Also follow optimization-round-2\XAMPP-PHP-SETTINGS.txt for OPcache.
+The real php.ini was not modified during these checks.
+
+RESULTS.md records measured scores and remaining limits. A 100 performance score
+is a target, not a guarantee for every run, device or server. Private login,
+favourites, checkout and account pages intentionally retain noindex; lower SEO
+scores caused by that setting should not be fixed by exposing private pages.
+Do not deploy the audit folders. Deploy only the listed replacement destinations.

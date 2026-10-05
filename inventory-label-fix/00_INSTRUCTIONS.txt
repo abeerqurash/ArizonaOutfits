@@ -1,0 +1,22 @@
+VARIANT LABEL DISPLAY CORRECTION
+Replace complete file contents using these two TXT files:
+
+01_InventoryCatalogService.php.txt
+Destination: C:\xampp\htdocs\ArizonaOutfits\app\Services\InventoryCatalogService.php
+
+02_InventoryReportController.php.txt
+Destination: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\InventoryReportController.php
+
+Copy all TXT contents into the destination PHP file, replacing all old contents.
+Save as UTF-8. Do not keep .txt on the destination file.
+
+Run in PowerShell:
+Set-Location 'C:\xampp\htdocs\ArizonaOutfits'
+& 'C:\xampp\php\php.exe' artisan optimize:clear
+
+Refresh Inventory Reports with Ctrl+F5. Example:
+test Product 2 — Color: Red, Material: Leather
+
+The catalog correction also improves variant labels on Stock Valuation.
+The controller correction fixes the Variant column in report CSV exports.
+No migration or database changes are needed. Stock quantities are unchanged.

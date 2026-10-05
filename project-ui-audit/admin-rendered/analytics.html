@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Global Analytics | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    <style>
+.analytics-page{display:grid;gap:19px;color:#172033}.analytics-hero{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:28px;border-radius:20px;background:linear-gradient(135deg,#0f172a,#0369a1);color:#fff}.analytics-hero span{color:#bae6fd;font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase}.analytics-hero h2{margin:6px 0 0;font-size:30px}.analytics-hero p{margin:7px 0 0;color:#e0f2fe}.analytics-hero a{padding:11px 14px;border-radius:10px;background:#fff;color:#0369a1;font-weight:850;text-decoration:none}.analytics-panel{overflow:hidden;border:1px solid #e2e8f0;border-radius:17px;background:#fff}.filter-panel form{display:flex;align-items:end;gap:12px;padding:15px 18px}.filter-panel label{display:block;margin-bottom:6px;font-size:10px;font-weight:850;text-transform:uppercase}.filter-panel input{padding:9px;border:1px solid #cbd5e1;border-radius:8px}.filter-panel button{padding:10px 13px;border:0;border-radius:8px;background:#0369a1;color:#fff;font-weight:800;cursor:pointer}.quick-ranges{display:flex;gap:6px;margin-left:auto}.quick-ranges a{padding:8px 10px;border-radius:8px;background:#f1f5f9;color:#475569;font-size:11px;font-weight:750;text-decoration:none}.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.metric-grid article{display:flex;gap:12px;padding:17px;border:1px solid #e2e8f0;border-radius:14px;background:#fff}.metric-icon{display:grid;width:41px;height:41px;flex:0 0 41px;place-items:center;border-radius:11px;background:#e0f2fe;color:#0369a1}.metric-grid small,.metric-grid strong,.metric-grid span{display:block}.metric-grid small{color:#64748b}.metric-grid strong{margin-top:4px;font-size:22px}.metric-grid span{margin-top:5px;color:#64748b;font-size:9px}.metric-grid span.up{color:#047857}.metric-grid span.down{color:#be123c}.panel-heading{padding:16px 18px;border-bottom:1px solid #e2e8f0}.panel-heading h3{margin:0;font-size:16px}.panel-heading p{margin:4px 0 0;color:#64748b;font-size:11px}.chart-box{position:relative;height:360px;padding:17px}.chart-box.compact{height:270px}.chart-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:17px}.table-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th{padding:10px 13px;background:#f8fafc;color:#64748b;font-size:9px;text-align:left;text-transform:uppercase}td{padding:12px 13px;border-top:1px solid #edf0f5;font-size:11px}td strong,td small{display:block}td small{margin-top:3px;color:#94a3b8}.empty{padding:35px;text-align:center;color:#64748b}
+@media(max-width:1100px){.chart-grid{grid-template-columns:1fr 1fr}.metric-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.analytics-hero,.filter-panel form{align-items:stretch;flex-direction:column}.quick-ranges{margin-left:0}.metric-grid,.chart-grid,.table-grid{grid-template-columns:1fr}.filter-panel input{width:100%;box-sizing:border-box}}
+</style>
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Global Analytics</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                <div class="analytics-page">
+    <header class="analytics-hero">
+        <div><span>Business intelligence</span><h2>Global Store Analytics</h2><p>Revenue, orders, customers, products, payments and geographic performance in one workspace.</p></div>
+        <a href="http://127.0.0.1:8000/admin/analytics/export"><i class="fa-solid fa-file-csv"></i> Export CSV</a>
+    </header>
+
+    <section class="analytics-panel filter-panel">
+        <form method="GET" action="http://127.0.0.1:8000/admin/analytics">
+            <div><label>Start date</label><input type="date" name="start_date" value="2026-09-06" required></div>
+            <div><label>End date</label><input type="date" name="end_date" value="2026-10-05" required></div>
+            <div><label for="analytics-currency">Currency</label><select id="analytics-currency" name="currency"><option value="USD" selected>USD</option></select></div><button type="submit"><i class="fa-solid fa-filter"></i> Apply dates</button>
+            <div class="quick-ranges"><a href="http://127.0.0.1:8000/admin/analytics?start_date=2026-09-29&amp;end_date=2026-10-05">7 days</a><a href="http://127.0.0.1:8000/admin/analytics?start_date=2026-09-06&amp;end_date=2026-10-05">30 days</a><a href="http://127.0.0.1:8000/admin/analytics?start_date=2026-01-01&amp;end_date=2026-10-05">This year</a></div>
+        </form>
+    </section>
+
+    <section class="analytics-panel" style="padding:15px"><p>Figures below are in USD and include archived paid orders. New customer counts cover all currencies.</p><p>Amounts in different currencies are reported separately.</p></section>
+    <section class="metric-grid">
+                                        <article><div class="metric-icon"><i class="fa-solid fa-dollar-sign"></i></div><div><small>Revenue</small><strong>USD 0.00</strong><span class="same"><i class="fa-solid fa-minus"></i> 0.0% vs previous period</span></div></article>
+                                <article><div class="metric-icon"><i class="fa-solid fa-bag-shopping"></i></div><div><small>Paid orders</small><strong>0</strong><span class="same"><i class="fa-solid fa-minus"></i> 0.0% vs previous period</span></div></article>
+                                <article><div class="metric-icon"><i class="fa-solid fa-receipt"></i></div><div><small>Average order</small><strong>USD 0.00</strong><span class="same"><i class="fa-solid fa-minus"></i> 0.0% vs previous period</span></div></article>
+                                <article><div class="metric-icon"><i class="fa-solid fa-user-plus"></i></div><div><small>New customers</small><strong>0</strong><span class="same"><i class="fa-solid fa-minus"></i> 0.0% vs previous period</span></div></article>
+                                <article><div class="metric-icon"><i class="fa-solid fa-box-open"></i></div><div><small>Items sold</small><strong>0</strong><span class="same"><i class="fa-solid fa-minus"></i> 0.0% vs previous period</span></div></article>
+                                <article><div class="metric-icon"><i class="fa-solid fa-tags"></i></div><div><small>Discounts given</small><strong>USD 0.00</strong><span class="same"><i class="fa-solid fa-minus"></i> 0.0% vs previous period</span></div></article>
+            </section>
+
+    <section class="analytics-panel wide-chart"><div class="panel-heading"><div><h3>Revenue and order trend</h3><p>06 Sep 2026 – 05 Oct 2026</p></div></div><div class="chart-box"><canvas id="revenueOrdersChart"></canvas></div></section>
+
+    <div class="chart-grid">
+        <section class="analytics-panel"><div class="panel-heading"><div><h3>Order status</h3><p>All orders created in this period</p></div></div><div class="chart-box compact"><canvas id="statusChart"></canvas></div></section>
+        <section class="analytics-panel"><div class="panel-heading"><div><h3>Payment methods</h3><p>Customer payment preferences</p></div></div><div class="chart-box compact"><canvas id="paymentChart"></canvas></div></section>
+        <section class="analytics-panel"><div class="panel-heading"><div><h3>Customer acquisition</h3><p>New registered customer accounts</p></div></div><div class="chart-box compact"><canvas id="customerChart"></canvas></div></section>
+    </div>
+
+    <div class="table-grid">
+        <section class="analytics-panel"><div class="panel-heading"><div><h3>Top-selling products</h3><p>Ranked by paid sales value</p></div></div><div class="table-wrap"><table><thead><tr><th>Product</th><th>Units</th><th>Sales</th></tr></thead><tbody><tr><td colspan="3" class="empty">No paid product sales in this period.</td></tr></tbody></table></div></section>
+        <section class="analytics-panel"><div class="panel-heading"><div><h3>Sales by country</h3><p>Based on shipping or billing country</p></div></div><div class="table-wrap"><table><thead><tr><th>Country</th><th>Orders</th><th>Revenue</th></tr></thead><tbody><tr><td colspan="3" class="empty">No geographic sales data in this period.</td></tr></tbody></table></div></section>
+    </div>
+</div>
+<script type="application/json" id="globalAnalyticsData">{"daily":{"labels":["2026-09-06","2026-09-07","2026-09-08","2026-09-09","2026-09-10","2026-09-11","2026-09-12","2026-09-13","2026-09-14","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-09-19","2026-09-20","2026-09-21","2026-09-22","2026-09-23","2026-09-24","2026-09-25","2026-09-26","2026-09-27","2026-09-28","2026-09-29","2026-09-30","2026-10-01","2026-10-02","2026-10-03","2026-10-04","2026-10-05"],"revenue":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"orders":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"statuses":{"labels":[],"values":[]},"payments":{"labels":[],"values":[]},"customers":{"labels":["2026-09-06","2026-09-07","2026-09-08","2026-09-09","2026-09-10","2026-09-11","2026-09-12","2026-09-13","2026-09-14","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-09-19","2026-09-20","2026-09-21","2026-09-22","2026-09-23","2026-09-24","2026-09-25","2026-09-26","2026-09-27","2026-09-28","2026-09-29","2026-09-30","2026-10-01","2026-10-02","2026-10-03","2026-10-04","2026-10-05"],"values":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},"currency":"USD"}</script>
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+ const raw=document.getElementById('globalAnalyticsData'); if(!raw||typeof Chart==='undefined')return; const data=JSON.parse(raw.textContent);
+ Chart.defaults.font.family='Montserrat,Arial,sans-serif'; Chart.defaults.color='#64748b';
+ new Chart(document.getElementById('revenueOrdersChart'),{type:'line',data:{labels:data.daily.labels,datasets:[{label:'Revenue ('+data.currency+')',data:data.daily.revenue,borderColor:'#0284c7',backgroundColor:'rgba(14,165,233,.12)',fill:true,tension:.35,yAxisID:'y'},{label:'Orders',data:data.daily.orders,borderColor:'#7c3aed',backgroundColor:'#7c3aed',tension:.35,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},scales:{y:{beginAtZero:true},y1:{beginAtZero:true,position:'right',grid:{drawOnChartArea:false}}}}});
+ const colors=['#0284c7','#7c3aed','#059669','#d97706','#e11d48','#64748b','#0891b2','#4f46e5'];
+ new Chart(document.getElementById('statusChart'),{type:'doughnut',data:{labels:data.statuses.labels,datasets:[{data:data.statuses.values,backgroundColor:colors}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom'}}}});
+ new Chart(document.getElementById('paymentChart'),{type:'bar',data:{labels:data.payments.labels,datasets:[{label:'Orders',data:data.payments.values,backgroundColor:'#0ea5e9',borderRadius:7}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+ new Chart(document.getElementById('customerChart'),{type:'line',data:{labels:data.customers.labels,datasets:[{label:'New customers',data:data.customers.values,borderColor:'#059669',backgroundColor:'rgba(5,150,105,.12)',fill:true,tension:.35}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+});
+</script>
+    <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

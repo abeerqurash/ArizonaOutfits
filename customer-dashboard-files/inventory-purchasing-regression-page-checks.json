@@ -1,0 +1,54 @@
+{
+    "Inventory Alerts": {
+        "result": "PASS",
+        "bytes": 86412
+    },
+    "Inventory History": {
+        "result": "PASS",
+        "bytes": 101724
+    },
+    "Inventory Reports": {
+        "result": "PASS",
+        "bytes": 87483
+    },
+    "Stock Valuation": {
+        "result": "PASS",
+        "bytes": 216801
+    },
+    "Reorder Dashboard": {
+        "result": "PASS",
+        "bytes": 141285
+    },
+    "Purchase Orders": {
+        "result": "PASS",
+        "bytes": 69047
+    },
+    "Suppliers": {
+        "result": "PASS",
+        "bytes": 79756
+    },
+    "Purchase Order detail": {
+        "result": "PASS",
+        "bytes": 82272
+    },
+    "Purchase Order create": {
+        "result": "PASS",
+        "bytes": 71499
+    },
+    "Receiving and Returns": {
+        "result": "PASS",
+        "bytes": 43027
+    },
+    "Supplier detail": {
+        "result": "PASS",
+        "bytes": 225337
+    },
+    "Supplier create": {
+        "result": "PASS",
+        "bytes": 87647
+    },
+    "Supplier products": {
+        "result": "PASS",
+        "bytes": 43530
+    }
+}

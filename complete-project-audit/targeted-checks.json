@@ -1,0 +1,182 @@
+[
+    {
+        "result": "PASS",
+        "check": "Untrusted export text stays literal 1",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Untrusted export text stays literal 2",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Untrusted export text stays literal 3",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Untrusted export text stays literal 4",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Export amount remains numeric",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Export uses safe custom binder App\\Exports\\PurchaseOrderExport",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Export uses safe custom binder App\\Exports\\StockValuationExport",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Export uses safe custom binder App\\Exports\\ReorderDashboardExport",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Static shop URL reserved",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Blog cannot take policy URL",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "CMS may edit dedicated policy URL",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "CMS draft blocks blog slug",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "CMS edit can retain its own slug",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Draft blog blocks CMS slug",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Historical blog redirect blocks CMS slug",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Blog can reclaim its own former slug",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Dry-run leaves source intact",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Migration creates identical private copy",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Migration removes public access copy",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Migration safely reruns",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Authorized supplier download finds private file",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cross-supplier download denied",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Migration refuses mismatched private copy",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Document removal deletes private file",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Named limiter public-forms",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Named limiter public-tracking",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Named limiter checkout-attempts",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Route has named throttle home.form.submit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Route has named throttle contact.form.submit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Route has named throttle blog.form.submit",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Route has named throttle orders.track.lookup",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Route has named throttle checkout.place",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Route has named throttle checkout.stripe.intent",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Custom CMS receives published blog list",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Custom CMS receives latest sidebar blogs",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Product placeholder is installed",
+        "detail": ""
+    }
+]

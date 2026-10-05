@@ -1,0 +1,1389 @@
+{
+    "endpoints": [
+        {
+            "route": "admin.stock-valuation.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/stock-valuation",
+            "action": "App\\Http\\Controllers\\Admin\\StockValuationController@index",
+            "views": [
+                "admin.stock-valuation.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.stock-valuation.export.csv",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/stock-valuation/export/csv",
+            "action": "App\\Http\\Controllers\\Admin\\StockValuationController@exportCsv",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.stock-valuation.export.excel",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/stock-valuation/export/excel",
+            "action": "App\\Http\\Controllers\\Admin\\StockValuationController@exportExcel",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.stock-valuation.export.pdf",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/stock-valuation/export/pdf",
+            "action": "App\\Http\\Controllers\\Admin\\StockValuationController@exportPdf",
+            "views": [
+                "admin.stock-valuation.pdf"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.inventory-alerts.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/inventory-alerts",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryAlertController@index",
+            "views": [
+                "admin.inventory-alerts.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.inventory-alerts.resolve",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/inventory-alerts/{inventoryAlert}/resolve",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryAlertController@resolve",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.inventory-history.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/inventory-history",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryHistoryController@index",
+            "views": [
+                "admin.inventory-history.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.products.inventory.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/products/{product}/inventory",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryAdjustmentController@edit",
+            "views": [
+                "admin.products.inventory"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.products.inventory.update",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/products/{product}/inventory",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryAdjustmentController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.inventory-reports.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/inventory-reports",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryReportController@index",
+            "views": [
+                "admin.inventory-reports.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.inventory-reports.export",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/inventory-reports/export",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryReportController@export",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.reorder-dashboard.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/reorder-dashboard",
+            "action": "App\\Http\\Controllers\\Admin\\ReorderDashboardController@index",
+            "views": [
+                "admin.reorder-dashboard.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.reorder-dashboard.export.csv",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/reorder-dashboard/export/csv",
+            "action": "App\\Http\\Controllers\\Admin\\ReorderDashboardController@exportCsv",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.reorder-dashboard.export.excel",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/reorder-dashboard/export/excel",
+            "action": "App\\Http\\Controllers\\Admin\\ReorderDashboardController@exportExcel",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.create-from-reorder",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/purchase-orders/create-from-reorder",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderController@createFromReorder",
+            "views": [
+                "admin.purchase-orders.create"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/purchase-orders",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/purchase-orders",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderController@index",
+            "views": [
+                "admin.purchase-orders.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.mark-ordered",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/mark-ordered",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderController@markOrdered",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.cancel",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/cancel",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderController@cancel",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.receive",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/receive",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderReceivingController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.receiving.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/receiving",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderReceivingController@index",
+            "views": [
+                "admin.purchase-orders.receiving"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.receipts.correct",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/receipts/{receipt}/items/{receiptItem}/correct",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderReceivingController@correct",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.supplier-returns.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/supplier-returns",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderReceivingController@storeReturn",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.supplier-returns.complete",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/supplier-returns/{supplierReturn}/complete",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderReceivingController@completeReturn",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.supplier-returns.cancel",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/supplier-returns/{supplierReturn}/cancel",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderReceivingController@cancelReturn",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.pdf",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/pdf",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderController@downloadPdf",
+            "views": [
+                "admin.purchase-orders.pdf"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.excel",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/excel",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderController@downloadExcel",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.create",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/purchase-orders/create",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderController@create",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.draft.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderDraftController@edit",
+            "views": [
+                "admin.purchase-orders.edit"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.draft.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderDraftController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.purchase-orders.show",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/purchase-orders/{purchaseOrder}",
+            "action": "App\\Http\\Controllers\\Admin\\PurchaseOrderController@show",
+            "views": [
+                "admin.purchase-orders.show"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/suppliers",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierController@index",
+            "views": [
+                "admin.suppliers.index"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.create",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/suppliers/create",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierController@create",
+            "views": [
+                "admin.suppliers.create"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/suppliers",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/suppliers/{supplier}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierController@edit",
+            "views": [
+                "admin.suppliers.edit"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/suppliers/{supplier}",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/suppliers/{supplier}",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.show",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/suppliers/{supplier}",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierController@show",
+            "views": [
+                "admin.suppliers.show"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.products.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/suppliers/{supplier}/products",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierProductController@index",
+            "views": [
+                "admin.suppliers.products"
+            ],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.products.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/suppliers/{supplier}/products",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierProductController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.products.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/suppliers/{supplier}/products/{supplierProduct}",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierProductController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.products.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/suppliers/{supplier}/products/{supplierProduct}",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierProductController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.products.pricing",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/suppliers/{supplier}/product-pricing",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierProductController@pricing",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.contacts.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/suppliers/{supplier}/contacts",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierContactController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.contacts.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/suppliers/{supplier}/contacts/{contact}",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierContactController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.contacts.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/suppliers/{supplier}/contacts/{contact}",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierContactController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.documents.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/suppliers/{supplier}/documents",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierDocumentController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.documents.download",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/suppliers/{supplier}/documents/{document}/download",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierDocumentController@download",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.documents.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/suppliers/{supplier}/documents/{document}",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierDocumentController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.ratings.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/suppliers/{supplier}/ratings",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierRatingController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.ratings.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/suppliers/{supplier}/ratings/{rating}",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierRatingController@update",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.ratings.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/suppliers/{supplier}/ratings/{rating}",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierRatingController@destroy",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.suppliers.purchase-orders.email",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/suppliers/{supplier}/purchase-orders/{purchaseOrder}/email",
+            "action": "App\\Http\\Controllers\\Admin\\SupplierPurchaseOrderDeliveryController@store",
+            "views": [],
+            "middleware": [
+                "web",
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        }
+    ],
+    "literal_view_route_references": [
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-alerts/index.blade.php",
+            "route": "admin.inventory-history.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-alerts/index.blade.php",
+            "route": "admin.inventory-reports.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-alerts/index.blade.php",
+            "route": "admin.inventory-alerts.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-alerts/index.blade.php",
+            "route": "admin.inventory-alerts.resolve",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-history/index.blade.php",
+            "route": "admin.inventory-reports.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-history/index.blade.php",
+            "route": "admin.inventory-history.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-history/index.blade.php",
+            "route": "admin.orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-reports/index.blade.php",
+            "route": "admin.inventory-reports.export",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-reports/index.blade.php",
+            "route": "admin.inventory-reports.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-reports/index.blade.php",
+            "route": "admin.products.inventory.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-reports/index.blade.php",
+            "route": "admin.inventory-alerts.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/inventory-reports/index.blade.php",
+            "route": "admin.inventory-history.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/stock-valuation/index.blade.php",
+            "route": "admin.products.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/stock-valuation/index.blade.php",
+            "route": "admin.stock-valuation.export.csv",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/stock-valuation/index.blade.php",
+            "route": "admin.stock-valuation.export.excel",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/stock-valuation/index.blade.php",
+            "route": "admin.stock-valuation.export.pdf",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/stock-valuation/index.blade.php",
+            "route": "admin.products.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/stock-valuation/index.blade.php",
+            "route": "admin.products.create",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/reorder-dashboard/index.blade.php",
+            "route": "admin.products.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/reorder-dashboard/index.blade.php",
+            "route": "admin.stock-valuation.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/reorder-dashboard/index.blade.php",
+            "route": "admin.reorder-dashboard.export.csv",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/reorder-dashboard/index.blade.php",
+            "route": "admin.reorder-dashboard.export.excel",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/reorder-dashboard/index.blade.php",
+            "route": "admin.purchase-orders.create-from-reorder",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/create.blade.php",
+            "route": "admin.reorder-dashboard.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/create.blade.php",
+            "route": "admin.purchase-orders.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/create.blade.php",
+            "route": "admin.suppliers.create",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/edit.blade.php",
+            "route": "admin.purchase-orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/edit.blade.php",
+            "route": "admin.purchase-orders.draft.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/edit.blade.php",
+            "route": "admin.suppliers.products.pricing",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/index.blade.php",
+            "route": "admin.reorder-dashboard.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/index.blade.php",
+            "route": "admin.purchase-orders.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/index.blade.php",
+            "route": "admin.purchase-orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/index.blade.php",
+            "route": "admin.purchase-orders.pdf",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/index.blade.php",
+            "route": "admin.purchase-orders.excel",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/partials/draft-edit-button.blade.php",
+            "route": "admin.purchase-orders.draft.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/partials/receiving-returns-button.blade.php",
+            "route": "admin.purchase-orders.receiving.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/partials/supplier-pricing.blade.php",
+            "route": "admin.suppliers.products.pricing",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/receiving.blade.php",
+            "route": "admin.purchase-orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/receiving.blade.php",
+            "route": "admin.purchase-orders.supplier-returns.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/receiving.blade.php",
+            "route": "admin.purchase-orders.receipts.correct",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/receiving.blade.php",
+            "route": "admin.purchase-orders.supplier-returns.complete",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/receiving.blade.php",
+            "route": "admin.purchase-orders.supplier-returns.cancel",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/show.blade.php",
+            "route": "admin.purchase-orders.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/show.blade.php",
+            "route": "admin.reorder-dashboard.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/show.blade.php",
+            "route": "admin.purchase-orders.mark-ordered",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/show.blade.php",
+            "route": "admin.purchase-orders.cancel",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/show.blade.php",
+            "route": "admin.purchase-orders.pdf",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/show.blade.php",
+            "route": "admin.purchase-orders.excel",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/purchase-orders/show.blade.php",
+            "route": "admin.purchase-orders.receive",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/create.blade.php",
+            "route": "admin.suppliers.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/create.blade.php",
+            "route": "admin.purchase-orders.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/create.blade.php",
+            "route": "admin.suppliers.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/edit.blade.php",
+            "route": "admin.suppliers.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/edit.blade.php",
+            "route": "admin.suppliers.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/edit.blade.php",
+            "route": "admin.suppliers.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/form.blade.php",
+            "route": "admin.suppliers.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/form.blade.php",
+            "route": "admin.suppliers.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/index.blade.php",
+            "route": "admin.purchase-orders.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/index.blade.php",
+            "route": "admin.suppliers.create",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/index.blade.php",
+            "route": "admin.suppliers.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/index.blade.php",
+            "route": "admin.suppliers.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/index.blade.php",
+            "route": "admin.suppliers.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/products.blade.php",
+            "route": "admin.suppliers.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/products.blade.php",
+            "route": "admin.suppliers.products.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/products.blade.php",
+            "route": "admin.suppliers.products.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/products.blade.php",
+            "route": "admin.suppliers.products.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/products.blade.php",
+            "route": "admin.suppliers.products.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.products.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.purchase-orders.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.contacts.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.contacts.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.documents.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.documents.download",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.documents.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.ratings.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.ratings.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.ratings.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.purchase-orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.purchase-orders.email",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/inventory-purchasing-audit/_checks/../../resources/views/admin/suppliers/show.blade.php",
+            "route": "admin.suppliers.contacts.store",
+            "registered": true
+        }
+    ]
+}

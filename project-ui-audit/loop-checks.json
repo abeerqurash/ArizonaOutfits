@@ -1,0 +1,16 @@
+[
+  {
+    "root": "admin-content",
+    "mutations": 0,
+    "nested": 0,
+    "triggers": 1,
+    "dynamic": true
+  },
+  {
+    "root": "customer-dashboard-content",
+    "mutations": 0,
+    "nested": 0,
+    "triggers": 1,
+    "dynamic": true
+  }
+]

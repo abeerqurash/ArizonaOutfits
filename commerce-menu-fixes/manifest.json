@@ -1,0 +1,116 @@
+[
+  {
+    "download": "01-CustomerDashboardController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\CustomerDashboardController.php",
+    "source_sha256": "061b12c1217aef77ebe7e06e03a81b3bc5b9ad833c6e82e11396f07daa0489ed",
+    "replacement_sha256": "b89df21633414bee923c4775917c3f3d7050118212400159ada48711816138ed"
+  },
+  {
+    "download": "02-StripeWebhookController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Webhooks\\StripeWebhookController.php",
+    "source_sha256": "fbcd93de442ba69b248d15b9700fee789e6fd824a5515c7d89804252f5d4001b",
+    "replacement_sha256": "a1d4f86391345ba3b89c0447dc29d8f3642a007d4ffdfeeb221a61ebffe7e70a"
+  },
+  {
+    "download": "03-InventoryService.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\InventoryService.php",
+    "source_sha256": "61574213962cbc06ed02244879c7da734ec65cd7a44433b1381ccd33a0402a25",
+    "replacement_sha256": "5f9c8a78bab811f676fb28899f236189fe6b26bda9d4dd012afa02cca7b541e7"
+  },
+  {
+    "download": "04-PaymentVerificationController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\PaymentVerificationController.php",
+    "source_sha256": "cd08afa597c5a27241e5af7d1827586a0b3569a82a9c7ee2e04c08ba5a1709c8",
+    "replacement_sha256": "e24b98771a9dd747b928ac0abe967a046dbafabc69f88f1dff7a6564599bb0ae"
+  },
+  {
+    "download": "05-CouponService.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\CouponService.php",
+    "source_sha256": "ef617ee0706d06fa1fe49282c144157feea3539be64868e3b024e184ee5919c0",
+    "replacement_sha256": "c4f276847ba6faf431a60610a7bcbb5960b3da095de3bfd442b8774c5c1a907f"
+  },
+  {
+    "download": "06-CouponRedemptionService.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Services\\CouponRedemptionService.php",
+    "source_sha256": "eaf6bc0a9042388cec3f19f00bbbac0725a845548fa41be5721d40a79500b52d",
+    "replacement_sha256": "62d58307ac38e5b39f0a032cb272a28dda2da9485e2d46879ae2570a4a8bd8e1"
+  },
+  {
+    "download": "07-CouponController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\CouponController.php",
+    "source_sha256": "9c2d7d5f82602855a56038409e2331426d082d7a092629bca52e47e8df7d2989",
+    "replacement_sha256": "e4ad54b521c017e1d439a1c7ff550891c7069f9bb0151633575b31ff78590c43"
+  },
+  {
+    "download": "08-ProductCategoryController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\ProductCategoryController.php",
+    "source_sha256": "f5b3a5d50fccd1908958b91d0a0265ff31796ab9cec05510e794f37871d81a62",
+    "replacement_sha256": "ae637febafff994b6deba68bc0fc89d4037742fcfef23d2c09f0186c080b91fd"
+  },
+  {
+    "download": "09-ShopController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\ShopController.php",
+    "source_sha256": "8e42fb22a9a62059910ebf5b32a523a56351574ab4ced44376327634c4416891",
+    "replacement_sha256": "0f3cf7a23589e6ac03be7545b232211f1945bba92383a2290d41a9fc9fce26c0"
+  },
+  {
+    "download": "10-StripePaymentController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Payment\\StripePaymentController.php",
+    "source_sha256": "f65e0d04add5402fad87efc7d027e7c36bb3e1f7875e5aa6461a3814f45da895",
+    "replacement_sha256": "066bff9980a92aca2c69ce67934f8ee37111b1c6d70ae54f2437456c59ecb361"
+  },
+  {
+    "download": "11-web-routes.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\routes\\web.php",
+    "source_sha256": "c9b47648c12649c1737fb88be314ce97592365ea3c64fa2b2be16122ab599d4d",
+    "replacement_sha256": "e919568cade28119c97c440979c2ebf34ec42294e79304365d65650edcf15df5"
+  },
+  {
+    "download": "12-AdminMiddleware.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Middleware\\AdminMiddleware.php",
+    "source_sha256": "5b071345ea5116f0bddb297fe0b0643f116065460c2c039938a5029c586b7e69",
+    "replacement_sha256": "5deede8d30d8b00a67ba999fd6c80cc3beac6e834e23f9bf6304716941b2003e"
+  },
+  {
+    "download": "13-admin-sidebar.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\partials\\sidebar.blade.php",
+    "source_sha256": "b48193483786c37f7f4162a7d43ba6c339751bf34e6692e52c3e1dcc412cee6e",
+    "replacement_sha256": "a2e9710537085fc9d5f3532c4cf503fe9e9455e71429043ca6b7d5162137970b"
+  },
+  {
+    "download": "14-AppServiceProvider.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Providers\\AppServiceProvider.php",
+    "source_sha256": "abaf13156922611b0aecb21dc28297acdf1b5874f3c6db2687fb04870425013d",
+    "replacement_sha256": "63191d40dda158f0e0df0dee8646b0752f81591a66719f6ea5f3cdf791da3886"
+  },
+  {
+    "download": "15-payment-verification-view.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\resources\\views\\admin\\payment-verifications\\show.blade.php",
+    "source_sha256": "c502d875917f29463961c3ac85f8fea803a2c30dbf13d19afdba83f4b57c5b1a",
+    "replacement_sha256": "1847775d24845c016c3a1e43b7973d365add42076cb6d01369633dadb5aceb2c"
+  },
+  {
+    "download": "16-OrderController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\OrderController.php",
+    "source_sha256": "2a81be94f4d0f622e4dfeea61614f2f6319aa881c340ca9a9930161bb09074e1",
+    "replacement_sha256": "cd682a0b99449cf1e3c164dd04591525fbc739737761475a4832bd7437b9a22e"
+  },
+  {
+    "download": "17-ProductController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\ProductController.php",
+    "source_sha256": "a95f711b707777d5bab025eca3cac2386386f7549dc62d5862c9673556fa15fa",
+    "replacement_sha256": "14d22dd83d03bab5a12b46ada2f0f07cbb47e6640b3a6b1048b7f5225e48bae0"
+  },
+  {
+    "download": "18-ProductTagController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\Admin\\ProductTagController.php",
+    "source_sha256": "79bf8172f453438f8940db66a68fc8e9f2baa8ad190af5f2675bb308ce50b6cd",
+    "replacement_sha256": "bd340095409ce5e466052e6a7c8b9819f364a310557c9bc7fdfa16349cdec811"
+  },
+  {
+    "download": "19-OrderTrackingController.txt",
+    "destination": "C:\\xampp\\htdocs\\ArizonaOutfits\\app\\Http\\Controllers\\OrderTrackingController.php",
+    "source_sha256": "76f0c2cb990b1b1995db6779b817832eb5dc043398e7b7f0cac94378b2ed2b9e",
+    "replacement_sha256": "1841376579b187c0f4e08e45b1ce73705d0e3f368d2c3aeb8d0ced142cdb3885"
+  }
+]

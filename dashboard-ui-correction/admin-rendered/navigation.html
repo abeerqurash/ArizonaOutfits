@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Menu Builder | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    <style>
+.menu-page{display:grid;gap:18px;color:#172033}.menu-hero{padding:27px;border-radius:20px;background:linear-gradient(135deg,#172033,#7c3aed);color:#fff}.menu-hero span{color:#ddd6fe;font-size:10px;font-weight:850;letter-spacing:.14em;text-transform:uppercase}.menu-hero h2{margin:6px 0 0;font-size:30px}.menu-hero p{margin:7px 0 0;color:#ede9fe}.menu-panel{overflow:hidden;border:1px solid #e2e8f0;border-radius:16px;background:#fff}.panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:17px 19px;border-bottom:1px solid #e2e8f0}.panel-heading h3{margin:0}.panel-heading p{margin:4px 0 0;color:#64748b;font-size:11px}.panel-heading button,.add-item form>button{padding:9px 11px;border:0;border-radius:8px;background:#7c3aed;color:#fff;font-weight:800;cursor:pointer}.builder-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(280px,.7fr);align-items:start}.items-list{display:grid;gap:9px;padding:17px;border-right:1px solid #e2e8f0}.menu-item-card{display:grid;grid-template-columns:27px 1fr 32px;align-items:center;gap:8px;padding:10px;border:1px solid #e2e8f0;border-radius:11px;background:#fff}.move-buttons{display:grid;gap:3px}.move-buttons button,.save-item,.delete-item{display:grid;width:27px;height:27px;place-items:center;border:0;border-radius:6px;background:#f1f5f9;color:#64748b;cursor:pointer}.item-edit-form{display:grid;grid-template-columns:1.2fr .8fr 1.3fr auto auto 30px;align-items:center;gap:6px}.item-edit-form input,.item-edit-form select,.add-item input,.add-item select{width:100%;box-sizing:border-box;padding:8px;border:1px solid #cbd5e1;border-radius:7px;font:inherit;font-size:10px}.check{display:flex!important;align-items:center;gap:4px;white-space:nowrap;font-size:9px!important}.check input{width:auto!important}.save-item{background:#dcfce7;color:#15803d}.delete-item{background:#fff1f2;color:#be123c}.add-item{padding:18px}.add-item h3{margin:0 0 13px}.add-item form{display:grid;gap:11px}.add-item label{font-size:10px;font-weight:800}.add-item label input,.add-item label select{margin-top:5px}.empty-menu{padding:40px;text-align:center;color:#94a3b8}.empty-menu i{font-size:28px}.empty-menu p{margin:8px 0 0}@media(max-width:1100px){.builder-grid{grid-template-columns:1fr}.items-list{border-right:0;border-bottom:1px solid #e2e8f0}.item-edit-form{grid-template-columns:repeat(3,1fr)}}@media(max-width:700px){.panel-heading{align-items:stretch;flex-direction:column}.item-edit-form{grid-template-columns:1fr}.menu-item-card{align-items:start}.panel-heading button{width:100%}}
+</style>    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-purple-fix">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Menu Builder</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                <div class="menu-page"><header class="menu-hero"><div><span>Website navigation</span><h2>Header & Footer Menu Builder</h2><p>Add CMS pages, existing website routes or custom links, then arrange their display order.</p></div></header>
+<section class="menu-panel" data-menu-panel><div class="panel-heading"><div><h3>Header Navigation</h3><p>Header location Â· 2 item(s)</p></div><form method="POST" action="http://127.0.0.1:8000/admin/navigation-menus/1/reorder" data-reorder-form><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"> <input type="hidden" name="_method" value="PUT"><div data-order-inputs></div><button><i class="fa-solid fa-arrow-down-wide-short"></i> Save order</button></form></div>
+<div class="builder-grid"><div class="items-list" data-sort-list>
+<article class="menu-item-card" data-item-id="1"><div class="move-buttons"><button type="button" data-move="up" aria-label="Move up"><i class="fa-solid fa-chevron-up"></i></button><button type="button" data-move="down" aria-label="Move down"><i class="fa-solid fa-chevron-down"></i></button></div><form method="POST" action="http://127.0.0.1:8000/admin/navigation-menu-items/1" class="item-edit-form"><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"> <input type="hidden" name="_method" value="PUT"><input name="label" value="Men Outfits" required maxlength="100"><select name="link_type" data-link-type><option value="page" >CMS page</option><option value="route" >Website route</option><option value="custom" selected>Custom URL</option></select>
+<select name="page_id" data-type-field="page"><option value="">Choose page</option></select><select name="route_name" data-type-field="route"><option value="">Choose route</option><option value="home-page" >Home</option><option value="about-page" >About</option><option value="blogs-page" >Blogs</option><option value="products.index" >Products</option><option value="cart.index" >Cart page</option><option value="cart.sidebar" >Cart sidebar</option><option value="favorites.index" >Favorites</option><option value="login" >Account (Login / My Account)</option><option value="contact-page" >Contact</option><option value="customer.dashboard" >Account (Login / My Account)</option></select><input name="url" value="/product-category/men-outfits" data-type-field="custom" placeholder="/sale or https://example.com">
+<label class="check"><input type="hidden" name="is_active" value="0"><input type="checkbox" name="is_active" value="1" checked> Visible</label><label class="check"><input type="hidden" name="open_in_new_tab" value="0"><input type="checkbox" name="open_in_new_tab" value="1" > New tab</label><button class="save-item"><i class="fa-solid fa-check"></i></button></form><form method="POST" action="http://127.0.0.1:8000/admin/navigation-menu-items/1" onsubmit="return confirm('Remove this menu item?')"><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"> <input type="hidden" name="_method" value="DELETE"><button class="delete-item"><i class="fa-regular fa-trash-can"></i></button></form></article>
+<article class="menu-item-card" data-item-id="2"><div class="move-buttons"><button type="button" data-move="up" aria-label="Move up"><i class="fa-solid fa-chevron-up"></i></button><button type="button" data-move="down" aria-label="Move down"><i class="fa-solid fa-chevron-down"></i></button></div><form method="POST" action="http://127.0.0.1:8000/admin/navigation-menu-items/2" class="item-edit-form"><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"> <input type="hidden" name="_method" value="PUT"><input name="label" value="Women Outfits" required maxlength="100"><select name="link_type" data-link-type><option value="page" >CMS page</option><option value="route" >Website route</option><option value="custom" selected>Custom URL</option></select>
+<select name="page_id" data-type-field="page"><option value="">Choose page</option></select><select name="route_name" data-type-field="route"><option value="">Choose route</option><option value="home-page" >Home</option><option value="about-page" >About</option><option value="blogs-page" >Blogs</option><option value="products.index" >Products</option><option value="cart.index" >Cart page</option><option value="cart.sidebar" >Cart sidebar</option><option value="favorites.index" >Favorites</option><option value="login" >Account (Login / My Account)</option><option value="contact-page" >Contact</option><option value="customer.dashboard" >Account (Login / My Account)</option></select><input name="url" value="/product-category/women-outfits" data-type-field="custom" placeholder="/sale or https://example.com">
+<label class="check"><input type="hidden" name="is_active" value="0"><input type="checkbox" name="is_active" value="1" checked> Visible</label><label class="check"><input type="hidden" name="open_in_new_tab" value="0"><input type="checkbox" name="open_in_new_tab" value="1" > New tab</label><button class="save-item"><i class="fa-solid fa-check"></i></button></form><form method="POST" action="http://127.0.0.1:8000/admin/navigation-menu-items/2" onsubmit="return confirm('Remove this menu item?')"><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"> <input type="hidden" name="_method" value="DELETE"><button class="delete-item"><i class="fa-regular fa-trash-can"></i></button></form></article>
+</div>
+<aside class="add-item"><h3>Add menu item</h3><form method="POST" action="http://127.0.0.1:8000/admin/navigation-menus/1/items" data-menu-item-form><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"><label>Link label<input name="label" required maxlength="100" placeholder="Shipping Policy"></label><label>Link type<select name="link_type" data-link-type><option value="page">CMS page</option><option value="route">Website route</option><option value="custom">Custom URL</option></select></label><label data-type-field="page">Published page<select name="page_id"><option value="">Choose page</option></select></label><label data-type-field="route">Website route<select name="route_name"><option value="">Choose route</option><option value="home-page">Home</option><option value="about-page">About</option><option value="blogs-page">Blogs</option><option value="products.index">Products</option><option value="cart.index">Cart page</option><option value="cart.sidebar">Cart sidebar</option><option value="favorites.index">Favorites</option><option value="login">Account (Login / My Account)</option><option value="contact-page">Contact</option><option value="customer.dashboard">Account (Login / My Account)</option></select></label><label data-type-field="custom">Custom URL<input name="url" placeholder="/sale or https://example.com"></label><label class="check"><input type="hidden" name="is_active" value="0"><input type="checkbox" name="is_active" value="1" checked> Visible</label><label class="check"><input type="hidden" name="open_in_new_tab" value="0"><input type="checkbox" name="open_in_new_tab" value="1"> Open in new tab</label><button><i class="fa-solid fa-plus"></i> Add link</button></form></aside></div></section>
+<section class="menu-panel" data-menu-panel><div class="panel-heading"><div><h3>Footer Navigation</h3><p>Footer location Â· 0 item(s)</p></div><form method="POST" action="http://127.0.0.1:8000/admin/navigation-menus/2/reorder" data-reorder-form><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"> <input type="hidden" name="_method" value="PUT"><div data-order-inputs></div><button><i class="fa-solid fa-arrow-down-wide-short"></i> Save order</button></form></div>
+<div class="builder-grid"><div class="items-list" data-sort-list>
+<div class="empty-menu"><i class="fa-solid fa-link"></i><p>No links added yet.</p></div></div>
+<aside class="add-item"><h3>Add menu item</h3><form method="POST" action="http://127.0.0.1:8000/admin/navigation-menus/2/items" data-menu-item-form><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"><label>Link label<input name="label" required maxlength="100" placeholder="Shipping Policy"></label><label>Link type<select name="link_type" data-link-type><option value="page">CMS page</option><option value="route">Website route</option><option value="custom">Custom URL</option></select></label><label data-type-field="page">Published page<select name="page_id"><option value="">Choose page</option></select></label><label data-type-field="route">Website route<select name="route_name"><option value="">Choose route</option><option value="home-page">Home</option><option value="about-page">About</option><option value="blogs-page">Blogs</option><option value="products.index">Products</option><option value="cart.index">Cart page</option><option value="cart.sidebar">Cart sidebar</option><option value="favorites.index">Favorites</option><option value="login">Account (Login / My Account)</option><option value="contact-page">Contact</option><option value="customer.dashboard">Account (Login / My Account)</option></select></label><label data-type-field="custom">Custom URL<input name="url" placeholder="/sale or https://example.com"></label><label class="check"><input type="hidden" name="is_active" value="0"><input type="checkbox" name="is_active" value="1" checked> Visible</label><label class="check"><input type="hidden" name="open_in_new_tab" value="0"><input type="checkbox" name="open_in_new_tab" value="1"> Open in new tab</label><button><i class="fa-solid fa-plus"></i> Add link</button></form></aside></div></section>
+<section class="menu-panel" data-menu-panel><div class="panel-heading"><div><h3>Mega Menu Product Categories</h3><p>Mega_categories location Â· 0 item(s)</p></div><form method="POST" action="http://127.0.0.1:8000/admin/navigation-menus/3/reorder" data-reorder-form><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"> <input type="hidden" name="_method" value="PUT"><div data-order-inputs></div><button><i class="fa-solid fa-arrow-down-wide-short"></i> Save order</button></form></div>
+<div class="builder-grid"><div class="items-list" data-sort-list>
+<p>Select categories to display in the mega menu.</p></div><aside class="add-item"><h3>Add product category</h3><p>Maximum 15 categories. Three per row on desktop. Use the arrows and Save order to arrange them.</p><form method="POST" action="http://127.0.0.1:8000/admin/navigation-menus/3/items"><input type="hidden" name="_token" value="2JMyWu7XYEs6kAIZpnp3JdoO20eMi7Q7aeCTVIW9" autocomplete="off"><label>Product category<select name="category_id" required><option value="">Choose category</option><option value="2">Men Jackets</option><option value="1">Men Outfits</option><option value="4">Women Jackets</option><option value="3">Women Outfits</option></select></label><button >Add category</button></form></aside></div></section>
+</div>
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+    <script>
+document.querySelectorAll('[data-link-type]').forEach(function(select){function update(){const form=select.closest('form');form.querySelectorAll('[data-type-field]').forEach(function(field){const active=field.dataset.typeField===select.value;field.hidden=!active;const input=field.matches('input,select')?field:field.querySelector('input,select');if(input)input.required=active;});}select.addEventListener('change',update);update();});
+document.querySelectorAll('[data-menu-panel]').forEach(function(panel){const list=panel.querySelector('[data-sort-list]');panel.querySelectorAll('[data-move]').forEach(function(button){button.addEventListener('click',function(){const item=button.closest('[data-item-id]');if(button.dataset.move==='up'&&item.previousElementSibling)item.parentNode.insertBefore(item,item.previousElementSibling);if(button.dataset.move==='down'&&item.nextElementSibling)item.parentNode.insertBefore(item.nextElementSibling,item);});});panel.querySelector('[data-reorder-form]').addEventListener('submit',function(){const holder=this.querySelector('[data-order-inputs]');holder.innerHTML='';list.querySelectorAll('[data-item-id]').forEach(function(item){const input=document.createElement('input');input.type='hidden';input.name='items[]';input.value=item.dataset.itemId;holder.appendChild(input);});});});
+</script>    <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-purple-fix"></script>
+</body>
+</html>

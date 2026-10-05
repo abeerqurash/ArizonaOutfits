@@ -1,0 +1,34 @@
+INSTALLATION — Arizona Outfits audit replacements
+
+The live source was not changed. The 63 replacement files are separate .txt files, not a ZIP. Open FILES.md for every download and exact destination. Install this set together; controllers, services, views and dependencies depend on each other.
+
+1. Back up the entire project and export the database in phpMyAdmin. Keep the backup outside the website's public directory. Preserve .env and storage uploads.
+2. Copy each text file's full contents to its destination listed in FILES.md. Create missing directories. Keep the real destination extension (.php, .blade.php, .js, .css, .json or .htaccess). Do not leave the numbered filename or .txt extension at the destination.
+3. Open a terminal in C:\xampp\htdocs\ArizonaOutfits and run, one command at a time:
+   composer install
+   npm ci
+   npm run build
+   C:\xampp\php\php.exe artisan optimize:clear
+4. Preview the private supplier-document migration:
+   C:\xampp\php\php.exe artisan suppliers:protect-documents --dry-run
+   Read the output. After confirming your backup, run:
+   C:\xampp\php\php.exe artisan suppliers:protect-documents
+   This moves existing public supplier files into private storage. It verifies copied file hashes before removing the public copy. Investigate any warnings or failures.
+5. Generate optimized image copies:
+   C:\xampp\php\php.exe -d memory_limit=512M artisan media:optimize --dry-run
+   C:\xampp\php\php.exe -d memory_limit=512M artisan media:optimize
+   Originals are retained. Run this command again after adding new images; until then, new images use their originals. PHP GD must be enabled.
+6. Refresh the browser with Ctrl+F5. Test home, shop, blog, category directories, individual categories/products/posts, privacy and terms. At 880px expect two carousel cards; at 600px expect one. Test next/previous and swipe. Related posts show up to six real published posts on desktop.
+7. Retest administrator and customer flows: authentication, permissions, product uploads, orders, inventory, purchase orders, reviews, notifications, CMS and settings. The dependency update includes Tailwind 4, so visually check forms and dashboards after the production build.
+
+Do not run migrate:fresh, delete your database, or regenerate APP_KEY. Existing migrations were already marked as run during this audit. Use storage:link only if the public storage link is missing.
+
+HOSTING CHECKS
+Set APP_ENV=production, APP_DEBUG=false, APP_URL to your real HTTPS domain, and SESSION_SECURE_COOKIE=true. The document root must point to public. Keep .env, private storage and backups inaccessible from the web. Enable Apache rewrite, headers, expires and deflate modules where supported; public/.htaccess compression and cache rules need verification on the actual host.
+Add a Sitemap: https://YOUR-DOMAIN/sitemap.xml line to public/robots.txt using your real domain, then submit that URL in Google Search Console. Verify canonical URLs, HTTPS redirects and sitemap responses on the host.
+Exclude complete-project-audit from Git uploads and hosting deployment: it contains audit tools, dependency copies and copied media. Deploy only application files and the assets built by npm run build.
+
+PAYMENT RELEASE GATE
+Do not treat Stripe as production-approved from these local checks. Test signed webhooks, retries, replay, payment success/failure, refunds and stock/coupon changes on the live server. A payment can already be captured when a later stock check fails; a reservation/reconciliation/refund workflow remains necessary. The new amount converter fails closed for BHD/JOD/KWD/OMR/TND because the current store uses two-decimal amounts.
+
+Local Lighthouse is not a Google Ads approval or a public PageSpeed Insights certificate. Verify the real HTTPS site, email delivery, SMS provider configuration and a backup restore before launch.

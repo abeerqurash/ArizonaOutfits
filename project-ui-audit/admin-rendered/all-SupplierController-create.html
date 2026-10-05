@@ -1,0 +1,2842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Add Supplier | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    
+<style>
+    .supplier-editor-page {
+        --editor-text: #111827;
+        --editor-muted: #64748b;
+        --editor-border: #e5e7eb;
+        --editor-soft-border: #eef2f7;
+        --editor-indigo: #4f46e5;
+        --editor-indigo-dark: #4338ca;
+        --editor-indigo-soft: #eef2ff;
+        --editor-green: #15803d;
+        --editor-green-soft: #ecfdf3;
+        --editor-blue: #0369a1;
+        --editor-blue-soft: #f0f9ff;
+        --editor-orange: #c2410c;
+        --editor-orange-soft: #fff7ed;
+        --editor-red: #b91c1c;
+        --editor-red-soft: #fef2f2;
+        --editor-yellow: #a16207;
+        --editor-yellow-soft: #fefce8;
+
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        min-width: 0;
+        color: var(--editor-text);
+    }
+
+    .supplier-editor-page *,
+    .supplier-editor-page *::before,
+    .supplier-editor-page *::after {
+        box-sizing: border-box;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Header
+    |--------------------------------------------------------------------------
+    */
+
+    .supplier-editor-header {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 27px 29px;
+        border: 1px solid var(--editor-border);
+        border-radius: 19px;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(79, 70, 229, 0.14),
+                transparent 38%
+            ),
+            linear-gradient(
+                135deg,
+                #ffffff,
+                #f8f9ff
+            );
+        box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+        overflow: hidden;
+    }
+
+    .supplier-editor-header::after {
+        content: "";
+        position: absolute;
+        top: -60px;
+        right: -40px;
+        width: 185px;
+        height: 185px;
+        border: 28px solid rgba(79, 70, 229, 0.05);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .supplier-editor-header-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 17px;
+        min-width: 0;
+    }
+
+    .supplier-editor-header-icon {
+        width: 58px;
+        height: 58px;
+        flex: 0 0 58px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: var(--editor-indigo-soft);
+        color: var(--editor-indigo);
+        font-size: 22px;
+    }
+
+    .supplier-editor-eyebrow,
+    .supplier-form-eyebrow {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--editor-indigo);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .supplier-editor-header h1 {
+        margin: 0;
+        color: var(--editor-text);
+        font-size: 29px;
+        line-height: 1.2;
+    }
+
+    .supplier-editor-header p {
+        max-width: 680px;
+        margin: 7px 0 0;
+        color: var(--editor-muted);
+        font-size: 12px;
+        line-height: 1.65;
+    }
+
+    .supplier-editor-title-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+    .supplier-editor-status,
+    .supplier-editor-preferred {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 8px;
+        border-radius: 999px;
+        font-size: 8px;
+        font-weight: 800;
+    }
+
+    .supplier-editor-status.active {
+        background: var(--editor-green-soft);
+        color: var(--editor-green);
+    }
+
+    .supplier-editor-status.inactive {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .supplier-editor-status.blocked {
+        background: var(--editor-red-soft);
+        color: var(--editor-red);
+    }
+
+    .supplier-editor-preferred {
+        background: var(--editor-yellow-soft);
+        color: var(--editor-yellow);
+    }
+
+    .supplier-editor-header-actions {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        flex-shrink: 0;
+    }
+
+    .supplier-editor-button {
+        min-height: 43px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 0 14px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: 800;
+        text-decoration: none;
+        white-space: nowrap;
+    }
+
+    .supplier-editor-button.secondary {
+        border-color: #d7dce5;
+        background: #ffffff;
+        color: #475569;
+    }
+
+    .supplier-editor-button.purchase {
+        border-color: #c7d2fe;
+        background: var(--editor-indigo-soft);
+        color: var(--editor-indigo);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validation Summary
+    |--------------------------------------------------------------------------
+    */
+
+    .supplier-validation-summary {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 17px 18px;
+        border: 1px solid #fecaca;
+        border-radius: 13px;
+        background: var(--editor-red-soft);
+        color: var(--editor-red);
+    }
+
+    .supplier-validation-icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #fee2e2;
+    }
+
+    .supplier-validation-summary h2 {
+        margin: 0 0 8px;
+        font-size: 14px;
+    }
+
+    .supplier-validation-summary ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 10px;
+        line-height: 1.7;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Main Layout
+    |--------------------------------------------------------------------------
+    */
+
+    .supplier-form-layout {
+        display: grid;
+        grid-template-columns:
+            minmax(0, 1fr)
+            minmax(285px, 330px);
+        align-items: start;
+        gap: 19px;
+    }
+
+    .supplier-form-main {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        min-width: 0;
+    }
+
+    .supplier-form-sidebar {
+        position: sticky;
+        top: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        min-width: 0;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cards
+    |--------------------------------------------------------------------------
+    */
+
+    .supplier-form-card,
+    .supplier-sidebar-card {
+        border: 1px solid var(--editor-border);
+        border-radius: 16px;
+        background: #ffffff;
+        box-shadow: 0 7px 22px rgba(15, 23, 42, 0.04);
+    }
+
+    .supplier-form-card {
+        padding: 21px 22px;
+    }
+
+    .supplier-form-card-header,
+    .supplier-sidebar-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .supplier-form-card-header {
+        margin-bottom: 20px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--editor-soft-border);
+    }
+
+    .supplier-form-card-icon,
+    .supplier-sidebar-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+    }
+
+    .supplier-form-card-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+    }
+
+    .supplier-form-card-icon.company,
+    .supplier-sidebar-icon.status {
+        background: var(--editor-indigo-soft);
+        color: var(--editor-indigo);
+    }
+
+    .supplier-form-card-icon.address {
+        background: var(--editor-blue-soft);
+        color: var(--editor-blue);
+    }
+
+    .supplier-form-card-icon.commercial {
+        background: var(--editor-green-soft);
+        color: var(--editor-green);
+    }
+
+    .supplier-form-card-icon.banking {
+        background: var(--editor-orange-soft);
+        color: var(--editor-orange);
+    }
+
+    .supplier-form-card-icon.notes,
+    .supplier-sidebar-icon.information {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .supplier-sidebar-icon.preferred {
+        background: var(--editor-yellow-soft);
+        color: var(--editor-yellow);
+    }
+
+    .supplier-form-card-header h2 {
+        margin: 0 0 4px;
+        color: var(--editor-text);
+        font-size: 17px;
+    }
+
+    .supplier-form-card-header p {
+        margin: 0;
+        color: var(--editor-muted);
+        font-size: 9px;
+        line-height: 1.5;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Fields
+    |--------------------------------------------------------------------------
+    */
+
+    .supplier-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .supplier-form-field {
+        min-width: 0;
+    }
+
+    .supplier-form-field-wide {
+        grid-column: 1 / -1;
+    }
+
+    .supplier-form-field label {
+        display: block;
+        margin-bottom: 7px;
+        color: #374151;
+        font-size: 10px;
+        font-weight: 800;
+    }
+
+    .required-mark {
+        color: var(--editor-red);
+    }
+
+    .private-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-left: 6px;
+        padding: 3px 6px;
+        border-radius: 999px;
+        background: #f1f5f9;
+        color: #64748b;
+        font-size: 7px;
+        font-weight: 800;
+    }
+
+    .supplier-form-field input,
+    .supplier-form-field select,
+    .supplier-form-field textarea {
+        width: 100%;
+        border: 1px solid #d7dce5;
+        border-radius: 9px;
+        background: #ffffff;
+        color: var(--editor-text);
+        font-family: inherit;
+        font-size: 10px;
+        outline: none;
+        transition: 0.2s ease;
+    }
+
+    .supplier-form-field input,
+    .supplier-form-field select {
+        height: 42px;
+        padding: 0 11px;
+    }
+
+    .supplier-form-field textarea {
+        min-height: 115px;
+        padding: 10px 11px;
+        line-height: 1.6;
+        resize: vertical;
+    }
+
+    .supplier-form-field input:focus,
+    .supplier-form-field select:focus,
+    .supplier-form-field textarea:focus {
+        border-color: var(--editor-indigo);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .supplier-form-field input::placeholder,
+    .supplier-form-field textarea::placeholder {
+        color: #94a3b8;
+    }
+
+    .supplier-input-with-icon {
+        position: relative;
+    }
+
+    .supplier-input-with-icon > i {
+        position: absolute;
+        top: 50%;
+        left: 12px;
+        color: #94a3b8;
+        font-size: 11px;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+    .supplier-input-with-icon input {
+        padding-left: 35px;
+    }
+
+    .supplier-input-suffix,
+    .supplier-money-input {
+        display: flex;
+        align-items: stretch;
+        border: 1px solid #d7dce5;
+        border-radius: 9px;
+        background: #ffffff;
+        overflow: hidden;
+    }
+
+    .supplier-input-suffix:focus-within,
+    .supplier-money-input:focus-within {
+        border-color: var(--editor-indigo);
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .supplier-input-suffix input,
+    .supplier-money-input input {
+        min-width: 0;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none !important;
+    }
+
+    .supplier-input-suffix span,
+    .supplier-money-input > span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 11px;
+        border-left: 1px solid var(--editor-border);
+        background: #f8fafc;
+        color: var(--editor-muted);
+        font-size: 9px;
+        font-weight: 800;
+        white-space: nowrap;
+    }
+
+    .supplier-money-input > span {
+        min-width: 40px;
+        border-right: 1px solid var(--editor-border);
+        border-left: 0;
+    }
+
+    .supplier-field-help,
+    .supplier-field-error {
+        display: block;
+        margin-top: 5px;
+        font-size: 8px;
+        line-height: 1.5;
+    }
+
+    .supplier-field-help {
+        color: var(--editor-muted);
+    }
+
+    .supplier-field-error {
+        color: var(--editor-red);
+        font-weight: 700;
+    }
+
+    .supplier-character-count {
+        margin-top: 5px;
+        color: var(--editor-muted);
+        font-size: 8px;
+        text-align: right;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Banking Notice
+    |--------------------------------------------------------------------------
+    */
+
+    .supplier-bank-warning {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 17px;
+        padding: 10px 11px;
+        border: 1px solid #fed7aa;
+        border-radius: 9px;
+        background: var(--editor-orange-soft);
+        color: var(--editor-orange);
+        font-size: 8px;
+        font-weight: 700;
+        line-height: 1.5;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sidebar
+    |--------------------------------------------------------------------------
+    */
+
+    .supplier-sidebar-card {
+        padding: 17px;
+    }
+
+    .supplier-sidebar-card-header {
+        margin-bottom: 15px;
+    }
+
+    .supplier-sidebar-icon {
+        width: 39px;
+        height: 39px;
+        flex: 0 0 39px;
+    }
+
+    .supplier-sidebar-card-header h3 {
+        margin: 0 0 3px;
+        color: var(--editor-text);
+        font-size: 13px;
+    }
+
+    .supplier-sidebar-card-header p {
+        margin: 0;
+        color: var(--editor-muted);
+        font-size: 8px;
+        line-height: 1.5;
+    }
+
+    .supplier-status-preview {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        margin-top: 12px;
+        padding: 11px;
+        border-radius: 9px;
+    }
+
+    .supplier-status-preview.active {
+        background: var(--editor-green-soft);
+        color: var(--editor-green);
+    }
+
+    .supplier-status-preview.inactive {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .supplier-status-preview.blocked {
+        background: var(--editor-red-soft);
+        color: var(--editor-red);
+    }
+
+    .supplier-status-preview-dot {
+        width: 7px;
+        height: 7px;
+        flex: 0 0 7px;
+        margin-top: 4px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .supplier-status-preview strong,
+    .supplier-status-preview small {
+        display: block;
+    }
+
+    .supplier-status-preview strong {
+        margin-bottom: 3px;
+        font-size: 10px;
+    }
+
+    .supplier-status-preview small {
+        font-size: 7px;
+        line-height: 1.5;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Preferred Toggle
+    |--------------------------------------------------------------------------
+    */
+
+    .supplier-toggle-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        padding: 12px;
+        border: 1px solid var(--editor-border);
+        border-radius: 10px;
+        background: #f8fafc;
+        cursor: pointer;
+    }
+
+    .supplier-toggle-card > input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .supplier-toggle-switch {
+        position: relative;
+        width: 39px;
+        height: 22px;
+        flex: 0 0 39px;
+        border-radius: 999px;
+        background: #cbd5e1;
+        transition: 0.2s ease;
+    }
+
+    .supplier-toggle-switch::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+        transition: 0.2s ease;
+    }
+
+    .supplier-toggle-card > input:checked
+    + .supplier-toggle-switch {
+        background: var(--editor-indigo);
+    }
+
+    .supplier-toggle-card > input:checked
+    + .supplier-toggle-switch::after {
+        transform: translateX(17px);
+    }
+
+    .supplier-toggle-content strong,
+    .supplier-toggle-content small {
+        display: block;
+    }
+
+    .supplier-toggle-content strong {
+        margin-bottom: 4px;
+        color: var(--editor-text);
+        font-size: 9px;
+    }
+
+    .supplier-toggle-content small {
+        color: var(--editor-muted);
+        font-size: 7px;
+        line-height: 1.5;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Record Information
+    |--------------------------------------------------------------------------
+    */
+
+    .supplier-record-information {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    .supplier-record-information > div {
+        padding: 10px;
+        border-radius: 9px;
+        background: #f8fafc;
+    }
+
+    .supplier-record-information span,
+    .supplier-record-information strong {
+        display: block;
+    }
+
+    .supplier-record-information span {
+        margin-bottom: 3px;
+        color: var(--editor-muted);
+        font-size: 7px;
+    }
+
+    .supplier-record-information strong {
+        color: var(--editor-text);
+        font-size: 9px;
+        word-break: break-word;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Submit Card
+    |--------------------------------------------------------------------------
+    */
+
+    .supplier-submit-card {
+        border-color: #c7d2fe;
+        background:
+            linear-gradient(
+                135deg,
+                #ffffff,
+                #f8f9ff
+            );
+    }
+
+    .supplier-submit-summary {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .supplier-submit-summary > i {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: var(--editor-indigo-soft);
+        color: var(--editor-indigo);
+    }
+
+    .supplier-submit-summary strong,
+    .supplier-submit-summary span {
+        display: block;
+    }
+
+    .supplier-submit-summary strong {
+        margin-bottom: 3px;
+        font-size: 10px;
+    }
+
+    .supplier-submit-summary span {
+        color: var(--editor-muted);
+        font-size: 7px;
+    }
+
+    .supplier-submit-button,
+    .supplier-cancel-button {
+        width: 100%;
+        min-height: 42px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border-radius: 9px;
+        font-family: inherit;
+        font-size: 10px;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+    .supplier-submit-button {
+        border: 1px solid var(--editor-indigo);
+        background: var(--editor-indigo);
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    .supplier-submit-button:hover:not(:disabled) {
+        border-color: var(--editor-indigo-dark);
+        background: var(--editor-indigo-dark);
+    }
+
+    .supplier-submit-button:disabled {
+        border-color: #cbd5e1;
+        background: #cbd5e1;
+        cursor: not-allowed;
+    }
+
+    .supplier-cancel-button {
+        margin-top: 8px;
+        border: 1px solid #d7dce5;
+        background: #ffffff;
+        color: #475569;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Responsive
+    |--------------------------------------------------------------------------
+    */
+
+    @media (max-width: 1150px) {
+        .supplier-editor-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .supplier-form-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .supplier-form-sidebar {
+            position: static;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .supplier-submit-card {
+            grid-column: 1 / -1;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .supplier-editor-header {
+            padding: 22px 18px;
+        }
+
+        .supplier-editor-header-content {
+            align-items: flex-start;
+        }
+
+        .supplier-editor-header-icon {
+            width: 48px;
+            height: 48px;
+            flex-basis: 48px;
+        }
+
+        .supplier-editor-header h1 {
+            font-size: 24px;
+        }
+
+        .supplier-editor-header-actions,
+        .supplier-editor-button {
+            width: 100%;
+        }
+
+        .supplier-editor-header-actions {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .supplier-form-grid,
+        .supplier-form-sidebar {
+            grid-template-columns: 1fr;
+        }
+
+        .supplier-form-field-wide,
+        .supplier-submit-card {
+            grid-column: auto;
+        }
+
+        .supplier-form-card {
+            padding: 18px 16px;
+        }
+    }
+</style>
+
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Dashboard</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                    <div class="admin-alert admin-alert-danger" role="alert"><i class="fa-solid fa-circle-exclamation"></i><span>Select one or more reorder items before creating a purchase order.</span><button type="button" class="admin-alert-close" aria-label="Close error message"><i class="fa-solid fa-xmark"></i></button></div>
+                                                
+<div class="supplier-editor-page">
+
+    
+    <section class="supplier-editor-header">
+
+        <div class="supplier-editor-header-content">
+
+            <div class="supplier-editor-header-icon">
+
+                <i class="fa-solid fa-truck-field"></i>
+
+            </div>
+
+            <div>
+
+                <span class="supplier-editor-eyebrow">
+                    Supplier management
+                </span>
+
+                <h1>
+                    Add Supplier
+                </h1>
+
+                <p>
+                    Create a new supplier record with contact, commercial,
+                    banking and purchasing information.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="supplier-editor-header-actions">
+
+            <a
+                href="http://127.0.0.1:8000/admin/suppliers"
+                class="supplier-editor-button secondary">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Suppliers
+
+            </a>
+
+            <a
+                href="http://127.0.0.1:8000/admin/purchase-orders"
+                class="supplier-editor-button purchase">
+
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                Purchase Orders
+
+            </a>
+
+        </div>
+
+    </section>
+
+    
+    
+    <form
+        method="POST"
+        action="http://127.0.0.1:8000/admin/suppliers"
+        id="supplierEditorForm">
+
+        <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+        <div class="supplier-form-layout">
+
+    
+    <div class="supplier-form-main">
+
+        
+        <section class="supplier-form-card">
+
+            <div class="supplier-form-card-header">
+
+                <span class="supplier-form-card-icon company">
+
+                    <i class="fa-solid fa-building"></i>
+
+                </span>
+
+                <div>
+
+                    <span class="supplier-form-eyebrow">
+                        Supplier identity
+                    </span>
+
+                    <h2>
+                        Company Information
+                    </h2>
+
+                    <p>
+                        Enter the supplier’s company and main contact details.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="supplier-form-grid">
+
+                <div class="supplier-form-field supplier-form-field-wide">
+
+                    <label for="company_name">
+
+                        Company Name
+
+                        <span class="required-mark">
+                            *
+                        </span>
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="company_name"
+                        name="company_name"
+                        value=""
+                        placeholder="Enter supplier company name"
+                        maxlength="255"
+                        required
+                        autofocus>
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="supplier_code">
+                        Supplier Code
+                    </label>
+
+                    <div class="supplier-input-with-icon">
+
+                        <i class="fa-solid fa-barcode"></i>
+
+                        <input
+                            type="text"
+                            id="supplier_code"
+                            name="supplier_code"
+                            value=""
+                            placeholder="Automatically generated"
+                            maxlength="60">
+
+                    </div>
+
+                    <small class="supplier-field-help">
+                        Leave empty to generate the code automatically.
+                    </small>
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="contact_person">
+                        Main Contact Person
+                    </label>
+
+                    <div class="supplier-input-with-icon">
+
+                        <i class="fa-regular fa-user"></i>
+
+                        <input
+                            type="text"
+                            id="contact_person"
+                            name="contact_person"
+                            value=""
+                            placeholder="Contact person name"
+                            maxlength="255">
+
+                    </div>
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <div class="supplier-input-with-icon">
+
+                        <i class="fa-regular fa-envelope"></i>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value=""
+                            placeholder="supplier@example.com"
+                            maxlength="255">
+
+                    </div>
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <div class="supplier-input-with-icon">
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        <input
+                            type="text"
+                            id="phone"
+                            name="phone"
+                            value=""
+                            placeholder="Primary phone number"
+                            maxlength="50">
+
+                    </div>
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="alternate_phone">
+                        Alternate Phone
+                    </label>
+
+                    <div class="supplier-input-with-icon">
+
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+
+                        <input
+                            type="text"
+                            id="alternate_phone"
+                            name="alternate_phone"
+                            value=""
+                            placeholder="Secondary phone number"
+                            maxlength="50">
+
+                    </div>
+
+                    
+                </div>
+
+                <div class="supplier-form-field supplier-form-field-wide">
+
+                    <label for="website">
+                        Website
+                    </label>
+
+                    <div class="supplier-input-with-icon">
+
+                        <i class="fa-solid fa-globe"></i>
+
+                        <input
+                            type="url"
+                            id="website"
+                            name="website"
+                            value=""
+                            placeholder="https://example.com"
+                            maxlength="255">
+
+                    </div>
+
+                    
+                </div>
+
+            </div>
+
+        </section>
+
+        
+        <section class="supplier-form-card">
+
+            <div class="supplier-form-card-header">
+
+                <span class="supplier-form-card-icon address">
+
+                    <i class="fa-solid fa-location-dot"></i>
+
+                </span>
+
+                <div>
+
+                    <span class="supplier-form-eyebrow">
+                        Business location
+                    </span>
+
+                    <h2>
+                        Address Information
+                    </h2>
+
+                    <p>
+                        Add the supplier’s registered or operational address.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="supplier-form-grid">
+
+                <div class="supplier-form-field supplier-form-field-wide">
+
+                    <label for="address_line_1">
+                        Address Line 1
+                    </label>
+
+                    <input
+                        type="text"
+                        id="address_line_1"
+                        name="address_line_1"
+                        value=""
+                        placeholder="Building, street or business premises"
+                        maxlength="255">
+
+                    
+                </div>
+
+                <div class="supplier-form-field supplier-form-field-wide">
+
+                    <label for="address_line_2">
+                        Address Line 2
+                    </label>
+
+                    <input
+                        type="text"
+                        id="address_line_2"
+                        name="address_line_2"
+                        value=""
+                        placeholder="Suite, unit, area or additional details"
+                        maxlength="255">
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="city">
+                        City
+                    </label>
+
+                    <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        value=""
+                        placeholder="City"
+                        maxlength="120">
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="state">
+                        State / Region
+                    </label>
+
+                    <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value=""
+                        placeholder="State, region or province"
+                        maxlength="120">
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="postal_code">
+                        Postal Code
+                    </label>
+
+                    <input
+                        type="text"
+                        id="postal_code"
+                        name="postal_code"
+                        value=""
+                        placeholder="Postal or ZIP code"
+                        maxlength="40">
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="country">
+                        Country
+                    </label>
+
+                    <div class="supplier-input-with-icon">
+
+                        <i class="fa-solid fa-earth-americas"></i>
+
+                        <input
+                            type="text"
+                            id="country"
+                            name="country"
+                            value=""
+                            placeholder="Country"
+                            maxlength="120">
+
+                    </div>
+
+                    
+                </div>
+
+            </div>
+
+        </section>
+
+        
+        <section class="supplier-form-card">
+
+            <div class="supplier-form-card-header">
+
+                <span class="supplier-form-card-icon commercial">
+
+                    <i class="fa-solid fa-handshake"></i>
+
+                </span>
+
+                <div>
+
+                    <span class="supplier-form-eyebrow">
+                        Purchasing terms
+                    </span>
+
+                    <h2>
+                        Commercial Information
+                    </h2>
+
+                    <p>
+                        Configure payment terms, lead time and account limits.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="supplier-form-grid">
+
+                <div class="supplier-form-field">
+
+                    <label for="currency">
+
+                        Currency
+
+                        <span class="required-mark">
+                            *
+                        </span>
+
+                    </label>
+
+                    <select
+                        id="currency"
+                        name="currency"
+                        required>
+
+                        
+                            <option
+                                value="GBP"
+                                selected>
+
+                                GBP — British Pound
+
+                            </option>
+
+                        
+                            <option
+                                value="USD"
+                                >
+
+                                USD — US Dollar
+
+                            </option>
+
+                        
+                            <option
+                                value="EUR"
+                                >
+
+                                EUR — Euro
+
+                            </option>
+
+                        
+                            <option
+                                value="PKR"
+                                >
+
+                                PKR — Pakistani Rupee
+
+                            </option>
+
+                        
+                            <option
+                                value="AED"
+                                >
+
+                                AED — UAE Dirham
+
+                            </option>
+
+                        
+                            <option
+                                value="CNY"
+                                >
+
+                                CNY — Chinese Yuan
+
+                            </option>
+
+                        
+                    </select>
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="payment_terms">
+                        Payment Terms
+                    </label>
+
+                    <select
+                        id="payment_terms"
+                        name="payment_terms">
+
+                        <option value="">
+                            Select payment terms
+                        </option>
+
+                        
+                            <option
+                                value="COD"
+                                >
+
+                                Cash on Delivery
+
+                            </option>
+
+                        
+                            <option
+                                value="Advance"
+                                >
+
+                                Advance Payment
+
+                            </option>
+
+                        
+                            <option
+                                value="Net 7"
+                                >
+
+                                Net 7 Days
+
+                            </option>
+
+                        
+                            <option
+                                value="Net 15"
+                                >
+
+                                Net 15 Days
+
+                            </option>
+
+                        
+                            <option
+                                value="Net 30"
+                                >
+
+                                Net 30 Days
+
+                            </option>
+
+                        
+                            <option
+                                value="Net 45"
+                                >
+
+                                Net 45 Days
+
+                            </option>
+
+                        
+                            <option
+                                value="Net 60"
+                                >
+
+                                Net 60 Days
+
+                            </option>
+
+                        
+                            <option
+                                value="Custom"
+                                >
+
+                                Custom Terms
+
+                            </option>
+
+                        
+                    </select>
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="lead_time_days">
+                        Lead Time
+                    </label>
+
+                    <div class="supplier-input-suffix">
+
+                        <input
+                            type="number"
+                            id="lead_time_days"
+                            name="lead_time_days"
+                            value=""
+                            placeholder="0"
+                            min="0"
+                            max="3650"
+                            step="1">
+
+                        <span>
+                            days
+                        </span>
+
+                    </div>
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="credit_limit">
+                        Credit Limit
+                    </label>
+
+                    <div class="supplier-money-input">
+
+                        <span id="supplierCurrencySymbol">
+                            £
+                        </span>
+
+                        <input
+                            type="number"
+                            id="credit_limit"
+                            name="credit_limit"
+                            value=""
+                            placeholder="0.00"
+                            min="0"
+                            max="999999999999.99"
+                            step="0.01">
+
+                    </div>
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="tax_number">
+                        Tax Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tax_number"
+                        name="tax_number"
+                        value=""
+                        placeholder="VAT, NTN or tax reference"
+                        maxlength="120">
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="registration_number">
+                        Registration Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="registration_number"
+                        name="registration_number"
+                        value=""
+                        placeholder="Company registration number"
+                        maxlength="120">
+
+                    
+                </div>
+
+            </div>
+
+        </section>
+
+        
+        <section class="supplier-form-card">
+
+            <div class="supplier-form-card-header">
+
+                <span class="supplier-form-card-icon banking">
+
+                    <i class="fa-solid fa-building-columns"></i>
+
+                </span>
+
+                <div>
+
+                    <span class="supplier-form-eyebrow">
+                        Payment account
+                    </span>
+
+                    <h2>
+                        Banking Information
+                    </h2>
+
+                    <p>
+                        Store supplier payment details for internal use.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="supplier-bank-warning">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                <span>
+                    Banking information should only be accessible to authorised
+                    administrators.
+                </span>
+
+            </div>
+
+            <div class="supplier-form-grid">
+
+                <div class="supplier-form-field">
+
+                    <label for="bank_name">
+                        Bank Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="bank_name"
+                        name="bank_name"
+                        value=""
+                        placeholder="Bank name"
+                        maxlength="255">
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="account_name">
+                        Account Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="account_name"
+                        name="account_name"
+                        value=""
+                        placeholder="Account holder name"
+                        maxlength="255">
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="account_number">
+                        Account Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="account_number"
+                        name="account_number"
+                        value=""
+                        placeholder="Account number"
+                        maxlength="120">
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="sort_code">
+                        Sort Code
+                    </label>
+
+                    <input
+                        type="text"
+                        id="sort_code"
+                        name="sort_code"
+                        value=""
+                        placeholder="Sort or branch code"
+                        maxlength="60">
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="iban">
+                        IBAN
+                    </label>
+
+                    <input
+                        type="text"
+                        id="iban"
+                        name="iban"
+                        value=""
+                        placeholder="International bank account number"
+                        maxlength="120">
+
+                    
+                </div>
+
+                <div class="supplier-form-field">
+
+                    <label for="swift_code">
+                        SWIFT / BIC
+                    </label>
+
+                    <input
+                        type="text"
+                        id="swift_code"
+                        name="swift_code"
+                        value=""
+                        placeholder="SWIFT or BIC code"
+                        maxlength="60">
+
+                    
+                </div>
+
+            </div>
+
+        </section>
+
+        
+        <section class="supplier-form-card">
+
+            <div class="supplier-form-card-header">
+
+                <span class="supplier-form-card-icon notes">
+
+                    <i class="fa-regular fa-note-sticky"></i>
+
+                </span>
+
+                <div>
+
+                    <span class="supplier-form-eyebrow">
+                        Additional details
+                    </span>
+
+                    <h2>
+                        Supplier Notes
+                    </h2>
+
+                    <p>
+                        Add general notes and private administrator information.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="supplier-form-grid">
+
+                <div class="supplier-form-field supplier-form-field-wide">
+
+                    <label for="notes">
+                        General Notes
+                    </label>
+
+                    <textarea
+                        id="notes"
+                        name="notes"
+                        rows="5"
+                        placeholder="General supplier notes, delivery requirements or commercial information"></textarea>
+
+                    <div class="supplier-character-count">
+
+                        <span id="supplierNotesCount">
+                            0
+                        </span>
+
+                        / 5000 characters
+
+                    </div>
+
+                    
+                </div>
+
+                <div class="supplier-form-field supplier-form-field-wide">
+
+                    <label for="internal_notes">
+
+                        Internal Notes
+
+                        <span class="private-label">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            Private
+
+                        </span>
+
+                    </label>
+
+                    <textarea
+                        id="internal_notes"
+                        name="internal_notes"
+                        rows="5"
+                        placeholder="Private notes visible only to administrators"></textarea>
+
+                    <div class="supplier-character-count">
+
+                        <span id="supplierInternalNotesCount">
+                            0
+                        </span>
+
+                        / 5000 characters
+
+                    </div>
+
+                    
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    
+    <aside class="supplier-form-sidebar">
+
+        
+        <section class="supplier-sidebar-card">
+
+            <div class="supplier-sidebar-card-header">
+
+                <span class="supplier-sidebar-icon status">
+
+                    <i class="fa-solid fa-toggle-on"></i>
+
+                </span>
+
+                <div>
+
+                    <h3>
+                        Supplier Status
+                    </h3>
+
+                    <p>
+                        Control purchasing availability.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="supplier-form-field">
+
+                <label for="status">
+
+                    Status
+
+                    <span class="required-mark">
+                        *
+                    </span>
+
+                </label>
+
+                <select
+                    id="status"
+                    name="status"
+                    required>
+
+                    
+                        <option
+                            value="active"
+                            selected>
+
+                            Active
+
+                        </option>
+
+                    
+                        <option
+                            value="inactive"
+                            >
+
+                            Inactive
+
+                        </option>
+
+                    
+                        <option
+                            value="blocked"
+                            >
+
+                            Blocked
+
+                        </option>
+
+                    
+                </select>
+
+                
+            </div>
+
+            <div
+                class="supplier-status-preview active"
+                id="supplierStatusPreview">
+
+                <span class="supplier-status-preview-dot"></span>
+
+                <div>
+
+                    <strong id="supplierStatusPreviewLabel">
+
+                        Active
+
+                    </strong>
+
+                    <small id="supplierStatusPreviewDescription">
+
+                        
+                            The supplier can be used for new purchase orders.
+
+                        
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        
+        <section class="supplier-sidebar-card">
+
+            <div class="supplier-sidebar-card-header">
+
+                <span class="supplier-sidebar-icon preferred">
+
+                    <i class="fa-solid fa-star"></i>
+
+                </span>
+
+                <div>
+
+                    <h3>
+                        Preferred Supplier
+                    </h3>
+
+                    <p>
+                        Highlight trusted purchasing partners.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <label class="supplier-toggle-card">
+
+                <input
+                    type="checkbox"
+                    id="is_preferred"
+                    name="is_preferred"
+                    value="1"
+                    >
+
+                <span class="supplier-toggle-switch"></span>
+
+                <span class="supplier-toggle-content">
+
+                    <strong>
+                        Mark as preferred
+                    </strong>
+
+                    <small>
+                        Preferred suppliers are highlighted throughout the
+                        purchasing system.
+                    </small>
+
+                </span>
+
+            </label>
+
+        </section>
+
+        
+        <section class="supplier-sidebar-card">
+
+            <div class="supplier-sidebar-card-header">
+
+                <span class="supplier-sidebar-icon information">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                </span>
+
+                <div>
+
+                    <h3>
+                        Record Information
+                    </h3>
+
+                    <p>
+                        Current supplier record details.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="supplier-record-information">
+
+                <div>
+
+                    <span>
+                        Supplier Code
+                    </span>
+
+                    <strong id="supplierCodePreview">
+
+                        Generated on save
+
+                    </strong>
+
+                </div>
+
+                <div>
+
+                    <span>
+                        Record Type
+                    </span>
+
+                    <strong>
+
+                        New supplier
+
+                    </strong>
+
+                </div>
+
+                
+            </div>
+
+        </section>
+
+        
+        <section class="supplier-sidebar-card supplier-submit-card">
+
+            <div class="supplier-submit-summary">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+
+                <div>
+
+                    <strong>
+                        Save Supplier
+                    </strong>
+
+                    <span>
+                        Review the information before submitting.
+                    </span>
+
+                </div>
+
+            </div>
+
+            <button
+                type="submit"
+                class="supplier-submit-button"
+                id="supplierSubmitButton">
+
+                <i class="fa-solid fa-floppy-disk"></i>
+
+                Create Supplier
+
+            </button>
+
+            <a
+                href="http://127.0.0.1:8000/admin/suppliers"
+                class="supplier-cancel-button">
+
+                <i class="fa-solid fa-xmark"></i>
+
+                Cancel
+
+            </a>
+
+        </section>
+
+    </aside>
+
+</div>
+    </form>
+
+</div>
+
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+    
+<script>
+    document.addEventListener(
+        'DOMContentLoaded',
+        function() {
+            'use strict';
+
+            const form = document.getElementById(
+                'supplierEditorForm'
+            );
+
+            const submitButton = document.getElementById(
+                'supplierSubmitButton'
+            );
+
+            const companyNameInput = document.getElementById(
+                'company_name'
+            );
+
+            const supplierCodeInput = document.getElementById(
+                'supplier_code'
+            );
+
+            const supplierCodePreview =
+                document.getElementById(
+                    'supplierCodePreview'
+                );
+
+            const statusSelect = document.getElementById(
+                'status'
+            );
+
+            const statusPreview = document.getElementById(
+                'supplierStatusPreview'
+            );
+
+            const statusPreviewLabel =
+                document.getElementById(
+                    'supplierStatusPreviewLabel'
+                );
+
+            const statusPreviewDescription =
+                document.getElementById(
+                    'supplierStatusPreviewDescription'
+                );
+
+            const currencySelect = document.getElementById(
+                'currency'
+            );
+
+            const currencySymbol =
+                document.getElementById(
+                    'supplierCurrencySymbol'
+                );
+
+            const notesInput = document.getElementById(
+                'notes'
+            );
+
+            const internalNotesInput =
+                document.getElementById(
+                    'internal_notes'
+                );
+
+            const notesCount = document.getElementById(
+                'supplierNotesCount'
+            );
+
+            const internalNotesCount =
+                document.getElementById(
+                    'supplierInternalNotesCount'
+                );
+
+            const statusInformation = {
+                active: {
+                    label: 'Active',
+
+                    description:
+                        'The supplier can be used for new purchase orders.'
+                },
+
+                inactive: {
+                    label: 'Inactive',
+
+                    description:
+                        'The supplier remains saved but is not currently active.'
+                },
+
+                blocked: {
+                    label: 'Blocked',
+
+                    description:
+                        'Purchase orders should not be created for this supplier.'
+                }
+            };
+
+            const currencySymbols = {
+                GBP: '£',
+                USD: '$',
+                EUR: '€',
+                PKR: '₨',
+                AED: 'د.إ',
+                CNY: '¥'
+            };
+
+            function updateStatusPreview() {
+                if (
+                    !statusSelect
+                    || !statusPreview
+                ) {
+                    return;
+                }
+
+                const status =
+                    statusSelect.value || 'active';
+
+                const information =
+                    statusInformation[status]
+                    || statusInformation.active;
+
+                statusPreview.classList.remove(
+                    'active',
+                    'inactive',
+                    'blocked'
+                );
+
+                statusPreview.classList.add(
+                    status
+                );
+
+                if (statusPreviewLabel) {
+                    statusPreviewLabel.textContent =
+                        information.label;
+                }
+
+                if (statusPreviewDescription) {
+                    statusPreviewDescription.textContent =
+                        information.description;
+                }
+            }
+
+            function updateCurrencySymbol() {
+                if (
+                    !currencySelect
+                    || !currencySymbol
+                ) {
+                    return;
+                }
+
+                currencySymbol.textContent =
+                    currencySymbols[
+                        currencySelect.value
+                    ] || currencySelect.value;
+            }
+
+            function updateCodePreview() {
+                if (!supplierCodePreview) {
+                    return;
+                }
+
+                const code =
+                    supplierCodeInput
+                        ? supplierCodeInput.value.trim()
+                        : '';
+
+                supplierCodePreview.textContent =
+                    code !== ''
+                        ? code
+                        : 'Generated on save';
+            }
+
+            function updateCharacterCount(
+                input,
+                counter
+            ) {
+                if (!input || !counter) {
+                    return;
+                }
+
+                counter.textContent =
+                    input.value.length
+                        .toLocaleString('en-GB');
+            }
+
+            if (statusSelect) {
+                statusSelect.addEventListener(
+                    'change',
+                    updateStatusPreview
+                );
+            }
+
+            if (currencySelect) {
+                currencySelect.addEventListener(
+                    'change',
+                    updateCurrencySymbol
+                );
+            }
+
+            if (supplierCodeInput) {
+                supplierCodeInput.addEventListener(
+                    'input',
+                    updateCodePreview
+                );
+            }
+
+            if (companyNameInput) {
+                companyNameInput.addEventListener(
+                    'input',
+                    function() {
+                        if (
+                            supplierCodeInput
+                            && supplierCodeInput
+                                .value
+                                .trim() !== ''
+                        ) {
+                            return;
+                        }
+
+                        updateCodePreview();
+                    }
+                );
+            }
+
+            if (notesInput) {
+                notesInput.maxLength = 5000;
+
+                notesInput.addEventListener(
+                    'input',
+                    function() {
+                        updateCharacterCount(
+                            notesInput,
+                            notesCount
+                        );
+                    }
+                );
+            }
+
+            if (internalNotesInput) {
+                internalNotesInput.maxLength = 5000;
+
+                internalNotesInput.addEventListener(
+                    'input',
+                    function() {
+                        updateCharacterCount(
+                            internalNotesInput,
+                            internalNotesCount
+                        );
+                    }
+                );
+            }
+
+            if (form) {
+                form.addEventListener(
+                    'submit',
+                    function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+
+                            form.reportValidity();
+
+                            return;
+                        }
+
+                        if (submitButton) {
+                            submitButton.disabled = true;
+
+                            submitButton.innerHTML =
+                                '<i class="fa-solid fa-spinner fa-spin"></i>'
+                                + ' Saving Supplier...';
+                        }
+                    }
+                );
+            }
+
+            updateStatusPreview();
+            updateCurrencySymbol();
+            updateCodePreview();
+
+            updateCharacterCount(
+                notesInput,
+                notesCount
+            );
+
+            updateCharacterCount(
+                internalNotesInput,
+                internalNotesCount
+            );
+        }
+    );
+</script>
+
+    <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

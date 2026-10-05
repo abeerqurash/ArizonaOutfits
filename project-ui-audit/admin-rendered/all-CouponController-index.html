@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Coupons | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    <style>
+.coupon-index-head{margin-bottom:18px}.coupon-index-head h2{margin:4px 0;color:#0f172a;font-size:24px;font-weight:800}.coupon-index-head p{color:#7b8497;font-size:12px}.coupon-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}.coupon-stats .admin-stat-card{display:flex;align-items:center;gap:12px;min-height:100px;padding:16px;border:1px solid #e6eaf1;border-radius:11px;background:#fff;box-shadow:none}.coupon-stats .admin-stat-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:#eeedff;color:#635bff}.coupon-stats small{display:block;color:#7b8497;font-size:8px;font-weight:800;text-transform:uppercase}.coupon-stats strong{display:block;margin-top:4px;color:#172033;font-size:20px}.coupon-filter,.coupon-list{border:1px solid #e6eaf1!important;border-radius:11px!important;background:#fff!important;box-shadow:none!important}.coupon-filter{padding:14px;margin-bottom:16px}.coupon-filter-form{display:flex;gap:8px;align-items:center}.coupon-search{position:relative;flex:1}.coupon-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#98a2b3;font-size:10px}.coupon-search input{width:100%;min-height:40px;padding:0 10px 0 33px;border:1px solid #e0e5ed;border-radius:7px;font-size:11px}.coupon-filter-select{width:175px}.coupon-filter-select select{width:100%;min-height:40px}.coupon-list{overflow:hidden}.coupon-list-head{display:flex;justify-content:space-between;align-items:center;padding:17px 18px;border-bottom:1px solid #edf0f4}.coupon-list-head h3{margin:3px 0 0;color:#172033;font-size:14px}.coupon-list-head>span{padding:5px 8px;border-radius:999px;background:#f3f4f7;color:#667085;font-size:9px}.coupon-table-wrap{overflow:auto}.coupon-table{width:100%;border-collapse:collapse}.coupon-table th{padding:10px 13px;background:#fafbfc;border-bottom:1px solid #edf0f4;color:#7b8497;font-size:8px;font-weight:800;letter-spacing:.06em;text-align:left;text-transform:uppercase}.coupon-table td{padding:12px 13px;border-bottom:1px solid #f0f2f5;color:#596273;font-size:10px;vertical-align:middle}.coupon-code-cell{display:flex;align-items:center;gap:9px}.coupon-code-cell>span{display:flex;align-items:center;justify-content:center;width:31px;height:31px;border-radius:7px;background:#f3f2ff;color:#635bff}.coupon-code-cell strong{display:block;color:#172033;font-size:11px}.coupon-code-cell small,.block{display:block;margin-top:2px;font-size:8px}.muted{color:#98a2b3}.coupon-target-pill{display:inline-flex;padding:5px 7px;border-radius:999px;background:#f2f4f7;color:#667085;font-size:8px;font-weight:800}.coupon-status{display:inline-flex;padding:5px 7px;border-radius:999px;font-size:8px;font-weight:800}.coupon-status.is-active{background:#eaf8f1;color:#13875b}.coupon-status.is-scheduled{background:#eef4ff;color:#3b63c5}.coupon-status.is-expired,.coupon-status.is-exhausted{background:#fff4df;color:#b66a08}.coupon-status.is-inactive{background:#f2f4f7;color:#667085}.right{text-align:right!important}.coupon-actions{display:flex;justify-content:flex-end;gap:6px}.coupon-actions a,.coupon-actions button{display:flex;align-items:center;justify-content:center;width:31px;height:31px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#667085;cursor:pointer}.coupon-actions a:hover{border-color:#c9c6ff;color:#635bff}.coupon-actions button:hover{border-color:#fecaca;background:#fff5f5;color:#d14343}.coupon-pagination{padding:14px 18px;border-top:1px solid #edf0f4}.coupon-empty{padding:50px;text-align:center;color:#98a2b3}.coupon-empty>i{font-size:22px;color:#635bff}.coupon-empty h3{color:#172033;font-size:14px}
+.coupon-popup[hidden]{display:none!important}.coupon-popup{position:fixed;inset:0;z-index:14000;display:flex;align-items:center;justify-content:center;padding:20px}.coupon-popup-bg{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}.coupon-popup-box{position:relative;z-index:2;width:100%;max-width:430px;padding:30px;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.24);text-align:center}.coupon-popup-x{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;border-radius:7px;background:#f3f5f8;color:#687386}.coupon-popup-icon{display:flex;align-items:center;justify-content:center;width:58px;height:58px;margin:0 auto 15px;border-radius:50%;font-size:20px}.coupon-popup-icon.success{background:#eaf8f1;color:#13875b}.coupon-popup-icon.warning{background:#fff4df;color:#d88716}.coupon-popup-box h3{margin:5px 0 8px;color:#172033;font-size:18px}.coupon-popup-box p{color:#687386;font-size:11px}.coupon-popup-actions{display:flex;justify-content:center;gap:8px;margin-top:20px}.coupon-danger{border-color:#d14343!important;background:#d14343!important;color:#fff!important}
+.az-coupon-filter{position:relative}.az-coupon-filter-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}.az-coupon-filter-btn{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:40px;padding:0 10px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#344054;font-size:10px;font-weight:600;cursor:pointer}.az-coupon-filter.open .az-coupon-filter-btn{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.1)}.az-coupon-filter-menu{position:absolute;z-index:13000;top:calc(100% + 6px);display:none;width:100%;padding:5px;border:1px solid #e0e5ed;border-radius:9px;background:#fff;box-shadow:0 14px 38px rgba(15,23,42,.16)}.az-coupon-filter.open .az-coupon-filter-menu{display:block}.az-coupon-filter-option{display:flex;justify-content:space-between;width:100%;padding:8px;border:0;border-radius:6px;background:transparent;color:#344054;font-size:10px;text-align:left;cursor:pointer}.az-coupon-filter-option:hover,.az-coupon-filter-option.selected{background:#eeedff;color:#5149d8}.az-coupon-filter-option.selected:after{content:"\2713"}
+@media(max-width:900px){.coupon-stats{grid-template-columns:repeat(2,1fr)}.coupon-filter-form{flex-wrap:wrap}.coupon-search{flex-basis:100%}}@media(max-width:520px){.coupon-stats{grid-template-columns:1fr}.coupon-filter-select{width:100%}}
+</style>
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Coupons</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                <div class="admin-page-header coupon-index-head"><div><span class="admin-page-eyebrow">Promotions</span><h2>Coupons</h2><p>Manage discount codes, validity windows, usage and catalog targeting.</p></div><div class="admin-page-actions"><a href="http://127.0.0.1:8000/admin/coupons/create" class="admin-button admin-button-primary"><i class="fa-solid fa-plus"></i> Create Coupon</a></div></div>
+<div class="coupon-stats">
+ <div class="admin-stat-card"><span class="admin-stat-icon"><i class="fa-solid fa-ticket"></i></span><div><small>Total Coupons</small><strong>0</strong></div></div>
+ <div class="admin-stat-card"><span class="admin-stat-icon"><i class="fa-solid fa-circle-check"></i></span><div><small>Active Now</small><strong>0</strong></div></div>
+ <div class="admin-stat-card"><span class="admin-stat-icon"><i class="fa-regular fa-clock"></i></span><div><small>Scheduled</small><strong>0</strong></div></div>
+ <div class="admin-stat-card"><span class="admin-stat-icon"><i class="fa-solid fa-bag-shopping"></i></span><div><small>Redemptions</small><strong>0</strong></div></div>
+</div>
+<section class="admin-panel coupon-filter"><form method="GET" class="coupon-filter-form">
+ <div class="coupon-search"><i class="fa-solid fa-magnifying-glass"></i><input type="search" name="search" value="" placeholder="Search code or campaign..."></div>
+ <div class="coupon-filter-select"><select name="status"><option value="">All Statuses</option><option value="active" >Active</option><option value="scheduled" >Scheduled</option><option value="expired" >Expired</option><option value="exhausted" >Usage Limit Reached</option><option value="inactive" >Inactive</option></select></div>
+ <div class="coupon-filter-select"><select name="type"><option value="">All Types</option><option value="fixed" >Fixed Amount</option><option value="percentage" >Percentage</option></select></div>
+ <button class="admin-button admin-button-primary"><i class="fa-solid fa-filter"></i> Filter</button>
+ </form></section>
+<section class="admin-panel coupon-list">
+ <div class="coupon-list-head"><div><span class="admin-page-eyebrow">Coupon directory</span><h3>All Coupons</h3></div><span>0 results</span></div>
+ <div class="coupon-empty"><i class="fa-solid fa-ticket"></i><h3>No coupons found</h3><p>Create a coupon or change the current filters.</p></div></section>
+
+<div class="coupon-popup" id="couponDeletePopup" hidden><div class="coupon-popup-bg" data-delete-close></div><div class="coupon-popup-box"><button class="coupon-popup-x" type="button" data-delete-close><i class="fa-solid fa-xmark"></i></button><div class="coupon-popup-icon warning"><i class="fa-solid fa-trash"></i></div><span class="admin-page-eyebrow">Delete coupon</span><h3 id="couponDeleteTitle">Delete coupon?</h3><p>This action cannot be undone.</p><div class="coupon-popup-actions"><button type="button" class="admin-button admin-button-secondary" data-delete-close>Cancel</button><form method="POST" id="couponDeleteForm"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"> <input type="hidden" name="_method" value="DELETE"><button class="admin-button coupon-danger">Delete Coupon</button></form></div></div></div>
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+    <script>
+'use strict';
+document.addEventListener('DOMContentLoaded',function(){
+ document.querySelectorAll('.coupon-filter-select select').forEach(function(s){const w=document.createElement('div');w.className='az-coupon-filter';const b=document.createElement('button');b.type='button';b.className='az-coupon-filter-btn';const v=document.createElement('span'),i=document.createElement('i');i.className='fa-solid fa-chevron-down';b.append(v,i);const m=document.createElement('div');m.className='az-coupon-filter-menu';s.parentNode.insertBefore(w,s);w.append(s,b,m);s.classList.add('az-coupon-filter-native');function render(){m.innerHTML='';Array.from(s.options).forEach(o=>{const x=document.createElement('button');x.type='button';x.className='az-coupon-filter-option'+(o.value===s.value?' selected':'');x.textContent=o.textContent;x.onclick=()=>{s.value=o.value;render();w.classList.remove('open')};m.append(x)});v.textContent=s.options[s.selectedIndex]?.textContent||'Select'}b.onclick=()=>w.classList.toggle('open');document.addEventListener('click',e=>{if(!w.contains(e.target))w.classList.remove('open')});render()});
+ const pop=document.getElementById('couponDeletePopup'),form=document.getElementById('couponDeleteForm'),title=document.getElementById('couponDeleteTitle');document.querySelectorAll('[data-delete-coupon]').forEach(b=>b.onclick=()=>{form.action=b.dataset.url;title.textContent='Delete “'+b.dataset.code+'”?';pop.hidden=false;document.body.style.overflow='hidden'});function closeDelete(){if(pop){pop.hidden=true;document.body.style.overflow=''}}document.querySelectorAll('[data-delete-close]').forEach(x=>x.onclick=closeDelete);
+ const fb=document.getElementById('couponFeedbackPopup');if(fb){document.body.style.overflow='hidden';fb.querySelectorAll('[data-feedback-close]').forEach(x=>x.onclick=()=>{fb.remove();document.body.style.overflow=''})}
+});
+</script>
+    <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

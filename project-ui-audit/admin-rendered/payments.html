@@ -1,0 +1,2714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Order Payment Verification | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+        <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Order Payment Verification</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                
+
+
+
+
+
+<div class="admin-page-header payment-dashboard-header">
+
+    <div>
+
+        <span class="admin-page-eyebrow">
+
+            PAYMENT OPERATIONS
+
+        </span>
+
+
+
+        <h2>Order Payment Verification</h2>
+
+
+
+        <p>
+
+            Review bank transfers, payment references and provider-verified
+
+            transactions from one place.
+
+        </p>
+
+    </div>
+
+
+
+    <div class="admin-page-actions">
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/orders"
+
+            class="admin-button admin-button-secondary"
+
+        >
+
+            <i class="fa-solid fa-bag-shopping"></i>
+
+            View Orders
+
+        </a>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="payment-statistics-grid">
+
+
+
+    <div class="admin-stat-card">
+
+        <div class="admin-stat-card-top">
+
+            <div>
+
+                <span class="admin-stat-label">
+
+                    Total Records
+
+                </span>
+
+
+
+                <strong class="admin-stat-value">
+
+                    0
+
+                </strong>
+
+            </div>
+
+
+
+            <span class="admin-stat-icon">
+
+                <i class="fa-solid fa-receipt"></i>
+
+            </span>
+
+        </div>
+
+
+
+        <span class="payment-stat-note">
+
+            Matching current filters
+
+        </span>
+
+    </div>
+
+
+
+
+
+    <div class="admin-stat-card">
+
+        <div class="admin-stat-card-top">
+
+            <div>
+
+                <span class="admin-stat-label">
+
+                    Pending Review
+
+                </span>
+
+
+
+                <strong class="admin-stat-value">
+
+                    0
+
+                </strong>
+
+            </div>
+
+
+
+            <span class="admin-stat-icon">
+
+                <i class="fa-solid fa-clock"></i>
+
+            </span>
+
+        </div>
+
+
+
+        <span class="payment-stat-note">
+
+            On this page
+
+        </span>
+
+    </div>
+
+
+
+
+
+    <div class="admin-stat-card">
+
+        <div class="admin-stat-card-top">
+
+            <div>
+
+                <span class="admin-stat-label">
+
+                    Paid
+
+                </span>
+
+
+
+                <strong class="admin-stat-value">
+
+                    0
+
+                </strong>
+
+            </div>
+
+
+
+            <span class="admin-stat-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+            </span>
+
+        </div>
+
+
+
+        <span class="payment-stat-note">
+
+            On this page
+
+        </span>
+
+    </div>
+
+
+
+
+
+    <div class="admin-stat-card">
+
+        <div class="admin-stat-card-top">
+
+            <div>
+
+                <span class="admin-stat-label">
+
+                    Payment Sources
+
+                </span>
+
+
+
+                <strong class="admin-stat-value payment-source-value">
+
+                    0 / 0
+
+                </strong>
+
+            </div>
+
+
+
+            <span class="admin-stat-icon">
+
+                <i class="fa-solid fa-credit-card"></i>
+
+            </span>
+
+        </div>
+
+
+
+        <span class="payment-stat-note">
+
+            Bank / Stripe on this page
+
+        </span>
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<section class="admin-panel payment-filter-panel">
+
+
+
+    <div class="admin-panel-header">
+
+        <div>
+
+            <span class="admin-panel-eyebrow">
+
+                Find payments
+
+            </span>
+
+
+
+            <h3>Search & Filter</h3>
+
+        </div>
+
+
+
+        <div class="payment-panel-icon">
+
+            <i class="fa-solid fa-sliders"></i>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <form
+
+        method="GET"
+
+        action="http://127.0.0.1:8000/admin/payment-verifications"
+
+        class="payment-filter-form"
+
+    >
+
+
+
+        <div class="payment-search-field">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+
+
+            <input
+
+                type="search"
+
+                name="search"
+
+                value=""
+
+                placeholder="Search order, payment reference, customer or email..."
+
+                aria-label="Search payment verification records"
+
+            >
+
+        </div>
+
+
+
+
+
+        <div class="payment-select-field">
+
+            <i class="fa-solid fa-building-columns"></i>
+
+
+
+            <select
+
+                name="provider"
+
+                aria-label="Filter by payment provider"
+
+            >
+
+                <option value="">All Providers</option>
+
+
+
+                <option
+
+                    value="bank_transfer"
+
+                    
+                >
+
+                    Bank Transfer
+
+                </option>
+
+
+
+                <option
+
+                    value="stripe"
+
+                    
+                >
+
+                    Stripe
+
+                </option>
+
+            </select>
+
+
+
+            <i class="fa-solid fa-chevron-down payment-select-arrow"></i>
+
+        </div>
+
+
+
+
+
+        <div class="payment-select-field">
+
+            <i class="fa-solid fa-circle-dollar-to-slot"></i>
+
+
+
+            <select
+
+                name="payment_status"
+
+                aria-label="Filter by payment status"
+
+            >
+
+                <option value="">All Payment Statuses</option>
+
+
+
+                
+
+
+                    <option
+
+                        value="pending"
+
+                        
+                    >
+
+                        Pending
+
+                    </option>
+
+
+
+                
+
+
+                    <option
+
+                        value="paid"
+
+                        
+                    >
+
+                        Paid
+
+                    </option>
+
+
+
+                
+
+
+                    <option
+
+                        value="partially_paid"
+
+                        
+                    >
+
+                        Partially Paid
+
+                    </option>
+
+
+
+                
+
+
+                    <option
+
+                        value="completed"
+
+                        
+                    >
+
+                        Completed
+
+                    </option>
+
+
+
+                
+
+
+                    <option
+
+                        value="succeeded"
+
+                        
+                    >
+
+                        Succeeded
+
+                    </option>
+
+
+
+                
+
+
+                    <option
+
+                        value="failed"
+
+                        
+                    >
+
+                        Failed
+
+                    </option>
+
+
+
+                
+
+
+                    <option
+
+                        value="declined"
+
+                        
+                    >
+
+                        Declined
+
+                    </option>
+
+
+
+                
+
+
+                    <option
+
+                        value="cancelled"
+
+                        
+                    >
+
+                        Cancelled
+
+                    </option>
+
+
+
+                
+
+
+                    <option
+
+                        value="refunded"
+
+                        
+                    >
+
+                        Refunded
+
+                    </option>
+
+
+
+                
+            </select>
+
+
+
+            <i class="fa-solid fa-chevron-down payment-select-arrow"></i>
+
+        </div>
+
+
+
+
+
+        <div class="payment-filter-actions">
+
+
+
+            <button
+
+                type="submit"
+
+                class="admin-button admin-button-primary"
+
+            >
+
+                <i class="fa-solid fa-filter"></i>
+
+                Apply Filters
+
+            </button>
+
+
+
+            
+
+
+        </div>
+
+
+
+    </form>
+
+
+
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="admin-panel payment-records-panel">
+
+
+
+    <div class="admin-panel-header">
+
+        <div>
+
+            <span class="admin-panel-eyebrow">
+
+                Verification queue
+
+            </span>
+
+
+
+            <h3>Payment Records</h3>
+
+
+
+            <p class="payment-panel-description">
+
+                Review payment information before updating bank-transfer
+
+                orders.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="payment-record-count">
+
+            <i class="fa-solid fa-list-check"></i>
+
+
+
+            <span>
+
+                0
+
+                records
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    
+
+
+        <div class="payment-empty-state">
+
+
+
+            <div class="payment-empty-icon">
+
+                <i class="fa-solid fa-receipt"></i>
+
+            </div>
+
+
+
+            <h3>No payment records found</h3>
+
+
+
+            <p>
+
+                No payment records match the filters you selected.
+
+            </p>
+
+
+
+            
+
+
+        </div>
+
+
+
+    
+
+
+</section>
+
+
+
+
+
+<style>
+
+.payment-statistics-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    margin-bottom: 24px;
+
+}
+
+
+
+.payment-stat-note {
+
+    display: block;
+
+    margin-top: 10px;
+
+    color: #8a8a8a;
+
+    font-size: 12px;
+
+}
+
+
+
+.payment-source-value {
+
+    font-size: 26px;
+
+}
+
+
+
+.payment-filter-panel,
+
+.payment-records-panel {
+
+    margin-bottom: 24px;
+
+}
+
+
+
+.payment-panel-icon,
+
+.payment-record-count {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+}
+
+
+
+.payment-panel-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    border: 1px solid #e7e7e7;
+
+    border-radius: 12px;
+
+    background: #f8f8f8;
+
+    color: #202020;
+
+}
+
+
+
+.payment-filter-form {
+
+    display: grid;
+
+    grid-template-columns:
+
+        minmax(240px, 1.6fr)
+
+        minmax(180px, .8fr)
+
+        minmax(190px, .8fr)
+
+        auto;
+
+    gap: 12px;
+
+    align-items: center;
+
+    padding: 20px;
+
+}
+
+
+
+.payment-search-field,
+
+.payment-select-field {
+
+    position: relative;
+
+}
+
+
+
+.payment-search-field > i,
+
+.payment-select-field > i:first-child {
+
+    position: absolute;
+
+    top: 50%;
+
+    left: 15px;
+
+    z-index: 1;
+
+    transform: translateY(-50%);
+
+    color: #8b8b8b;
+
+    pointer-events: none;
+
+}
+
+
+
+.payment-search-field input,
+
+.payment-select-field select {
+
+    width: 100%;
+
+    min-height: 46px;
+
+    border: 1px solid #dedede;
+
+    border-radius: 10px;
+
+    outline: 0;
+
+    background: #fff;
+
+    color: #202020;
+
+    font: inherit;
+
+    transition:
+
+        border-color .2s ease,
+
+        box-shadow .2s ease;
+
+}
+
+
+
+.payment-search-field input {
+
+    padding: 10px 14px 10px 43px;
+
+}
+
+
+
+.payment-select-field select {
+
+    appearance: none;
+
+    padding: 10px 38px 10px 43px;
+
+    cursor: pointer;
+
+}
+
+
+
+.payment-search-field input:focus,
+
+.payment-select-field select:focus {
+
+    border-color: #9d9d9d;
+
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, .04);
+
+}
+
+
+
+.payment-select-arrow {
+
+    position: absolute;
+
+    top: 50%;
+
+    right: 14px;
+
+    transform: translateY(-50%);
+
+    color: #888;
+
+    font-size: 11px;
+
+    pointer-events: none;
+
+}
+
+
+
+.payment-filter-actions {
+
+    display: flex;
+
+    gap: 9px;
+
+}
+
+
+
+.payment-alert {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-bottom: 24px;
+
+    padding: 15px 17px;
+
+    border: 1px solid;
+
+    border-radius: 12px;
+
+}
+
+
+
+.payment-alert-icon {
+
+    display: inline-flex;
+
+    margin-top: 2px;
+
+    font-size: 17px;
+
+}
+
+
+
+.payment-alert strong {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+}
+
+
+
+.payment-alert p {
+
+    margin: 0;
+
+    font-size: 13px;
+
+}
+
+
+
+.payment-alert-success {
+
+    border-color: #b7e4cc;
+
+    background: #f2fbf6;
+
+    color: #176b45;
+
+}
+
+
+
+.payment-alert-error {
+
+    border-color: #f0c0c0;
+
+    background: #fff5f5;
+
+    color: #a22a2a;
+
+}
+
+
+
+.payment-panel-description {
+
+    margin: 5px 0 0;
+
+    color: #888;
+
+    font-size: 13px;
+
+}
+
+
+
+.payment-record-count {
+
+    gap: 8px;
+
+    padding: 8px 12px;
+
+    border: 1px solid #e7e7e7;
+
+    border-radius: 999px;
+
+    background: #fafafa;
+
+    color: #555;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+}
+
+
+
+.payment-table-wrapper {
+
+    border-top: 1px solid #ededed;
+
+}
+
+
+
+.payment-table th,
+
+.payment-table td {
+
+    vertical-align: middle;
+
+}
+
+
+
+.payment-order-cell,
+
+.payment-customer-cell {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    min-width: 175px;
+
+}
+
+
+
+.payment-order-icon,
+
+.payment-customer-avatar {
+
+    display: inline-flex;
+
+    flex: 0 0 38px;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 38px;
+
+    height: 38px;
+
+    border: 1px solid #e7e7e7;
+
+    border-radius: 10px;
+
+    background: #f8f8f8;
+
+}
+
+
+
+.payment-customer-avatar {
+
+    border-radius: 50%;
+
+    background: #1f1f1f;
+
+    color: #fff;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+}
+
+
+
+.payment-order-number {
+
+    display: inline-block;
+
+    color: #1f1f1f;
+
+    font-weight: 800;
+
+    text-decoration: none;
+
+}
+
+
+
+.payment-order-number:hover {
+
+    text-decoration: underline;
+
+}
+
+
+
+.payment-order-cell small,
+
+.payment-customer-cell small,
+
+.payment-date-cell small {
+
+    display: block;
+
+    margin-top: 3px;
+
+    color: #8b8b8b;
+
+    font-size: 11px;
+
+}
+
+
+
+.payment-customer-cell strong,
+
+.payment-date-cell strong {
+
+    display: block;
+
+    color: #262626;
+
+    font-size: 13px;
+
+}
+
+
+
+.payment-provider {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    min-width: max-content;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+
+.payment-provider i {
+
+    width: 16px;
+
+    text-align: center;
+
+}
+
+
+
+.payment-reference {
+
+    display: inline-block;
+
+    max-width: 180px;
+
+    overflow: hidden;
+
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    background: #f5f5f5;
+
+    color: #444;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+}
+
+
+
+.payment-muted {
+
+    color: #aaa;
+
+    font-size: 12px;
+
+}
+
+
+
+.payment-amount {
+
+    white-space: nowrap;
+
+    font-size: 13px;
+
+}
+
+
+
+.payment-status-badge,
+
+.verification-badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 6px 9px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    white-space: nowrap;
+
+}
+
+
+
+.payment-status-dot {
+
+    width: 6px;
+
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+
+}
+
+
+
+.payment-status-pending,
+
+.payment-status-partially_paid,
+
+.verification-pending {
+
+    background: #fff8e8;
+
+    color: #9a6800;
+
+}
+
+
+
+.payment-status-paid,
+
+.payment-status-completed,
+
+.payment-status-succeeded,
+
+.verification-verified {
+
+    background: #edf9f2;
+
+    color: #18734b;
+
+}
+
+
+
+.payment-status-failed,
+
+.payment-status-declined,
+
+.payment-status-cancelled,
+
+.verification-rejected {
+
+    background: #fff0f0;
+
+    color: #b22f2f;
+
+}
+
+
+
+.payment-status-refunded {
+
+    background: #f1f2f4;
+
+    color: #62666d;
+
+}
+
+
+
+.payment-action-heading,
+
+.payment-action-cell {
+
+    text-align: right !important;
+
+}
+
+
+
+.payment-review-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    min-height: 35px;
+
+    padding: 7px 11px;
+
+    border: 1px solid #dedede;
+
+    border-radius: 8px;
+
+    background: #fff;
+
+    color: #222;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    text-decoration: none;
+
+    transition:
+
+        *background* .2s ease,
+
+        border-color .2s ease,
+
+        color .2s ease;
+
+}
+
+
+
+.payment-review-button:hover {
+
+    border-color: #202020;
+
+    background: #202020;
+
+    color: #fff;
+
+}
+
+
+
+.payment-pagination {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 18px 20px;
+
+    border-top: 1px solid #ededed;
+
+}
+
+
+
+.payment-pagination-summary {
+
+    color: #777;
+
+    font-size: 12px;
+
+}
+
+
+
+.payment-empty-state {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-direction: column;
+
+    padding: 65px 20px;
+
+    text-align: center;
+
+}
+
+
+
+.payment-empty-icon {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 62px;
+
+    height: 62px;
+
+    margin-bottom: 17px;
+
+    border: 1px solid #e5e5e5;
+
+    border-radius: 18px;
+
+    background: #f8f8f8;
+
+    color: #555;
+
+    font-size: 22px;
+
+}
+
+
+
+.payment-empty-state h3 {
+
+    margin: 0 0 7px;
+
+    color: #242424;
+
+}
+
+
+
+.payment-empty-state p {
+
+    max-width: 420px;
+
+    margin: 0 0 18px;
+
+    color: #888;
+
+    font-size: 13px;
+
+}
+
+
+
+@media (max-width: 1250px) {
+
+    .payment-statistics-grid {
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    }
+
+
+
+    .payment-filter-form {
+
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    }
+
+
+
+    .payment-filter-actions {
+
+        grid-column: 1 / -1;
+
+    }
+
+}
+
+
+
+@media (max-width: 760px) {
+
+    .payment-statistics-grid,
+
+    .payment-filter-form {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+
+    .payment-filter-actions {
+
+        grid-column: auto;
+
+        flex-wrap: wrap;
+
+    }
+
+
+
+    .payment-filter-actions .admin-button {
+
+        flex: 1 1 150px;
+
+    }
+
+
+
+    .payment-record-count {
+
+        margin-top: 10px;
+
+    }
+
+
+
+    .payment-pagination {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+}
+
+
+
+/* ============================================================
+
+   ARIZONA ADMIN DASHBOARD VISUAL SYSTEM
+
+\============================================================ */
+
+
+
+.payment-dashboard-header {
+
+    margin-bottom: 18px;
+
+}
+
+
+
+.payment-dashboard-header .admin-page-eyebrow,
+
+.payment-records-panel .admin-panel-eyebrow,
+
+.payment-filter-panel .admin-panel-eyebrow {
+
+    color: #635bff;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: .12em;
+
+}
+
+
+
+.payment-dashboard-header h2 {
+
+    margin: 4px 0 4px;
+
+    color: #0f172a;
+
+    font-size: 24px;
+
+    font-weight: 800;
+
+    letter-spacing: -.025em;
+
+}
+
+
+
+.payment-dashboard-header p {
+
+    color: #7b8497;
+
+    font-size: 12px;
+
+}
+
+
+
+.payment-statistics-grid {
+
+    gap: 14px;
+
+    margin-bottom: 18px;
+
+}
+
+
+
+.payment-statistics-grid .admin-stat-card {
+
+    min-height: 116px;
+
+    padding: 17px;
+
+    border: 1px solid #e6eaf1;
+
+    border-radius: 11px;
+
+    background: #fff;
+
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .02);
+
+}
+
+
+
+.payment-statistics-grid .admin-stat-label {
+
+    color: #687386;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+}
+
+
+
+.payment-statistics-grid .admin-stat-value {
+
+    display: block;
+
+    margin-top: 13px;
+
+    color: #111827;
+
+    font-size: 24px;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+}
+
+
+
+.payment-statistics-grid .admin-stat-icon {
+
+    width: 34px;
+
+    height: 34px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background: #eef0ff;
+
+    color: #635bff;
+
+    font-size: 13px;
+
+}
+
+
+
+.payment-statistics-grid .admin-stat-card:nth-child(2) .admin-stat-icon {
+
+    background: #fff4df;
+
+    color: #d88716;
+
+}
+
+
+
+.payment-statistics-grid .admin-stat-card:nth-child(3) .admin-stat-icon {
+
+    background: #eaf8f1;
+
+    color: #13875b;
+
+}
+
+
+
+.payment-statistics-grid .admin-stat-card:nth-child(4) .admin-stat-icon {
+
+    background: #edf4ff;
+
+    color: #3b73dc;
+
+}
+
+
+
+.payment-stat-note {
+
+    margin-top: 11px;
+
+    color: #635bff;
+
+    font-size: 9px;
+
+}
+
+
+
+.payment-filter-panel,
+
+.payment-records-panel {
+
+    overflow: hidden;
+
+    margin-bottom: 18px;
+
+    border: 1px solid #e6eaf1;
+
+    border-radius: 11px;
+
+    background: #fff;
+
+    box-shadow: none;
+
+}
+
+
+
+.payment-filter-panel .admin-panel-header,
+
+.payment-records-panel .admin-panel-header {
+
+    padding: 16px 18px;
+
+    border-bottom: 1px solid #edf0f5;
+
+}
+
+
+
+.payment-filter-panel .admin-panel-header h3,
+
+.payment-records-panel .admin-panel-header h3 {
+
+    margin: 3px 0 0;
+
+    color: #172033;
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+}
+
+
+
+.payment-panel-icon {
+
+    width: 34px;
+
+    height: 34px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background: #eef0ff;
+
+    color: #635bff;
+
+    font-size: 12px;
+
+}
+
+
+
+.payment-filter-form {
+
+    padding: 15px 18px 18px;
+
+}
+
+
+
+.payment-search-field input,
+
+.payment-select-field select {
+
+    min-height: 40px;
+
+    border-color: #e0e5ed;
+
+    border-radius: 7px;
+
+    color: #344054;
+
+    font-size: 11px;
+
+}
+
+
+
+.payment-filter-actions .admin-button,
+
+.payment-dashboard-header .admin-button {
+
+    min-height: 38px;
+
+    border-radius: 7px;
+
+    font-size: 10px;
+
+}
+
+
+
+.payment-filter-actions .admin-button-primary {
+
+    border-color: #635bff;
+
+    background: #635bff;
+
+}
+
+
+
+.payment-record-count {
+
+    border: 0;
+
+    background: #f3f5f8;
+
+    color: #586174;
+
+    font-size: 9px;
+
+}
+
+
+
+.payment-panel-description {
+
+    color: #8a93a4;
+
+    font-size: 10px;
+
+}
+
+
+
+.payment-table-wrapper {
+
+    border-top: 0;
+
+}
+
+
+
+.payment-table thead {
+
+    background: #fbfcfe;
+
+}
+
+
+
+.payment-table th {
+
+    padding: 11px 13px;
+
+    border-bottom: 1px solid #edf0f5;
+
+    color: #7c8596;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: .07em;
+
+    text-transform: uppercase;
+
+}
+
+
+
+.payment-table td {
+
+    padding: 12px 13px;
+
+    border-bottom: 1px solid #f0f2f6;
+
+    color: #3f4858;
+
+    font-size: 10px;
+
+}
+
+
+
+.payment-order-icon {
+
+    flex-basis: 30px;
+
+    width: 30px;
+
+    height: 30px;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    background: #eef0ff;
+
+    color: #635bff;
+
+    font-size: 10px;
+
+}
+
+
+
+.payment-customer-avatar {
+
+    flex-basis: 30px;
+
+    width: 30px;
+
+    height: 30px;
+
+    border: 0;
+
+    background: #f0f2f6;
+
+    color: #374151;
+
+    font-size: 9px;
+
+}
+
+
+
+.payment-order-number,
+
+.payment-customer-cell strong,
+
+.payment-date-cell strong,
+
+.payment-amount {
+
+    color: #172033;
+
+    font-size: 10px;
+
+}
+
+
+
+.payment-order-number {
+
+    color: #5c56f5;
+
+}
+
+
+
+.payment-order-cell small,
+
+.payment-customer-cell small,
+
+.payment-date-cell small {
+
+    color: #929aaa;
+
+    font-size: 8px;
+
+}
+
+
+
+.payment-provider {
+
+    font-size: 9px;
+
+}
+
+
+
+.payment-reference {
+
+    max-width: 145px;
+
+    padding: 4px 6px;
+
+    background: #f5f6f8;
+
+    color: #5e6675;
+
+    font-size: 8px;
+
+}
+
+
+
+.payment-status-badge,
+
+.verification-badge {
+
+    gap: 4px;
+
+    padding: 4px 7px;
+
+    font-size: 8px;
+
+}
+
+
+
+.payment-status-pending,
+
+.payment-status-partially_paid,
+
+.verification-pending {
+
+    background: #fff4dc;
+
+    color: #a86a00;
+
+}
+
+
+
+.payment-status-paid,
+
+.payment-status-completed,
+
+.payment-status-succeeded,
+
+.verification-verified {
+
+    background: #e8f8ef;
+
+    color: #148457;
+
+}
+
+
+
+.payment-status-failed,
+
+.payment-status-declined,
+
+.payment-status-cancelled,
+
+.verification-rejected {
+
+    background: #ffeded;
+
+    color: #c13b3b;
+
+}
+
+
+
+.payment-review-button {
+
+    min-height: 29px;
+
+    padding: 5px 8px;
+
+    border-color: #e2e6ed;
+
+    border-radius: 6px;
+
+    color: #5d57f4;
+
+    font-size: 8px;
+
+}
+
+
+
+.payment-review-button:hover {
+
+    border-color: #635bff;
+
+    background: #635bff;
+
+}
+
+
+
+.payment-pagination {
+
+    padding: 13px 18px;
+
+    background: #fff;
+
+}
+
+
+
+.payment-pagination-summary {
+
+    color: #8a93a4;
+
+    font-size: 9px;
+
+}
+
+
+
+.payment-empty-state {
+
+    min-height: 250px;
+
+    justify-content: center;
+
+}
+
+
+
+.payment-empty-icon {
+
+    width: 52px;
+
+    height: 52px;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    background: #eef0ff;
+
+    color: #635bff;
+
+    font-size: 17px;
+
+}
+
+
+
+.payment-empty-state h3 {
+
+    color: #172033;
+
+    font-size: 13px;
+
+}
+
+
+
+.payment-empty-state p {
+
+    color: #8a93a4;
+
+    font-size: 10px;
+
+}
+
+
+
+
+.pv-popup{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:20px}.pv-popup[hidden]{display:none}
+.pv-popup-backdrop{position:absolute;inset:0;border:0;background:rgba(15,23,42,.58)}
+.pv-popup-card{position:relative;z-index:1;width:min(430px,100%);padding:25px;border:1px solid #e4e7ec;border-radius:14px;background:#fff;box-shadow:0 24px 70px rgba(15,23,42,.22);text-align:center}
+.pv-popup-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border:0;border-radius:8px;background:#f3f4f6;color:#667085;cursor:pointer}
+.pv-popup-icon{display:grid;place-items:center;width:48px;height:48px;margin:0 auto 12px;border-radius:13px;font-size:20px}.pv-popup-icon.success{background:#eaf8f1;color:#13875b}.pv-popup-icon.error{background:#fff0f0;color:#c13b3b}
+.pv-popup-card h3{margin:5px 0 7px;color:#172033;font-size:18px}.pv-popup-card p{margin:0 0 16px;color:#667085;font-size:11px;line-height:1.6}.pv-popup-card ul{margin:0 0 16px;padding-left:20px;color:#a63b3b;text-align:left;font-size:10px;line-height:1.6}
+.pv-confirm-actions{display:flex;gap:9px;justify-content:center;margin-top:17px}
+
+.pv-pagination{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:8px;
+    flex-wrap:wrap;
+    width:100%;
+}
+.pv-page-numbers{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+.pv-page-button,
+.pv-page-number{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    min-height:34px;
+    border:1px solid #e4e7ec;
+    border-radius:8px;
+    background:#fff;
+    color:#344054;
+    font-size:10px;
+    font-weight:800;
+    line-height:1;
+    text-decoration:none;
+    transition:border-color .15s ease,background .15s ease,color .15s ease,box-shadow .15s ease;
+}
+.pv-page-button{padding:0 11px;}
+.pv-page-number{width:34px;padding:0;}
+.pv-page-button i{font-size:9px;}
+.pv-page-button:hover,
+.pv-page-number:hover{
+    border-color:#c7c3ff;
+    background:#f7f6ff;
+    color:#635bff;
+}
+.pv-page-number.is-active{
+    border-color:#635bff;
+    background:#635bff;
+    color:#fff;
+    box-shadow:0 3px 10px rgba(99,91,255,.18);
+}
+.pv-page-button.is-disabled{
+    background:#f8fafc;
+    color:#98a2b3;
+    cursor:not-allowed;
+}
+@media(max-width:640px){
+    .pv-pagination{justify-content:center;}
+    .pv-page-button span{display:none;}
+    .pv-page-button{width:34px;padding:0;}
+}
+</style>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+ document.querySelectorAll('[data-pv-popup-close]').forEach(function(b){b.addEventListener('click',function(){var p=b.closest('.pv-popup');if(p)p.remove();});});
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'){var p=document.getElementById('paymentFeedbackPopup');if(p)p.remove();}});
+});
+</script>
+
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+        <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

@@ -1,0 +1,703 @@
+[
+    {
+        "name": "reviews.store",
+        "uri": "product\/{product}\/reviews",
+        "action": "App\\Http\\Controllers\\ReviewController@store",
+        "exists": true,
+        "middleware": [
+            "web"
+        ]
+    },
+    {
+        "name": "favorite.toggle",
+        "uri": "favorite\/toggle",
+        "action": "App\\Http\\Controllers\\FavoriteController@toggle",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth"
+        ]
+    },
+    {
+        "name": "favorites.index",
+        "uri": "favorites",
+        "action": "App\\Http\\Controllers\\FavoriteController@index",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth"
+        ]
+    },
+    {
+        "name": "checkout.index",
+        "uri": "checkout",
+        "action": "App\\Http\\Controllers\\CheckoutController@index",
+        "exists": true,
+        "middleware": [
+            "web"
+        ]
+    },
+    {
+        "name": "checkout.shipping-quote",
+        "uri": "checkout\/shipping-quote",
+        "action": "App\\Http\\Controllers\\CheckoutController@shippingQuote",
+        "exists": true,
+        "middleware": [
+            "web"
+        ]
+    },
+    {
+        "name": "checkout.place",
+        "uri": "checkout\/place-order",
+        "action": "App\\Http\\Controllers\\CheckoutController@placeOrder",
+        "exists": true,
+        "middleware": [
+            "web"
+        ]
+    },
+    {
+        "name": "checkout.stripe.intent",
+        "uri": "stripe\/create-intent",
+        "action": "App\\Http\\Controllers\\Payment\\StripePaymentController@createIntent",
+        "exists": true,
+        "middleware": [
+            "web"
+        ]
+    },
+    {
+        "name": "checkout.stripe.return",
+        "uri": "stripe\/return",
+        "action": "App\\Http\\Controllers\\Payment\\StripePaymentController@paymentReturn",
+        "exists": true,
+        "middleware": [
+            "web"
+        ]
+    },
+    {
+        "name": "checkout.thankyou",
+        "uri": "order-thank-you\/{order_number}",
+        "action": "App\\Http\\Controllers\\CheckoutController@thankYou",
+        "exists": true,
+        "middleware": [
+            "web"
+        ]
+    },
+    {
+        "name": "orders.track",
+        "uri": "track-order",
+        "action": "App\\Http\\Controllers\\OrderTrackingController@index",
+        "exists": true,
+        "middleware": [
+            "web"
+        ]
+    },
+    {
+        "name": "orders.track.lookup",
+        "uri": "track-order",
+        "action": "App\\Http\\Controllers\\OrderTrackingController@lookup",
+        "exists": true,
+        "middleware": [
+            "web"
+        ]
+    },
+    {
+        "name": "profile.edit",
+        "uri": "profile",
+        "action": "App\\Http\\Controllers\\ProfileController@edit",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "profile.update",
+        "uri": "profile",
+        "action": "App\\Http\\Controllers\\ProfileController@update",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "profile.destroy",
+        "uri": "profile",
+        "action": "App\\Http\\Controllers\\ProfileController@destroy",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "customer.security",
+        "uri": "account\/security",
+        "action": "App\\Http\\Controllers\\Customer\\AccountSecurityController@index",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "customer.security.password.update",
+        "uri": "account\/security\/password",
+        "action": "App\\Http\\Controllers\\Customer\\AccountSecurityController@updatePassword",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder",
+            "throttle:6,1"
+        ]
+    },
+    {
+        "name": "customer.security.password.recovery",
+        "uri": "account\/security\/password\/recovery",
+        "action": "App\\Http\\Controllers\\Customer\\AccountSecurityController@sendPasswordResetLink",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder",
+            "throttle:6,1"
+        ]
+    },
+    {
+        "name": "customer.security.email",
+        "uri": "account\/security\/email",
+        "action": "App\\Http\\Controllers\\Customer\\AccountSecurityController@addEmail",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "customer.security.email.disconnect",
+        "uri": "account\/security\/email",
+        "action": "App\\Http\\Controllers\\Customer\\LoginMethodController@disconnectEmail",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "customer.security.email.change",
+        "uri": "account\/security\/email\/change",
+        "action": "App\\Http\\Controllers\\Customer\\AccountSecurityController@requestEmailChange",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder",
+            "throttle:6,1"
+        ]
+    },
+    {
+        "name": "customer.security.email.change.verify",
+        "uri": "account\/security\/email\/change\/verify\/{user}",
+        "action": "App\\Http\\Controllers\\Customer\\AccountSecurityController@verifyEmailChange",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder",
+            "signed"
+        ]
+    },
+    {
+        "name": "customer.security.email.change.cancel",
+        "uri": "account\/security\/email\/change",
+        "action": "App\\Http\\Controllers\\Customer\\AccountSecurityController@cancelEmailChange",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "customer.security.phone.send",
+        "uri": "account\/security\/phone",
+        "action": "App\\Http\\Controllers\\Customer\\AccountSecurityController@sendPhoneCode",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder",
+            "throttle:6,1"
+        ]
+    },
+    {
+        "name": "customer.security.phone.verify",
+        "uri": "account\/security\/phone\/verify",
+        "action": "App\\Http\\Controllers\\Customer\\AccountSecurityController@showPhoneVerification",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "customer.security.phone.verify.store",
+        "uri": "account\/security\/phone\/verify",
+        "action": "App\\Http\\Controllers\\Customer\\AccountSecurityController@verifyPhone",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder",
+            "throttle:6,1"
+        ]
+    },
+    {
+        "name": "customer.security.social.disconnect",
+        "uri": "account\/security\/social\/{provider}",
+        "action": "App\\Http\\Controllers\\Customer\\LoginMethodController@disconnectSocial",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "customer.security.phone.remove",
+        "uri": "account\/security\/phone",
+        "action": "App\\Http\\Controllers\\Customer\\LoginMethodController@removePhone",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "customer.security.social.connect",
+        "uri": "account\/security\/social\/{provider}\/connect",
+        "action": "App\\Http\\Controllers\\Auth\\SocialAuthController@connectRedirect",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "customer.security.social.callback",
+        "uri": "account\/security\/social\/{provider}\/callback",
+        "action": "App\\Http\\Controllers\\Auth\\SocialAuthController@connectCallback",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "customer.security.reminder"
+        ]
+    },
+    {
+        "name": "admin.login",
+        "uri": "admin\/login",
+        "action": "App\\Http\\Controllers\\Admin\\Auth\\AdminAuthenticatedSessionController@create",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest:admin"
+        ]
+    },
+    {
+        "name": "admin.login.store",
+        "uri": "admin\/login",
+        "action": "App\\Http\\Controllers\\Admin\\Auth\\AdminAuthenticatedSessionController@store",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest:admin",
+            "throttle:authentication"
+        ]
+    },
+    {
+        "name": "admin.password.request",
+        "uri": "admin\/forgot-password",
+        "action": "App\\Http\\Controllers\\Admin\\Auth\\AdminPasswordResetLinkController@create",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest:admin"
+        ]
+    },
+    {
+        "name": "admin.password.email",
+        "uri": "admin\/forgot-password",
+        "action": "App\\Http\\Controllers\\Admin\\Auth\\AdminPasswordResetLinkController@store",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest:admin",
+            "throttle:6,1"
+        ]
+    },
+    {
+        "name": "admin.password.reset",
+        "uri": "admin\/reset-password\/{token}",
+        "action": "App\\Http\\Controllers\\Admin\\Auth\\AdminNewPasswordController@create",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest:admin"
+        ]
+    },
+    {
+        "name": "admin.password.store",
+        "uri": "admin\/reset-password",
+        "action": "App\\Http\\Controllers\\Admin\\Auth\\AdminNewPasswordController@store",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest:admin",
+            "throttle:6,1"
+        ]
+    },
+    {
+        "name": "admin.logout",
+        "uri": "admin\/logout",
+        "action": "App\\Http\\Controllers\\Admin\\Auth\\AdminAuthenticatedSessionController@destroy",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth:admin",
+            "admin",
+            "admin.audit",
+            "throttle:admin"
+        ]
+    },
+    {
+        "name": "admin.profile.edit",
+        "uri": "admin\/profile",
+        "action": "App\\Http\\Controllers\\Admin\\AdminProfileController@edit",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth:admin",
+            "admin",
+            "admin.audit",
+            "throttle:admin"
+        ]
+    },
+    {
+        "name": "admin.profile.update",
+        "uri": "admin\/profile",
+        "action": "App\\Http\\Controllers\\Admin\\AdminProfileController@update",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth:admin",
+            "admin",
+            "admin.audit",
+            "throttle:admin"
+        ]
+    },
+    {
+        "name": "admin.profile.password.update",
+        "uri": "admin\/profile\/password",
+        "action": "App\\Http\\Controllers\\Admin\\AdminProfileController@updatePassword",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth:admin",
+            "admin",
+            "admin.audit",
+            "throttle:admin",
+            "throttle:6,1"
+        ]
+    },
+    {
+        "name": "admin.reviews.index",
+        "uri": "admin\/reviews",
+        "action": "App\\Http\\Controllers\\Admin\\ReviewController@index",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth:admin",
+            "admin",
+            "admin.audit",
+            "throttle:admin"
+        ]
+    },
+    {
+        "name": "admin.reviews.update",
+        "uri": "admin\/reviews\/{review}",
+        "action": "App\\Http\\Controllers\\Admin\\ReviewController@update",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth:admin",
+            "admin",
+            "admin.audit",
+            "throttle:admin"
+        ]
+    },
+    {
+        "name": "admin.reviews.destroy",
+        "uri": "admin\/reviews\/{review}",
+        "action": "App\\Http\\Controllers\\Admin\\ReviewController@destroy",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth:admin",
+            "admin",
+            "admin.audit",
+            "throttle:admin"
+        ]
+    },
+    {
+        "name": "social.redirect",
+        "uri": "auth\/{provider}\/redirect",
+        "action": "App\\Http\\Controllers\\Auth\\SocialAuthController@redirect",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest"
+        ]
+    },
+    {
+        "name": "social.callback",
+        "uri": "auth\/{provider}\/callback",
+        "action": "App\\Http\\Controllers\\Auth\\SocialAuthController@callback",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest"
+        ]
+    },
+    {
+        "name": "register",
+        "uri": "register",
+        "action": "App\\Http\\Controllers\\Auth\\RegisteredUserController@create",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest"
+        ]
+    },
+    {
+        "name": null,
+        "uri": "register",
+        "action": "App\\Http\\Controllers\\Auth\\RegisteredUserController@store",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest",
+            "throttle:authentication"
+        ]
+    },
+    {
+        "name": "login",
+        "uri": "login",
+        "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@create",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest"
+        ]
+    },
+    {
+        "name": null,
+        "uri": "login",
+        "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@store",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest",
+            "throttle:authentication"
+        ]
+    },
+    {
+        "name": "phone.register",
+        "uri": "register\/phone",
+        "action": "App\\Http\\Controllers\\Auth\\PhoneAuthController@createRegistration",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest"
+        ]
+    },
+    {
+        "name": "phone.register.send",
+        "uri": "register\/phone",
+        "action": "App\\Http\\Controllers\\Auth\\PhoneAuthController@sendRegistrationCode",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest",
+            "throttle:5,1"
+        ]
+    },
+    {
+        "name": "phone.register.verify",
+        "uri": "register\/phone\/verify",
+        "action": "App\\Http\\Controllers\\Auth\\PhoneAuthController@showRegistrationVerification",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest"
+        ]
+    },
+    {
+        "name": "phone.register.verify.store",
+        "uri": "register\/phone\/verify",
+        "action": "App\\Http\\Controllers\\Auth\\PhoneAuthController@verifyRegistrationCode",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest",
+            "throttle:10,1"
+        ]
+    },
+    {
+        "name": "phone.login",
+        "uri": "login\/phone",
+        "action": "App\\Http\\Controllers\\Auth\\PhoneAuthController@createLogin",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest"
+        ]
+    },
+    {
+        "name": "phone.login.send",
+        "uri": "login\/phone",
+        "action": "App\\Http\\Controllers\\Auth\\PhoneAuthController@sendLoginCode",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest",
+            "throttle:5,1"
+        ]
+    },
+    {
+        "name": "phone.login.verify",
+        "uri": "login\/phone\/verify",
+        "action": "App\\Http\\Controllers\\Auth\\PhoneAuthController@showLoginVerification",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest"
+        ]
+    },
+    {
+        "name": "phone.login.verify.store",
+        "uri": "login\/phone\/verify",
+        "action": "App\\Http\\Controllers\\Auth\\PhoneAuthController@verifyLoginCode",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest",
+            "throttle:10,1"
+        ]
+    },
+    {
+        "name": "password.request",
+        "uri": "forgot-password",
+        "action": "App\\Http\\Controllers\\Auth\\PasswordResetLinkController@create",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest"
+        ]
+    },
+    {
+        "name": "password.email",
+        "uri": "forgot-password",
+        "action": "App\\Http\\Controllers\\Auth\\PasswordResetLinkController@store",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest",
+            "throttle:authentication"
+        ]
+    },
+    {
+        "name": "password.reset",
+        "uri": "reset-password\/{token}",
+        "action": "App\\Http\\Controllers\\Auth\\NewPasswordController@create",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest"
+        ]
+    },
+    {
+        "name": "password.store",
+        "uri": "reset-password",
+        "action": "App\\Http\\Controllers\\Auth\\NewPasswordController@store",
+        "exists": true,
+        "middleware": [
+            "web",
+            "guest",
+            "throttle:authentication"
+        ]
+    },
+    {
+        "name": "verification.send",
+        "uri": "email\/verification-notification",
+        "action": "App\\Http\\Controllers\\Auth\\EmailVerificationNotificationController@store",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "throttle:6,1"
+        ]
+    },
+    {
+        "name": "password.confirm",
+        "uri": "confirm-password",
+        "action": "App\\Http\\Controllers\\Auth\\ConfirmablePasswordController@show",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth"
+        ]
+    },
+    {
+        "name": null,
+        "uri": "confirm-password",
+        "action": "App\\Http\\Controllers\\Auth\\ConfirmablePasswordController@store",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "throttle:authentication"
+        ]
+    },
+    {
+        "name": "password.update",
+        "uri": "password",
+        "action": "App\\Http\\Controllers\\Auth\\PasswordController@update",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth",
+            "throttle:authentication"
+        ]
+    },
+    {
+        "name": "logout",
+        "uri": "logout",
+        "action": "App\\Http\\Controllers\\Auth\\AuthenticatedSessionController@destroy",
+        "exists": true,
+        "middleware": [
+            "web",
+            "auth"
+        ]
+    }
+]

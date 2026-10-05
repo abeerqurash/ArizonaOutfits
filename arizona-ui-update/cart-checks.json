@@ -1,0 +1,11 @@
+{
+    "Custom cart add succeeds": true,
+    "Measurements retained in session": true,
+    "Different measurements create separate cart lines": true,
+    "Same measurements merge quantity": true,
+    "Cart rejects missing custom field": true,
+    "Invalid request leaves cart unchanged": true,
+    "Custom lines share the same stock limit": true,
+    "Order measurements survive database serialization": true,
+    "Customer\/admin display receives measurements": true
+}

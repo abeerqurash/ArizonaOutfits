@@ -1,0 +1,872 @@
+{
+  "results": [
+    {
+      "path": "/",
+      "width": 1440,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Arizona Outfits — Latest Collections &amp; Style Stories",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/",
+      "description": "Shop the latest collections and popular products at Arizona Outfits. Explore our style stories, product reviews and new arrivals.",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            },
+            {
+              "@type": "WebSite",
+              "@id": "http://127.0.0.1:8123#website",
+              "url": "http://127.0.0.1:8123",
+              "name": "Arizona Outfits",
+              "publisher": {
+                "@id": "http://127.0.0.1:8123#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Products",
+          "cards": 2,
+          "display": "grid",
+          "width": 1294,
+          "cardWidth": 415.328125,
+          "gap": 24,
+          "scrollWidth": 1294,
+          "controlsHidden": true
+        },
+        {
+          "label": "Products",
+          "cards": 2,
+          "display": "grid",
+          "width": 1294,
+          "cardWidth": 415.328125,
+          "gap": 24,
+          "scrollWidth": 1294,
+          "controlsHidden": true
+        },
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "grid",
+          "width": 864,
+          "cardWidth": 345.5999755859375,
+          "gap": null,
+          "scrollWidth": 864,
+          "controlsHidden": true
+        }
+      ]
+    },
+    {
+      "path": "/",
+      "width": 880,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Arizona Outfits — Latest Collections &amp; Style Stories",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/",
+      "description": "Shop the latest collections and popular products at Arizona Outfits. Explore our style stories, product reviews and new arrivals.",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            },
+            {
+              "@type": "WebSite",
+              "@id": "http://127.0.0.1:8123#website",
+              "url": "http://127.0.0.1:8123",
+              "name": "Arizona Outfits",
+              "publisher": {
+                "@id": "http://127.0.0.1:8123#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Products",
+          "cards": 2,
+          "display": "flex",
+          "width": 790,
+          "cardWidth": 385,
+          "gap": 20,
+          "scrollWidth": 790,
+          "controlsHidden": true
+        },
+        {
+          "label": "Products",
+          "cards": 2,
+          "display": "flex",
+          "width": 790,
+          "cardWidth": 385,
+          "gap": 20,
+          "scrollWidth": 790,
+          "controlsHidden": true
+        },
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "flex",
+          "width": 792,
+          "cardWidth": 386,
+          "gap": 20,
+          "scrollWidth": 1198,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    },
+    {
+      "path": "/",
+      "width": 600,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Arizona Outfits — Latest Collections &amp; Style Stories",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/",
+      "description": "Shop the latest collections and popular products at Arizona Outfits. Explore our style stories, product reviews and new arrivals.",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            },
+            {
+              "@type": "WebSite",
+              "@id": "http://127.0.0.1:8123#website",
+              "url": "http://127.0.0.1:8123",
+              "name": "Arizona Outfits",
+              "publisher": {
+                "@id": "http://127.0.0.1:8123#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Products",
+          "cards": 2,
+          "display": "flex",
+          "width": 538,
+          "cardWidth": 538,
+          "gap": 20,
+          "scrollWidth": 1096,
+          "controlsHidden": false
+        },
+        {
+          "label": "Products",
+          "cards": 2,
+          "display": "flex",
+          "width": 538,
+          "cardWidth": 538,
+          "gap": 20,
+          "scrollWidth": 1096,
+          "controlsHidden": false
+        },
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "flex",
+          "width": 540,
+          "cardWidth": 540,
+          "gap": 20,
+          "scrollWidth": 1660,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    },
+    {
+      "path": "/",
+      "width": 390,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Arizona Outfits — Latest Collections &amp; Style Stories",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/",
+      "description": "Shop the latest collections and popular products at Arizona Outfits. Explore our style stories, product reviews and new arrivals.",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            },
+            {
+              "@type": "WebSite",
+              "@id": "http://127.0.0.1:8123#website",
+              "url": "http://127.0.0.1:8123",
+              "name": "Arizona Outfits",
+              "publisher": {
+                "@id": "http://127.0.0.1:8123#organization"
+              }
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Products",
+          "cards": 2,
+          "display": "flex",
+          "width": 349,
+          "cardWidth": 349,
+          "gap": 20,
+          "scrollWidth": 718,
+          "controlsHidden": false
+        },
+        {
+          "label": "Products",
+          "cards": 2,
+          "display": "flex",
+          "width": 349,
+          "cardWidth": 349,
+          "gap": 20,
+          "scrollWidth": 718,
+          "controlsHidden": false
+        },
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "flex",
+          "width": 351,
+          "cardWidth": 351,
+          "gap": 20,
+          "scrollWidth": 1093,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    },
+    {
+      "path": "/privacy-policy",
+      "width": 1440,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Privacy Policy",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/privacy-policy",
+      "description": "Explore Arizona Test Child at Arizona Outfits.",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "grid",
+          "width": 864,
+          "cardWidth": 345.5999755859375,
+          "gap": null,
+          "scrollWidth": 864,
+          "controlsHidden": true
+        }
+      ]
+    },
+    {
+      "path": "/privacy-policy",
+      "width": 880,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Privacy Policy",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/privacy-policy",
+      "description": "Explore Arizona Test Child at Arizona Outfits.",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "flex",
+          "width": 792,
+          "cardWidth": 386,
+          "gap": 20,
+          "scrollWidth": 1198,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    },
+    {
+      "path": "/privacy-policy",
+      "width": 600,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Privacy Policy",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/privacy-policy",
+      "description": "Explore Arizona Test Child at Arizona Outfits.",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "flex",
+          "width": 540,
+          "cardWidth": 540,
+          "gap": 20,
+          "scrollWidth": 1660,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    },
+    {
+      "path": "/privacy-policy",
+      "width": 390,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Privacy Policy",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/privacy-policy",
+      "description": "Explore Arizona Test Child at Arizona Outfits.",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "flex",
+          "width": 351,
+          "cardWidth": 351,
+          "gap": 20,
+          "scrollWidth": 1093,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    },
+    {
+      "path": "/terms-and-conditions",
+      "width": 1440,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Terms & Conditions",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/terms-and-conditions",
+      "description": "Terms & Conditions",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "grid",
+          "width": 864,
+          "cardWidth": 345.5999755859375,
+          "gap": null,
+          "scrollWidth": 864,
+          "controlsHidden": true
+        }
+      ]
+    },
+    {
+      "path": "/terms-and-conditions",
+      "width": 880,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Terms & Conditions",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/terms-and-conditions",
+      "description": "Terms & Conditions",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "flex",
+          "width": 792,
+          "cardWidth": 386,
+          "gap": 20,
+          "scrollWidth": 1198,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    },
+    {
+      "path": "/terms-and-conditions",
+      "width": 600,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Terms & Conditions",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/terms-and-conditions",
+      "description": "Terms & Conditions",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "flex",
+          "width": 540,
+          "cardWidth": 540,
+          "gap": 20,
+          "scrollWidth": 1660,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    },
+    {
+      "path": "/terms-and-conditions",
+      "width": 390,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "Terms & Conditions",
+      "status": "index, follow",
+      "canonical": "http://127.0.0.1:8123/terms-and-conditions",
+      "description": "Terms & Conditions",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Recent articles",
+          "cards": 3,
+          "display": "flex",
+          "width": 351,
+          "cardWidth": 351,
+          "gap": 20,
+          "scrollWidth": 1093,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    },
+    {
+      "path": "/arizona-blog-system-test-3",
+      "width": 1440,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "test",
+      "status": "index, follow",
+      "canonical": "https://arizonaoutfits/arizona-blog-system-test-3",
+      "description": "test",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            },
+            {
+              "@type": "BlogPosting",
+              "headline": "Arizona Blog System Test 3",
+              "description": "test",
+              "url": "https://arizonaoutfits/arizona-blog-system-test-3",
+              "mainEntityOfPage": "https://arizonaoutfits/arizona-blog-system-test-3",
+              "datePublished": "2026-09-30T19:18:24+05:00",
+              "dateModified": "2026-09-30T19:18:24+05:00",
+              "publisher": {
+                "@id": "http://127.0.0.1:8123#organization"
+              },
+              "image": "http://127.0.0.1:8123/storage/media-cache/8b61d0d61514e368e6fb4c1ae58e02ed5b66cab227a9d39e3561104860e7bdc4-1280.webp",
+              "author": {
+                "@type": "Person",
+                "name": "arizonaoutfits"
+              }
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Related articles",
+          "cards": 2,
+          "display": "grid",
+          "width": 864,
+          "cardWidth": 230.4000244140625,
+          "gap": null,
+          "scrollWidth": 864,
+          "controlsHidden": true
+        }
+      ]
+    },
+    {
+      "path": "/arizona-blog-system-test-3",
+      "width": 880,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "test",
+      "status": "index, follow",
+      "canonical": "https://arizonaoutfits/arizona-blog-system-test-3",
+      "description": "test",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            },
+            {
+              "@type": "BlogPosting",
+              "headline": "Arizona Blog System Test 3",
+              "description": "test",
+              "url": "https://arizonaoutfits/arizona-blog-system-test-3",
+              "mainEntityOfPage": "https://arizonaoutfits/arizona-blog-system-test-3",
+              "datePublished": "2026-09-30T19:18:24+05:00",
+              "dateModified": "2026-09-30T19:18:24+05:00",
+              "publisher": {
+                "@id": "http://127.0.0.1:8123#organization"
+              },
+              "image": "http://127.0.0.1:8123/storage/media-cache/8b61d0d61514e368e6fb4c1ae58e02ed5b66cab227a9d39e3561104860e7bdc4-1280.webp",
+              "author": {
+                "@type": "Person",
+                "name": "arizonaoutfits"
+              }
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Related articles",
+          "cards": 2,
+          "display": "flex",
+          "width": 792,
+          "cardWidth": 386,
+          "gap": 20,
+          "scrollWidth": 792,
+          "controlsHidden": true
+        }
+      ]
+    },
+    {
+      "path": "/arizona-blog-system-test-3",
+      "width": 600,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "test",
+      "status": "index, follow",
+      "canonical": "https://arizonaoutfits/arizona-blog-system-test-3",
+      "description": "test",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            },
+            {
+              "@type": "BlogPosting",
+              "headline": "Arizona Blog System Test 3",
+              "description": "test",
+              "url": "https://arizonaoutfits/arizona-blog-system-test-3",
+              "mainEntityOfPage": "https://arizonaoutfits/arizona-blog-system-test-3",
+              "datePublished": "2026-09-30T19:18:24+05:00",
+              "dateModified": "2026-09-30T19:18:24+05:00",
+              "publisher": {
+                "@id": "http://127.0.0.1:8123#organization"
+              },
+              "image": "http://127.0.0.1:8123/storage/media-cache/8b61d0d61514e368e6fb4c1ae58e02ed5b66cab227a9d39e3561104860e7bdc4-1280.webp",
+              "author": {
+                "@type": "Person",
+                "name": "arizonaoutfits"
+              }
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Related articles",
+          "cards": 2,
+          "display": "flex",
+          "width": 540,
+          "cardWidth": 540,
+          "gap": 20,
+          "scrollWidth": 1100,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    },
+    {
+      "path": "/arizona-blog-system-test-3",
+      "width": 390,
+      "http": 200,
+      "carouselWidthsPass": true,
+      "title": "test",
+      "status": "index, follow",
+      "canonical": "https://arizonaoutfits/arizona-blog-system-test-3",
+      "description": "test",
+      "schemas": [
+        {
+          "<?php $__contextArgs = [];\nif (context()->has($__contextArgs[0])) :\nif (isset($value)) { $__contextPrevious[] = $value; }\n$value = context()->get($__contextArgs[0]); ?>": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              "@id": "http://127.0.0.1:8123#organization",
+              "name": "Arizona Outfits",
+              "url": "http://127.0.0.1:8123",
+              "sameAs": [
+                "https://www.facebook.com/",
+                "http://instagram.com/",
+                "https://x.com/",
+                "https://www.linkedin.com/in/abeer-khan-7519a2326",
+                "https://youtube.com/"
+              ]
+            },
+            {
+              "@type": "BlogPosting",
+              "headline": "Arizona Blog System Test 3",
+              "description": "test",
+              "url": "https://arizonaoutfits/arizona-blog-system-test-3",
+              "mainEntityOfPage": "https://arizonaoutfits/arizona-blog-system-test-3",
+              "datePublished": "2026-09-30T19:18:24+05:00",
+              "dateModified": "2026-09-30T19:18:24+05:00",
+              "publisher": {
+                "@id": "http://127.0.0.1:8123#organization"
+              },
+              "image": "http://127.0.0.1:8123/storage/media-cache/8b61d0d61514e368e6fb4c1ae58e02ed5b66cab227a9d39e3561104860e7bdc4-1280.webp",
+              "author": {
+                "@type": "Person",
+                "name": "arizonaoutfits"
+              }
+            }
+          ]
+        }
+      ],
+      "tracks": [
+        {
+          "label": "Related articles",
+          "cards": 2,
+          "display": "flex",
+          "width": 351,
+          "cardWidth": 351,
+          "gap": 20,
+          "scrollWidth": 722,
+          "controlsHidden": false
+        }
+      ],
+      "nextMoved": true
+    }
+  ],
+  "errors": []
+}

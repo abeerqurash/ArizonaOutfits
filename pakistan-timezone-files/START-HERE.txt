@@ -1,0 +1,84 @@
+PAKISTAN TIMEZONE + CUSTOM PAGE WORKFLOW
+
+1. Stop any running schedule:work or queue:work terminal with Ctrl+C.
+
+2. Back up:
+C:\xampp\htdocs\ArizonaOutfits\config\app.php
+
+3. Copy ALL contents of app.txt into this EXISTING file and save:
+C:\xampp\htdocs\ArizonaOutfits\config\app.php
+Keep its filename app.php, not app.php.txt.
+This config sets timezone to Asia/Karachi (Pakistan Standard Time).
+No .env change or database migration is required.
+
+4. Open PowerShell and run one command at a time:
+Set-Location 'C:\xampp\htdocs\ArizonaOutfits'
+C:\xampp\php\php.exe -l config\app.php
+C:\xampp\php\php.exe artisan config:clear
+C:\xampp\php\php.exe artisan view:clear
+C:\xampp\php\php.exe artisan posts:publish-scheduled --dry-run
+
+The last command requires the console.txt replacement from the scheduled
+publishing step to be installed in routes\console.php.
+If you have not installed it yet, install that file using its guide.
+The dry run prints Pakistan time, which should match your local clock.
+The timezone abbreviation may appear as PKT or another equivalent label;
+the named timezone is Asia/Karachi and the offset is +05:00.
+Dry run does not publish articles.
+
+5. REVIEW EXISTING DATES BEFORE RESTARTING THE SCHEDULER
+Stored database dates are not automatically converted by changing config.
+Review any previously saved Scheduled Date and Published Date values.
+For a scheduled date originally entered as UTC, re-enter its intended
+Pakistan time (+5 hours). If it was already entered as Pakistan local
+time, keep the intended local value. Do not blindly add five hours to all
+records: manually entered dates and system-created dates may differ.
+Example: an intended 10:03 UTC publication should be saved as 15:03 PKT.
+For NEW scheduled posts, enter your Pakistan clock time directly.
+Refresh open admin pages with Ctrl+F5 before editing dates.
+
+6. TEST AND RESTART
+Choose a test article with an existing custom Blade body.
+Save it as Scheduled for 2-3 minutes after the Pakistan time printed
+by the dry run.
+Start:
+C:\xampp\php\php.exe artisan schedule:work
+Keep this terminal and MySQL running.
+After the due time and next scheduler tick, confirm status is Published
+and the public article page opens.
+Restart any queue worker terminals you previously used as well, so they
+load the updated timezone. Daily scheduled maintenance now uses Pakistan
+clock time; the article publisher still runs every minute.
+
+CUSTOM PAGES - YOUR CONFIRMED WORKFLOW
+Individual article bodies and layouts remain manually written custom
+Blade files under:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\blogs\posts
+
+Example:
+resources\views\blogs\posts\my-article.blade.php
+The admin Template value is my-article (without .blade.php).
+If Template is empty, the current controller falls back to the slug.
+
+The database continues to manage article metadata: title, slug, summary,
+categories, author, images, SEO, status and publishing dates.
+The publisher only updates publishing state and dates after checking
+that the custom article template exists. It does not generate, replace,
+or extract the custom page body. Revisions restore database snapshots;
+custom Blade body edits need their own file backup/version history.
+
+Your other custom pages also retain their custom layouts. This timezone
+config does not change their rendering or move their content into a
+new editor. Their database data continues to use the existing flow.
+
+Search can find stored metadata/text. It does not automatically search
+words found only inside a custom Blade article body.
+
+VALIDATION
+Replacement PHP syntax passed. Six isolated checks passed for timezone,
+Laravel time, dry-run deadlines, exact-time/future publishing, retained
+publication time, and unchanged original config. No live records were
+changed and no original source file was replaced automatically.
+
+Reply PASS after the clock and scheduled publication check, or share
+any error output.

@@ -1,0 +1,36 @@
+PRODUCT CATEGORY PAGES - INSTALLATION
+
+Copy the complete contents of each text file into the destination below.
+
+1. 01_ShopController.php.txt
+Replace C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\ShopController.php
+
+2. 02_index.blade.php.txt
+Replace C:\xampp\htdocs\ArizonaOutfits\resources\views\products\index.blade.php
+
+3. 03_category.blade.php.txt
+Create C:\xampp\htdocs\ArizonaOutfits\resources\views\products\category.blade.php
+The saved filename must be category.blade.php, without .txt.
+
+Open a terminal in C:\xampp\htdocs\ArizonaOutfits and run:
+C:\xampp\php\php.exe artisan optimize:clear
+
+Refresh the browser with Ctrl+F5.
+Open http://127.0.0.1:8000/product-category/test
+Replace test with the slug of an existing product category.
+
+No route edits or database migrations are needed.
+Product category links now display individual collection pages.
+Parent categories include products from their subcategories.
+Search, sorting, filters and pagination stay on the category page.
+The layout supports 15 products per page, with three columns on desktop.
+Blog category pages remain separate.
+
+CHECKS PASSED ON PREPARED FILES
+PHP and compiled Blade syntax.
+Category scope includes descendants and excludes unrelated/draft products.
+Category metadata, heading, description and subcategory links render.
+Search works and query-string category choices cannot escape category scope.
+Missing category returns not found; empty category renders normally.
+Normal Shop remains independent.
+These checks used isolated fixtures; browser appearance was not tested.

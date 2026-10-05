@@ -1,0 +1,100 @@
+{
+    "active_labels": {
+        "admin.dashboard": [
+            "Dashboard"
+        ],
+        "admin.orders.index": [
+            "Orders"
+        ],
+        "admin.orders.archived": [
+            "Orders",
+            "Archived Orders"
+        ],
+        "admin.payment-verifications.index": [
+            "Payment Verifications"
+        ],
+        "admin.products.index": [
+            "Products"
+        ],
+        "admin.product-categories.index": [
+            "Product Categories"
+        ],
+        "admin.product-tags.index": [
+            "Product Tags"
+        ],
+        "admin.coupons.index": [
+            "Coupons"
+        ],
+        "admin.inventory-alerts.index": [
+            "Inventory Alerts"
+        ],
+        "admin.inventory-history.index": [
+            "Inventory History"
+        ],
+        "admin.inventory-reports.index": [
+            "Inventory Reports"
+        ],
+        "admin.stock-valuation.index": [
+            "Stock Valuation"
+        ],
+        "admin.reorder-dashboard.index": [
+            "Reorder Dashboard"
+        ],
+        "admin.purchase-orders.index": [
+            "Purchase Orders"
+        ],
+        "admin.suppliers.index": [
+            "Suppliers"
+        ],
+        "admin.customers.index": [
+            "Customers"
+        ],
+        "admin.reviews.index": [
+            "Reviews"
+        ],
+        "admin.posts.index": [
+            "Blog Posts"
+        ],
+        "admin.categories.index": [
+            "Blog Categories"
+        ],
+        "admin.settings.edit": [
+            "Store Settings"
+        ],
+        "admin.pages.index": [
+            "CMS Pages"
+        ],
+        "admin.navigation-menus.index": [
+            "Menu Builder"
+        ],
+        "admin.analytics.index": [
+            "Global Analytics"
+        ],
+        "admin.admin-users.index": [
+            "Admin Team"
+        ],
+        "admin.admin-roles.index": [
+            "Roles & Permissions"
+        ],
+        "admin.notifications.index": [
+            "Notification Center"
+        ],
+        "admin.audit-logs.index": [
+            "Audit Logs"
+        ],
+        "admin.backups.index": [
+            "Backups"
+        ],
+        "admin.email-templates.index": [
+            "Email Templates"
+        ]
+    },
+    "unexpected_active_states": {
+        "admin.orders.archived": [
+            "Orders",
+            "Archived Orders"
+        ]
+    },
+    "permission_render_checks": "passed",
+    "badge_variable_render": "passed"
+}

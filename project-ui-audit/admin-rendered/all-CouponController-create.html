@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Create Coupon | Arizona Outfits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-dashboard.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/admin-hardening.css">
+    <style>
+.coupon-form-grid{display:grid;grid-template-columns:minmax(0,1fr) 275px;gap:16px;align-items:start}.coupon-form-main{display:grid;gap:16px}.coupon-panel,.coupon-side{border:1px solid #e6eaf1!important;border-radius:11px!important;background:#fff!important;box-shadow:none!important}.coupon-panel{padding:19px}.coupon-side{position:sticky;top:18px;padding:18px}.coupon-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;padding-bottom:15px;margin-bottom:16px;border-bottom:1px solid #edf0f4}.coupon-panel-head h3{margin:3px 0;color:#172033;font-size:15px;font-weight:800}.coupon-panel-head p{margin:4px 0 0;color:#7b8497;font-size:10px}.coupon-section-icon{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;background:#eeedff;color:#635bff}.coupon-fields{display:grid;gap:14px}.coupon-fields.two{grid-template-columns:repeat(2,minmax(0,1fr))}.coupon-fields.three{grid-template-columns:repeat(3,minmax(0,1fr))}.coupon-field label{display:block;margin-bottom:7px;color:#667085;font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.coupon-field label b{color:#d14343}.coupon-field input,.coupon-field select{width:100%;min-height:41px;padding:0 11px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#344054;font-size:11px}.coupon-field input:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.10);outline:none}.coupon-field small{display:block;margin-top:6px;color:#98a2b3;font-size:9px}.coupon-code-row{display:grid;grid-template-columns:1fr auto;gap:7px}.coupon-generate{min-height:41px;white-space:nowrap}.coupon-timer-preview{display:flex;align-items:center;gap:8px;margin-top:13px;padding:10px 12px;border:1px solid #e2e1ff;border-radius:7px;background:#f7f6ff;color:#635bff;font-size:10px;font-weight:700}.coupon-target-field{max-width:330px}.coupon-target-box{display:none;margin-top:14px;padding:13px;border:1px solid #e6eaf1;border-radius:9px;background:#fafbfc}.coupon-target-box.active{display:block}.coupon-choice-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.coupon-choice-head strong{font-size:10px;color:#344054}.coupon-choice-head input{width:240px;min-height:34px;padding:0 9px;border:1px solid #e0e5ed;border-radius:6px;font-size:10px}.coupon-choice-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-height:280px;overflow:auto}.coupon-choice-item{display:flex!important;align-items:center;gap:9px;margin:0!important;padding:9px;border:1px solid #e6eaf1;border-radius:7px;background:#fff;cursor:pointer;text-transform:none!important;letter-spacing:0!important}.coupon-choice-item:hover{border-color:#c9c6ff;background:#f8f7ff}.coupon-choice-item>input{position:absolute;opacity:0;pointer-events:none}.coupon-check{display:flex;flex:0 0 auto;align-items:center;justify-content:center;width:17px;height:17px;border:1px solid #cfd5df;border-radius:5px;background:#fff}.coupon-choice-item>input:checked+.coupon-check{border-color:#635bff;background:#635bff}.coupon-choice-item>input:checked+.coupon-check:after{content:"\2713";color:#fff;font-size:10px;font-weight:900}.coupon-choice-item strong{display:block;color:#344054;font-size:10px}.coupon-choice-item small{display:block;margin-top:2px;color:#98a2b3;font-size:8px}.coupon-switch-line{display:flex!important;align-items:center;gap:8px;margin:9px 0!important;text-transform:none!important;letter-spacing:0!important;cursor:pointer}.coupon-switch-line input[type=checkbox]{position:absolute;opacity:0;pointer-events:none}.coupon-switch{position:relative;width:32px;height:18px;border-radius:999px;background:#d8dde6;transition:.18s}.coupon-switch:after{content:"";position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;transition:.18s}.coupon-switch-line input:checked~.coupon-switch{background:#635bff}.coupon-switch-line input:checked~.coupon-switch:after{transform:translateX(14px)}.coupon-status-card{margin:12px 0;padding:12px;border:1px solid #e6eaf1;border-radius:8px}.coupon-status-card>span{display:block;margin-bottom:7px;color:#98a2b3;font-size:8px;font-weight:800;text-transform:uppercase}.coupon-summary{margin:12px 0}.coupon-summary>div{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #edf0f4;font-size:9px}.coupon-summary span{color:#7b8497}.coupon-summary strong{color:#172033}.coupon-save,.coupon-cancel{width:100%;min-height:40px;justify-content:center;margin-top:8px}.coupon-popup{position:fixed;inset:0;z-index:14000;display:flex;align-items:center;justify-content:center;padding:20px}.coupon-popup-bg{position:absolute;inset:0;background:rgba(15,23,42,.58);backdrop-filter:blur(3px)}.coupon-popup-box{position:relative;z-index:2;width:100%;max-width:460px;padding:30px;border-radius:14px;background:#fff;box-shadow:0 24px 80px rgba(15,23,42,.24);text-align:center}.coupon-popup-x{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;border-radius:7px;background:#f3f5f8;color:#687386}.coupon-popup-icon{display:flex;align-items:center;justify-content:center;width:58px;height:58px;margin:0 auto 15px;border-radius:50%;font-size:20px}.coupon-popup-icon.is-error{background:#fff0f0;color:#d14343}.coupon-popup-box h3{margin:5px 0 12px;color:#172033;font-size:18px}.coupon-popup-box ul{margin:0 0 18px;padding:12px 16px;border:1px solid #fecaca;border-radius:9px;background:#fff7f7;color:#b42318;font-size:10px;text-align:left}
+.az-coupon-select{position:relative}.az-coupon-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}.az-coupon-btn{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:41px;padding:0 11px;border:1px solid #e0e5ed;border-radius:7px;background:#fff;color:#344054;font-size:11px;font-weight:600;cursor:pointer}.az-coupon-select.open .az-coupon-btn,.az-coupon-btn:focus{border-color:#635bff;box-shadow:0 0 0 3px rgba(99,91,255,.10);outline:none}.az-coupon-menu{position:absolute;z-index:13000;top:calc(100% + 6px);left:0;display:none;width:100%;padding:5px;border:1px solid #e0e5ed;border-radius:9px;background:#fff;box-shadow:0 14px 38px rgba(15,23,42,.16)}.az-coupon-select.open .az-coupon-menu{display:block}.az-coupon-option{display:flex;justify-content:space-between;width:100%;padding:8px 9px;border:0;border-radius:6px;background:transparent;color:#344054;font-size:11px;font-weight:600;text-align:left;cursor:pointer}.az-coupon-option:hover,.az-coupon-option.selected{background:#eeedff;color:#5149d8}.az-coupon-option.selected:after{content:"\2713";color:#635bff}
+@media(max-width:950px){.coupon-form-grid{grid-template-columns:1fr}.coupon-side{position:static}}@media(max-width:650px){.coupon-fields.two,.coupon-fields.three,.coupon-choice-list{grid-template-columns:1fr}.coupon-choice-head{align-items:stretch;flex-direction:column}.coupon-choice-head input{width:100%}.coupon-code-row{grid-template-columns:1fr}}
+</style>
+<style>.coupon-page-head{margin-bottom:18px}.coupon-page-head h2{margin:4px 0;color:#0f172a;font-size:24px;font-weight:800}.coupon-page-head p{color:#7b8497;font-size:12px}</style>    <link rel="stylesheet" href="http://127.0.0.1:8000/asset/css/arizona-admin-controls.css?v=20261005-single-controls">
+</head>
+<body class="admin-body">
+    <div class="admin-layout">
+        <aside class="admin-sidebar" id="adminSidebar">
+
+
+
+    <div class="admin-sidebar-header">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000/admin/dashboard"
+
+            class="admin-brand">
+
+
+
+            <span class="admin-brand-icon">
+
+                <i class="fa-solid fa-shirt"></i>
+
+            </span>
+
+
+
+            <span class="admin-brand-content">
+
+                <strong>Arizona Outfits</strong>
+
+                <small>Administration</small>
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <button
+
+            type="button"
+
+            class="admin-sidebar-close"
+
+            id="adminSidebarClose"
+
+            aria-label="Close admin sidebar">
+
+
+
+            <i class="fa-solid fa-xmark"></i>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-content">
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Overview
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                <a
+
+                    href="http://127.0.0.1:8000/admin/dashboard"
+
+                    class="admin-menu-link ">
+
+
+
+                    <span class="admin-menu-icon">
+
+                        <i class="fa-solid fa-chart-pie"></i>
+
+                    </span>
+
+
+
+                    <span class="admin-menu-text">
+
+                        Dashboard
+
+                    </span>
+
+
+
+                </a>
+
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Store Management
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+                
+                
+                
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+
+                
+
+                
+                
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Customers
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Content
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+
+
+                
+
+
+            </nav>
+
+
+
+        </div>
+
+
+
+        
+
+        <div class="admin-menu-section">
+
+
+
+            <span class="admin-menu-heading">
+
+                Configuration
+
+            </span>
+
+
+
+            <nav class="admin-menu">
+
+
+
+                
+                
+            </nav>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <div class="admin-sidebar-footer">
+
+
+
+        <a
+
+            href="http://127.0.0.1:8000"
+
+            class="admin-menu-link"
+
+            target="_blank"
+
+            rel="noopener">
+
+
+
+            <span class="admin-menu-icon">
+
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+            </span>
+
+
+
+            <span class="admin-menu-text">
+
+                View Website
+
+            </span>
+
+
+
+        </a>
+
+
+
+        <form
+
+            action="http://127.0.0.1:8000/admin/logout"
+
+            method="POST">
+
+
+
+            <input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off">
+
+
+            <button
+
+                type="submit"
+
+                class="admin-menu-link admin-logout-button">
+
+
+
+                <span class="admin-menu-icon">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                </span>
+
+
+
+                <span class="admin-menu-text">
+
+                    Logout
+
+                </span>
+
+
+
+            </button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</aside>
+        <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+        <div class="admin-main">
+            <header class="admin-topbar">
+    <div class="admin-topbar-left">
+        <button type="button" class="admin-mobile-menu-button" id="adminMobileMenuButton" aria-label="Open admin sidebar"><i class="fa-solid fa-bars"></i></button>
+        <div class="admin-topbar-title"><span class="admin-topbar-eyebrow">Administration</span><h1>Create Coupon</h1></div>
+    </div>
+
+    <div class="admin-topbar-right">
+        <a href="http://127.0.0.1:8000" class="admin-topbar-action" target="_blank" rel="noopener" title="View website"><i class="fa-solid fa-store"></i></a>
+
+        
+                <div class="admin-profile-wrapper">
+            <button type="button" class="admin-profile-button" id="adminProfileButton" aria-expanded="false">
+                <span class="admin-profile-avatar">F</span>
+                <span class="admin-profile-details"><strong>Fixture administrator</strong><small>Administrator</small></span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="admin-dropdown admin-profile-dropdown" id="adminProfileDropdown">
+                <div class="admin-profile-dropdown-header"><strong>Fixture administrator</strong><span>admin-fixture@example.test</span></div>
+                <a href="http://127.0.0.1:8000/admin/profile"><i class="fa-regular fa-user"></i>Edit Profile</a>
+                <a href="http://127.0.0.1:8000" target="_blank" rel="noopener"><i class="fa-solid fa-store"></i>View Store</a>
+                <form action="http://127.0.0.1:8000/admin/logout" method="POST"><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"><button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button></form>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+.admin-notification-count{position:absolute;top:-6px;right:-7px;display:grid;min-width:19px;height:19px;place-items:center;padding:0 4px;border:2px solid #fff;border-radius:999px;background:#e11d48;color:#fff;font-size:9px;font-weight:900}.notification-heading{display:flex;align-items:center;justify-content:space-between}.notification-heading>a{color:#0f766e;font-size:11px;font-weight:800;text-decoration:none}.topbar-notification{border-bottom:1px solid #edf0f5}.topbar-notification button{display:grid;width:100%;grid-template-columns:34px 1fr;gap:10px;padding:12px 14px;border:0;background:#fff;color:#172033;text-align:left;cursor:pointer}.topbar-notification.unread button{background:#f0fdfa}.topbar-notification button:hover{background:#f8fafc}.topbar-notification button>span:last-child{min-width:0}.topbar-notification strong,.topbar-notification small,.topbar-notification time{display:block}.topbar-notification strong{font-size:12px}.topbar-notification small{margin-top:3px;color:#64748b;font-size:10px;line-height:1.4}.topbar-notification time{margin-top:4px;color:#94a3b8;font-size:9px}.notification-icon{display:grid;width:32px;height:32px;place-items:center;border-radius:9px;background:#e0f2fe;color:#0369a1}.notification-icon.success{background:#d1fae5;color:#047857}.notification-icon.warning{background:#fef3c7;color:#b45309}.notification-icon.danger{background:#ffe4e6;color:#be123c}.admin-notification-dropdown{max-height:470px;overflow-y:auto}
+</style>
+            <main class="admin-content" id="mainContent">
+                                                                <div class="admin-page-header coupon-page-head"><div><span class="admin-page-eyebrow">Promotions</span><h2>Create Coupon</h2><p>Build a discount with precise validity, usage and catalog targeting rules.</p></div><div class="admin-page-actions"><a href="http://127.0.0.1:8000/admin/coupons" class="admin-button admin-button-secondary"><i class="fa-solid fa-arrow-left"></i> Back to Coupons</a></div></div>
+<form action="http://127.0.0.1:8000/admin/coupons" method="POST" novalidate><input type="hidden" name="_token" value="0cJulNASjeZ4Rn0zmGbYObuunZAHxRdBe7RxHQQE" autocomplete="off"> <div class="coupon-form-grid">
+    <div class="coupon-form-main">
+        <section class="admin-panel coupon-panel">
+            <div class="coupon-panel-head"><div><span class="admin-page-eyebrow">Coupon identity</span><h3>Code & Discount</h3><p>Define the customer-facing code and discount calculation.</p></div><span class="coupon-section-icon"><i class="fa-solid fa-ticket"></i></span></div>
+            <div class="coupon-fields two">
+                <div class="coupon-field">
+                    <label for="code">Coupon Code <b>*</b></label>
+                    <div class="coupon-code-row">
+                        <input id="code" name="code" value="" maxlength="100" required placeholder="SUMMER25" autocomplete="off">
+                        <button type="button" class="admin-button coupon-generate" id="generateCouponCode"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate</button>
+                    </div>
+                    <small>Letters and numbers are normalized to an uppercase coupon code.</small>
+                </div>
+                <div class="coupon-field">
+                    <label for="type">Discount Type <b>*</b></label>
+                    <select id="type" name="type" required>
+                        <option value="fixed" selected>Fixed Amount</option>
+                        <option value="percentage" >Percentage</option>
+                    </select>
+                </div>
+                <div class="coupon-field">
+                    <label for="value">Discount Value <b>*</b></label>
+                    <input id="value" type="number" min="0.01" step="0.01" name="value" value="" required placeholder="10.00">
+                </div>
+                <div class="coupon-field">
+                    <label for="maximum_discount">Maximum Discount</label>
+                    <input id="maximum_discount" type="number" min="0.01" step="0.01" name="maximum_discount" value="" placeholder="No maximum">
+                    <small>Especially useful for percentage coupons.</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="admin-panel coupon-panel">
+            <div class="coupon-panel-head"><div><span class="admin-page-eyebrow">Validity timer</span><h3>Start & Expiration</h3><p>Set exact date and time. Leave either side blank for an open-ended period.</p></div><span class="coupon-section-icon"><i class="fa-regular fa-clock"></i></span></div>
+            <div class="coupon-fields two">
+                <div class="coupon-field">
+                    <label for="start_date">Starts At</label>
+                    <input id="start_date" type="datetime-local" name="start_date" value="">
+                </div>
+                <div class="coupon-field">
+                    <label for="end_date">Expires At</label>
+                    <input id="end_date" type="datetime-local" name="end_date" value="">
+                </div>
+            </div>
+            <div class="coupon-timer-preview" id="couponTimerPreview"><i class="fa-solid fa-hourglass-half"></i><span>Open-ended validity</span></div>
+        </section>
+
+        <section class="admin-panel coupon-panel">
+            <div class="coupon-panel-head"><div><span class="admin-page-eyebrow">Eligibility</span><h3>Order & Usage Rules</h3><p>Control minimum spend and how often this coupon can be redeemed.</p></div><span class="coupon-section-icon"><i class="fa-solid fa-shield-halved"></i></span></div>
+            <div class="coupon-fields three">
+                <div class="coupon-field"><label for="minimum_order_amount">Minimum Order</label><input id="minimum_order_amount" type="number" min="0" step="0.01" name="minimum_order_amount" value="0"></div>
+                <div class="coupon-field"><label for="usage_limit">Total Usage Limit</label><input id="usage_limit" type="number" min="1" name="usage_limit" value="" placeholder="Unlimited"></div>
+                <div class="coupon-field"><label for="per_user_usage_limit">Per-user Limit</label><input id="per_user_usage_limit" type="number" min="1" name="per_user_usage_limit" value="" placeholder="Unlimited"></div>
+            </div>
+        </section>
+
+        <section class="admin-panel coupon-panel">
+            <div class="coupon-panel-head"><div><span class="admin-page-eyebrow">Targeting</span><h3>Products, Categories & Variations</h3><p>Choose exactly what the coupon can discount.</p></div><span class="coupon-section-icon"><i class="fa-solid fa-bullseye"></i></span></div>
+            <div class="coupon-field coupon-target-field">
+                <label for="target_type">Target <b>*</b></label>
+                <select id="target_type" name="target_type" required>
+                    <option value="all" selected>All Products</option>
+                    <option value="products" >Specific Products</option>
+                    <option value="categories" >Specific Categories</option>
+                    <option value="variants" >Specific Variations</option>
+                </select>
+            </div>
+
+            <div class="coupon-target-box" data-target-box="products">
+                <div class="coupon-choice-head"><strong>Select Products</strong><input type="search" placeholder="Search products..." data-choice-search="products"></div>
+                <div class="coupon-choice-list" data-choice-list="products">
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 1 out-1">
+                        <input type="checkbox" name="product_ids[]" value="1" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 1</strong><small>OUT-1</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 10 out-10">
+                        <input type="checkbox" name="product_ids[]" value="10" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 10</strong><small>OUT-10</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 11 out-11">
+                        <input type="checkbox" name="product_ids[]" value="11" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 11</strong><small>OUT-11</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 12 out-12">
+                        <input type="checkbox" name="product_ids[]" value="12" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 12</strong><small>OUT-12</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 13 out-13">
+                        <input type="checkbox" name="product_ids[]" value="13" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 13</strong><small>OUT-13</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 14 out-14">
+                        <input type="checkbox" name="product_ids[]" value="14" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 14</strong><small>OUT-14</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 2 out-2">
+                        <input type="checkbox" name="product_ids[]" value="2" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 2</strong><small>OUT-2</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 3 out-3">
+                        <input type="checkbox" name="product_ids[]" value="3" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 3</strong><small>OUT-3</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 4 out-4">
+                        <input type="checkbox" name="product_ids[]" value="4" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 4</strong><small>OUT-4</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 5 out-5">
+                        <input type="checkbox" name="product_ids[]" value="5" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 5</strong><small>OUT-5</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 6 out-6">
+                        <input type="checkbox" name="product_ids[]" value="6" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 6</strong><small>OUT-6</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 7 out-7">
+                        <input type="checkbox" name="product_ids[]" value="7" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 7</strong><small>OUT-7</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 8 out-8">
+                        <input type="checkbox" name="product_ids[]" value="8" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 8</strong><small>OUT-8</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="test outfit 9 out-9">
+                        <input type="checkbox" name="product_ids[]" value="9" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 9</strong><small>OUT-9</small></span>
+                    </label>
+                                    </div>
+            </div>
+
+            <div class="coupon-target-box" data-target-box="categories">
+                <div class="coupon-choice-head"><strong>Select Categories</strong><input type="search" placeholder="Search categories..." data-choice-search="categories"></div>
+                <label class="coupon-switch-line"><input type="hidden" name="include_child_categories" value="0"><input type="checkbox" name="include_child_categories" value="1" checked><span class="coupon-switch"></span><span>Include child categories</span></label>
+                <div class="coupon-choice-list" data-choice-list="categories">
+                                        <label class="coupon-choice-item" data-choice-text="men jackets">
+                        <input type="checkbox" name="category_ids[]" value="2" >
+                        <span class="coupon-check"></span><span><strong>Men Jackets</strong><small>Child category</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="men outfits">
+                        <input type="checkbox" name="category_ids[]" value="1" >
+                        <span class="coupon-check"></span><span><strong>Men Outfits</strong><small>Parent category</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="women jackets">
+                        <input type="checkbox" name="category_ids[]" value="4" >
+                        <span class="coupon-check"></span><span><strong>Women Jackets</strong><small>Child category</small></span>
+                    </label>
+                                        <label class="coupon-choice-item" data-choice-text="women outfits">
+                        <input type="checkbox" name="category_ids[]" value="3" >
+                        <span class="coupon-check"></span><span><strong>Women Outfits</strong><small>Parent category</small></span>
+                    </label>
+                                    </div>
+            </div>
+
+            <div class="coupon-target-box" data-target-box="variants">
+                <div class="coupon-choice-head"><strong>Select Variations</strong><input type="search" placeholder="Search variation / SKU..." data-choice-search="variants"></div>
+                <div class="coupon-choice-list" data-choice-list="variants">
+                                                            <label class="coupon-choice-item" data-choice-text="test outfit 1 variant-fixture-1 ">
+                        <input type="checkbox" name="variant_ids[]" value="1" >
+                        <span class="coupon-check"></span><span><strong>Test Outfit 1 — Variant #1</strong><small>VARIANT-FIXTURE-1</small></span>
+                    </label>
+                                    </div>
+            </div>
+        </section>
+
+        <section class="admin-panel coupon-panel">
+            <div class="coupon-panel-head"><div><span class="admin-page-eyebrow">Campaign</span><h3>Promotion Event</h3><p>Optionally associate this coupon with a campaign or event.</p></div><span class="coupon-section-icon"><i class="fa-solid fa-bullhorn"></i></span></div>
+            <div class="coupon-field">
+                <label for="event_name">Event / Campaign</label>
+                <input id="event_name" name="event_name" list="coupon-event-suggestions" value="" maxlength="120" placeholder="e.g. Black Friday">
+                <datalist id="coupon-event-suggestions"><option value="Black Friday"><option value="Seasonal Offer"><option value="Limited-time Promotion"><option value="Summer Sale"><option value="Winter Sale"></datalist>
+                <small>You can type a custom event name.</small>
+            </div>
+        </section>
+    </div>
+
+    <aside class="admin-panel coupon-side">
+        <span class="admin-page-eyebrow">Publishing</span>
+        <div class="coupon-status-card"><span>Status</span><label class="coupon-switch-line"><input type="hidden" name="status" value="0"><input type="checkbox" name="status" value="1" checked><span class="coupon-switch"></span><strong>Active</strong></label></div>
+                <button type="submit" class="admin-button admin-button-primary coupon-save"><i class="fa-solid fa-floppy-disk"></i>Create Coupon</button>
+        <a href="http://127.0.0.1:8000/admin/coupons" class="admin-button admin-button-secondary coupon-cancel">Cancel</a>
+    </aside>
+</div>
+
+
+</form>
+            </main>
+            <footer class="admin-footer">
+
+    <p>
+        &copy; 2026 Arizona Outfits.
+        All rights reserved.
+    </p>
+
+    <span>
+        Admin Panel
+    </span>
+
+</footer>        </div>
+    </div>
+    <script src="http://127.0.0.1:8000/asset/js/admin-dashboard.js"></script>
+    <script>
+'use strict';
+document.addEventListener('DOMContentLoaded',function(){
+ document.querySelectorAll('.coupon-field select:not([multiple])').forEach(function(s){
+  const w=document.createElement('div');w.className='az-coupon-select';const b=document.createElement('button');b.type='button';b.className='az-coupon-btn';const v=document.createElement('span'),i=document.createElement('i');i.className='fa-solid fa-chevron-down';b.append(v,i);const m=document.createElement('div');m.className='az-coupon-menu';s.parentNode.insertBefore(w,s);w.append(s,b,m);s.classList.add('az-coupon-native');
+  function render(){m.innerHTML='';Array.from(s.options).forEach(o=>{const x=document.createElement('button');x.type='button';x.className='az-coupon-option'+(String(o.value)===String(s.value)?' selected':'');x.textContent=o.textContent.trim();x.onclick=()=>{s.value=o.value;s.dispatchEvent(new Event('change',{bubbles:true}));render();w.classList.remove('open');b.focus()};m.append(x)});const o=s.options[s.selectedIndex];v.textContent=o?o.textContent.trim():'Select'}
+  b.onclick=()=>w.classList.toggle('open');document.addEventListener('click',e=>{if(!w.contains(e.target))w.classList.remove('open')});render();
+ });
+ const code=document.getElementById('code'),gen=document.getElementById('generateCouponCode');
+ if(gen&&code)gen.onclick=()=>{const prefix=['ARIZONA','STYLE','VIP','SAVE','JACKET'][Math.floor(Math.random()*5)];const token=Math.random().toString(36).slice(2,8).toUpperCase();code.value=prefix+token};
+ const target=document.getElementById('target_type');
+ function showTarget(){document.querySelectorAll('[data-target-box]').forEach(x=>x.classList.toggle('active',x.dataset.targetBox===target.value))}
+ if(target){target.addEventListener('change',showTarget);showTarget()}
+ document.querySelectorAll('[data-choice-search]').forEach(input=>input.addEventListener('input',function(){const q=input.value.toLowerCase().trim(),list=document.querySelector('[data-choice-list="'+input.dataset.choiceSearch+'"]');if(list)list.querySelectorAll('.coupon-choice-item').forEach(x=>x.style.display=!q||x.dataset.choiceText.includes(q)?'flex':'none')}));
+ const start=document.getElementById('start_date'),end=document.getElementById('end_date'),preview=document.getElementById('couponTimerPreview');
+ function timer(){if(!preview)return;const now=new Date(),s=start&&start.value?new Date(start.value):null,e=end&&end.value?new Date(end.value):null;let text='Open-ended validity';if(s&&now<s)text='Scheduled — starts '+s.toLocaleString();else if(e&&now>e)text='Expired '+e.toLocaleString();else if(e){const ms=e-now,days=Math.floor(ms/86400000),hrs=Math.floor((ms%86400000)/3600000);text='Active — '+days+'d '+hrs+'h remaining'}else if(s)text='Active since '+s.toLocaleString();preview.querySelector('span').textContent=text}
+ [start,end].forEach(x=>x&&x.addEventListener('change',timer));timer();
+ const pop=document.getElementById('couponValidationPopup');if(pop){document.body.style.overflow='hidden';pop.querySelectorAll('[data-coupon-validation-close]').forEach(x=>x.onclick=()=>{pop.remove();document.body.style.overflow=''})}
+});
+</script>
+    <script src="http://127.0.0.1:8000/asset/js/arizona-admin-controls.js?v=20261005-single-controls"></script>
+</body>
+</html>

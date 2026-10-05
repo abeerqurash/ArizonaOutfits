@@ -1,0 +1,15 @@
+REMOVE SHOP CATEGORY CARDS
+
+Replace ALL contents of:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\products\index.blade.php
+
+With 01_index.blade.php.txt. Save as index.blade.php (not .txt).
+
+From the project folder run:
+C:\xampp\php\php.exe artisan optimize:clear
+
+Refresh with Ctrl+F5.
+The large Shop by Category card section is removed. Sidebar category filters,
+product listings, other filters, cart/favorites controls and quick view remain.
+Product-category URLs currently redirect to Shop filters. A standalone product
+category page has not been created by this change. Blog categories are separate.

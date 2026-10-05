@@ -1,0 +1,446 @@
+[
+    {
+        "result": "PASS",
+        "check": "Customer list excludes another customer and guest orders"
+    },
+    {
+        "result": "PASS",
+        "check": "Customer cannot open another customer order"
+    },
+    {
+        "result": "PASS",
+        "check": "Customer cannot open another customer invoice"
+    },
+    {
+        "result": "PASS",
+        "check": "Customer detail excludes internal notes"
+    },
+    {
+        "result": "PASS",
+        "check": "Order display uses saved item title and price snapshots"
+    },
+    {
+        "result": "PASS",
+        "check": "Archive soft-deletes order and preserves order items"
+    },
+    {
+        "result": "PASS",
+        "check": "Archived order remains in authenticated customer history"
+    },
+    {
+        "result": "PASS",
+        "check": "Customer can open own archived invoice"
+    },
+    {
+        "result": "PASS",
+        "check": "Restoring archive restores customer order visibility"
+    },
+    {
+        "result": "PASS",
+        "check": "Archive\/restore does not deduct or restore inventory"
+    },
+    {
+        "result": "PASS",
+        "check": "Normal bank verification marks paid and deducts stock once"
+    },
+    {
+        "result": "PASS",
+        "check": "Repeated bank verification does not deduct stock twice"
+    },
+    {
+        "result": "PASS",
+        "check": "Bank verification records payment timeline once"
+    },
+    {
+        "result": "PASS",
+        "check": "Paid bank transfer cannot be rejected"
+    },
+    {
+        "result": "PASS",
+        "check": "Pending bank transfer rejection records failed payment"
+    },
+    {
+        "result": "PASS",
+        "check": "Cancelled bank order verification is blocked"
+    },
+    {
+        "result": "PASS",
+        "check": "Refunded bank order verification preserves refund and stock"
+    },
+    {
+        "result": "PASS",
+        "check": "Inventory restoration is idempotent across repeated calls"
+    },
+    {
+        "result": "PASS",
+        "check": "Bulk update cannot mark payment paid"
+    },
+    {
+        "result": "PASS",
+        "check": "Bulk update cannot ship unpaid order"
+    },
+    {
+        "result": "PASS",
+        "check": "Assigned product category deletion is blocked"
+    },
+    {
+        "result": "PASS",
+        "check": "Category with children cannot be deleted"
+    },
+    {
+        "result": "PASS",
+        "check": "Category rejects descendant as parent"
+    },
+    {
+        "result": "PASS",
+        "check": "Assigned tag deletion is blocked"
+    },
+    {
+        "result": "PASS",
+        "check": "Unused tag can be deleted"
+    },
+    {
+        "result": "PASS",
+        "check": "Product referenced by historical order items is protected against deletion"
+    },
+    {
+        "result": "PASS",
+        "check": "Product Step 2 inherited-price fix is installed in current controller"
+    },
+    {
+        "result": "PASS",
+        "check": "Storefront quick-view rejects draft product"
+    },
+    {
+        "result": "PASS",
+        "check": "Featured filter excludes unfeatured product without search"
+    },
+    {
+        "result": "PASS",
+        "check": "Zero sale price agrees between model\/cart and shop SQL"
+    },
+    {
+        "result": "PASS",
+        "check": "Variable product with sold-out variants is excluded from in-stock filter"
+    },
+    {
+        "result": "PASS",
+        "check": "Sale filter includes variant inheriting regular price"
+    },
+    {
+        "result": "PASS",
+        "check": "Price range must match one purchasable item"
+    },
+    {
+        "result": "PASS",
+        "check": "Percentage coupon calculates eligible discount"
+    },
+    {
+        "result": "PASS",
+        "check": "Coupon discount respects maximum cap and subtotal"
+    },
+    {
+        "result": "PASS",
+        "check": "Inactive coupon rejected"
+    },
+    {
+        "result": "PASS",
+        "check": "Parent-category coupon includes child-category products"
+    },
+    {
+        "result": "PASS",
+        "check": "Per-customer coupon requires login"
+    },
+    {
+        "result": "PASS",
+        "check": "Paid coupon redemption records once per order"
+    },
+    {
+        "result": "PASS",
+        "check": "Paid coupon blocks repeat use before archiving"
+    },
+    {
+        "result": "PASS",
+        "check": "Archived coupon purchase still consumes per-customer usage"
+    },
+    {
+        "result": "PASS",
+        "check": "Pending order protects coupon from deletion"
+    },
+    {
+        "result": "PASS",
+        "check": "Protected pending coupon can finalize payment"
+    },
+    {
+        "result": "PASS",
+        "check": "Stripe webhook has injected coupon service"
+    },
+    {
+        "result": "PASS",
+        "check": "Offline Stripe success finalizes payment and inventory"
+    },
+    {
+        "result": "PASS",
+        "check": "Repeated Stripe success preserves inventory and single activity"
+    },
+    {
+        "result": "PASS",
+        "check": "Webhook lookup resolves archived Stripe order"
+    },
+    {
+        "result": "PASS",
+        "check": "Stripe Pakistan default shipping matches configured standard shipping"
+    },
+    {
+        "result": "PASS",
+        "check": "Archived pending bank order can be verified without restore"
+    },
+    {
+        "result": "PASS",
+        "check": "Payment can finalize after admin archives pending Stripe order"
+    },
+    {
+        "result": "PASS",
+        "check": "Bank rejection cannot overwrite refunded payment"
+    },
+    {
+        "result": "PASS",
+        "check": "Referenced coupon code cannot be renamed"
+    },
+    {
+        "result": "PASS",
+        "check": "Coupon deletion preserves archived redemption ledger"
+    },
+    {
+        "result": "PASS",
+        "check": "Unreferenced coupon can be deleted"
+    },
+    {
+        "result": "PASS",
+        "check": "Featured filter applies alongside search"
+    },
+    {
+        "result": "PASS",
+        "check": "Sold-out variants appear in out-of-stock filter"
+    },
+    {
+        "result": "PASS",
+        "check": "Zero-priced sale is included in sale filter"
+    },
+    {
+        "result": "PASS",
+        "check": "Price filter matches valid variant within range"
+    },
+    {
+        "result": "PASS",
+        "check": "Inverted price range rejected"
+    },
+    {
+        "result": "PASS",
+        "check": "Variant without own sale agrees with cart regular-price inheritance"
+    },
+    {
+        "result": "PASS",
+        "check": "Available range includes inherited variant prices and zero sale"
+    },
+    {
+        "result": "PASS",
+        "check": "Stripe selected shipping matches configuration: economy"
+    },
+    {
+        "result": "PASS",
+        "check": "Stripe selected shipping matches configuration: standard"
+    },
+    {
+        "result": "PASS",
+        "check": "Stripe selected shipping matches configuration: express"
+    },
+    {
+        "result": "PASS",
+        "check": "Pending Stripe intent matches saved shipping method name"
+    },
+    {
+        "result": "PASS",
+        "check": "Changed shipping method cannot reuse pending Stripe intent"
+    },
+    {
+        "result": "PASS",
+        "check": "Unknown Stripe shipping method rejected"
+    },
+    {
+        "result": "PASS",
+        "check": "Server permission enforced: admin.orders.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Server permission enforced: admin.orders.archived"
+    },
+    {
+        "result": "PASS",
+        "check": "Server permission enforced: admin.payment-verifications.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Server permission enforced: admin.products.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Server permission enforced: admin.product-categories.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Server permission enforced: admin.product-tags.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Server permission enforced: admin.coupons.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Archived order binding enabled: admin.payment-verifications.show"
+    },
+    {
+        "result": "PASS",
+        "check": "Archived order binding enabled: admin.payment-verifications.verify-bank-transfer"
+    },
+    {
+        "result": "PASS",
+        "check": "Archived order binding enabled: admin.payment-verifications.reject-bank-transfer"
+    },
+    {
+        "result": "PASS",
+        "check": "Archived order binding enabled: admin.orders.show"
+    },
+    {
+        "result": "PASS",
+        "check": "Archived order binding enabled: admin.orders.invoice"
+    },
+    {
+        "result": "PASS",
+        "check": "Archived order binding enabled: admin.orders.invoice.download"
+    },
+    {
+        "result": "PASS",
+        "check": "Public tracking can resolve archived order with matching email"
+    },
+    {
+        "result": "PASS",
+        "check": "Public tracking rejects mismatched email on archived order"
+    },
+    {
+        "result": "PASS",
+        "check": "Coupon usage limit cannot shrink while payment pending"
+    },
+    {
+        "result": "PASS",
+        "check": "Referenced coupon can be deactivated for new purchases"
+    },
+    {
+        "result": "PASS",
+        "check": "New redemption preserves pre-ledger usage count"
+    },
+    {
+        "result": "PASS",
+        "check": "Legacy coupon reaches correct global limit"
+    },
+    {
+        "result": "PASS",
+        "check": "Stripe coupon redemption remains once after duplicate success"
+    },
+    {
+        "result": "PASS",
+        "check": "Late Stripe events cannot overwrite refunded order"
+    },
+    {
+        "result": "PASS",
+        "check": "Actual sidebar receives inventory and reorder badge counts"
+    },
+    {
+        "result": "PASS",
+        "check": "Only archive menu is active on archived-orders page"
+    },
+    {
+        "result": "PASS",
+        "check": "Sidebar hides unauthorized menu: orders.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Sidebar hides unauthorized menu: orders.archived"
+    },
+    {
+        "result": "PASS",
+        "check": "Sidebar hides unauthorized menu: payment-verifications.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Sidebar hides unauthorized menu: products.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Sidebar hides unauthorized menu: product-categories.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Sidebar hides unauthorized menu: product-tags.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Sidebar hides unauthorized menu: coupons.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Super admin retains module access: admin.orders.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Super admin retains module access: admin.products.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Super admin retains module access: admin.coupons.index"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Admin Orders"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Archived Orders"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Payment Verifications"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Payment Verification detail"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Products"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Product Categories"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Product Tags"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Coupons"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Customer order list"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Customer order detail"
+    },
+    {
+        "result": "PASS",
+        "check": "Fixture page renders: Customer invoice"
+    }
+]

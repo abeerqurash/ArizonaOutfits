@@ -1,0 +1,22 @@
+[
+    {
+        "result": "PASS",
+        "check": "Unreferenced customer can self-delete",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful self-delete preserves admin login session",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Successful self-delete removes web login",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Standard route refuses current password reuse",
+        "detail": ""
+    }
+]

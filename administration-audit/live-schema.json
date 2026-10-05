@@ -1,0 +1,437 @@
+{
+    "admins": {
+        "columns": [
+            "id",
+            "name",
+            "email",
+            "phone",
+            "profile_image",
+            "author_title",
+            "facebook_url",
+            "instagram_url",
+            "x_url",
+            "linkedin_url",
+            "youtube_url",
+            "email_verified_at",
+            "password",
+            "status",
+            "is_super_admin",
+            "legacy_user_id",
+            "remember_token",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": []
+    },
+    "admin_roles": {
+        "columns": [
+            "id",
+            "name",
+            "slug",
+            "description",
+            "is_system",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": []
+    },
+    "admin_permissions": {
+        "columns": [
+            "id",
+            "name",
+            "slug",
+            "group_name",
+            "description",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": []
+    },
+    "admin_permission_role": {
+        "columns": [
+            "admin_role_id",
+            "admin_permission_id"
+        ],
+        "foreign_keys": [
+            {
+                "name": "admin_permission_role_admin_permission_id_foreign",
+                "columns": [
+                    "admin_permission_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admin_permissions",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            },
+            {
+                "name": "admin_permission_role_admin_role_id_foreign",
+                "columns": [
+                    "admin_role_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admin_roles",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            }
+        ]
+    },
+    "admin_role_admin": {
+        "columns": [
+            "admin_role_id",
+            "admin_id",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "admin_role_admin_admin_id_foreign",
+                "columns": [
+                    "admin_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admins",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            },
+            {
+                "name": "admin_role_admin_admin_role_id_foreign",
+                "columns": [
+                    "admin_role_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admin_roles",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            }
+        ]
+    },
+    "ecommerce_settings": {
+        "columns": [
+            "id",
+            "store_name",
+            "store_email",
+            "store_phone",
+            "store_address",
+            "currency",
+            "currency_symbol",
+            "tax_percentage",
+            "shipping_fee",
+            "free_shipping_threshold",
+            "order_prefix",
+            "guest_checkout_enabled",
+            "cash_on_delivery_enabled",
+            "bank_transfer_enabled",
+            "stock_management_enabled",
+            "maintenance_mode",
+            "low_stock_threshold",
+            "checkout_notice",
+            "order_email_message",
+            "bank_name",
+            "bank_account_name",
+            "bank_account_number",
+            "bank_iban",
+            "bank_swift_code",
+            "bank_branch_name",
+            "bank_transfer_instructions",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": []
+    },
+    "pages": {
+        "columns": [
+            "id",
+            "title",
+            "slug",
+            "excerpt",
+            "content",
+            "status",
+            "template",
+            "render_mode",
+            "blade_template",
+            "meta_title",
+            "meta_description",
+            "published_at",
+            "created_by",
+            "creator_admin_id",
+            "updated_by",
+            "editor_admin_id",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "pages_created_by_foreign",
+                "columns": [
+                    "created_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "pages_creator_admin_id_foreign",
+                "columns": [
+                    "creator_admin_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admins",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "pages_editor_admin_id_foreign",
+                "columns": [
+                    "editor_admin_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admins",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "pages_updated_by_foreign",
+                "columns": [
+                    "updated_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "navigation_menus": {
+        "columns": [
+            "id",
+            "name",
+            "location",
+            "is_active",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": []
+    },
+    "navigation_menu_items": {
+        "columns": [
+            "id",
+            "navigation_menu_id",
+            "page_id",
+            "label",
+            "link_type",
+            "url",
+            "route_name",
+            "position",
+            "is_active",
+            "open_in_new_tab",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "navigation_menu_items_navigation_menu_id_foreign",
+                "columns": [
+                    "navigation_menu_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "navigation_menus",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            },
+            {
+                "name": "navigation_menu_items_page_id_foreign",
+                "columns": [
+                    "page_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "pages",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "notifications": {
+        "columns": [
+            "id",
+            "type",
+            "notifiable_type",
+            "notifiable_id",
+            "data",
+            "read_at",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": []
+    },
+    "admin_audit_logs": {
+        "columns": [
+            "id",
+            "user_id",
+            "admin_id",
+            "action",
+            "route_name",
+            "method",
+            "url",
+            "auditable_type",
+            "auditable_id",
+            "description",
+            "request_data",
+            "ip_address",
+            "user_agent",
+            "status_code",
+            "outcome",
+            "created_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "admin_audit_logs_admin_id_foreign",
+                "columns": [
+                    "admin_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admins",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "admin_audit_logs_user_id_foreign",
+                "columns": [
+                    "user_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "admin_backups": {
+        "columns": [
+            "id",
+            "created_by",
+            "admin_id",
+            "name",
+            "type",
+            "disk",
+            "file_path",
+            "file_size",
+            "status",
+            "table_count",
+            "row_count",
+            "error_message",
+            "completed_at",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "admin_backups_admin_id_foreign",
+                "columns": [
+                    "admin_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admins",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "admin_backups_created_by_foreign",
+                "columns": [
+                    "created_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "email_templates": {
+        "columns": [
+            "id",
+            "name",
+            "slug",
+            "description",
+            "subject",
+            "body",
+            "available_variables",
+            "is_enabled",
+            "is_system",
+            "updated_by",
+            "admin_id",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "email_templates_admin_id_foreign",
+                "columns": [
+                    "admin_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admins",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "email_templates_updated_by_foreign",
+                "columns": [
+                    "updated_by"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "file": "01_ShopController.php.txt",
+    "destination": "app/Http/Controllers/ShopController.php"
+  },
+  {
+    "file": "02_index.blade.php.txt",
+    "destination": "resources/views/products/index.blade.php"
+  },
+  {
+    "file": "03_category.blade.php.txt",
+    "destination": "resources/views/products/category.blade.php"
+  }
+]

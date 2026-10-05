@@ -1,0 +1,13 @@
+01_web.php.txt
+C:\xampp\htdocs\ArizonaOutfits\routes\web.php
+
+02_Page.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Models\Page.php
+
+03_CmsPageController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\CmsPageController.php
+
+04_AdminPageController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminPageController.php
+
+Copy all four files, then run C:\xampp\php\php.exe artisan optimize:clear. Every CMS public URL is /slug. Old /page/slug links permanently redirect for published pages. Blog articles keep root URLs. Other existing routes keep priority. New CMS slugs conflicting with existing routes or blog posts receive numeric suffixes. Privacy and Terms use their published CMS pages. Ensure existing CMS page slugs do not duplicate other existing routes or blog slugs.

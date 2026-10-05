@@ -1,0 +1,14 @@
+SMOOTH SHOP FILTER EFFECTS
+
+Replace all contents of:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\products\index.blade.php
+
+With 01_index.blade.php.txt. Then run:
+C:\xampp\php\php.exe artisan optimize:clear
+
+Refresh with Ctrl+F5.
+Includes smooth filter expansion/collapse, content fade, rotating chevron,
+subtle button/field effects and desktop card hover lift. Rapid repeated toggles
+cancel the previous animation. Reduced-motion preferences are respected.
+Filters still start closed and close on submission/refresh; selections stay.
+The existing 15-products pagination controller is unchanged.

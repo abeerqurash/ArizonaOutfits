@@ -1,0 +1,1427 @@
+{
+    "endpoints": [
+        {
+            "route": "customer.orders.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "account/orders",
+            "action": "App\\Http\\Controllers\\CustomerDashboardController@orders",
+            "views": [
+                "customer.orders.index"
+            ],
+            "middleware": [
+                "auth",
+                "customer.security.reminder"
+            ],
+            "errors": []
+        },
+        {
+            "route": "customer.orders.show",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "account/orders/{order}",
+            "action": "App\\Http\\Controllers\\CustomerDashboardController@show",
+            "views": [
+                "customer.orders.show"
+            ],
+            "middleware": [
+                "auth",
+                "customer.security.reminder"
+            ],
+            "errors": []
+        },
+        {
+            "route": "customer.orders.invoice",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "account/orders/{order}/invoice",
+            "action": "App\\Http\\Controllers\\CustomerDashboardController@invoice",
+            "views": [
+                "admin.orders.invoice"
+            ],
+            "middleware": [
+                "auth",
+                "customer.security.reminder"
+            ],
+            "errors": []
+        },
+        {
+            "route": "customer.orders.invoice.download",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "account/orders/{order}/invoice/download",
+            "action": "App\\Http\\Controllers\\CustomerDashboardController@downloadInvoice",
+            "views": [
+                "admin.orders.invoice-pdf"
+            ],
+            "middleware": [
+                "auth",
+                "customer.security.reminder"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/orders",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@index",
+            "views": [
+                "admin.orders.partials.table",
+                "admin.orders.partials.pagination",
+                "admin.orders.index"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.archived",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/orders/archived",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@archived",
+            "views": [
+                "admin.orders.archived"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.restore",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/orders/archived/{order}/restore",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@restore",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.bulk-restore",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/orders/archived-bulk-restore",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@bulkRestore",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.bulk-update",
+            "methods": [
+                "PATCH"
+            ],
+            "uri": "admin/orders/bulk-update",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@bulkUpdate",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.bulk-delete",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/orders/bulk-delete",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@bulkDelete",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.bulk-export",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/orders/bulk-export",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@bulkExport",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.notes.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/orders/{order}/notes",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@storeNote",
+            "views": [
+                "admin.orders.partials.notes",
+                "admin.orders.partials.activities"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.notes.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/orders/{order}/notes/{note}",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@destroyNote",
+            "views": [
+                "admin.orders.partials.notes",
+                "admin.orders.partials.activities"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.cancel",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/orders/{order}/cancel",
+            "action": "App\\Http\\Controllers\\Admin\\OrderRefundController@cancel",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.refund",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/orders/{order}/refund",
+            "action": "App\\Http\\Controllers\\Admin\\OrderRefundController@refund",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.shipping-label",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/orders/{order}/shipping-label",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@shippingLabel",
+            "views": [
+                "admin.orders.shipping-label"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.shipping-label.download",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/orders/{order}/shipping-label/download",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@downloadShippingLabel",
+            "views": [
+                "admin.orders.shipping-label-pdf"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.show",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/orders/{order}",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@show",
+            "views": [
+                "admin.orders.show"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.invoice",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/orders/{order}/invoice",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@invoice",
+            "views": [
+                "admin.orders.invoice"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.email-invoice",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/orders/{order}/email-invoice",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@emailInvoice",
+            "views": [
+                "admin.orders.invoice-pdf"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.email-customer",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/orders/{order}/email-customer",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@emailCustomer",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.invoice.download",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/orders/{order}/invoice/download",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@downloadInvoice",
+            "views": [
+                "admin.orders.invoice-pdf"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.packing-slip",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/orders/{order}/packing-slip",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@packingSlip",
+            "views": [
+                "admin.orders.packing-slip"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.packing-slip.download",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/orders/{order}/packing-slip/download",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@downloadPackingSlip",
+            "views": [
+                "admin.orders.packing-slip-pdf"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.update",
+            "methods": [
+                "PUT"
+            ],
+            "uri": "admin/orders/{order}",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@update",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.orders.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/orders/{order}",
+            "action": "App\\Http\\Controllers\\Admin\\OrderController@destroy",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-categories.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/product-categories",
+            "action": "App\\Http\\Controllers\\Admin\\ProductCategoryController@index",
+            "views": [
+                "admin.product-categories.index"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-categories.create",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/product-categories/create",
+            "action": "App\\Http\\Controllers\\Admin\\ProductCategoryController@create",
+            "views": [
+                "admin.product-categories.create"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-categories.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/product-categories",
+            "action": "App\\Http\\Controllers\\Admin\\ProductCategoryController@store",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-categories.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/product-categories/{product_category}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\ProductCategoryController@edit",
+            "views": [
+                "admin.product-categories.edit"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-categories.update",
+            "methods": [
+                "PUT",
+                "PATCH"
+            ],
+            "uri": "admin/product-categories/{product_category}",
+            "action": "App\\Http\\Controllers\\Admin\\ProductCategoryController@update",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-categories.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/product-categories/{product_category}",
+            "action": "App\\Http\\Controllers\\Admin\\ProductCategoryController@destroy",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.products.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/products",
+            "action": "App\\Http\\Controllers\\Admin\\ProductController@index",
+            "views": [
+                "admin.products.index"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.products.create",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/products/create",
+            "action": "App\\Http\\Controllers\\Admin\\ProductController@create",
+            "views": [
+                "admin.products.create"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.products.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/products",
+            "action": "App\\Http\\Controllers\\Admin\\ProductController@store",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.products.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/products/{product}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\ProductController@edit",
+            "views": [
+                "admin.products.edit"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.products.update",
+            "methods": [
+                "PUT",
+                "PATCH"
+            ],
+            "uri": "admin/products/{product}",
+            "action": "App\\Http\\Controllers\\Admin\\ProductController@update",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.products.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/products/{product}",
+            "action": "App\\Http\\Controllers\\Admin\\ProductController@destroy",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-tags.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/product-tags",
+            "action": "App\\Http\\Controllers\\Admin\\ProductTagController@index",
+            "views": [
+                "admin.product-tags.index"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-tags.create",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/product-tags/create",
+            "action": "App\\Http\\Controllers\\Admin\\ProductTagController@create",
+            "views": [
+                "admin.product-tags.create"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-tags.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/product-tags",
+            "action": "App\\Http\\Controllers\\Admin\\ProductTagController@store",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-tags.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/product-tags/{product_tag}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\ProductTagController@edit",
+            "views": [
+                "admin.product-tags.edit"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-tags.update",
+            "methods": [
+                "PUT",
+                "PATCH"
+            ],
+            "uri": "admin/product-tags/{product_tag}",
+            "action": "App\\Http\\Controllers\\Admin\\ProductTagController@update",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.product-tags.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/product-tags/{product_tag}",
+            "action": "App\\Http\\Controllers\\Admin\\ProductTagController@destroy",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.coupons.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/coupons",
+            "action": "App\\Http\\Controllers\\Admin\\CouponController@index",
+            "views": [
+                "admin.coupons.index"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.coupons.create",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/coupons/create",
+            "action": "App\\Http\\Controllers\\Admin\\CouponController@create",
+            "views": [
+                "admin.coupons.create"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.coupons.store",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/coupons",
+            "action": "App\\Http\\Controllers\\Admin\\CouponController@store",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.coupons.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/coupons/{coupon}/edit",
+            "action": "App\\Http\\Controllers\\Admin\\CouponController@edit",
+            "views": [
+                "admin.coupons.edit"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.coupons.update",
+            "methods": [
+                "PUT",
+                "PATCH"
+            ],
+            "uri": "admin/coupons/{coupon}",
+            "action": "App\\Http\\Controllers\\Admin\\CouponController@update",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.coupons.destroy",
+            "methods": [
+                "DELETE"
+            ],
+            "uri": "admin/coupons/{coupon}",
+            "action": "App\\Http\\Controllers\\Admin\\CouponController@destroy",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.products.inventory.edit",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/products/{product}/inventory",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryAdjustmentController@edit",
+            "views": [
+                "admin.products.inventory"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.products.inventory.update",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/products/{product}/inventory",
+            "action": "App\\Http\\Controllers\\Admin\\InventoryAdjustmentController@update",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.payment-verifications.index",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/payment-verifications",
+            "action": "App\\Http\\Controllers\\Admin\\PaymentVerificationController@index",
+            "views": [
+                "admin.payment-verifications.index"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.payment-verifications.show",
+            "methods": [
+                "GET",
+                "HEAD"
+            ],
+            "uri": "admin/payment-verifications/{order}",
+            "action": "App\\Http\\Controllers\\Admin\\PaymentVerificationController@show",
+            "views": [
+                "admin.payment-verifications.show"
+            ],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.payment-verifications.verify-bank-transfer",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/payment-verifications/{order}/verify-bank-transfer",
+            "action": "App\\Http\\Controllers\\Admin\\PaymentVerificationController@verifyBankTransfer",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        },
+        {
+            "route": "admin.payment-verifications.reject-bank-transfer",
+            "methods": [
+                "POST"
+            ],
+            "uri": "admin/payment-verifications/{order}/reject-bank-transfer",
+            "action": "App\\Http\\Controllers\\Admin\\PaymentVerificationController@rejectBankTransfer",
+            "views": [],
+            "middleware": [
+                "auth:admin",
+                "admin",
+                "admin.audit",
+                "throttle:admin"
+            ],
+            "errors": []
+        }
+    ],
+    "literal_view_route_references": [
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/archived.blade.php",
+            "route": "admin.orders.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/archived.blade.php",
+            "route": "admin.orders.archived",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/archived.blade.php",
+            "route": "admin.orders.bulk-restore",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/archived.blade.php",
+            "route": "admin.orders.restore",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/index.blade.php",
+            "route": "admin.dashboard",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/index.blade.php",
+            "route": "admin.orders.bulk-export",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/index.blade.php",
+            "route": "admin.orders.bulk-delete",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/index.blade.php",
+            "route": "admin.orders.bulk-update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/invoice.blade.php",
+            "route": "customer.orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/invoice.blade.php",
+            "route": "admin.orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/invoice.blade.php",
+            "route": "customer.orders.invoice.download",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/invoice.blade.php",
+            "route": "admin.orders.invoice.download",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/packing-slip.blade.php",
+            "route": "admin.orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/packing-slip.blade.php",
+            "route": "admin.orders.packing-slip.download",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/partials/filters.blade.php",
+            "route": "admin.orders.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/partials/notes.blade.php",
+            "route": "admin.orders.notes.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/partials/rows.blade.php",
+            "route": "admin.orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/shipping-label.blade.php",
+            "route": "admin.orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/shipping-label.blade.php",
+            "route": "admin.orders.shipping-label.download",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.shipping-label",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.email-invoice",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.invoice",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.products.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.notes.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.notes.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.cancel",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.refund",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.email-customer",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/orders/show.blade.php",
+            "route": "admin.orders.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/payment-verifications/index.blade.php",
+            "route": "admin.orders.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/payment-verifications/index.blade.php",
+            "route": "admin.payment-verifications.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/payment-verifications/index.blade.php",
+            "route": "admin.payment-verifications.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/payment-verifications/show.blade.php",
+            "route": "admin.payment-verifications.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/payment-verifications/show.blade.php",
+            "route": "admin.orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/payment-verifications/show.blade.php",
+            "route": "admin.payment-verifications.verify-bank-transfer",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/payment-verifications/show.blade.php",
+            "route": "admin.payment-verifications.reject-bank-transfer",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/create.blade.php",
+            "route": "admin.products.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/create.blade.php",
+            "route": "admin.products.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/edit.blade.php",
+            "route": "products.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/edit.blade.php",
+            "route": "admin.products.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/edit.blade.php",
+            "route": "admin.products.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/index.blade.php",
+            "route": "admin.product-categories.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/index.blade.php",
+            "route": "admin.product-tags.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/index.blade.php",
+            "route": "admin.coupons.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/index.blade.php",
+            "route": "admin.products.create",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/index.blade.php",
+            "route": "admin.products.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/index.blade.php",
+            "route": "admin.products.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/index.blade.php",
+            "route": "products.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/index.blade.php",
+            "route": "admin.products.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/inventory.blade.php",
+            "route": "admin.products.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/inventory.blade.php",
+            "route": "admin.products.inventory.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/partials/form.blade.php",
+            "route": "admin.products.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/partials/form.blade.php",
+            "route": "admin.product-options.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/products/partials/form.blade.php",
+            "route": "admin.product-options.values.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-categories/create.blade.php",
+            "route": "admin.product-categories.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-categories/create.blade.php",
+            "route": "admin.product-categories.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-categories/edit.blade.php",
+            "route": "admin.product-categories.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-categories/edit.blade.php",
+            "route": "admin.product-categories.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-categories/index.blade.php",
+            "route": "admin.product-categories.create",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-categories/index.blade.php",
+            "route": "admin.product-categories.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-categories/index.blade.php",
+            "route": "admin.product-categories.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-categories/index.blade.php",
+            "route": "admin.product-categories.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-categories/partials/form.blade.php",
+            "route": "admin.product-categories.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-tags/create.blade.php",
+            "route": "admin.product-tags.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-tags/create.blade.php",
+            "route": "admin.product-tags.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-tags/edit.blade.php",
+            "route": "admin.product-tags.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-tags/edit.blade.php",
+            "route": "admin.product-tags.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-tags/index.blade.php",
+            "route": "admin.product-tags.create",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-tags/index.blade.php",
+            "route": "admin.product-tags.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-tags/index.blade.php",
+            "route": "admin.product-tags.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/product-tags/index.blade.php",
+            "route": "admin.product-tags.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/coupons/create.blade.php",
+            "route": "admin.coupons.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/coupons/create.blade.php",
+            "route": "admin.coupons.store",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/coupons/edit.blade.php",
+            "route": "admin.coupons.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/coupons/edit.blade.php",
+            "route": "admin.coupons.update",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/coupons/index.blade.php",
+            "route": "admin.coupons.create",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/coupons/index.blade.php",
+            "route": "admin.coupons.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/coupons/index.blade.php",
+            "route": "admin.coupons.edit",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/coupons/index.blade.php",
+            "route": "admin.coupons.destroy",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/admin/coupons/partials/form.blade.php",
+            "route": "admin.coupons.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/customer/orders/index.blade.php",
+            "route": "customer.orders.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/customer/orders/index.blade.php",
+            "route": "products.index",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/customer/orders/index.blade.php",
+            "route": "customer.orders.show",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/customer/orders/show.blade.php",
+            "route": "customer.orders.invoice",
+            "registered": true
+        },
+        {
+            "view": "C:/xampp/htdocs/ArizonaOutfits/commerce-menu-fixes/_checks/../../resources/views/customer/orders/show.blade.php",
+            "route": "customer.orders.invoice.download",
+            "registered": true
+        }
+    ]
+}

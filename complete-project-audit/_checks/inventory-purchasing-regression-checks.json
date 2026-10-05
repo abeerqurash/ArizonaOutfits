@@ -1,0 +1,447 @@
+[
+    {
+        "result": "PASS",
+        "check": "Inventory reports count simple plus variant units without parent double counting",
+        "detail": "Expected 9; actual 9"
+    },
+    {
+        "result": "PASS",
+        "check": "Valuation uses actual simple and variant units",
+        "detail": "Expected 9; actual 9"
+    },
+    {
+        "result": "PASS",
+        "check": "Valuation cost includes seven variant units and two simple units",
+        "detail": "Expected 90; actual 90"
+    },
+    {
+        "result": "PASS",
+        "check": "Reorder lists variants without duplicating parent",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Reorder units agree with purchasable stock",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Valuation respects valid zero sale price",
+        "detail": "Model\/cart price 0; valuation 0"
+    },
+    {
+        "result": "PASS",
+        "check": "One active low-stock alert after repeated checks",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Repeated alert does not resend notification",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Out-of-stock transition resolves old low alert",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Configured product threshold agrees with active alert",
+        "detail": "Stock 8 \/ reorder point 10 \/ global threshold 5: reorder needed=1"
+    },
+    {
+        "result": "PASS",
+        "check": "Low-stock report respects product reorder point",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Reorder-needed row recommends at least one unit",
+        "detail": "Stock equals threshold: needed=yes; suggested=1"
+    },
+    {
+        "result": "PASS",
+        "check": "Admin supplier creation uses valid admin ownership",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin model accepted by inventory adjustment",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Tracked receiving works for separate admin ID",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Purchase-order creation rejects duplicate item identifiers",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Purchase-order creator is admin not customer",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Draft can transition to ordered",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Tracked receiving creates receipt rows and stock",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Receipt receiver is the actual admin model",
+        "detail": "Actual receiver model=App\\Models\\Admin"
+    },
+    {
+        "result": "PASS",
+        "check": "Tracked receipt history records admin_id",
+        "detail": "Actual user_id=; admin_id=99"
+    },
+    {
+        "result": "PASS",
+        "check": "Replenishment resolves active alert after stock exceeds threshold",
+        "detail": "Stock now 8; threshold 5"
+    },
+    {
+        "result": "PASS",
+        "check": "Full receipt changes order to received",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cannot over-receive remaining quantity",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cannot receive item from another purchase order",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Draft receipt rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Correction reduces stock and received quantity",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Correction cannot exceed receipt quantity",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Supplier return reduces stock once",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cancelling submitted return restores stock",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Repeated return cancellation is blocked",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "markOrdered does not downgrade received state with stale input",
+        "detail": "Actual status=partially_received"
+    },
+    {
+        "result": "PASS",
+        "check": "markOrdered rechecks locked persisted status",
+        "detail": "Actual status=partially_received"
+    },
+    {
+        "result": "PASS",
+        "check": "Supplier with open purchase orders cannot be deleted",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Unreferenced supplier is soft deleted",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "History retains archived order relation",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "History search finds archived order number",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "History can search current admin actor",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Reports reject malformed dates with validation",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Supplier rating fields match local schema",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Supplier upload fields match local schema",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Document expiry alias exposes a date object for the view",
+        "detail": "Alias value type=Illuminate\\Support\\Carbon"
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Inventory Alerts",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Inventory History",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Inventory Reports",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Stock Valuation",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Reorder Dashboard",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Purchase Orders",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Suppliers",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Purchase Order detail",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Purchase Order create",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Receiving and Returns",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Supplier detail",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Supplier create",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Page render: Supplier products",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Server denies admin without module permission: admin.inventory-alerts.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Server denies admin without module permission: admin.inventory-history.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Server denies admin without module permission: admin.inventory-reports.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Server denies admin without module permission: admin.stock-valuation.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Server denies admin without module permission: admin.reorder-dashboard.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Server denies admin without module permission: admin.purchase-orders.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Server denies admin without module permission: admin.suppliers.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Inventory CSV export produces header and data",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Variant CSV uses actual variant SKU",
+        "detail": "Expected VAR-1; actual VAR-1"
+    },
+    {
+        "result": "PASS",
+        "check": "CSV identifies admin actor",
+        "detail": "Actual actor Fixture admin"
+    },
+    {
+        "result": "PASS",
+        "check": "Filtered valuation CSV executes",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Reorder CSV executes",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Excel valuation calculation respects zero sale",
+        "detail": "Actual 0"
+    },
+    {
+        "result": "PASS",
+        "check": "Movement totals obey selected dates",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Report recent movements obey selected dates",
+        "detail": "Selected 1990; recent rows=0"
+    },
+    {
+        "result": "PASS",
+        "check": "Inverted report dates are rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Only one primary supplier contact",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cross-supplier contact deletion rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Supplier product assignment saves price and MOQ",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Duplicate supplier product rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Wrong product variant assignment rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Cross-supplier product deletion rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Purchase item uses supplier price and minimum quantity",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Purchase creation rejects blocked supplier",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Purchase creation rejects inactive supplier",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Purchase email cannot use another supplier",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Supplier delivery queued without actual email",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Supplier delivery sender is actual admin model",
+        "detail": "Sender relation uses App\\Models\\Admin"
+    },
+    {
+        "result": "PASS",
+        "check": "Outdated draft version rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Valid draft update saves quantity and totals",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Return completion records credit without second stock deduction",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Completed return cannot be cancelled",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Same-second stale draft version is rejected",
+        "detail": "Version uses second-resolution updated_at"
+    },
+    {
+        "result": "PASS",
+        "check": "USD purchase order is displayed with its own currency",
+        "detail": "USD order 100 renders \u00a3100.00; index sums currencies without grouping"
+    }
+]

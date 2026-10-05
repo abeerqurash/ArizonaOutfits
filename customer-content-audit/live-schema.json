@@ -1,0 +1,258 @@
+{
+    "users": {
+        "columns": [
+            "id",
+            "name",
+            "email",
+            "pending_email",
+            "pending_email_requested_at",
+            "google_id",
+            "facebook_id",
+            "avatar",
+            "email_verified_at",
+            "email_login_enabled_at",
+            "email_login_pending_at",
+            "password",
+            "password_set_at",
+            "remember_token",
+            "created_at",
+            "updated_at",
+            "phone",
+            "phone_verified_at",
+            "security_reminder_shown_at",
+            "registration_method",
+            "status",
+            "is_admin",
+            "is_super_admin"
+        ],
+        "foreign_keys": []
+    },
+    "reviews": {
+        "columns": [
+            "id",
+            "product_id",
+            "user_id",
+            "name",
+            "email",
+            "rating",
+            "review",
+            "status",
+            "created_at",
+            "updated_at",
+            "title"
+        ],
+        "foreign_keys": [
+            {
+                "name": "reviews_product_id_foreign",
+                "columns": [
+                    "product_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "products",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            },
+            {
+                "name": "reviews_user_id_foreign",
+                "columns": [
+                    "user_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "users",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "categories": {
+        "columns": [
+            "id",
+            "title",
+            "slug",
+            "parent_id",
+            "image",
+            "meta_title",
+            "meta_description",
+            "expert",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "categories_parent_id_foreign",
+                "columns": [
+                    "parent_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "categories",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "posts": {
+        "columns": [
+            "id",
+            "title",
+            "slug",
+            "expert",
+            "excerpt",
+            "content",
+            "feature_image",
+            "feature_image_alt",
+            "template",
+            "primary_category_id",
+            "author_id",
+            "status",
+            "published_at",
+            "scheduled_at",
+            "meta_title",
+            "meta_description",
+            "canonical_url",
+            "robots_index",
+            "robots_follow",
+            "og_title",
+            "og_description",
+            "og_image",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "posts_author_id_foreign",
+                "columns": [
+                    "author_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admins",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "posts_primary_category_id_foreign",
+                "columns": [
+                    "primary_category_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "categories",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            }
+        ]
+    },
+    "category_post": {
+        "columns": [
+            "id",
+            "post_id",
+            "category_id",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "category_post_category_id_foreign",
+                "columns": [
+                    "category_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "categories",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            },
+            {
+                "name": "category_post_post_id_foreign",
+                "columns": [
+                    "post_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "posts",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            }
+        ]
+    },
+    "post_revisions": {
+        "columns": [
+            "id",
+            "post_id",
+            "admin_id",
+            "revision_number",
+            "snapshot",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "post_revisions_admin_id_foreign",
+                "columns": [
+                    "admin_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "admins",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "set null"
+            },
+            {
+                "name": "post_revisions_post_id_foreign",
+                "columns": [
+                    "post_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "posts",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            }
+        ]
+    },
+    "post_redirects": {
+        "columns": [
+            "id",
+            "post_id",
+            "old_slug",
+            "created_at",
+            "updated_at"
+        ],
+        "foreign_keys": [
+            {
+                "name": "post_redirects_post_id_foreign",
+                "columns": [
+                    "post_id"
+                ],
+                "foreign_schema": "arizonaoutfits",
+                "foreign_table": "posts",
+                "foreign_columns": [
+                    "id"
+                ],
+                "on_update": "restrict",
+                "on_delete": "cascade"
+            }
+        ]
+    }
+}

@@ -1,0 +1,102 @@
+[
+    {
+        "result": "PASS",
+        "check": "Blocked existing session loses account access",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Administrator session preserved",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Coexisting disabled customer cannot interrupt admin dashboard",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Disabled JSON request returns 403",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Active customer still allowed",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Phone customer required email validated",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Phone review retains customer ID and contact email",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Phone customer sees email input",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Guest duplicates use case insensitive email",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Spending preserves separate currencies and excludes unpaid\/refunded\/cancelled",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer currency labels accurate",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Shared article image preserved",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Revision media remains available",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Scheduling requires custom article file",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Draft allowed before custom file creation",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Invalid revision cannot modify saved article",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Authorized admin allowed: admin.customers.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Authorized admin allowed: admin.reviews.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Authorized admin allowed: admin.posts.index",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Authorized admin allowed: admin.categories.index",
+        "detail": ""
+    }
+]

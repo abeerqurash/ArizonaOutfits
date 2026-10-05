@@ -1,0 +1,5 @@
+- `public/asset/js/arizona-admin-controls.js.txt` → `C:\xampp\htdocs\ArizonaOutfits\public\asset\js\arizona-admin-controls.js`
+- `public/asset/css/arizona-admin-controls.css.txt` → `C:\xampp\htdocs\ArizonaOutfits\public\asset\css\arizona-admin-controls.css`
+- `resources/views/admin/layouts/app.blade.php.txt` → `C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\layouts\app.blade.php`
+- `resources/views/customer/layouts/app.blade.php.txt` → `C:\xampp\htdocs\ArizonaOutfits\resources\views\customer\layouts\app.blade.php`
+- `resources/views/customer/partials/styles.blade.php.txt` → `C:\xampp\htdocs\ArizonaOutfits\resources\views\customer\partials\styles.blade.php`

@@ -1,0 +1,1 @@
+<?php /**PATH C:\xampp\htdocs\ArizonaOutfits\complete-project-audit\_checks/../../resources/views\blogs\partials\blog-form.blade.php ENDPATH**/ ?>

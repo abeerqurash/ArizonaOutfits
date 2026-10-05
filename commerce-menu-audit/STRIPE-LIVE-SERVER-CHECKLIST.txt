@@ -1,0 +1,31 @@
+STRIPE HOSTED-SERVER TEST PLAN - ARIZONA OUTFITS
+Date: 1 October 2026
+No live Stripe payment was performed in this audit.
+
+BEFORE TESTING
+Repair the missing couponRedemptionService dependency in StripeWebhookController.
+Use one shipping calculation for displayed checkout and Stripe order totals.
+Resolve archived-order lookup, coupon history, and payment-state rules identified in REPORT.txt.
+Keep provider secrets on the server; do not paste them into the chat or reports.
+Use Stripe test mode on the hosted server first. Verify the project's actual webhook route and signing configuration on deployment.
+
+HOSTED TEST-MODE CASES
+1. Successful payment: the same order becomes paid; customer history/detail/invoice show matching item snapshots, shipping, discount, currency and total; inventory is deducted once.
+2. Repeat delivery: duplicate success events and repeated return-page visits do not duplicate inventory deduction, coupon redemption or notifications.
+3. Browser interrupted: completing payment then closing the browser still finalizes through webhook delivery.
+4. Failed/cancelled payment: it does not become paid or fulfilled; stock and coupon accounting remain consistent.
+5. Discounted order: valid coupon, per-customer limit, global limit and category targeting agree before checkout and at finalization.
+6. Pending order whose coupon is edited/deactivated: follows the explicitly implemented policy without an unexpected finalization exception.
+7. Archive during pending payment: follows the repaired archive policy; webhook and customer invoice can still resolve the durable order.
+8. Shipping: each enabled country and selected shipping method matches the displayed order and payment amount.
+9. Event mismatch: invalid signature, wrong order identity, amount or currency cannot mark an order paid.
+10. Inventory contention: two checkouts for the last unit cannot silently produce two paid orders with an unhandled stock failure; exercise the implemented recovery policy in test mode.
+11. Refund: full/partial/pending/failed provider refunds reconcile to the correct local status and inventory policy; repeated events do not restore stock twice.
+12. Access: one customer cannot view another customer's order/invoice; restricted admins cannot invoke unauthorized actions directly.
+
+RECORD FOR EACH CASE
+Test case, local order number, provider test event/payment identifier, displayed and stored totals, payment/order state, stock before/after, coupon redemption count, activity history, customer invoice result, and relevant sanitized application errors.
+Do not include API keys, webhook secrets, card data or customer private information.
+
+LIVE-MODE PAYMENT
+After hosted test-mode cases pass, a separately authorized small real transaction can verify live-mode configuration, webhook processing and the intended refund flow. This audit does not authorize or execute a charge.

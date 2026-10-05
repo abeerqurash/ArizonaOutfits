@@ -1,0 +1,192 @@
+[
+  {
+    "file": "bootstrap\\app.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\bootstrap\\app.php\n"
+  },
+  {
+    "file": "routes\\auth.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\routes\\auth.php\n"
+  },
+  {
+    "file": "routes\\web.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\routes\\web.php\n"
+  },
+  {
+    "file": "app\\Mail\\AdminNewOrderMail.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Mail\\AdminNewOrderMail.php\n"
+  },
+  {
+    "file": "app\\Mail\\CustomerOrderConfirmationMail.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Mail\\CustomerOrderConfirmationMail.php\n"
+  },
+  {
+    "file": "app\\Models\\NavigationMenuItem.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Models\\NavigationMenuItem.php\n"
+  },
+  {
+    "file": "app\\Models\\Order.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Models\\Order.php\n"
+  },
+  {
+    "file": "app\\Models\\PurchaseOrderReceipt.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Models\\PurchaseOrderReceipt.php\n"
+  },
+  {
+    "file": "app\\Services\\AdminAccessPolicy.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Services\\AdminAccessPolicy.php\n"
+  },
+  {
+    "file": "app\\Services\\AdminBackupService.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Services\\AdminBackupService.php\n"
+  },
+  {
+    "file": "app\\Services\\CmsContentSanitizer.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Services\\CmsContentSanitizer.php\n"
+  },
+  {
+    "file": "app\\Services\\EmailTemplateService.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Services\\EmailTemplateService.php\n"
+  },
+  {
+    "file": "app\\Services\\HtmlContentSanitizer.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Services\\HtmlContentSanitizer.php\n"
+  },
+  {
+    "file": "app\\Services\\InventoryCatalogService.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Services\\InventoryCatalogService.php\n"
+  },
+  {
+    "file": "app\\Services\\InventoryService.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Services\\InventoryService.php\n"
+  },
+  {
+    "file": "app\\Services\\SafeContentUrl.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Services\\SafeContentUrl.php\n"
+  },
+  {
+    "file": "app\\Services\\StoreSettingsService.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Services\\StoreSettingsService.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\CartController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\CartController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\CheckoutController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\CheckoutController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\ProfileController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\ProfileController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\ShopController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\ShopController.php\n"
+  },
+  {
+    "file": "app\\Http\\Middleware\\AdminAuditMiddleware.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Middleware\\AdminAuditMiddleware.php\n"
+  },
+  {
+    "file": "app\\Http\\Middleware\\AdminMiddleware.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Middleware\\AdminMiddleware.php\n"
+  },
+  {
+    "file": "app\\Http\\Middleware\\StorePolicyMiddleware.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Middleware\\StorePolicyMiddleware.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\AdminAnalyticsController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\AdminAnalyticsController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\AdminAuditLogController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\AdminAuditLogController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\AdminBackupController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\AdminBackupController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\AdminEmailTemplateController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\AdminEmailTemplateController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\AdminNavigationMenuController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\AdminNavigationMenuController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\AdminNotificationController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\AdminNotificationController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\AdminPageController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\AdminPageController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\AdminRoleController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\AdminRoleController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\AdminUserController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\AdminUserController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\EcommerceSettingController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\EcommerceSettingController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Admin\\OrderController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Admin\\OrderController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Auth\\PasswordController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Auth\\PasswordController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Customer\\AccountSecurityController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Customer\\AccountSecurityController.php\n"
+  },
+  {
+    "file": "app\\Http\\Controllers\\Payment\\StripePaymentController.php",
+    "pass": true,
+    "detail": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\customer-admin-sync-files\\_staged\\app\\Http\\Controllers\\Payment\\StripePaymentController.php\n"
+  }
+]

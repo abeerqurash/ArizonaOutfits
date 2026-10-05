@@ -1,0 +1,15 @@
+WHITE NAVIGATION COVER
+
+Replace ALL contents of:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\header.blade.php
+
+With 01_header.blade.php.txt. Save as header.blade.php, not .txt.
+
+Run from the project folder:
+C:\xampp\php\php.exe artisan optimize:clear
+
+Refresh with Ctrl+F5.
+The navigation cover is white immediately, with dark text/icons and teal hover.
+Scrolling no longer slides the cover down or changes its appearance.
+Existing button-text movement, mobile menu and favorites/cart counts remain.
+This replacement continues to include your existing header-menu-links partial.

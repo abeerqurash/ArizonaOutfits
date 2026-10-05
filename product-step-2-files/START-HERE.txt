@@ -1,0 +1,89 @@
+PRODUCT SYSTEM - STEP 2: PRICING AND VARIANT VALIDATION
+
+REPLACE ONE FILE
+
+1. Back up this existing file:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\ProductController.php
+
+2. Open ProductController.txt from THIS product-step-2-files folder.
+Copy ALL its contents and paste over ALL contents of:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\ProductController.php
+Save with the existing filename ProductController.php.
+This is the ADMIN controller. Keep your custom page/view files as they are.
+Use this Step 2 replacement; it includes the previous Step 1 fix.
+
+3. Open PowerShell and run:
+Set-Location 'C:\xampp\htdocs\ArizonaOutfits'
+C:\xampp\php\php.exe -l app\Http\Controllers\Admin\ProductController.php
+
+Expect No syntax errors detected.
+No database migration, view replacement, or timezone change is required.
+If syntax fails, restore the backup and share the error.
+
+WHAT THIS FIXES
+- A blank variant Regular Price inherits the product Regular Price.
+  Its Sale Price is now checked against that inherited price.
+- A main product SKU cannot reuse an existing variant SKU.
+- A variant SKU cannot reuse the submitted main product SKU.
+- SKU collision checks compare without case differences.
+- The same existing variant ID cannot be submitted more than once.
+- Existing checks for variant ownership, unique option combinations,
+  correct option/value relationships, and negative prices are retained.
+
+PRICE EXAMPLES
+Product Regular Price 100, variant Regular Price blank:
+  variant Sale Price 90 -> accepted
+  variant Sale Price 110 -> rejected
+Product Regular Price 100, variant Regular Price 120:
+  variant Sale Price 110 -> accepted
+  variant Sale Price 121 -> rejected
+
+These checks follow your current cart pricing rules. A blank variant
+Sale Price means no variant sale; it does not inherit the product's sale
+price. This step validates prices without changing that pricing policy.
+Zero prices and sale prices equal to regular prices remain allowed,
+matching the existing parent-product validation.
+
+SKU EXAMPLES
+Main SKU SHIRT-BASE, variant SKU SHIRT-SMALL -> accepted if unused.
+Main SKU SHIRT-BASE, variant SKU shirt-base -> rejected.
+Two variants with SKU BLUE and blue -> rejected.
+SKU fields can be left blank if you do not assign a SKU.
+Existing unique SKUs can stay unchanged when editing their own records.
+If legacy records already share a SKU, assign distinct values before
+saving. This step does not rename or clean existing database records.
+
+BEGINNER CHECK IN ADMIN
+Use a test product instead of changing prices on a product currently
+being sold. Refresh the product edit/create page with Ctrl+F5.
+
+1. Set product Regular Price to 100.
+2. Generate a variant using your existing options, for example Size Small.
+3. Leave that variant Regular Price blank, set its Sale Price to 110,
+   and save. Expect a variant sale-price validation error.
+4. Change its Sale Price to 90, use distinct SKUs, and save.
+   Expect a successful save.
+5. Edit the saved product again and verify the values stayed saved.
+6. Give the variant the same SKU as the main product and try saving.
+   Expect a SKU validation error. Restore a unique SKU and save again.
+7. If your UI allows duplicate variant combinations, try duplicating one.
+   Expect a validation error, then remove the duplicate and save again.
+8. On the admin product listing, verify Featured / Not featured /
+   All products still work from Step 1.
+
+Keep your normal required product fields filled for these tests.
+Changing a price or SKU to an invalid value should show an error and
+leave the saved database product unchanged. If the form displays a
+feedback dialog, close it and review the highlighted field errors.
+No additional variants are needed solely to test duplicate IDs; that
+case was verified using disposable requests before delivery.
+
+VALIDATION BEFORE DELIVERY
+PHP syntax passed. 31 isolated checks passed with a memory-only fixture
+database. These reproduced the two original gaps and checked pricing,
+blank/zero values, SKU collisions, ID ownership/duplicates, and option
+combinations. The original controller hash stayed unchanged.
+These are focused validation checks, not full checkout or concurrent
+catalog-write testing. No live product was created or changed.
+
+Reply PASS after installing and checking, or share the error text.

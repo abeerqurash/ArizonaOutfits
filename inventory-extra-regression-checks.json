@@ -1,0 +1,132 @@
+[
+    {
+        "result": "PASS",
+        "check": "Negative stock rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Manual movement records admin without customer FK",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Variable parent adjustment rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Variable parent appears only as variant inventory",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Variant regular price inherits parent and zero sale remains zero",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Variant missing sale uses inherited regular price",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Variant adjustment records actual admin",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Repeated additive migration preserves document records",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Legacy document actor remains original customer",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Legacy supplier and rating actors preserved",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin foreign key: suppliers",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin foreign key: purchase_order_receipts",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin foreign key: supplier_returns",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin foreign key: supplier_documents",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin foreign key: supplier_ratings",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Admin foreign key: supplier_purchase_order_deliveries",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Currency totals remain separate",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Dashboard uses per-currency totals",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Supplier list labels both currencies",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Stale cancel cannot cancel received order",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Purchase workbook uses order currency",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Valuation PDF renders",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Valuation Excel workbook generates",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Draft edit form carries monotonic version",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Fresh schema creates document and rating tables",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Fresh schema includes rating UI fields",
+        "detail": ""
+    }
+]

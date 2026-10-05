@@ -1,0 +1,172 @@
+[
+  {
+    "path": "app/Services/SafeContentUrl.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Services\\SafeContentUrl.php\n"
+  },
+  {
+    "path": "app/Services/HtmlContentSanitizer.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Services\\HtmlContentSanitizer.php\n"
+  },
+  {
+    "path": "app/Services/CmsContentSanitizer.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Services\\CmsContentSanitizer.php\n"
+  },
+  {
+    "path": "app/Services/EmailTemplateService.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Services\\EmailTemplateService.php\n"
+  },
+  {
+    "path": "app/Http/Middleware/AdminMiddleware.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Middleware\\AdminMiddleware.php\n"
+  },
+  {
+    "path": "routes/web.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\routes\\web.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/AdminPageController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\AdminPageController.php\n"
+  },
+  {
+    "path": "app/Models/NavigationMenuItem.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Models\\NavigationMenuItem.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/AdminNavigationMenuController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\AdminNavigationMenuController.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/AdminNotificationController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\AdminNotificationController.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/AdminEmailTemplateController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\AdminEmailTemplateController.php\n"
+  },
+  {
+    "path": "app/Http/Middleware/AdminAuditMiddleware.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Middleware\\AdminAuditMiddleware.php\n"
+  },
+  {
+    "path": "app/Services/AdminBackupService.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Services\\AdminBackupService.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/AdminBackupController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\AdminBackupController.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/AdminAnalyticsController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\AdminAnalyticsController.php\n"
+  },
+  {
+    "path": "app/Services/AdminAccessPolicy.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Services\\AdminAccessPolicy.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/AdminRoleController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\AdminRoleController.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/AdminUserController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\AdminUserController.php\n"
+  },
+  {
+    "path": "app/Services/StoreSettingsService.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Services\\StoreSettingsService.php\n"
+  },
+  {
+    "path": "app/Http/Middleware/StorePolicyMiddleware.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Middleware\\StorePolicyMiddleware.php\n"
+  },
+  {
+    "path": "bootstrap/app.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\bootstrap\\app.php\n"
+  },
+  {
+    "path": "app/Services/InventoryCatalogService.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Services\\InventoryCatalogService.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/EcommerceSettingController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\EcommerceSettingController.php\n"
+  },
+  {
+    "path": "app/Models/Order.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Models\\Order.php\n"
+  },
+  {
+    "path": "app/Services/InventoryService.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Services\\InventoryService.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/CheckoutController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\CheckoutController.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Payment/StripePaymentController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Payment\\StripePaymentController.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/CartController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\CartController.php\n"
+  },
+  {
+    "path": "app/Models/PurchaseOrderReceipt.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Models\\PurchaseOrderReceipt.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/ShopController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\ShopController.php\n"
+  },
+  {
+    "path": "app/Mail/CustomerOrderConfirmationMail.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Mail\\CustomerOrderConfirmationMail.php\n"
+  },
+  {
+    "path": "app/Mail/AdminNewOrderMail.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Mail\\AdminNewOrderMail.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/AdminAuditLogController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\AdminAuditLogController.php\n"
+  },
+  {
+    "path": "app/Http/Controllers/Admin/OrderController.php",
+    "pass": true,
+    "output": "No syntax errors detected in C:\\xampp\\htdocs\\ArizonaOutfits\\administration-fixes\\_staged\\app\\Http\\Controllers\\Admin\\OrderController.php\n"
+  }
+]

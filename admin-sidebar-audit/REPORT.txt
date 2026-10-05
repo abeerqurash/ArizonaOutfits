@@ -1,0 +1,109 @@
+ADMIN DASHBOARD SIDEBAR AUDIT - 1 OCTOBER 2026
+
+SUMMARY
+32 link/action occurrences checked; all 32 resolve to registered routes.
+The brand and Dashboard menu share a destination. The audit includes
+View Website and the POST Logout form. There are 29 distinct admin GET
+navigation destinations, all checked for active-state rendering.
+No application source or live database records were changed.
+
+WHAT PASSED
+- Every sidebar named route exists and accepts its intended HTTP method.
+- Generated URLs match their intended route; no sidebar route shadowing found.
+- Controller classes and public action methods exist.
+- Literal view destinations referenced by those actions exist.
+- All nine permission-based administration links render for a super admin.
+- Those nine links hide when the synthetic admin has no matching permissions.
+- Content permission shows CMS Pages and Menu Builder without Admin Team.
+- Coexisting customer and administrator fixture sessions use the admin guard
+  when auth:admin selects that guard, as Laravel does for real admin requests.
+- Logout uses POST with the Blade CSRF directive. It was not submitted.
+- The sidebar JavaScript includes mobile link-click, overlay, close-button,
+  and resize handling. These handlers were reviewed, not tested in a live browser.
+
+CONFIRMED ISSUES
+
+1. Archived Orders highlights two menus.
+Orders matches admin.orders.* and therefore also matches admin.orders.archived.
+Rendering the archive destination confirms both Orders and Archived Orders
+receive the active class. All other 28 distinct admin destinations highlight
+one expected navigation link.
+File: C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\partials\sidebar.blade.php
+
+2. Reorder badge composer targets an unused sidebar view.
+The admin layout includes admin.partials.sidebar. AppServiceProvider registers
+the reorderRequiredCount composer for admin.layouts.sidebar instead.
+Consequently the actual sidebar does not receive that count from this composer.
+Its fallback zero hides the badge even when qualifying inventory exists.
+File: C:\xampp\htdocs\ArizonaOutfits\app\Providers\AppServiceProvider.php
+Layout: C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\layouts\app.blade.php
+
+3. Inventory Alerts badge composer is in a controller boot() method.
+InventoryAlertController::boot() registers activeInventoryAlertCount, but
+Laravel does not automatically call controller boot methods. No invocation
+was found. The actual sidebar defaults the missing count to zero.
+Both inventory/reorder badges rendered correctly when fixture counts were
+provided, confirming the problem is data wiring rather than badge markup.
+File: C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\InventoryAlertController.php
+
+4. Permission-hidden menus do not guarantee protected destinations.
+The administration-links partial checks permissions to hide links. Several
+linked destinations, including Roles & Permissions and Backups, do not
+enforce those permission slugs in route middleware or their controller.
+They use authentication/active-admin checks, which are not role permissions.
+A missing menu link alone does not prevent direct URL access by another
+active administrator. This should be fixed at the server before relying on
+restricted administrator roles. Existing main sidebar links are generally
+always shown; do not assume every module already applies role permissions.
+Files: C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\partials\administration-links.blade.php
+C:\xampp\htdocs\ArizonaOutfits\routes\web.php
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminRoleController.php
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\AdminBackupController.php
+
+COMPLETE LINK MAP
+Each row: menu | method | URL path | route name | route/action/view result
+Brand / Dashboard | GET | /admin/dashboard | admin.dashboard | PASS
+Dashboard | GET | /admin/dashboard | admin.dashboard | PASS
+Orders | GET | /admin/orders | admin.orders.index | PASS
+Archived Orders | GET | /admin/orders/archived | admin.orders.archived | PASS
+Payment Verifications | GET | /admin/payment-verifications | admin.payment-verifications.index | PASS
+Products | GET | /admin/products | admin.products.index | PASS
+Product Categories | GET | /admin/product-categories | admin.product-categories.index | PASS
+Product Tags | GET | /admin/product-tags | admin.product-tags.index | PASS
+Coupons | GET | /admin/coupons | admin.coupons.index | PASS
+Inventory Alerts | GET | /admin/inventory-alerts | admin.inventory-alerts.index | PASS
+Inventory History | GET | /admin/inventory-history | admin.inventory-history.index | PASS
+Inventory Reports | GET | /admin/inventory-reports | admin.inventory-reports.index | PASS
+Stock Valuation | GET | /admin/stock-valuation | admin.stock-valuation.index | PASS
+Reorder Dashboard | GET | /admin/reorder-dashboard | admin.reorder-dashboard.index | PASS
+Purchase Orders | GET | /admin/purchase-orders | admin.purchase-orders.index | PASS
+Suppliers | GET | /admin/suppliers | admin.suppliers.index | PASS
+Customers | GET | /admin/customers | admin.customers.index | PASS
+Reviews | GET | /admin/reviews | admin.reviews.index | PASS
+Blog Posts | GET | /admin/posts | admin.posts.index | PASS
+Blog Categories | GET | /admin/categories | admin.categories.index | PASS
+Store Settings | GET | /admin/ecommerce-settings | admin.settings.edit | PASS
+View Website | GET | / | home-page | PASS
+Logout | POST | /admin/logout | admin.logout | PASS
+CMS Pages | GET | /admin/pages | admin.pages.index | PASS
+Menu Builder | GET | /admin/navigation-menus | admin.navigation-menus.index | PASS
+Global Analytics | GET | /admin/analytics | admin.analytics.index | PASS
+Admin Team | GET | /admin/admin-users | admin.admin-users.index | PASS
+Roles & Permissions | GET | /admin/admin-roles | admin.admin-roles.index | PASS
+Notification Center | GET | /admin/notifications | admin.notifications.index | PASS
+Audit Logs | GET | /admin/audit-logs | admin.audit-logs.index | PASS
+Backups | GET | /admin/backups | admin.backups.index | PASS
+Email Templates | GET | /admin/email-templates | admin.email-templates.index | PASS
+
+RECOMMENDED FIX ORDER
+1. Enforce server-side permissions for administration routes.
+2. Wire both badge counts into admin.partials.sidebar.
+3. Make the Orders active condition exclude Archived Orders routes.
+
+LIMITS
+This is route/action/view and isolated sidebar-render validation. It is not
+a claim that every destination page returns HTTP 200 against your live
+database. Controllers and full pages were not executed with real accounts,
+and logout/export/backup/payment actions were not performed. Some pages may
+still have database, service, or full-layout runtime errors.
+The JSON files retain the route map and rendered active-state evidence.

@@ -1,0 +1,42 @@
+[
+    {
+        "result": "PASS",
+        "check": "Original accepted mismatched image filename unsafe.html",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Replacement rejects mismatched extension unsafe.html",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Original accepted mismatched image filename unsafe.svg",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Replacement rejects mismatched extension unsafe.svg",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Original accepted mismatched image filename unsafe.shtml",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Replacement rejects mismatched extension unsafe.shtml",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Replacement accepts a real JPEG",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Stored extension comes from verified MIME",
+        "detail": ""
+    }
+]

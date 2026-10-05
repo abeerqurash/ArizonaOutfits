@@ -1,0 +1,84 @@
+ARIZONA OUTFITS - ARTICLE SEARCH AND FILTERS
+
+These are complete replacement files. Install BOTH files together.
+Your application files have not been changed automatically.
+
+1. BACK UP YOUR TWO EXISTING FILES
+Copy these files somewhere safe before replacing their contents:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\BlogController.php
+C:\xampp\htdocs\ArizonaOutfits\resources\views\blogs\index.blade.php
+
+2. REPLACE THE PUBLIC BLOG CONTROLLER
+Open BlogController.txt from this delivery folder.
+Select all its contents and copy them.
+Open this EXISTING file in your editor:
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\BlogController.php
+Select all the existing contents, paste the copied contents, and save.
+This is the public BlogController.php, not the admin PostController.php.
+
+3. REPLACE THE BLOG LISTING VIEW
+Open index.blade.txt from this delivery folder.
+Select all its contents and copy them.
+Open this EXISTING file in your editor:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\blogs\index.blade.php
+Select all the existing contents, paste the copied contents, and save.
+Keep the existing filename index.blade.php. Do not save it as .php.txt.
+START-HERE.txt is an instruction file; do not paste it into PHP.
+
+4. CHECK PHP AND CLEAR THE VIEW CACHE
+Open PowerShell and run these commands one at a time:
+
+Set-Location 'C:\xampp\htdocs\ArizonaOutfits'
+C:\xampp\php\php.exe -l app\Http\Controllers\BlogController.php
+C:\xampp\php\php.exe artisan view:clear
+
+The first PHP command should say 'No syntax errors detected'.
+If it reports an error, restore your backup and share the error text.
+
+5. OPEN THE BLOG PAGE
+Start Apache and MySQL in XAMPP, then open your usual blog page.
+For a standard XAMPP setup:
+http://localhost/ArizonaOutfits/public/blogs
+Refresh with Ctrl+F5.
+The filter section appears immediately after the hero.
+
+6. TEST WITH YOUR THREE ARTICLES
+- Search using a word from one article title, then click Find articles.
+- Clear filters to bring back all published articles.
+- Select a category; include subcategories is checked by default.
+- Select an author.
+- Choose Published from and Published until using article publication dates.
+- Try Newest first, Oldest first, Title A-Z, and Title Z-A.
+- Combine search and category to narrow the results.
+- Search for a word that does not exist; expect No articles found.
+- Use View all articles to reset from the empty state.
+- Check the page on a phone or narrow browser window.
+
+WHAT THIS ADDS
+Keyword search across titles, slugs, summaries, stored article content,
+category names, and author names. Multiple search words must all match.
+Category filtering also matches the primary category.
+Category options show their parent hierarchy. Subcategories are optional.
+Author and inclusive publication date filters can be combined.
+Result counts, removable filter chips, and clear/reset links are included.
+Only published articles appear; draft-only categories/authors are excluded.
+Pagination keeps the selected filters and shows 12 articles per page.
+With only three matching articles, pagination will not appear.
+
+Search uses text stored in the database. It does not read the body text
+inside manually written article Blade templates. Publication dates refer
+to published_at, not the date the article was first created.
+
+No additional routes, database migrations, CSS files, or JavaScript files
+are required. The view includes the new section's styles.
+Existing single-article handling remains in the replacement controller.
+
+VALIDATION BEFORE DELIVERY
+42 isolated checks passed, including published visibility, combined
+filters, date validation, escaped searches, category hierarchy, sorting,
+empty states, and pagination. Test articles existed only in memory.
+Desktop and 375px mobile previews were inspected. Browser checks passed
+for responsive controls, combined form submission, and clearing filters.
+The two original application source files were verified unchanged.
+
+After installing BOTH files and testing, reply PASS or share any error.

@@ -1,0 +1,82 @@
+[
+    {
+        "result": "PASS",
+        "check": "Out-for-delivery is included in transit count",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Out-for-delivery and archived orders excluded from preparation count",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Customer order count includes archives but excludes another customer",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Dashboard paid spend groups GBP and USD separately",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Paid spend exactly matches admin Customer detail",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Pending payment count excludes cancelled and archived orders",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Dashboard renders currency totals and payment column",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Dashboard renders security and favorite links",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Summary payment link returns exactly the counted orders",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Payment\/search\/status filters combine within customer ownership",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Invalid payment filter rejected",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Order view includes payment filter and reset",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Dashboard uses web customer when default guard is admin",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Controller refuses blocked customer even without route middleware",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Own invoice PDF generates",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "No-orders dashboard renders its empty state",
+        "detail": ""
+    }
+]

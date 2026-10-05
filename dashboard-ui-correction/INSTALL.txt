@@ -1,0 +1,21 @@
+DASHBOARD UI CORRECTION — THREE COMPLETE REPLACEMENTS
+
+Use FILES.md for exact destinations. Replace all three files with the entire text
+contents. Remove the final .txt suffix at the destination. These replacements are
+prepared separately; live application source files remain unchanged.
+
+Run in C:\xampp\htdocs\ArizonaOutfits:
+  C:\xampp\php\php.exe artisan optimize:clear
+Refresh with Ctrl+F5. No migration is needed for this correction.
+
+The previous green primary accent is restored to the original #635bff purple.
+Existing success/alert colors are retained. Custom dropdowns already provided by
+individual pages are preserved, and their native select is hidden. New dropdowns
+only enhance native single selects. Dates have one visible calendar control.
+
+Shared page banners use the white/lavender Inventory Alerts appearance. Store
+settings fields use a responsive grid; file uploads receive styled purple chooser
+buttons; keyword chips use a single outer input boundary.
+
+This is a correction on top of the previous product/dashboard update. Keep its
+custom measurement, value ordering, backup and migration files installed.

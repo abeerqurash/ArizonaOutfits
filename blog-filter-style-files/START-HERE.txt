@@ -1,0 +1,40 @@
+ARTICLE FILTER FORM - CONTACT FORM STYLE
+
+Replace only ONE file for this styling update.
+
+1. Back up this existing file:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\blogs\index.blade.php
+
+2. Open index.blade.txt from this folder and copy ALL its contents.
+Paste them over ALL contents of this existing file, then save:
+C:\xampp\htdocs\ArizonaOutfits\resources\views\blogs\index.blade.php
+Keep its filename index.blade.php, not index.blade.php.txt.
+
+3. Open PowerShell and run these commands one at a time:
+Set-Location 'C:\xampp\htdocs\ArizonaOutfits'
+C:\xampp\php\php.exe artisan view:clear
+
+4. Open your blog page and press Ctrl+F5:
+http://localhost/ArizonaOutfits/public/blogs
+
+The form remains immediately after the hero.
+You should see a pale background, two columns on desktop, square fields,
+uppercase spaced labels, and rounded Find articles / Clear filters buttons.
+On phones, the fields and buttons stack vertically.
+Move your cursor inside either button: its text follows the cursor and
+returns to the center when the cursor leaves.
+
+Keep the BlogController.php from the previous filter update.
+No controller, route, database, CSS file, or JavaScript file replacement
+is needed for this styling update. The styles are inside this Blade view.
+Button text movement uses your existing public\asset\js\blogs.js.
+Reduced-motion accessibility settings disable the new form's text motion.
+
+Check search, category, dates, and Clear filters once after replacing.
+The updated view was rendered with isolated data and checked in Edge.
+Cursor movement/reset, combined GET submission, reset links, 375px mobile
+layout, and reduced-motion behavior passed. Your source files have not
+been replaced automatically.
+
+preview-desktop.png shows the updated form styling.
+Reply PASS after installing and checking, or share any error.

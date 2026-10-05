@@ -1,0 +1,281 @@
+{
+  "results": [
+    {
+      "file": "arizona-blog-system-test-3.html",
+      "width": 1440,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "arizona-blog-system-test-3.html",
+      "width": 880,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "arizona-blog-system-test-3.html",
+      "width": 600,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "arizona-blog-system-test-3.html",
+      "width": 390,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "arizona-blog-system-test.html",
+      "width": 1440,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "arizona-blog-system-test.html",
+      "width": 880,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "arizona-blog-system-test.html",
+      "width": 600,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "arizona-blog-system-test.html",
+      "width": 390,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "category.html",
+      "width": 1440,
+      "overflow": false,
+      "categoryHeight": 500
+    },
+    {
+      "file": "category.html",
+      "width": 880,
+      "overflow": false,
+      "categoryHeight": 500
+    },
+    {
+      "file": "category.html",
+      "width": 600,
+      "overflow": false,
+      "categoryHeight": 500
+    },
+    {
+      "file": "category.html",
+      "width": 390,
+      "overflow": false,
+      "categoryHeight": 500
+    },
+    {
+      "file": "contact.html",
+      "width": 1440,
+      "overflow": false,
+      "contactAuthorLabel": ""
+    },
+    {
+      "file": "contact.html",
+      "width": 880,
+      "overflow": false,
+      "contactAuthorLabel": ""
+    },
+    {
+      "file": "contact.html",
+      "width": 600,
+      "overflow": false,
+      "contactAuthorLabel": ""
+    },
+    {
+      "file": "contact.html",
+      "width": 390,
+      "overflow": false,
+      "contactAuthorLabel": ""
+    },
+    {
+      "file": "home.html",
+      "width": 1440,
+      "overflow": false,
+      "hoverOpens": true,
+      "parentHref": "http://127.0.0.1:8000/product-category/men-outfits"
+    },
+    {
+      "file": "home.html",
+      "width": 880,
+      "overflow": false
+    },
+    {
+      "file": "home.html",
+      "width": 600,
+      "overflow": false
+    },
+    {
+      "file": "home.html",
+      "width": 390,
+      "overflow": false,
+      "mobileChildren": 2,
+      "mobileExpanded": true
+    },
+    {
+      "file": "my-first-blog-post.html",
+      "width": 1440,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "my-first-blog-post.html",
+      "width": 880,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "my-first-blog-post.html",
+      "width": 600,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "my-first-blog-post.html",
+      "width": 390,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "my-first-business-blog.html",
+      "width": 1440,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "my-first-business-blog.html",
+      "width": 880,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "my-first-business-blog.html",
+      "width": 600,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "my-first-business-blog.html",
+      "width": 390,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "product.html",
+      "width": 1440,
+      "overflow": false,
+      "sizeChartOpens": true,
+      "menImageLoaded": true,
+      "womenTabWorks": true,
+      "womenImageLoaded": true,
+      "chartFitsViewport": true,
+      "escapeClosesChart": true
+    },
+    {
+      "file": "product.html",
+      "width": 880,
+      "overflow": false,
+      "sizeChartOpens": true,
+      "menImageLoaded": true,
+      "womenTabWorks": true,
+      "womenImageLoaded": true,
+      "chartFitsViewport": true,
+      "escapeClosesChart": true
+    },
+    {
+      "file": "product.html",
+      "width": 600,
+      "overflow": false,
+      "sizeChartOpens": true,
+      "menImageLoaded": true,
+      "womenTabWorks": true,
+      "womenImageLoaded": true,
+      "chartFitsViewport": true,
+      "escapeClosesChart": true
+    },
+    {
+      "file": "product.html",
+      "width": 390,
+      "overflow": false,
+      "sizeChartOpens": true,
+      "menImageLoaded": true,
+      "womenTabWorks": true,
+      "womenImageLoaded": true,
+      "chartFitsViewport": true,
+      "escapeClosesChart": true
+    },
+    {
+      "file": "shop.html",
+      "width": 1440,
+      "overflow": false
+    },
+    {
+      "file": "shop.html",
+      "width": 880,
+      "overflow": false
+    },
+    {
+      "file": "shop.html",
+      "width": 600,
+      "overflow": false
+    },
+    {
+      "file": "shop.html",
+      "width": 390,
+      "overflow": false
+    },
+    {
+      "file": "top-cybersecurity-trends-in-2026.html",
+      "width": 1440,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "top-cybersecurity-trends-in-2026.html",
+      "width": 880,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "top-cybersecurity-trends-in-2026.html",
+      "width": 600,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    },
+    {
+      "file": "top-cybersecurity-trends-in-2026.html",
+      "width": 390,
+      "overflow": false,
+      "relatedCards": 6,
+      "relatedBeforeReviews": true
+    }
+  ],
+  "errors": []
+}

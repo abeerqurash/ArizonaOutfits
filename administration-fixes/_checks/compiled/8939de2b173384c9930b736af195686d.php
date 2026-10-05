@@ -1,0 +1,2551 @@
+<?php $__env->startSection('title', 'Checkout'); ?>
+
+<?php $__env->startSection(
+    'meta_description',
+    'Review your order, enter your billing and shipping details, and complete your purchase.'
+); ?>
+
+<?php $__env->startSection('content'); ?>
+
+<?php
+    $cartItemCount = collect($cart)->sum(function ($item) {
+        return max(
+            1,
+            (int) ($item['quantity'] ?? 1)
+        );
+    });
+
+    $coupon = session('cart_coupon', []);
+    $couponCode = $coupon['code'] ?? '';
+
+    $customer = auth()->user();
+
+    $oldBillingCountry = old(
+        'billing_country',
+        ''
+    );
+
+    $oldBillingState = old(
+        'billing_state',
+        ''
+    );
+
+    $oldBillingCity = old(
+        'billing_city',
+        ''
+    );
+
+    $oldShippingCountry = old(
+        'shipping_country',
+        ''
+    );
+
+    $oldShippingState = old(
+        'shipping_state',
+        ''
+    );
+
+    $oldShippingCity = old(
+        'shipping_city',
+        ''
+    );
+
+    /*
+     * Protect the Blade template if the selected method
+     * is no longer available in configuration.
+     */
+    if (
+        !isset(
+            $shippingMethods[
+                $selectedShippingMethod
+            ]
+        )
+    ) {
+        $selectedShippingMethod =
+            array_key_first($shippingMethods);
+    }
+
+    $selectedShipping =
+        $shippingMethods[
+            $selectedShippingMethod
+        ] ?? [
+            'name' => 'Shipping',
+            'price' => 0,
+            'delivery_time' =>
+                'Delivery time unavailable',
+        ];
+?>
+
+<?php if(filled($ecommerceSettings->checkout_notice)): ?><div class="wrapper" role="note" style="padding:16px"><?php echo e($ecommerceSettings->checkout_notice); ?></div><?php endif; ?>
+<div
+    class="page-wrapper checkout-page"
+    data-shipping-quote-url="<?php echo e(route('checkout.shipping-quote')); ?>"
+    data-stripe-key="<?php echo e(config('payments.stripe.key')); ?>"
+    data-stripe-intent-url="<?php echo e(route('checkout.stripe.intent')); ?>"
+    data-old-billing-country="<?php echo e($oldBillingCountry); ?>"
+    data-old-billing-state="<?php echo e($oldBillingState); ?>"
+    data-old-billing-city="<?php echo e($oldBillingCity); ?>"
+    data-old-shipping-country="<?php echo e($oldShippingCountry); ?>"
+    data-old-shipping-state="<?php echo e($oldShippingState); ?>"
+    data-old-shipping-city="<?php echo e($oldShippingCity); ?>"
+>
+    <div class="strip-wrapper">
+        <div class="wrapper">
+            <div class="strip-container">
+                <div class="pinstrip"></div>
+                <div class="pinstrip"></div>
+                <div class="pinstrip"></div>
+                <div class="pinstrip"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="services">
+        <div class="service-wrapper">
+            <div class="container">
+
+                <ul
+                    class="bread-crumbs list-style-none fs-12 text-uppercase letter-space-4px mb-10px d-flex gap-10px"
+                >
+                    <li>
+                        <a
+                            href="<?php echo e(route('home-page')); ?>"
+                            class="text-decoration-none text-color-dark"
+                        >
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a
+                            href="<?php echo e(route('cart.index')); ?>"
+                            class="text-decoration-none text-color-dark"
+                        >
+                            Cart
+                        </a>
+                    </li>
+
+                    <li aria-current="page">
+                        Checkout
+                    </li>
+                </ul>
+
+                <div class="checkout-page-header mb-30px">
+                    <h1 class="fs-48 text-color-dark mb-10px">
+                        Checkout
+                    </h1>
+
+                    <p class="fs-14 text-color-body mb-10px">
+                        Review your order and enter your delivery details.
+                    </p>
+                </div>
+
+                <?php if(auth()->guard()->guest()): ?>
+                    <div class="checkout-login-notice mb-20px">
+                        <p
+                            class="bread-crumbs text-decoration-none fs-12 text-uppercase letter-space-4px d-flex gap-10px align-items-center"
+                        >
+                            Already have an account?
+
+                            <a
+                                href="<?php echo e(route('login', ['redirect' => route('checkout.index', absolute: false)])); ?>"
+                                class="btn-style-2 fs-12 text-color-white justify-self-start cursor-pointer"
+                            >
+                                Login
+                            </a>
+                        </p>
+                    </div>
+                <?php endif; ?>
+
+                <?php if(session('success')): ?>
+                    <div class="alert alert-success mb-20px">
+                        <?php echo e(session('success')); ?>
+
+                    </div>
+                <?php endif; ?>
+
+                <?php if(session('error')): ?>
+                    <div class="alert alert-danger mb-20px">
+                        <?php echo e(session('error')); ?>
+
+                    </div>
+                <?php endif; ?>
+
+                <?php if($errors->any()): ?>
+                    <div class="alert alert-danger mb-20px">
+                        <ul
+                            class="mb-0 list-style-none fs-12 letter-space-4px text-uppercase"
+                        >
+                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li>
+                                    <?php echo e($error); ?>
+
+                                </li>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+
+                <div
+                    id="checkout-location-error"
+                    class="checkout-location-error"
+                    hidden
+                ></div>
+
+                <div class="checkout-layout">
+
+                    <div class="checkout-left">
+
+                        <form
+                            action="<?php echo e(route('checkout.place')); ?>"
+                            method="POST"
+                            id="checkout-form"
+                            class="checkout-form"
+                        >
+                            <?php echo csrf_field(); ?>
+
+                            <section
+                                class="checkout-section billing-section mb-20px"
+                            >
+                                <h2 class="fs-24 text-color-dark mb-20px">
+                                    Billing Details
+                                </h2>
+
+                                <div class="checkout-fields-grid">
+
+                                    <div
+                                        class="checkout-field checkout-field-full d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_name"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            Full name
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            name="billing_name"
+                                            id="billing_name"
+                                            value="<?php echo e(old('billing_name', $customer?->name)); ?>"
+                                            placeholder="Full name"
+                                            autocomplete="name"
+                                            required
+                                        >
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_email"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            Email address
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <input
+                                            type="email"
+                                            name="billing_email"
+                                            id="billing_email"
+                                            value="<?php echo e(old('billing_email', $customer?->email)); ?>"
+                                            placeholder="Email address"
+                                            autocomplete="email"
+                                            required
+                                        >
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_phone"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            Phone number
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <input
+                                            type="tel"
+                                            name="billing_phone"
+                                            id="billing_phone"
+                                            value="<?php echo e(old('billing_phone')); ?>"
+                                            placeholder="Phone number"
+                                            autocomplete="tel"
+                                            required
+                                        
+                                            inputmode="tel"
+                                            maxlength="30"
+                                            pattern="[0-9+() .-]{7,30}"
+                                            title="Enter a valid phone number using digits and, where needed, +, spaces, brackets, dots or hyphens."
+                                            oninput="this.value = this.value.replace(/[^0-9+() .-]/g, '')"
+                                        >
+                                    </div>
+
+                                    <div
+                                        class="checkout-field checkout-field-full d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_address"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            Street address
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <textarea
+                                            name="billing_address"
+                                            id="billing_address"
+                                            rows="3"
+                                            placeholder="House number and street address"
+                                            autocomplete="street-address"
+                                            required
+                                        ><?php echo e(old('billing_address')); ?></textarea>
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_country"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            Country
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <div class="checkout-select-wrapper">
+                                            <span
+                                                class="checkout-select-flag"
+                                                data-flag-for="billing_country"
+                                            ></span>
+
+                                            <select
+                                                name="billing_country"
+                                                id="billing_country"
+                                                class="checkout-location-select"
+                                                data-location-country
+                                                required
+                                            >
+                                                <option value="">
+                                                    Loading countries...
+                                                </option>
+                                            </select>
+
+                                            <i
+                                                class="fa-solid fa-chevron-down"
+                                            ></i>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_state"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            State / Province
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <div class="checkout-select-wrapper">
+                                            <select
+                                                name="billing_state"
+                                                id="billing_state"
+                                                class="checkout-location-select"
+                                                data-location-state
+                                                disabled
+                                                required
+                                            >
+                                                <option value="">
+                                                    Select country first
+                                                </option>
+                                            </select>
+
+                                            <i
+                                                class="fa-solid fa-chevron-down"
+                                            ></i>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_city"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            City
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <div class="checkout-select-wrapper">
+                                            <select
+                                                name="billing_city"
+                                                id="billing_city"
+                                                class="checkout-location-select"
+                                                data-location-city
+                                                disabled
+                                                required
+                                            >
+                                                <option value="">
+                                                    Select state first
+                                                </option>
+                                            </select>
+
+                                            <i
+                                                class="fa-solid fa-chevron-down"
+                                            ></i>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        class="checkout-field d-flex flex-column gap-10px"
+                                    >
+                                        <label
+                                            for="billing_zip"
+                                            class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                        >
+                                            ZIP / Postal code
+                                            <span class="required-aesteric">
+                                                *
+                                            </span>
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            name="billing_zip"
+                                            id="billing_zip"
+                                            value="<?php echo e(old('billing_zip')); ?>"
+                                            placeholder="ZIP or postal code"
+                                            autocomplete="postal-code"
+                                            required
+                                        >
+                                    </div>
+
+                                </div>
+                            </section>
+
+                            <section
+                                class="checkout-section shipping-section mb-20px"
+                            >
+                                <label
+                                    for="different-shipping"
+                                    class="different-shipping-label text-decoration-none fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        name="ship_to_different_address"
+                                        id="different-shipping"
+                                        value="1"
+                                        <?php if(old('ship_to_different_address')): echo 'checked'; endif; ?>
+                                    >
+
+                                    <span>
+                                        Ship to a different address?
+                                    </span>
+                                </label>
+
+                                <div
+                                    id="shipping-fields"
+                                    class="shipping-fields mt-20px"
+                                    <?php if(!old('ship_to_different_address')): ?>
+                                        hidden
+                                    <?php endif; ?>
+                                >
+                                    <h2
+                                        class="fs-24 text-color-dark mb-20px"
+                                    >
+                                        Shipping Details
+                                    </h2>
+
+                                    <div class="checkout-fields-grid">
+
+                                        <div
+                                            class="checkout-field checkout-field-full d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_name"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                Full name
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                name="shipping_name"
+                                                id="shipping_name"
+                                                value="<?php echo e(old('shipping_name')); ?>"
+                                                placeholder="Full name"
+                                                autocomplete="shipping name"
+                                                data-shipping-required
+                                            >
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_email"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                Email address
+                                            </label>
+
+                                            <input
+                                                type="email"
+                                                name="shipping_email"
+                                                id="shipping_email"
+                                                value="<?php echo e(old('shipping_email')); ?>"
+                                                placeholder="Email address"
+                                                autocomplete="shipping email"
+                                            >
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_phone"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                Phone number
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                type="tel"
+                                                name="shipping_phone"
+                                                id="shipping_phone"
+                                                value="<?php echo e(old('shipping_phone')); ?>"
+                                                placeholder="Phone number"
+                                                autocomplete="shipping tel"
+                                                data-shipping-required
+                                            
+                                            inputmode="tel"
+                                            maxlength="30"
+                                            pattern="[0-9+() .-]{7,30}"
+                                            title="Enter a valid phone number using digits and, where needed, +, spaces, brackets, dots or hyphens."
+                                            oninput="this.value = this.value.replace(/[^0-9+() .-]/g, '')"
+                                        >
+                                        </div>
+
+                                        <div
+                                            class="checkout-field checkout-field-full d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_address"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                Street address
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <textarea
+                                                name="shipping_address"
+                                                id="shipping_address"
+                                                rows="3"
+                                                placeholder="House number and street address"
+                                                autocomplete="shipping street-address"
+                                                data-shipping-required
+                                            ><?php echo e(old('shipping_address')); ?></textarea>
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_country"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                Country
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <div
+                                                class="checkout-select-wrapper"
+                                            >
+                                                <span
+                                                    class="checkout-select-flag"
+                                                    data-flag-for="shipping_country"
+                                                ></span>
+
+                                                <select
+                                                    name="shipping_country"
+                                                    id="shipping_country"
+                                                    class="checkout-location-select"
+                                                    data-location-country
+                                                    data-shipping-required
+                                                >
+                                                    <option value="">
+                                                        Loading countries...
+                                                    </option>
+                                                </select>
+
+                                                <i
+                                                    class="fa-solid fa-chevron-down"
+                                                ></i>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_state"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                State / Province
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <div
+                                                class="checkout-select-wrapper"
+                                            >
+                                                <select
+                                                    name="shipping_state"
+                                                    id="shipping_state"
+                                                    class="checkout-location-select"
+                                                    data-location-state
+                                                    data-shipping-required
+                                                    disabled
+                                                >
+                                                    <option value="">
+                                                        Select country first
+                                                    </option>
+                                                </select>
+
+                                                <i
+                                                    class="fa-solid fa-chevron-down"
+                                                ></i>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_city"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                City
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <div
+                                                class="checkout-select-wrapper"
+                                            >
+                                                <select
+                                                    name="shipping_city"
+                                                    id="shipping_city"
+                                                    class="checkout-location-select"
+                                                    data-location-city
+                                                    data-shipping-required
+                                                    disabled
+                                                >
+                                                    <option value="">
+                                                        Select state first
+                                                    </option>
+                                                </select>
+
+                                                <i
+                                                    class="fa-solid fa-chevron-down"
+                                                ></i>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            class="checkout-field d-flex flex-column gap-10px"
+                                        >
+                                            <label
+                                                for="shipping_zip"
+                                                class="fs-12 text-uppercase letter-space-4px d-flex align-items-center"
+                                            >
+                                                ZIP / Postal code
+                                                <span
+                                                    class="required-aesteric"
+                                                >
+                                                    *
+                                                </span>
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                name="shipping_zip"
+                                                id="shipping_zip"
+                                                value="<?php echo e(old('shipping_zip')); ?>"
+                                                placeholder="ZIP or postal code"
+                                                autocomplete="shipping postal-code"
+                                                data-shipping-required
+                                            >
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section
+                                class="checkout-section shipping-method-section mb-20px"
+                            >
+                                <h2
+                                    class="fs-24 text-color-dark mb-20px"
+                                >
+                                    Shipping Method
+                                </h2>
+
+                                <div
+                                    class="checkout-shipping-methods d-flex flex-column gap-5px"
+                                >
+                                    <?php $__empty_1 = true; $__currentLoopData = $shippingMethods; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $method): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                        <label
+                                            class="checkout-payment-option shipping-method-option"
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="shipping_method"
+                                                value="<?php echo e($key); ?>"
+                                                data-price="<?php echo e($method['price'] ?? 0); ?>"
+                                                data-delivery="<?php echo e($method['delivery_time'] ?? ''); ?>"
+                                                <?php if(
+                                                    $selectedShippingMethod
+                                                    === $key
+                                                ): echo 'checked'; endif; ?>
+                                                required
+                                            >
+
+                                            <span
+                                                class="checkout-payment-option-content text-decoration-none fs-16 text-uppercase letter-space-2px"
+                                            >
+                                                <strong>
+                                                    <?php echo e($method['name'] ?? ucfirst($key)); ?>
+
+                                                </strong>
+
+                                                <?php if(
+                                                    !empty(
+                                                        $method[
+                                                            'description'
+                                                        ]
+                                                    )
+                                                ): ?>
+                                                    <small
+                                                        class="fs-12 text-uppercase letter-space-3px"
+                                                    >
+                                                        <?php echo e($method['description']); ?>
+
+                                                    </small>
+                                                <?php endif; ?>
+
+                                                <small
+                                                    class="fs-12 text-uppercase letter-space-3px"
+                                                >
+                                                    Estimated delivery:
+                                                    <?php echo e($method['delivery_time'] ?? 'Unavailable'); ?>
+
+                                                </small>
+                                            </span>
+
+                                            <strong
+                                                class="shipping-price"
+                                            >
+                                                <?php echo e(app(\App\Services\StoreSettingsService::class)->symbol()); ?><?php echo e(number_format(
+                                                    (float) (
+                                                        $method['price']
+                                                        ?? 0
+                                                    ),
+                                                    2
+                                                )); ?>
+
+                                            </strong>
+                                        </label>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                        <div class="alert alert-danger">
+                                            No shipping methods are currently
+                                            available.
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+
+                                <p
+                                    id="checkout-shipping-method-status"
+                                    class="fs-12 text-uppercase letter-space-3px mt-10px"
+                                    aria-live="polite"
+                                ></p>
+                            </section>
+
+                            <section
+                                class="checkout-section order-notes-section mb-20px"
+                            >
+                                <h2
+                                    class="fs-24 text-color-dark mb-20px"
+                                >
+                                    Additional Information
+                                </h2>
+
+                                <div
+                                    class="checkout-field checkout-field-full d-flex flex-column gap-10px"
+                                >
+                                    <label for="order_notes">
+                                        Order notes
+                                    </label>
+
+                                    <textarea
+                                        name="order_notes"
+                                        id="order_notes"
+                                        rows="4"
+                                        placeholder="Delivery instructions or other information"
+                                    ><?php echo e(old('order_notes')); ?></textarea>
+                                </div>
+                            </section>
+
+                            <section
+                                class="checkout-section payment-section mt-30px"
+                            >
+                                <h2
+                                    class="fs-24 text-color-dark mb-20px"
+                                >
+                                    Payment Method
+                                </h2>
+
+                                <div
+                                    class="checkout-payment-methods d-flex flex-column gap-5px"
+                                >
+                                    <?php if($ecommerceSettings->cash_on_delivery_enabled): ?>
+                                    <label class="checkout-payment-option"><input type="radio" name="payment_method" value="cash_on_delivery" <?php if(old('payment_method') === 'cash_on_delivery'): echo 'checked'; endif; ?> required><span class="checkout-payment-option-content"><strong>Cash on delivery</strong><small>Pay when your order arrives.</small></span></label>
+                                    <?php endif; ?>
+                                    <?php if(
+                                        config(
+                                            'payments.stripe.enabled'
+                                        )
+                                    ): ?>
+                                        <label
+                                            class="checkout-payment-option"
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="payment_method"
+                                                value="stripe"
+                                                <?php if(
+                                                    old(
+                                                        'payment_method',
+                                                        'stripe'
+                                                    ) === 'stripe'
+                                                ): echo 'checked'; endif; ?>
+                                                required
+                                            >
+
+                                            <span
+                                                class="checkout-payment-option-content text-decoration-none fs-16 text-uppercase letter-space-2px"
+                                            >
+                                                <strong>
+                                                    Credit or debit card
+                                                </strong>
+
+                                                <small
+                                                    class="text-decoration-none fs-12 text-uppercase letter-space-3px"
+                                                >
+                                                    Card, Apple Pay, Google Pay
+                                                    and supported wallets
+                                                </small>
+                                            </span>
+                                        </label>
+
+                                        <div
+                                            id="stripe-payment-container"
+                                            class="online-payment-container"
+                                        >
+                                            <div
+                                                id="stripe-payment-element"
+                                            ></div>
+
+                                            <p
+                                                id="stripe-payment-error"
+                                                class="payment-error"
+                                                hidden
+                                            ></p>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <?php if(
+                                        config(
+                                            'payments.bank_transfer.enabled'
+                                        )
+                                    ): ?>
+                                        <label
+                                            class="checkout-payment-option mb-20px"
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="payment_method"
+                                                value="bank_transfer"
+                                                <?php if(
+                                                    old(
+                                                        'payment_method'
+                                                    ) ===
+                                                    'bank_transfer'
+                                                ): echo 'checked'; endif; ?>
+                                                required
+                                            >
+
+                                            <span
+                                                class="checkout-payment-option-content text-decoration-none fs-16 text-uppercase letter-space-2px"
+                                            >
+                                                <strong>
+                                                    Direct bank transfer
+                                                </strong>
+
+                                                <small
+                                                    class="fs-12 text-uppercase letter-space-3px"
+                                                >
+                                                    Your order will remain
+                                                    pending until payment is
+                                                    verified
+                                                </small>
+                                            </span>
+                                        </label>
+
+                                        <div
+                                            id="bank-transfer-details"
+                                            class="online-payment-container"
+                                            hidden
+                                        >
+                                            <h3
+                                                class="fs-24 text-color-dark mb-20px"
+                                            >
+                                                Bank transfer instructions
+                                            </h3>
+
+                                            <p
+                                                class="fs-14 text-color-body mb-10px"
+                                            >
+                                                Place your order first, then
+                                                transfer the exact order total
+                                                to the bank account below.
+                                                Your order will remain pending
+                                                until the payment has been
+                                                verified.
+                                            </p>
+
+                                            <div
+                                                class="bank-transfer-information text-decoration-none fs-16 text-uppercase"
+                                            >
+                                                <p>
+                                                    <strong>
+                                                        Bank name:
+                                                    </strong>
+
+                                                    <?php echo e(config(
+                                                            'payments.bank_transfer.bank_name'
+                                                        )
+                                                        ?: 'Not configured'); ?>
+
+                                                </p>
+
+                                                <p>
+                                                    <strong>
+                                                        Account title:
+                                                    </strong>
+
+                                                    <?php echo e(config(
+                                                            'payments.bank_transfer.account_name'
+                                                        )
+                                                        ?: 'Not configured'); ?>
+
+                                                </p>
+
+                                                <p>
+                                                    <strong>
+                                                        Account number:
+                                                    </strong>
+
+                                                    <?php echo e(config(
+                                                            'payments.bank_transfer.account_number'
+                                                        )
+                                                        ?: 'Not configured'); ?>
+
+                                                </p>
+
+                                                <?php if(
+                                                    config(
+                                                        'payments.bank_transfer.iban'
+                                                    )
+                                                ): ?>
+                                                    <p>
+                                                        <strong>
+                                                            IBAN:
+                                                        </strong>
+
+                                                        <?php echo e(config(
+                                                                'payments.bank_transfer.iban'
+                                                            )); ?>
+
+                                                    </p>
+                                                <?php endif; ?>
+
+                                                <?php if(
+                                                    config(
+                                                        'payments.bank_transfer.swift_code'
+                                                    )
+                                                ): ?>
+                                                    <p>
+                                                        <strong>
+                                                            SWIFT/BIC:
+                                                        </strong>
+
+                                                        <?php echo e(config(
+                                                                'payments.bank_transfer.swift_code'
+                                                            )); ?>
+
+                                                    </p>
+                                                <?php endif; ?>
+                                            </div>
+
+                                            <div
+                                                class="bank-transfer-notice mt-10px text-decoration-none fs-16"
+                                            >
+                                                <p>
+                                                    <strong
+                                                        class="text-uppercase"
+                                                    >
+                                                        Payment reference:
+                                                    </strong>
+
+                                                    Your order number will be
+                                                    provided after placing the
+                                                    order.
+                                                </p>
+
+                                                <p>
+                                                    Please include the order
+                                                    number in your bank
+                                                    transfer reference so the
+                                                    payment can be matched
+                                                    with your order.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </section>
+
+                            <section
+                                class="checkout-section terms-section mt-20px"
+                            >
+                                <label
+                                    class="checkout-terms-label fs-12 text-uppercase letter-space-3px d-flex align-items-center"
+                                >
+                                    <input
+                                        type="checkbox"
+                                        name="terms"
+                                        value="1"
+                                        <?php if(old('terms')): echo 'checked'; endif; ?>
+                                        required
+                                    >
+
+                                    <span>
+                                        I agree to the
+
+                                        <a
+                                            href="<?php echo e(route('terms-and-conditions-page')); ?>"
+                                            target="_blank"
+                                            rel="noopener"
+                                            class="text-color-body text-decoration-none"
+                                        >
+                                            terms and conditions
+                                        </a>.
+                                    </span>
+                                </label>
+                            </section>
+
+                        </form>
+                    </div>
+
+                    <aside class="checkout-right">
+                        <div class="checkout-order-review">
+
+                            <div
+                                class="checkout-order-heading mb-20px"
+                            >
+                                <div class="mb-10px">
+                                    <h2
+                                        class="fs-24 text-color-dark mb-20px"
+                                    >
+                                        Review Your Order
+                                    </h2>
+
+                                    <p
+                                        class="text-decoration-none fs-12 text-uppercase letter-space-4px"
+                                    >
+                                        <?php echo e($cartItemCount); ?>
+
+
+                                        <?php echo e($cartItemCount === 1
+                                            ? 'item'
+                                            : 'items'); ?>
+
+                                    </p>
+                                </div>
+
+                                <a
+                                    href="<?php echo e(route('cart.index')); ?>"
+                                    class="checkout-edit-cart-link text-decoration-none fs-12 text-uppercase letter-space-4px text-color-body"
+                                >
+                                    Edit cart
+                                </a>
+                            </div>
+
+                            <div class="checkout-products">
+                                <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php
+                                        $title =
+                                            $item['title']
+                                            ?? 'Product';
+
+                                        $quantity = max(
+                                            1,
+                                            (int) (
+                                                $item['quantity']
+                                                ?? 1
+                                            )
+                                        );
+
+                                        $price = max(
+                                            0,
+                                            (float) (
+                                                $item['price']
+                                                ?? 0
+                                            )
+                                        );
+
+                                        $lineTotal =
+                                            $price * $quantity;
+
+                                        $sku =
+                                            $item['sku']
+                                            ?? null;
+
+                                        $options = is_array(
+                                            $item['options']
+                                            ?? null
+                                        )
+                                            ? $item['options']
+                                            : [];
+                                    ?>
+
+                                    <article
+                                        class="checkout-product-item"
+                                    >
+                                        <div
+                                            class="checkout-product-details"
+                                        >
+                                            <div
+                                                class="checkout-product-title-row mb-10px d-flex justify-content-between"
+                                            >
+                                                <h3
+                                                    class="fs-18 text-color-dark text-capitalize"
+                                                >
+                                                    <?php echo e($title); ?>
+
+                                                </h3>
+
+                                                <strong
+                                                    class="checkout-product-total"
+                                                >
+                                                    <?php echo e(app(\App\Services\StoreSettingsService::class)->symbol()); ?><?php echo e(number_format(
+                                                        $lineTotal,
+                                                        2
+                                                    )); ?>
+
+                                                </strong>
+                                            </div>
+
+                                            <?php if($sku): ?>
+                                                <p
+                                                    class="checkout-product-sku fs-12 letter-space-3px text-uppercase mb-10px"
+                                                >
+                                                    SKU: <?php echo e($sku); ?>
+
+                                                </p>
+                                            <?php endif; ?>
+
+                                            <?php if(!empty($options)): ?>
+                                                <div
+                                                    class="checkout-product-options fs-12 letter-space-3px text-uppercase justify-content-between d-flex mb-10px"
+                                                >
+                                                    <?php $__currentLoopData = $options; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $option): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php
+                                                            if (
+                                                                is_array(
+                                                                    $option
+                                                                )
+                                                            ) {
+                                                                $optionName =
+                                                                    $option[
+                                                                        'option_name'
+                                                                    ]
+                                                                    ?? $option[
+                                                                        'name'
+                                                                    ]
+                                                                    ?? $key;
+
+                                                                $optionValue =
+                                                                    $option[
+                                                                        'value_label'
+                                                                    ]
+                                                                    ?? $option[
+                                                                        'label'
+                                                                    ]
+                                                                    ?? $option[
+                                                                        'value'
+                                                                    ]
+                                                                    ?? '';
+                                                            } else {
+                                                                $optionName =
+                                                                    $key;
+
+                                                                $optionValue =
+                                                                    $option;
+                                                            }
+                                                        ?>
+
+                                                        <?php if(
+                                                            $optionValue !== ''
+                                                        ): ?>
+                                                            <p>
+                                                                <strong>
+                                                                    <?php echo e($optionName); ?>:
+                                                                </strong>
+
+                                                                <?php echo e($optionValue); ?>
+
+                                                            </p>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                </div>
+                                            <?php endif; ?>
+
+                                            <p
+                                                class="checkout-product-price fs-12 letter-space-3px text-uppercase mb-10px"
+                                            >
+                                                <?php echo e($quantity); ?>
+
+                                                ×
+                                                <?php echo e(app(\App\Services\StoreSettingsService::class)->symbol()); ?><?php echo e(number_format(
+                                                    $price,
+                                                    2
+                                                )); ?>
+
+                                            </p>
+                                        </div>
+                                    </article>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </div>
+
+                            <div
+                                class="checkout-coupon-section mb-20px"
+                            >
+                                <h3
+                                    class="fs-16 text-color-dark letter-space-3px text-uppercase mb-10px"
+                                >
+                                    Coupon code
+                                </h3>
+
+                                <?php if($couponCode !== ''): ?>
+                                    <div class="applied-coupon">
+                                        <div
+                                            class="mb-10px d-flex justify-content-between"
+                                        >
+                                            <span
+                                                class="fs-12 letter-space-3px text-uppercase"
+                                            >
+                                                Applied coupon
+                                            </span>
+
+                                            <strong>
+                                                <?php echo e(strtoupper(
+                                                        $couponCode
+                                                    )); ?>
+
+                                            </strong>
+                                        </div>
+
+                                        <form
+                                            action="<?php echo e(route('cart.coupon.remove')); ?>"
+                                            method="POST"
+                                        >
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('DELETE'); ?>
+
+                                            <button
+                                                type="submit"
+                                                class="remove-coupon-button btn-style-2 fs-12 text-color-white cursor-pointer w-100"
+                                            >
+                                                <div
+                                                    class="button-text text-uppercase letter-space-3px"
+                                                >
+                                                    Remove
+                                                </div>
+                                            </button>
+                                        </form>
+                                    </div>
+                                <?php else: ?>
+                                    <form
+                                        action="<?php echo e(route('cart.coupon.apply')); ?>"
+                                        method="POST"
+                                        class="checkout-coupon-form"
+                                    >
+                                        <?php echo csrf_field(); ?>
+
+                                        <input
+                                            type="text"
+                                            name="coupon_code"
+                                            value="<?php echo e(old('coupon_code')); ?>"
+                                            placeholder="Enter coupon code"
+                                            maxlength="100"
+                                            autocomplete="off"
+                                            class="mb-10px"
+                                            required
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="apply-coupon-button btn-style-2 fs-12 text-color-white cursor-pointer w-100"
+                                        >
+                                            <div
+                                                class="button-text text-uppercase letter-space-3px"
+                                            >
+                                                Apply
+                                            </div>
+                                        </button>
+                                    </form>
+                                <?php endif; ?>
+                            </div>
+
+                            <div class="checkout-summary-lines">
+
+                                <div
+                                    class="checkout-summary-row d-flex justify-content-between fs-12 letter-space-3px text-uppercase mb-10px"
+                                >
+                                    <span>
+                                        Cart items
+                                    </span>
+
+                                    <strong>
+                                        <?php echo e($cartItemCount); ?>
+
+                                    </strong>
+                                </div>
+
+                                <div
+                                    class="checkout-summary-row d-flex justify-content-between fs-12 letter-space-3px text-uppercase mb-10px"
+                                >
+                                    <span>
+                                        Subtotal
+                                    </span>
+
+                                    <strong>
+                                        <?php echo e(app(\App\Services\StoreSettingsService::class)->symbol()); ?><?php echo e(number_format(
+                                            $subtotal,
+                                            2
+                                        )); ?>
+
+                                    </strong>
+                                </div>
+
+                                <?php if($discount > 0): ?>
+                                    <div
+                                        class="checkout-summary-row checkout-summary-discount d-flex justify-content-between fs-12 letter-space-3px text-uppercase mb-10px"
+                                    >
+                                        <span>
+                                            Coupon discount
+                                        </span>
+
+                                        <strong>
+                                            -<?php echo e(app(\App\Services\StoreSettingsService::class)->symbol()); ?><?php echo e(number_format(
+                                                $discount,
+                                                2
+                                            )); ?>
+
+                                        </strong>
+                                    </div>
+                                <?php endif; ?>
+
+                                <div
+                                    class="checkout-summary-row d-flex justify-content-between fs-12 letter-space-3px text-uppercase mb-10px"
+                                >
+                                    <span>
+                                        Shipping
+                                    </span>
+
+                                    <strong
+                                        id="checkout-shipping-amount"
+                                    >
+                                        <?php echo e(app(\App\Services\StoreSettingsService::class)->symbol()); ?><?php echo e(number_format(
+                                            $shipping,
+                                            2
+                                        )); ?>
+
+                                    </strong>
+                                </div>
+
+                                <div class="checkout-summary-row d-flex justify-content-between"><span>Tax</span><strong id="checkout-tax-amount"><?php echo e(app(\App\Services\StoreSettingsService::class)->money($tax)); ?></strong></div>
+                                <div
+                                    id="checkout-selected-shipping"
+                                    class="fs-12 letter-space-3px text-uppercase mb-15px"
+                                >
+                                    <?php echo e($selectedShipping[
+                                            'name'
+                                        ]); ?>
+
+
+                                    •
+
+                                    <?php echo e($selectedShipping[
+                                            'delivery_time'
+                                        ]); ?>
+
+                                </div>
+
+                                <div
+                                    class="checkout-summary-row checkout-summary-total d-flex justify-content-between fs-16 letter-space-3px text-uppercase mb-10px"
+                                >
+                                    <span>
+                                        Total
+                                    </span>
+
+                                    <strong
+                                        id="checkout-total-amount"
+                                    >
+                                        <?php echo e(app(\App\Services\StoreSettingsService::class)->symbol()); ?><?php echo e(number_format(
+                                            $total,
+                                            2
+                                        )); ?>
+
+                                    </strong>
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                form="checkout-form"
+                                class="checkout-place-order-button mb-10px btn-style-2 fs-12 text-color-white cursor-pointer w-100"
+                                id="checkout-place-order-button"
+                            >
+                                <div
+                                    class="button-text text-uppercase letter-space-3px"
+                                >
+                                    Place Order
+                                </div>
+                            </button>
+
+                            <div
+                                class="checkout-security-note fs-14 letter-space-3px text-uppercase mb-10px"
+                            >
+                                <i class="fa-solid fa-lock"></i>
+
+                                <span>
+                                    Secure checkout
+                                </span>
+                            </div>
+                        </div>
+                    </aside>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startPush('page-scripts'); ?>
+
+<script>
+    document.addEventListener(
+        'DOMContentLoaded',
+        function () {
+            'use strict';
+
+            const checkoutPage =
+                document.querySelector(
+                    '.checkout-page'
+                );
+
+            if (!checkoutPage) {
+                return;
+            }
+
+            const locationsApi =
+                'https://countriesnow.space/api/v0.1/countries';
+
+            const shippingQuoteUrl =
+                checkoutPage.dataset
+                    .shippingQuoteUrl || '';
+
+            const csrfToken =
+                document.querySelector(
+                    'meta[name="csrf-token"]'
+                )?.getAttribute('content') || '';
+
+            const differentShippingCheckbox =
+                document.getElementById(
+                    'different-shipping'
+                );
+
+            const shippingFields =
+                document.getElementById(
+                    'shipping-fields'
+                );
+
+            const shippingAmount =
+                document.getElementById(
+                    'checkout-shipping-amount'
+                );
+
+            const totalAmount =
+                document.getElementById(
+                    'checkout-total-amount'
+                );
+
+            const selectedShippingText =
+                document.getElementById(
+                    'checkout-selected-shipping'
+                );
+
+            const shippingMethodStatus =
+                document.getElementById(
+                    'checkout-shipping-method-status'
+                );
+
+            const locationError =
+                document.getElementById(
+                    'checkout-location-error'
+                );
+
+            const placeOrderButton =
+                document.getElementById(
+                    'checkout-place-order-button'
+                );
+
+            const shippingRadios =
+                document.querySelectorAll(
+                    'input[name="shipping_method"]'
+                );
+
+            const locationGroups = {
+                billing: {
+                    country:
+                        document.getElementById(
+                            'billing_country'
+                        ),
+
+                    state:
+                        document.getElementById(
+                            'billing_state'
+                        ),
+
+                    city:
+                        document.getElementById(
+                            'billing_city'
+                        ),
+
+                    oldCountry:
+                        checkoutPage.dataset
+                            .oldBillingCountry || '',
+
+                    oldState:
+                        checkoutPage.dataset
+                            .oldBillingState || '',
+
+                    oldCity:
+                        checkoutPage.dataset
+                            .oldBillingCity || '',
+                },
+
+                shipping: {
+                    country:
+                        document.getElementById(
+                            'shipping_country'
+                        ),
+
+                    state:
+                        document.getElementById(
+                            'shipping_state'
+                        ),
+
+                    city:
+                        document.getElementById(
+                            'shipping_city'
+                        ),
+
+                    oldCountry:
+                        checkoutPage.dataset
+                            .oldShippingCountry || '',
+
+                    oldState:
+                        checkoutPage.dataset
+                            .oldShippingState || '',
+
+                    oldCity:
+                        checkoutPage.dataset
+                            .oldShippingCity || '',
+                },
+            };
+
+            let countries = [];
+            let shippingRequestController = null;
+
+            function showLocationError(
+                message
+            ) {
+                if (!locationError) {
+                    return;
+                }
+
+                locationError.textContent =
+                    message;
+
+                locationError.hidden =
+                    false;
+            }
+
+            function clearLocationError() {
+                if (!locationError) {
+                    return;
+                }
+
+                locationError.textContent =
+                    '';
+
+                locationError.hidden =
+                    true;
+            }
+
+            function flagFromCode(
+                countryCode
+            ) {
+                if (!countryCode) {
+                    return '';
+                }
+
+                return countryCode
+                    .toUpperCase()
+                    .split('')
+                    .map(function (letter) {
+                        return String.fromCodePoint(
+                            127397 +
+                            letter.charCodeAt()
+                        );
+                    })
+                    .join('');
+            }
+
+            function updateFlag(select) {
+                if (!select) {
+                    return;
+                }
+
+                const flagElement =
+                    document.querySelector(
+                        '[data-flag-for="' +
+                        select.id +
+                        '"]'
+                    );
+
+                if (!flagElement) {
+                    return;
+                }
+
+                flagElement.textContent =
+                    flagFromCode(
+                        select.value
+                    );
+            }
+
+            function setSelectMessage(
+                select,
+                message,
+                disabled = true
+            ) {
+                if (!select) {
+                    return;
+                }
+
+                select.innerHTML = '';
+
+                const option =
+                    document.createElement(
+                        'option'
+                    );
+
+                option.value = '';
+                option.textContent =
+                    message;
+
+                select.appendChild(
+                    option
+                );
+
+                select.disabled =
+                    disabled;
+            }
+
+            function appendOption(
+                select,
+                value,
+                label,
+                selectedValue = ''
+            ) {
+                if (!select) {
+                    return;
+                }
+
+                const option =
+                    document.createElement(
+                        'option'
+                    );
+
+                option.value = value;
+                option.textContent =
+                    label;
+
+                if (
+                    String(value) ===
+                    String(selectedValue)
+                ) {
+                    option.selected =
+                        true;
+                }
+
+                select.appendChild(
+                    option
+                );
+            }
+
+            function sortByName(items) {
+                return [...items].sort(
+                    function (
+                        first,
+                        second
+                    ) {
+                        return String(
+                            first.name
+                        ).localeCompare(
+                            String(
+                                second.name
+                            )
+                        );
+                    }
+                );
+            }
+
+            function getSelectedCountryName(
+                select
+            ) {
+                return select
+                    ?.selectedOptions?.[0]
+                    ?.dataset?.countryName ||
+                    '';
+            }
+
+            function populateCountries(
+                group,
+                selectedCountry = ''
+            ) {
+                const countrySelect =
+                    group.country;
+
+                if (!countrySelect) {
+                    return;
+                }
+
+                countrySelect.innerHTML =
+                    '';
+
+                appendOption(
+                    countrySelect,
+                    '',
+                    'Select country'
+                );
+
+                sortByName(
+                    countries
+                ).forEach(
+                    function (country) {
+                        const option =
+                            document.createElement(
+                                'option'
+                            );
+
+                        const countryCode =
+                            String(
+                                country.iso2
+                                || ''
+                            ).toUpperCase();
+
+                        option.value =
+                            countryCode;
+
+                        option.dataset
+                            .countryName =
+                            country.name;
+
+                        option.textContent =
+                            flagFromCode(
+                                countryCode
+                            )
+                            + ' '
+                            + country.name;
+
+                        if (
+                            countryCode ===
+                            String(
+                                selectedCountry
+                            ).toUpperCase()
+                        ) {
+                            option.selected =
+                                true;
+                        }
+
+                        countrySelect
+                            .appendChild(
+                                option
+                            );
+                    }
+                );
+
+                countrySelect.disabled =
+                    false;
+
+                updateFlag(
+                    countrySelect
+                );
+            }
+
+            function findCountry(
+                countryCode
+            ) {
+                return countries.find(
+                    function (country) {
+                        return String(
+                            country.iso2
+                            || ''
+                        ).toUpperCase() ===
+                            String(
+                                countryCode
+                                || ''
+                            ).toUpperCase();
+                    }
+                );
+            }
+
+            function populateStates(
+                group,
+                selectedState = ''
+            ) {
+                if (
+                    !group.country ||
+                    !group.state ||
+                    !group.city
+                ) {
+                    return;
+                }
+
+                const selectedCountry =
+                    findCountry(
+                        group.country
+                            .value
+                    );
+
+                if (
+                    !selectedCountry ||
+                    !Array.isArray(
+                        selectedCountry
+                            .states
+                    )
+                ) {
+                    setSelectMessage(
+                        group.state,
+                        'No states available',
+                        false
+                    );
+
+                    setSelectMessage(
+                        group.city,
+                        'Select state first'
+                    );
+
+                    return;
+                }
+
+                group.state.innerHTML =
+                    '';
+
+                appendOption(
+                    group.state,
+                    '',
+                    'Select state / province'
+                );
+
+                sortByName(
+                    selectedCountry
+                        .states
+                ).forEach(
+                    function (state) {
+                        appendOption(
+                            group.state,
+                            state.name,
+                            state.name,
+                            selectedState
+                        );
+                    }
+                );
+
+                group.state.disabled =
+                    false;
+
+                setSelectMessage(
+                    group.city,
+                    'Select state first'
+                );
+            }
+
+            async function populateCities(
+                group,
+                selectedCity = ''
+            ) {
+                if (
+                    !group.country ||
+                    !group.state ||
+                    !group.city
+                ) {
+                    return;
+                }
+
+                const countryName =
+                    getSelectedCountryName(
+                        group.country
+                    );
+
+                const stateName =
+                    group.state.value;
+
+                if (
+                    !countryName ||
+                    !stateName
+                ) {
+                    setSelectMessage(
+                        group.city,
+                        'Select state first'
+                    );
+
+                    return;
+                }
+
+                setSelectMessage(
+                    group.city,
+                    'Loading cities...'
+                );
+
+                try {
+                    const response =
+                        await fetch(
+                            locationsApi +
+                            '/state/cities',
+                            {
+                                method:
+                                    'POST',
+
+                                headers: {
+                                    'Content-Type':
+                                        'application/json',
+
+                                    Accept:
+                                        'application/json',
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        {
+                                            country:
+                                                countryName,
+
+                                            state:
+                                                stateName,
+                                        }
+                                    ),
+                            }
+                        );
+
+                    if (!response.ok) {
+                        throw new Error(
+                            'Unable to load cities.'
+                        );
+                    }
+
+                    const payload =
+                        await response
+                            .json();
+
+                    const cities =
+                        Array.isArray(
+                            payload.data
+                        )
+                            ? payload.data
+                            : [];
+
+                    group.city.innerHTML =
+                        '';
+
+                    appendOption(
+                        group.city,
+                        '',
+                        cities.length
+                            ? 'Select city'
+                            : 'No cities available'
+                    );
+
+                    [...cities]
+                        .sort(
+                            function (
+                                first,
+                                second
+                            ) {
+                                return String(
+                                    first
+                                ).localeCompare(
+                                    String(
+                                        second
+                                    )
+                                );
+                            }
+                        )
+                        .forEach(
+                            function (city) {
+                                appendOption(
+                                    group.city,
+                                    city,
+                                    city,
+                                    selectedCity
+                                );
+                            }
+                        );
+
+                    group.city.disabled =
+                        false;
+                } catch (error) {
+                    console.error(
+                        error
+                    );
+
+                    setSelectMessage(
+                        group.city,
+                        'Unable to load cities',
+                        false
+                    );
+
+                    showLocationError(
+                        'Cities could not be loaded. Please refresh the page and try again.'
+                    );
+                }
+            }
+
+            async function initialiseGroup(
+                group
+            ) {
+                populateCountries(
+                    group,
+                    group.oldCountry
+                );
+
+                if (!group.oldCountry) {
+                    return;
+                }
+
+                populateStates(
+                    group,
+                    group.oldState
+                );
+
+                if (
+                    group.oldState &&
+                    group.state?.value
+                ) {
+                    await populateCities(
+                        group,
+                        group.oldCity
+                    );
+                }
+            }
+
+            function updateShippingFields() {
+                const isDifferent =
+                    Boolean(
+                        differentShippingCheckbox
+                            ?.checked
+                    );
+
+                if (shippingFields) {
+                    shippingFields.hidden =
+                        !isDifferent;
+
+                    shippingFields
+                        .querySelectorAll(
+                            '[data-shipping-required]'
+                        )
+                        .forEach(
+                            function (field) {
+                                field.required =
+                                    isDifferent;
+                            }
+                        );
+                }
+            }
+
+            async function loadCountries() {
+                clearLocationError();
+
+                Object.values(
+                    locationGroups
+                ).forEach(
+                    function (group) {
+                        setSelectMessage(
+                            group.country,
+                            'Loading countries...'
+                        );
+                    }
+                );
+
+                try {
+                    const response =
+                        await fetch(
+                            locationsApi +
+                            '/states',
+                            {
+                                method:
+                                    'GET',
+
+                                headers: {
+                                    Accept:
+                                        'application/json',
+                                },
+                            }
+                        );
+
+                    if (!response.ok) {
+                        throw new Error(
+                            'Unable to load countries.'
+                        );
+                    }
+
+                    const payload =
+                        await response
+                            .json();
+
+                    countries =
+                        Array.isArray(
+                            payload.data
+                        )
+                            ? payload.data
+                            : [];
+
+                    if (!countries.length) {
+                        throw new Error(
+                            'No country data was returned.'
+                        );
+                    }
+
+                    await initialiseGroup(
+                        locationGroups.billing
+                    );
+
+                    await initialiseGroup(
+                        locationGroups.shipping
+                    );
+                } catch (error) {
+                    console.error(
+                        error
+                    );
+
+                    Object.values(
+                        locationGroups
+                    ).forEach(
+                        function (group) {
+                            setSelectMessage(
+                                group.country,
+                                'Unable to load countries',
+                                false
+                            );
+                        }
+                    );
+
+                    showLocationError(
+                        'Countries could not be loaded. Check your internet connection and refresh the page.'
+                    );
+                }
+            }
+
+            async function updateShippingMethod() {
+                const selectedRadio =
+                    document.querySelector(
+                        'input[name="shipping_method"]:checked'
+                    );
+
+                if (
+                    !selectedRadio ||
+                    !shippingQuoteUrl
+                ) {
+                    return;
+                }
+
+                if (
+                    shippingRequestController
+                ) {
+                    shippingRequestController
+                        .abort();
+                }
+
+                shippingRequestController =
+                    new AbortController();
+
+                if (
+                    shippingMethodStatus
+                ) {
+                    shippingMethodStatus
+                        .textContent =
+                        'Updating shipping method...';
+                }
+
+                if (placeOrderButton) {
+                    placeOrderButton
+                        .disabled = true;
+                }
+
+                shippingRadios.forEach(
+                    function (radio) {
+                        radio.disabled =
+                            true;
+                    }
+                );
+
+                try {
+                    const response =
+                        await fetch(
+                            shippingQuoteUrl,
+                            {
+                                method:
+                                    'POST',
+
+                                headers: {
+                                    'Content-Type':
+                                        'application/json',
+
+                                    Accept:
+                                        'application/json',
+
+                                    'X-CSRF-TOKEN':
+                                        csrfToken,
+
+                                    'X-Requested-With':
+                                        'XMLHttpRequest',
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        {
+                                            shipping_method:
+                                                selectedRadio
+                                                    .value,
+                                        }
+                                    ),
+
+                                signal:
+                                    shippingRequestController
+                                        .signal,
+                            }
+                        );
+
+                    const payload =
+                        await response
+                            .json();
+
+                    if (
+                        !response.ok ||
+                        !payload.success
+                    ) {
+                        throw new Error(
+                            payload.message
+                            || 'Shipping could not be updated.'
+                        );
+                    }
+
+                    if (shippingAmount) {
+                        shippingAmount
+                            .textContent =
+                            payload
+                                .formatted_shipping;
+                    }
+
+                    if (totalAmount) {
+                        totalAmount
+                            .textContent =
+                            payload
+                                .formatted_total;
+                        const taxAmount=document.getElementById("checkout-tax-amount");if(taxAmount)taxAmount.textContent=(payload.currency || "")+" "+Number(payload.tax || 0).toFixed(2);
+                    }
+
+                    if (
+                        selectedShippingText
+                    ) {
+                        selectedShippingText
+                            .textContent =
+                            payload.shipping_name
+                            + ' • '
+                            + payload.delivery_time;
+                    }
+
+                    if (
+                        shippingMethodStatus
+                    ) {
+                        shippingMethodStatus
+                            .textContent =
+                            payload.message
+                            || 'Shipping method updated.';
+                    }
+
+                    /*
+                     * Let the Stripe integration know
+                     * that the order total has changed.
+                     */
+                    document.dispatchEvent(
+                        new CustomEvent(
+                            'checkout:shipping-updated',
+                            {
+                                detail: {
+                                    shippingMethod:
+                                        payload
+                                            .shipping_method,
+
+                                    shipping:
+                                        payload.shipping,
+
+                                    total:
+                                        payload.total,
+                                },
+                            }
+                        )
+                    );
+                } catch (error) {
+                    if (
+                        error.name ===
+                        'AbortError'
+                    ) {
+                        return;
+                    }
+
+                    console.error(
+                        error
+                    );
+
+                    if (
+                        shippingMethodStatus
+                    ) {
+                        shippingMethodStatus
+                            .textContent =
+                            error.message
+                            || 'Shipping could not be updated. Please try again.';
+                    }
+                } finally {
+                    shippingRadios
+                        .forEach(
+                            function (radio) {
+                                radio.disabled =
+                                    false;
+                            }
+                        );
+
+                    if (
+                        placeOrderButton
+                    ) {
+                        placeOrderButton
+                            .disabled =
+                            false;
+                    }
+                }
+            }
+
+            Object.values(
+                locationGroups
+            ).forEach(
+                function (group) {
+                    group.country
+                        ?.addEventListener(
+                            'change',
+                            function () {
+                                updateFlag(
+                                    group.country
+                                );
+
+                                populateStates(
+                                    group
+                                );
+                            }
+                        );
+
+                    group.state
+                        ?.addEventListener(
+                            'change',
+                            function () {
+                                populateCities(
+                                    group
+                                );
+                            }
+                        );
+                }
+            );
+
+            differentShippingCheckbox
+                ?.addEventListener(
+                    'change',
+                    updateShippingFields
+                );
+
+            shippingRadios.forEach(
+                function (radio) {
+                    radio.addEventListener(
+                        'change',
+                        updateShippingMethod
+                    );
+                }
+            );
+
+            updateShippingFields();
+            loadCountries();
+
+            /*
+             * The initial values are already calculated
+             * by Laravel. A new server request is not
+             * required until the customer changes the
+             * selected shipping method.
+             */
+        }
+    );
+</script>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+    document.addEventListener(
+        'DOMContentLoaded',
+        function () {
+            'use strict';
+
+            const paymentRadios =
+                document.querySelectorAll(
+                    'input[name="payment_method"]'
+                );
+
+            const stripeContainer =
+                document.getElementById(
+                    'stripe-payment-container'
+                );
+
+            const bankTransferContainer =
+                document.getElementById(
+                    'bank-transfer-details'
+                );
+
+            function updatePaymentMethodDisplay() {
+                const selected =
+                    document.querySelector(
+                        'input[name="payment_method"]:checked'
+                    )?.value || '';
+
+                if (stripeContainer) {
+                    stripeContainer.hidden =
+                        selected !== 'stripe';
+                }
+
+                if (
+                    bankTransferContainer
+                ) {
+                    bankTransferContainer
+                        .hidden =
+                        selected !==
+                        'bank_transfer';
+                }
+
+                if (
+                    selected === 'stripe'
+                ) {
+                    document.dispatchEvent(
+                        new CustomEvent(
+                            'checkout:stripe-selected'
+                        )
+                    );
+                }
+            }
+
+            paymentRadios.forEach(
+                function (radio) {
+                    radio.addEventListener(
+                        'change',
+                        updatePaymentMethodDisplay
+                    );
+                }
+            );
+
+            updatePaymentMethodDisplay();
+        }
+    );
+</script>
+
+<script
+    src="<?php echo e(asset('asset/js/checkout-stripe.js')); ?>"
+></script>
+
+<?php $__env->stopPush(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\ArizonaOutfits\administration-fixes\_checks/../_staged/resources/views/checkout/index.blade.php ENDPATH**/ ?>

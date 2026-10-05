@@ -1,0 +1,10 @@
+{
+    "settings": "rendered",
+    "analytics": "rendered",
+    "users": "rendered",
+    "roles": "rendered",
+    "notifications": "rendered",
+    "audit": "rendered",
+    "backups": "rendered",
+    "create-product": "rendered"
+}

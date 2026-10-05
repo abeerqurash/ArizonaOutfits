@@ -1,0 +1,206 @@
+[
+  {
+    "destination": "app/Services/SafeContentUrl.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Services/HtmlContentSanitizer.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Services/CmsContentSanitizer.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Services/EmailTemplateService.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Middleware/AdminMiddleware.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/admin/partials/administration-links.blade.php",
+    "status": "different_text"
+  },
+  {
+    "destination": "resources/views/admin/partials/sidebar.blade.php",
+    "status": "different_text"
+  },
+  {
+    "destination": "routes/web.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/AdminPageController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Models/NavigationMenuItem.php",
+    "status": "different_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/AdminNavigationMenuController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/AdminNotificationController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/AdminEmailTemplateController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/admin/email-templates/edit.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Middleware/AdminAuditMiddleware.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Services/AdminBackupService.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/AdminBackupController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/AdminAnalyticsController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/admin/analytics/index.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Services/AdminAccessPolicy.php",
+    "status": "missing"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/AdminRoleController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/AdminUserController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Services/StoreSettingsService.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Middleware/StorePolicyMiddleware.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/errors/store-maintenance.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "bootstrap/app.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Services/InventoryCatalogService.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/EcommerceSettingController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/admin/settings/edit.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Models/Order.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Services/InventoryService.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/CheckoutController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Payment/StripePaymentController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/CartController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Models/PurchaseOrderReceipt.php",
+    "status": "different_text"
+  },
+  {
+    "destination": "resources/views/checkout/index.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "public/asset/js/checkout-stripe.js",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/products/show.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/products/partials/product-card.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/products/partials/quick-view.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/cart/index.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/layouts/app.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/checkout/thank-you.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/ShopController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Mail/CustomerOrderConfirmationMail.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Mail/AdminNewOrderMail.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/emails/orders/customer-confirmation.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/emails/orders/admin-new-order.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "resources/views/emails/orders/dynamic-template.blade.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/AdminAuditLogController.php",
+    "status": "matches_prepared_text"
+  },
+  {
+    "destination": "app/Http/Controllers/Admin/OrderController.php",
+    "status": "matches_prepared_text"
+  }
+]

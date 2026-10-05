@@ -1,0 +1,5 @@
+[
+  "public/asset/css/arizona-admin-controls.css",
+  "public/asset/js/arizona-admin-controls.js",
+  "resources/views/admin/layouts/app.blade.php"
+]

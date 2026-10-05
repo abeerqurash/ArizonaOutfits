@@ -1,0 +1,142 @@
+[
+    {
+        "result": "PASS",
+        "check": "Home receives store title",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Home has a description",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Homepage canonical excludes tracking",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Organization and website schema exist",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Paginated canonical preserves page number",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Pagination remains indexable",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Filtered shop is noindex",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Ad tracking does not noindex the shop",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Private page noindex \/login",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Private page noindex \/cart",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Private page noindex \/account",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Article honors database meta title",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Article includes BlogPosting schema",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "CMS metadata wins over leaked loop post",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "CMS does not masquerade as BlogPosting",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Product offer uses actual sale price",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Product stock represented accurately",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "No fabricated ratings",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Product rating only uses approved reviews",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Variant product reports actual offer range",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Sitemap index parses",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Published article included in sitemap",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Noindex articles excluded from sitemap",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Out-of-range sitemap denied",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Formatting retained",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Executable HTML removed",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "Existing product HTML sanitized at render",
+        "detail": ""
+    },
+    {
+        "result": "PASS",
+        "check": "All 240 Blade templates compile",
+        "detail": ""
+    }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "path": "_staged\\public\\asset\\js\\checkout-stripe.js",
+    "pass": true,
+    "output": ""
+  },
+  {
+    "path": "_checks\\checkout-inline-0.js",
+    "pass": true,
+    "output": ""
+  },
+  {
+    "path": "_checks\\checkout-inline-1.js",
+    "pass": true,
+    "output": ""
+  },
+  {
+    "path": "_checks\\checkout-inline-2.js",
+    "pass": true,
+    "output": ""
+  }
+]

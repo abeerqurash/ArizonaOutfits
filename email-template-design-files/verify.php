@@ -1,0 +1,7 @@
+<?php
+require __DIR__.'/../customer-dashboard-files/_checks/bootstrap.php';
+app('view')->getFinder()->prependLocation(__DIR__.'/_staged/resources/views');
+$templates=App\Models\EmailTemplate::all();$results=[];
+foreach($templates as $template){$html=(new App\Http\Controllers\Admin\AdminEmailTemplateController)->edit($template)->render();foreach(['ao-template-grid','name="subject"','name="body"','name="is_enabled"','name="email"',route('admin.email-templates.update',$template),route('admin.email-templates.preview',$template),route('admin.email-templates.test',$template)]as $required)if(!str_contains($html,$required))throw new RuntimeException('Missing control '.$required);$results[]=['template'=>$template->slug,'rendered'=>true];if($template->slug==='admin-new-order')file_put_contents(__DIR__.'/PREVIEW.html',$html);}
+$compiled=app('blade.compiler')->compileString(file_get_contents(__DIR__.'/_staged/resources/views/admin/email-templates/edit.blade.php'));file_put_contents(__DIR__.'/compiled-check.php',$compiled);
+file_put_contents(__DIR__.'/render-checks.json',json_encode($results,JSON_PRETTY_PRINT));echo count($results)." template edit pages rendered with save/preview/test forms intact.\n";

@@ -1,0 +1,317 @@
+[
+  {
+    "file": "01_PublicMediaService.php.txt",
+    "destination": "app/Services/PublicMediaService.php",
+    "sha256": "4f615bbdc80364a61d8bad2778af81a84e9d966539fa6f0c935ca0164398b01e"
+  },
+  {
+    "file": "02_SupplierDocumentController.php.txt",
+    "destination": "app/Http/Controllers/Admin/SupplierDocumentController.php",
+    "sha256": "f3cd93cb28ddc6fca6f5519d0d08df3f8c85b1f21e5fe448209a522a8274bedf"
+  },
+  {
+    "file": "03_ProtectSupplierDocuments.php.txt",
+    "destination": "app/Console/Commands/ProtectSupplierDocuments.php",
+    "sha256": "1c1aaf52966b0130f7cfc334a5e778313585fbfce201d7b83083c79024ebc120"
+  },
+  {
+    "file": "04_AdminBackupService.php.txt",
+    "destination": "app/Services/AdminBackupService.php",
+    "sha256": "2cf91d85087522e9f59b1cc9e4e1f431ede1e9528acac95bccf9cb6e6e6497a1"
+  },
+  {
+    "file": "05_PublicSlugRegistry.php.txt",
+    "destination": "app/Services/PublicSlugRegistry.php",
+    "sha256": "d08e88004325dc4e5d163239140126233fca6fd3b1ae56edb5c7d71de52fcbec"
+  },
+  {
+    "file": "06_AdminPageController.php.txt",
+    "destination": "app/Http/Controllers/Admin/AdminPageController.php",
+    "sha256": "0017d8d68b95d0ad4e66526b0ff8d7bab8e772373f1224b96d0dad6aec49366c"
+  },
+  {
+    "file": "07_PostController.php.txt",
+    "destination": "app/Http/Controllers/Admin/PostController.php",
+    "sha256": "6ea3d0a3df29a6b6793173a828a8dbb4bf7144cdb26e5ac3ec16509a3ff93d1a"
+  },
+  {
+    "file": "08_SafeExportValueBinder.php.txt",
+    "destination": "app/Exports/SafeExportValueBinder.php",
+    "sha256": "443bff3b3778e5d50ac3f183c01b86aa2a7100581ddd31194455eb56a7ef72ff"
+  },
+  {
+    "file": "09_PurchaseOrderExport.php.txt",
+    "destination": "app/Exports/PurchaseOrderExport.php",
+    "sha256": "30cc53c2c71cee6a1afc377c521ab54d0d046955731f675331c49d724362e1fb"
+  },
+  {
+    "file": "10_StockValuationExport.php.txt",
+    "destination": "app/Exports/StockValuationExport.php",
+    "sha256": "87119a2a012059dbac3b25d7a771d6216af385c825fa8e034d0ca4de80218b24"
+  },
+  {
+    "file": "11_ReorderDashboardExport.php.txt",
+    "destination": "app/Exports/ReorderDashboardExport.php",
+    "sha256": "aacb50903c0aac25afce272e8b23890e8f0d19554848b025e758ab4ba47ecd02"
+  },
+  {
+    "file": "12_categories.blade.php.txt",
+    "destination": "resources/views/products/categories.blade.php",
+    "sha256": "48b2d75c2154b27f20022bfc58b2a21cd378e8cb8b807a7feb60b0a6b55b0cd3"
+  },
+  {
+    "file": "13_AppServiceProvider.php.txt",
+    "destination": "app/Providers/AppServiceProvider.php",
+    "sha256": "9aea4f385afb735289be966c8709fbbb6d4ecf54faaa82ad5d4ef0e22ea19c17"
+  },
+  {
+    "file": "14_web.php.txt",
+    "destination": "routes/web.php",
+    "sha256": "b60eafba86f33f1e9fca4dcc1a196c8dddfd1b2281fce7ff7613069998953794"
+  },
+  {
+    "file": "15_composer.json.txt",
+    "destination": "composer.json",
+    "sha256": "e1d166269fdc37dd0f7928e44f56bc8d30f3a932ae2db53079ddfc2b0745755a"
+  },
+  {
+    "file": "16_composer.lock.txt",
+    "destination": "composer.lock",
+    "sha256": "b61ffdf2f713c2ddc10bb547ff460a43c6c95536d39b01dbd64c34ada544e6e3"
+  },
+  {
+    "file": "17_package.json.txt",
+    "destination": "package.json",
+    "sha256": "938d7024743313da067a6f431355c4746c3a9cb233ad04ab27e87aab532a06ae"
+  },
+  {
+    "file": "18_package-lock.json.txt",
+    "destination": "package-lock.json",
+    "sha256": "9b09f8b7bf13f8b5cce9be0cc2d1583065fa5c2f56f3ca51d031b35e16d28eec"
+  },
+  {
+    "file": "19_vite.config.js.txt",
+    "destination": "vite.config.js",
+    "sha256": "688ccb2667873ddf601f5d2d5d88f6b81d89851fbb58df707ec4025a6527f6e8"
+  },
+  {
+    "file": "20_app.css.txt",
+    "destination": "resources/css/app.css",
+    "sha256": "586639ab0f3a0a87b302a3c67d429783bd67cf13cd0d8be1816c056b72188cfc"
+  },
+  {
+    "file": "21_show.blade.php.txt",
+    "destination": "resources/views/products/show.blade.php",
+    "sha256": "1be000a6adf3708f4a6fe1171711b31f28da2409d90e2accdabaf80ae969ed56"
+  },
+  {
+    "file": "22_quick-view.blade.php.txt",
+    "destination": "resources/views/products/partials/quick-view.blade.php",
+    "sha256": "9e488172e144e1526f60f713e53a1ed8dc1d5aa3b03d9892b4e5b6094050f59e"
+  },
+  {
+    "file": "23_show.blade.php.txt",
+    "destination": "resources/views/blogs/show.blade.php",
+    "sha256": "dd827201d0f910b36bde110340b0138aa6aae42bbba4df031ba61113d46034e4"
+  },
+  {
+    "file": "24_ProductController.php.txt",
+    "destination": "app/Http/Controllers/Admin/ProductController.php",
+    "sha256": "46fb7ef43e4c77226d6e529f07614d9cd7af31a7de1a44b895de288fa6faa225"
+  },
+  {
+    "file": "25_home.blade.php.txt",
+    "destination": "resources/views/home.blade.php",
+    "sha256": "7302d8667ccdcfb0b68434c4fc40b3ecbac6f11f9f21ad2ed2a1c5529931b9c1"
+  },
+  {
+    "file": "26_privacy-policy.blade.php.txt",
+    "destination": "resources/views/pages/custom/privacy-policy.blade.php",
+    "sha256": "746cd9766b0e7aee794f9d40c7a5ca38b45e84fdd9d665a37495cb3f64fa6179"
+  },
+  {
+    "file": "27_terms-and-conditions.blade.php.txt",
+    "destination": "resources/views/pages/custom/terms-and-conditions.blade.php",
+    "sha256": "5c336a17ff2f9aaeab9b36b103b04923aea885cd1671183af424edc9f823a80f"
+  },
+  {
+    "file": "28_arizona-blog-system-test-3.blade.php.txt",
+    "destination": "resources/views/blogs/posts/arizona-blog-system-test-3.blade.php",
+    "sha256": "608e1879d34a07fed4dfe86fa59ffa234077e64e2c1091c62fd85490376f4bba"
+  },
+  {
+    "file": "29_arizona-blog-system-test.blade.php.txt",
+    "destination": "resources/views/blogs/posts/arizona-blog-system-test.blade.php",
+    "sha256": "608e1879d34a07fed4dfe86fa59ffa234077e64e2c1091c62fd85490376f4bba"
+  },
+  {
+    "file": "30_my-first-blog-post.blade.php.txt",
+    "destination": "resources/views/blogs/posts/my-first-blog-post.blade.php",
+    "sha256": "5e8153a1ac505bc9000d0f035380a60c3c4654f43f49f518729e386ab1a3f0cf"
+  },
+  {
+    "file": "31_my-first-business-blog.blade.php.txt",
+    "destination": "resources/views/blogs/posts/my-first-business-blog.blade.php",
+    "sha256": "97be72b82afdbe6d02f53583ff6b1af847772e2196800c3ed5d880fb9f5416a4"
+  },
+  {
+    "file": "32_top-cybersecurity-trends-in-2026.blade.php.txt",
+    "destination": "resources/views/blogs/posts/top-cybersecurity-trends-in-2026.blade.php",
+    "sha256": "ff7c43a06a0f12ff4b7c61c756f7b604804343000e2a3be16700d2d818efe343"
+  },
+  {
+    "file": "33_card-carousel.css.txt",
+    "destination": "public/asset/css/card-carousel.css",
+    "sha256": "d0f4218fa354c637e34c694bfcb86afeadc1e0e84a43fac069d1687ac9a99938"
+  },
+  {
+    "file": "34_card-carousel.js.txt",
+    "destination": "public/asset/js/card-carousel.js",
+    "sha256": "dcdd4df2c597db4e7927c45d30c3792d75b15614025094bdce21c52ba137aba6"
+  },
+  {
+    "file": "35_BlogController.php.txt",
+    "destination": "app/Http/Controllers/BlogController.php",
+    "sha256": "a3250ab296d430a30b3bc9b40ff1de55bf1f1aefaa9a15f943a5f1e10ed81ace"
+  },
+  {
+    "file": "36_PublicSeoService.php.txt",
+    "destination": "app/Services/PublicSeoService.php",
+    "sha256": "4ea8dac73cb378aec3714e0236c1d127b6353e6540bbe740c7fff2bdc9384387"
+  },
+  {
+    "file": "37_SitemapController.php.txt",
+    "destination": "app/Http/Controllers/SitemapController.php",
+    "sha256": "012651fd92667bfcd8be61674856ff80d568428618c5fe955d920735b5b831ea"
+  },
+  {
+    "file": "38_robots.txt.txt",
+    "destination": "public/robots.txt",
+    "sha256": "03b8db930a742d8a3b249cddfe3d33659c01c7c25c30e17ddbc0177f19fa8db6"
+  },
+  {
+    "file": "39_app.blade.php.txt",
+    "destination": "resources/views/layouts/app.blade.php",
+    "sha256": "57ea12a2c706fdac0568a9bcc318e44ca5139932f682d92574d096ca9da50f43"
+  },
+  {
+    "file": "40_main.js.txt",
+    "destination": "public/asset/js/main.js",
+    "sha256": "215b19627da1aa4312f95ae49506987bda6a78c3210bf64ea2c235b12346957d"
+  },
+  {
+    "file": "41_contact.js.txt",
+    "destination": "public/asset/js/contact.js",
+    "sha256": "e5ff4180a577e1c51a9f2df9d2107332193e75d06be0e58a4a03942f166c3d2a"
+  },
+  {
+    "file": "42_blogs.js.txt",
+    "destination": "public/asset/js/blogs.js",
+    "sha256": "ec87da432310b5fe68fc8d4e783c22e7f1537d20fc24c56f86146095b324fdf6"
+  },
+  {
+    "file": "43_policy-condtions.js.txt",
+    "destination": "public/asset/js/policy-condtions.js",
+    "sha256": "ec87da432310b5fe68fc8d4e783c22e7f1537d20fc24c56f86146095b324fdf6"
+  },
+  {
+    "file": "44_article-reviews.blade.php.txt",
+    "destination": "resources/views/blogs/partials/article-reviews.blade.php",
+    "sha256": "4f9e9868b8dc9c5232e0acab3d083fe4f8d49effd5d7473dc4fc4f1d8f7dc940"
+  },
+  {
+    "file": "45_footer.blade.php.txt",
+    "destination": "resources/views/partials/footer.blade.php",
+    "sha256": "e93567b69bdc3c44552584e0d5f29cc58d935668536dada876f1e18bfa230b19"
+  },
+  {
+    "file": "46_ResponsiveMediaService.php.txt",
+    "destination": "app/Services/ResponsiveMediaService.php",
+    "sha256": "c838ca7c45af392ec9b6b542d6b5d46406a5f4fc425c1fe98ef5638b103b7a80"
+  },
+  {
+    "file": "47_OptimizePublicMedia.php.txt",
+    "destination": "app/Console/Commands/OptimizePublicMedia.php",
+    "sha256": "ed706364d48673f98a1e9dae844e31385270328046fc8430d48e484a788181a2"
+  },
+  {
+    "file": "48_product-card.blade.php.txt",
+    "destination": "resources/views/products/partials/product-card.blade.php",
+    "sha256": "1e6a25bd28848ff18dda5950196336326478a1b8224d850586242f9f6418241e"
+  },
+  {
+    "file": "49_post-card.blade.php.txt",
+    "destination": "resources/views/partials/post-card.blade.php",
+    "sha256": "a329c02de9d150ea2311b0719b8e3714a7a203ab83a6c9dade0234b8ec0b1d23"
+  },
+  {
+    "file": "50_style.css.txt",
+    "destination": "public/asset/css/style.css",
+    "sha256": "be81e5e5ec3add77df58438e3b42de8a474c757be48fde88e77f1d00bf6e8732"
+  },
+  {
+    "file": "51_StoreSettingsService.php.txt",
+    "destination": "app/Services/StoreSettingsService.php",
+    "sha256": "d64578b44410201e3a2598b4725694b109dc9ae7dc4875c2bb4db87ca8352f5c"
+  },
+  {
+    "file": "52_show.blade.php.txt",
+    "destination": "resources/views/pages/show.blade.php",
+    "sha256": "d928c17e0de90d262e40cd67dd4dae14f3f444e6751062979272de77f116d38a"
+  },
+  {
+    "file": "53_home-critical-styles.blade.php.txt",
+    "destination": "resources/views/partials/home-critical-styles.blade.php",
+    "sha256": "f3339bbfd3c240388fcd50efe846bafbd0466d2cec5a74b31b9427f1bd289e7a"
+  },
+  {
+    "file": "54_Post.php.txt",
+    "destination": "app/Models/Post.php",
+    "sha256": "05f9e6d9b73a813bc9ccac3b2de4739e615bf8632f53381ec7faa669cda29f49"
+  },
+  {
+    "file": "55_blog-author-card-info.blade.php.txt",
+    "destination": "resources/views/partials/blog-author-card-info.blade.php",
+    "sha256": "b84907ac721c0f1085f0c28d6512798670ba3a76d712057fc4bd3920063870db"
+  },
+  {
+    "file": "56_article-author-latest.blade.php.txt",
+    "destination": "resources/views/blogs/partials/article-author-latest.blade.php",
+    "sha256": "f210855bda1e7e19cec9542670443d76651b775d122e119ca19cf1ee8e70648e"
+  },
+  {
+    "file": "57_StripeAmountService.php.txt",
+    "destination": "app/Services/StripeAmountService.php",
+    "sha256": "c8c571f7a3678cb88334cf4e8be687adf09093f6a48729620a029e7bddcf9ef5"
+  },
+  {
+    "file": "58_StripePaymentController.php.txt",
+    "destination": "app/Http/Controllers/Payment/StripePaymentController.php",
+    "sha256": "a2fa87e9f89bd50487a1d67d3ee69490fcf0daf4de6b9abcafc9cffbb1ab7241"
+  },
+  {
+    "file": "59_StripeWebhookController.php.txt",
+    "destination": "app/Http/Controllers/Webhooks/StripeWebhookController.php",
+    "sha256": "06bf110e61e444f710aa23ac2c8309b7453d3ada291283fbcfeeceb466c71627"
+  },
+  {
+    "file": "60_product.js.txt",
+    "destination": "public/asset/js/product.js",
+    "sha256": "f7055eaa118a9fb80128eeca2776418f0ae3ef111249502d612c17a8d5004050"
+  },
+  {
+    "file": "61_ProductCategoryController.php.txt",
+    "destination": "app/Http/Controllers/Admin/ProductCategoryController.php",
+    "sha256": "b0e17acecd2c27a964d80b5348104e53acf1b0367387c685c7b63df4c89ef729"
+  },
+  {
+    "file": "62_PublicAssetService.php.txt",
+    "destination": "app/Services/PublicAssetService.php",
+    "sha256": "cdb7c48d59cd8eaa0101d6a79846f57b76a4e8d1f5741dd78dae1b563716c8e1"
+  },
+  {
+    "file": "63_.htaccess.txt",
+    "destination": "public/.htaccess",
+    "sha256": "7affe7910c93626d7706b71fd91613534052a64fba862539e35e6f3832ceeb4c"
+  }
+]

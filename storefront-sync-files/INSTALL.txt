@@ -1,0 +1,105 @@
+INSTALL ALL 24 FILES AS ONE UPDATE
+
+Open each .txt file, copy its complete contents, and replace/create the destination below. Save without the final .txt extension.
+
+01_article-reviews.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\blogs\partials\article-reviews.blade.php
+
+02_home.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\home.blade.php
+
+03_privacy-policy.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\privacy-policy.blade.php
+
+04_terms-and-conditions.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\terms-and-conditions.blade.php
+
+05_HomeController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\HomeController.php
+
+06_about.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\about.blade.php
+
+07_index.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\blogs\index.blade.php
+
+08_web.php.txt
+C:\xampp\htdocs\ArizonaOutfits\routes\web.php
+
+09_categories.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\products\categories.blade.php
+
+10_PublicMediaService.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Services\PublicMediaService.php
+
+11_product-placeholder.svg.txt
+C:\xampp\htdocs\ArizonaOutfits\public\asset\images\product-placeholder.svg
+
+12_product-card.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\products\partials\product-card.blade.php
+
+13_form.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\products\partials\form.blade.php
+
+14_EcommerceSetting.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Models\EcommerceSetting.php
+
+15_EcommerceSettingController.php.txt
+C:\xampp\htdocs\ArizonaOutfits\app\Http\Controllers\Admin\EcommerceSettingController.php
+
+16_edit.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\admin\settings\edit.blade.php
+
+17_2026_10_03_000001_add_storefront_footer_settings.php.txt
+C:\xampp\htdocs\ArizonaOutfits\database\migrations\2026_10_03_000001_add_storefront_footer_settings.php
+
+18_footer.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\footer.blade.php
+
+19_latest-posts.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\latest-posts.blade.php
+
+20_blog-author-card-info.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\blog-author-card-info.blade.php
+
+21_show.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\products\show.blade.php
+
+22_header.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\partials\header.blade.php
+
+23_category-product-card.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\products\partials\category-product-card.blade.php
+
+24_index.blade.php.txt
+C:\xampp\htdocs\ArizonaOutfits\resources\views\products\index.blade.php
+
+After copying ALL files, open PowerShell in C:\xampp\htdocs\ArizonaOutfits and run:
+C:\xampp\php\php.exe artisan migrate
+C:\xampp\php\php.exe artisan optimize:clear
+
+If public/storage is missing, run: C:\xampp\php\php.exe artisan storage:link
+Refresh browser with Ctrl+F5.
+
+Dashboard: Store Settings > Footer & Social Links. Enter URLs/copyright/about text and save. Header/footer navigation: Menu Builder > Header Navigation / Footer Navigation. Mega Menu categories remain in their own panel.
+
+Product category directory: http://127.0.0.1:8000/product-categories
+Blog category directory: http://127.0.0.1:8000/category
+Single product category: http://127.0.0.1:8000/product-category/your-slug
+Single blog category: http://127.0.0.1:8000/category/your-slug
+
+IMAGE RECOVERY
+Git ignores uploaded files in storage/app/public. For a laptop move, copy that folder separately from the old laptop. Import the matching database and create public/storage link. Uploads are not recovered from Git by this update.
+For lost images: Admin > Products > Edit > Gallery Images. Tick Remove after saving beneath each old image, upload replacement files, and save the product. Replace/remove the featured image separately. Missing local gallery images are omitted from storefront galleries; the main image uses an available gallery image or placeholder. Remote image availability is not checked.
+
+TEST NOW
+Home: up to 6 latest and 6 popular active products. If fewer than six exist, only available products appear.
+Home/Privacy/Terms: same product review showcase as blogs, approved reviews only; product/review navigation works.
+About: product category links open category pages.
+Blogs: filter defaults closed, opens smoothly, closes on submit and refresh; selected filters persist.
+Category directory and individual product categories: project-list card design.
+Footer: saved social URLs/copyright appear, empty social URLs are hidden.
+Product edit: removal checkboxes accessible even for missing images. Save and verify old records disappear.
+
+VALIDATION
+23 PHP/compiled Blade syntax checks; isolated checks for media fallback, six-product limits, active-only popularity, four page renders, category links, approved-only reviews, blog filter markup/query retention, footer settings migration/render. Browser visual layout and animations need your check.
